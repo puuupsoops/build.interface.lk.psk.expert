@@ -1,16 +1,16 @@
 <template>
-  <div class="company-head-elem">
+
     <div class="company-head-about content-elem">
       <div class="company-head-about-info">
         <div class="company-head-about-title">{{data.name}}</div>
         <div class="company-head-about-wrap">
-          <!--<a class="company-head-about-add" href="">
+          <a class="company-head-about-add" href="">
             <img
               class="company-head-about-add-img"
-              src="style/img/icon/doc-add.svg"
+              src="img/icon/doc-add.svg"
               alt=""
             />Добавить заказ
-          </a>-->
+          </a>
           <div class="company-head-about-text">
             <span class="company-head-about-text-top">Город</span
             ><span class="company-head-about-text-bottom">{{data.city}}</span>
@@ -60,7 +60,7 @@
             >Редактировать</a>
       </div>
     </div>
-  </div>
+
 </template>
 
 <script>

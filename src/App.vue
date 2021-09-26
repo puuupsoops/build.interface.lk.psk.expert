@@ -1,7 +1,6 @@
 <template>
-  <aside class="sidebar">
-    <SideMenu />
-  </aside>
+
+    <SideMenu></SideMenu>
 
   <div class="sidebar-menu" style="display: none;">
     <SideCatalogMenu v-if="this.$route.path === '/catalog'" />
@@ -55,7 +54,8 @@ export default {
   // setup( _, { emit } ) {...} - не используем props, деструктуризируем объект context и выбираем нужные значения 
   setup() {
     //используем Composition API, можно не использовать this в этой области
-    
+          
+
     //announcement
     const ad = {
       title : "Информация по маркеровки обуви",

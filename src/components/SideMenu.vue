@@ -1,4 +1,5 @@
 <template>
+  <div >
   <aside class="sidebar">
           <div class="sidebar-btn sidebar-menu-btn">
           <svg class="sidebar-btn-img" width="30" height="20" viewBox="0 0 30 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -92,6 +93,7 @@
           </svg>
         </div>
     </aside>  
+  </div>
 </template>
 
 <script>

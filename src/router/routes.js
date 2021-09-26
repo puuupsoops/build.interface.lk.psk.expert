@@ -1,11 +1,24 @@
-import Main from '../pages/main.vue'
-import Catalog from '../pages/catalog.vue'
-import Company from '../pages/company.vue'
+
+import { createRouter, createWebHistory } from 'vue-router';
+
 
 const routes = [
-    { path: '/', component: Main },
-    { path: '/catalog', component: Catalog },
-    { path: '/company', component: Company }
-]
+	{ 
+		path: '/', 
+		component: () => import('@/pages/main') 
+	},
+	{ 
+		path: '/catalog',
+		component: () => import('@/pages/catalog') 
+	},
+	{ 
+		path: '/company', 
+		component: () => import('@/pages/company') }
+];
 
-export default routes;
+const router = createRouter({
+	history: createWebHistory(),
+	routes
+})
+
+export default router;
