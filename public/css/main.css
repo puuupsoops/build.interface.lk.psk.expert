@@ -1403,10 +1403,12 @@ a {
 				background: -webkit-gradient(linear, left top, right top, from(#FF7B73), to(#FF3024));
 				background: -o-linear-gradient(left, #FF7B73 0%, #FF3024 100%);
 				background: linear-gradient(90deg, #FF7B73 0%, #FF3024 100%); }
+			.top-line-card-item.active {
+				opacity: 1}
 		.top-line-card-add {
 			display: block;
-			position: absolute;
-			margin-top: -11px;
+			/*position: absolute;
+			margin-top: -11px; */
 			top: 50%;
 			right: 0;
 			margin-left: 15px;

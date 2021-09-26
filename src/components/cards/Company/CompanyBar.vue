@@ -1,7 +1,7 @@
 <template>
   <div class="company-card">
     <div class="company-card-wrap">
-      <CompanyStorageCard 
+      <CompanyAboutSmallCard 
         v-for="item in data" 
         :key="item.id"
         :data = "item"
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import CompanyStorageCard from '@/components/cards/CompanyStorageCard.vue';
+import CompanyAboutSmallCard from '@/components/cards/Company/CompanyAboutSmallCard';
 export default {
   props:{
     data: {
@@ -19,7 +19,7 @@ export default {
     }
   },
   components:{
-    CompanyStorageCard
+    CompanyAboutSmallCard 
   }
 }
 </script>
