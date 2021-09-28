@@ -21,7 +21,7 @@
 		
 		</div>
 
-		<CompanyCalendar></CompanyCalendar>
+		<CompanyCalendar :data="companyStoragesData.find(x => x.guid === activeStorageUid).documents"></CompanyCalendar>
 	</div>
 </template>
 

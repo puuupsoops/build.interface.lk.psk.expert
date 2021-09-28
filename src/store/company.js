@@ -38,7 +38,16 @@ export default ({
 						"balance_str": Number(val.balance).toLocaleString(),
 						"discount": val.discount,
 						"date": String(val.date).replace(/^\d\d(\d\d)-(\d\d)-(\d\d)(.*)/, '$3.$2.$1'),
-						"documents": val.documents,
+						"documents": val.documents.map( doc =>
+							({
+								"date_str": String(doc.date).replace(/^\d\d(\d\d)-(\d\d)-(\d\d)(.*)/, '$3.$2.$1'),
+								"date": doc.date,
+								"number": doc.number,
+								"debt": doc.debt,
+								"expires_str": String(doc.expires).replace(/^\d\d(\d\d)-(\d\d)-(\d\d)(.*)/, '$3.$2.$1'),
+								"expires": doc.expires,
+							})
+							),
 					})) : []
 		},
 	},

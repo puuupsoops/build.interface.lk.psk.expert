@@ -9,7 +9,7 @@
 							</div>
 							<button class="company-search-btn gradient-btn"><img class="company-search-btn-img" src="img/icon/search.svg" alt=""></button>
 						</form>
-						<FullCalendar  :options='calendarOptions'></FullCalendar>
+						<FullCalendar ref="fullCalendar" :options='calendarOptions'></FullCalendar>
 					</div>
 					<div class="company-consultant">
 						<div class="company-consultant-wrap content-elem">
@@ -40,22 +40,52 @@ import FullCalendar from '@fullcalendar/vue3';
 import ruLocale from '@fullcalendar/core/locales/ru';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import { ref, computed, onUpdated } from 'vue';
 
 export default {
 	components:{
 		FullCalendar
 	},
-	setup(){
-		return {
-			calendarOptions: {
+	props:{
+		data: {
+			type: Array
+		}
+	},
+	setup(props){
+		const fullCalendar = ref(null);
+
+		onUpdated(()=>{
+			//console.log(fullCalendar.value);
+			let calendarApi = fullCalendar.value.getApi();
+			calendarApi.today();
+		});
+
+		let calendarOptions = computed( () => ({
 				plugins: [ dayGridPlugin, interactionPlugin ],
 				initialView: 'dayGridMonth',
 				locale: ruLocale,
-			}
+				events: props.data.map(doc => ({
+														"title": 'Счёт №' + doc.number + '\n от ' + doc.date_str,
+														"start": doc.expires,
+														"backgroundColor": '#378006',
+														"allDay": true,
+														"display": 'block',
+													
+														})),
+				
+			}));
+		return {
+			calendarOptions,
+			fullCalendar
 		}
 	},
 };
 </script>
 
 <style>
+
+.fc-event-title {
+	white-space: normal;
+}
+
 </style>

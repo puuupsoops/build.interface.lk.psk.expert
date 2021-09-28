@@ -9,7 +9,7 @@
 					:key="id"
 					>
 				<img class="company-head-list-img" src="img/icon/doc.svg" alt="">
-				<a class="company-head-list-link" href="#">ЭС - счёт №{{document.number}} от {{String(document.date).replace(/^\d\d(\d\d)-(\d\d)-(\d\d)(.*)/, '$3.$2.$1')}}</a>
+				<a class="company-head-list-link" href="#">ЭС - счёт №{{document.number}} от {{document.date_str}}</a>
 			</li>
 			</ul><a class="company-head-btn" href="">Подробнее</a>
 	</div>

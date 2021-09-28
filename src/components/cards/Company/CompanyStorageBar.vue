@@ -20,7 +20,7 @@
 
 import CompanyStorageCard from '@/components/cards/Company/CompanyStorageCard.vue';
 import CompanyStorgeDoc from '@/components/cards/Company/CompanyStorgeDoc.vue';
-import { ref, onUpdated, } from 'vue';
+import { ref } from 'vue';
 
 export default {
 	props:{
@@ -39,11 +39,6 @@ export default {
 	},
 	setup(){
 		let activeStorage = ref(0);
-
-		onUpdated (() => {   
-			//activeStorage.value = 0;
-		})
-		
 		return {
 			activeStorage,
 		}
