@@ -12,27 +12,27 @@
 		<div class="company-head">
 			<div class="company-head-elem">
 				<CompanyStorageBar :data="companyStoragesData" v-model="activeStorageUid"></CompanyStorageBar>
-
 			</div>
 
 			<div class="company-head-elem">
 				<CompanyAboutCard :data="aboutCompanyData"></CompanyAboutCard>
 			</div>
-		
 		</div>
+		<CompanySaleBar></CompanySaleBar>
 
 		<CompanyCalendar :data="companyStoragesData.find(x => x.guid === activeStorageUid).documents"></CompanyCalendar>
 	</div>
 </template>
 
 <script>
-import PersonalBar from '../components/cards/PersonalBar.vue'
-import Notification from '../components/cards/Notification.vue'
-import CompanyAboutCard from '../components/cards/Company/CompanyAboutCard.vue'
-import CompanyStorageBar from '../components/cards/Company/CompanyStorageBar.vue'
-import CompanyBarTop from '../components/cards/Company/CompanyBarTop.vue'
-import CompanyCalendar from '../components/cards/Company/CompanyCalendar.vue'
-import Preloader from '../components/Preloader.vue'
+import PersonalBar from '@/components/cards/PersonalBar'
+import Notification from '@/components/cards/Notification'
+import CompanyAboutCard from '@/components/cards/Company/CompanyAboutCard'
+import CompanyStorageBar from '@/components/cards/Company/CompanyStorageBar'
+import CompanyBarTop from '@/components/cards/Company/CompanyBarTop'
+import CompanySaleBar from '@/components/cards/Company/CompanySaleBar'
+import CompanyCalendar from '@/components/cards/Company/CompanyCalendar'
+import Preloader from '@/components/Preloader'
 
 import { useStore } from 'vuex'
 import { ref, onMounted, computed, watch } from 'vue'
@@ -43,10 +43,11 @@ export default {
 		CompanyAboutCard,
 		CompanyStorageBar,
 		CompanyBarTop,
+		CompanySaleBar,
 		Notification,
 		PersonalBar,
 		CompanyCalendar,
-		Preloader
+		Preloader,
 	},
 	setup(){
 		let store = useStore();

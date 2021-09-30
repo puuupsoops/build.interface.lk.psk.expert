@@ -209,6 +209,9 @@ a {
 		-o-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 		box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 		overflow: hidden; }
+		.content-elem.active{
+			 border: 2px solid #FF9900;
+		}
 		.content-elem.content-elem-info {
 			margin-top: 30px;
 			padding: 40px 30px; }
@@ -1373,7 +1376,7 @@ a {
 			margin: 0 15px;
 			padding: 18px 10px;
 			width: 20%;
-			max-width: 258px;
+			max-width: 265px;
 			font-size: 16px;
 			line-height: 25px;
 			color: #ffffff;
@@ -3105,13 +3108,16 @@ a {
 		display: -webkit-flex;
 		display: -moz-flex;
 		display: -ms-flexbox;
-		display: flex; }
+		display: flex; 
+		max-height: 322px;
+	}
 	.company-head-item {
 		position: relative;
 		margin-right: 30px;
 		width: 33.33%; }
 		.company-head-item:last-child {
-			margin: 0; }
+			margin: 0; 
+		}
 		.company-head-item .company-card-sale {
 			top: 15px;
 			right: -5px;
@@ -3135,7 +3141,8 @@ a {
 		.company-head-item .content-elem {
 			padding: 20px 30px; }
 		.company-head-item.documents .content-elem {
-			padding: 0; }
+			padding: 0;
+			height: 100%; }
 		.company-head-item.documents .company-head-item-title {
 			padding: 20px 30px;
 			color: #A5A7A9; }
@@ -3217,9 +3224,14 @@ a {
 		.company-head-sale .sale-progressbar-money {
 			font-size: 10px;
 			line-height: 15px; }
-	.company-head-list {
-		padding: 0px 30px;
-		list-style-type: none; }
+		.company-head-list {
+			padding: 0px 30px;
+			list-style-type: none; }
+		.company-head-list-content {
+			padding: 0px 0px 20px 0px;
+			overflow: auto;
+			height: 200px;
+		}
 		.company-head-list-elem {
 			display: -webkit-box;
 			display: -webkit-flex;
@@ -3250,7 +3262,9 @@ a {
 		line-height: 28px;
 		color: #A5A7A9;
 		text-align: center;
-		background-color: #292C32; }
+		background-color: #292C32;
+		position: absolute;
+		bottom: 0; }
 	.company-head-nav {
 		margin-top: 30px;
 		margin-left: -105px;
@@ -4619,7 +4633,9 @@ a {
 		padding-right: 15px; }
 	.company-head-item.documents .company-head-list {
 		padding-left: 15px;
-		padding-right: 15px; } }
+		padding-right: 15px; 
+		overflow: auto;
+		} }
 
 @media screen and (max-width: 1610px) {
 	.sidebarOpen .product-slider-buttons {

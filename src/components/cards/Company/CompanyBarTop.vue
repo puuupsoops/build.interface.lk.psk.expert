@@ -4,18 +4,19 @@
 						<div class="top-line-card-more-info active"></div>
 						<div class="top-line-card-wrap">
 							<a 
-									v-for="company in data" 
-									:key="company.uid"
+									v-for="(company, i) in data" 
+									:key="i"
 									:class="getClassA(company)"
 									@click="$emit('update:modelValue', company.uid)"
 									href="#">
-								{{company.name}}
+								{{ company.name
+										.replace(/Общество с ограниченной ответственностью/, 'ООО')
+										.replace(/Акционерное общество/, 'АО')}}
 							</a>
-							
-							<a class="top-line-card-add" href=""></a>
+						
+							<a class="top-line-card-add" href="#"></a>
 						</div>
 			</div>
-
 </template>
 
 <script>
@@ -34,8 +35,8 @@ export default {
 	setup(props){
 		let getClassA = (company) => {
 			return company.uid===props.modelValue ?
-					'top-line-card-item active'
-					:'top-line-card-item ' + ['orange', 'green', 'red'][Math.floor(Math.random()*3)]
+					'top-line-card-item orange'
+					:'top-line-card-item green'
 		};
 
 		return {

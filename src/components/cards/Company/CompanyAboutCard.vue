@@ -4,7 +4,7 @@
 			<div class="company-head-about-info">
 				<div class="company-head-about-title">{{data.name}}</div>
 				<div class="company-head-about-wrap">
-					<a class="company-head-about-add" href="">
+					<a class="company-head-about-add" href="#">
 						<img
 							class="company-head-about-add-img"
 							src="img/icon/doc-add.svg"

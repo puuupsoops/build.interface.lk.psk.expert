@@ -2,8 +2,8 @@
 
 <div :class="'company-head-item ' + ( data.debt > 1000 ? 'red' : 'yellow' )"
 		v-on:click="$emit('onClick', $event)">
-	<div class="content-elem">
-		<div class="company-head-item-title" :style="active ? 'font-weight:bold' : ''">{{data.name}}</div>
+	<div :class="'content-elem' + (active ?' active': '')">
+		<div class="company-head-item-title">{{data.name}}</div>
 		<div class="company-card-sale">
 			<div class="company-card-sale-box"><span class="company-card-sale-text">Скидка</span>
 				<div class="company-card-sale-value">{{data.discount}} %</div>
