@@ -20,7 +20,10 @@
 		</div>
 		<CompanySaleBar></CompanySaleBar>
 
+		<!---- Изза того что в тесте у складов одинаковые guid пришлось ставить костыль
 		<CompanyCalendar :data="companyStoragesData.find(x => x.guid === activeStorageUid).documents"></CompanyCalendar>
+		-->
+		<CompanyCalendar :data="companyStoragesData[activeStorageUid].documents"></CompanyCalendar>
 	</div>
 </template>
 
@@ -54,14 +57,22 @@ export default {
 		let isLoad = ref(true);
 		let activeCompanyUid = ref('');
 		let activeStorageUid = ref('');
-		watch(activeCompanyUid,(value) => {activeStorageUid.value = store.getters.getCompanyStoragesData(value)[0].guid;});
+		watch(activeCompanyUid,() => {
+			//activeStorageUid.value = store.getters.getCompanyStoragesData(value)[0].guid;
+			activeStorageUid.value = 0;
+		});
 		onMounted(() => {
-			store.dispatch('GET_PARTNER')
-				.then(() => {setTimeout(() => {
-					isLoad.value = false;
-					activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
+
+			Promise.all([
+						store.dispatch('GET_PARTNER'),
+						store.dispatch('GET_MANAGER'),
+					])
+					//.catch(()=>{alert('error')})
+					.finally(() => { setTimeout(()=>{
+							isLoad.value = false;
+							activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
 					
-				},500); })
+						},500); })
 			});
 
 		return {

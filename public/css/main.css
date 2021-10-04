@@ -840,6 +840,9 @@ a {
 	-o-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 	overflow: hidden; }
+	.sale-progressbar:hover {
+		opacity: 0.8; 
+	}
 	.sale-progressbar-line {
 		display: inline-block;
 		padding: 5px 20px 4px 20px;

@@ -1,6 +1,6 @@
 
 <template>
-
+			<!-- Изза того что в тесте у складов одинаковые guid пришлось ставить костыль
 		<div class="company-head-wrap">
 			<CompanyStorageCard 
 				v-for="(storage, id) in data" 
@@ -10,7 +10,19 @@
 				@onClick="$emit('update:modelValue', storage.guid)"
 			></CompanyStorageCard>
 
+
 			<CompanyStorgeDoc :data="data.find(x => x.guid === modelValue).documents"></CompanyStorgeDoc>
+			-->
+
+			<div class="company-head-wrap">
+			<CompanyStorageCard 
+				v-for="(storage, id) in data" 
+				:key="id"
+				:data="storage"
+				:active="id===modelValue"
+				@onClick="$emit('update:modelValue', id)"
+			></CompanyStorageCard>
+			<CompanyStorgeDoc :data="data[modelValue].documents"></CompanyStorgeDoc>
 		</div>
 
 </template>
@@ -28,7 +40,7 @@ export default {
 			type: Array
 		},
 		modelValue: {
-			type: String,
+			type: Number,
 			required: true
 		}
 	},

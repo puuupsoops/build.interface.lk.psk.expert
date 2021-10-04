@@ -11,7 +11,7 @@
 		</form>
 		<FullCalendar ref="fullCalendar" :options='calendarOptions'></FullCalendar>
 	</div>
-	<ManagerCard :data="managerData"></ManagerCard>
+	<ManagerCard></ManagerCard>
 </div>
 </template>
 
@@ -56,14 +56,10 @@ export default {
 														})),
 				
 			}));
-		let managerData = {
-			"name": 'Приходько Катерина Павловна',
-			"phones": ['8 908 123 45 67', '8 908 123 45 67'],
-		}
+
 		return {
 			calendarOptions,
 			fullCalendar,
-			managerData,
 		}
 	},
 };
