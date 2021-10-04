@@ -4,7 +4,7 @@
 		v-on:click="$emit('onClick', $event)">
 	<div :class="'content-elem' + (active ?' active': '')">
 		<div class="company-head-item-title">{{data.name}}</div>
-		<div class="company-card-sale">
+		<div class="company-card-sale" :style="active ? 'right: -6px;':''">
 			<div class="company-card-sale-box"><span class="company-card-sale-text">Скидка</span>
 				<div class="company-card-sale-value">{{data.discount}} %</div>
 			</div>
@@ -24,7 +24,7 @@
 				</div>
 				<div class="company-head-info-elem r">
 					<span class="company-head-info-title">Дата погашения</span>
-					<span class="company-head-info-val">{{data.date}}</span>
+					<span class="company-head-info-val" >{{ data.debt>0 ? data.date : '--.--.--'}}</span>
 				</div>
 			</div>
 		</div>
