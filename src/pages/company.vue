@@ -18,8 +18,7 @@
 				<CompanyAboutCard :data="aboutCompanyData"></CompanyAboutCard>
 			</div>
 		</div>
-		<CompanySaleBar></CompanySaleBar>
-
+		<CompanySaleBar :spent="totalSpent"></CompanySaleBar>
 		<!---- Изза того что в тесте у складов одинаковые guid пришлось ставить костыль
 		<CompanyCalendar :data="companyStoragesData.find(x => x.guid === activeStorageUid).documents"></CompanyCalendar>
 		-->
@@ -63,7 +62,7 @@ export default {
 		});
 		onMounted(() => {
 
-			Promise.all([
+		Promise.all([
 						store.dispatch('GET_PARTNER'),
 						store.dispatch('GET_MANAGER'),
 					])
@@ -71,14 +70,13 @@ export default {
 					.finally(() => { setTimeout(()=>{
 							isLoad.value = false;
 							activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
-					
 						},500); })
 			});
-
 		return {
 			aboutCompanyData: computed(() => store.getters.getCompanyData(activeCompanyUid.value)),
 			companyStoragesData: computed(() => store.getters.getCompanyStoragesData(activeCompanyUid.value)),
 			companyBarTopData: computed(() => store.getters.getCompanys),
+			totalSpent: computed(() => store.getters.getCompanySpent(activeCompanyUid.value)),
 			activeCompanyUid,
 			activeStorageUid,
 			isLoad,

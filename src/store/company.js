@@ -51,6 +51,11 @@ export default ({
 							),
 					})) : []
 		},
+		getCompanySpent: state => uid => {
+			let company = state.companys.find(x => x.uid === uid)
+			let res = company.storages.reduce((prev,cur) => prev + cur.spent, 0);
+			return res
+		},
 		getManager: state => state.manager,
 	},
 	mutations: {
@@ -64,7 +69,7 @@ export default ({
 	actions: {
 		// API https://documenter.getpostman.com/view/15374835/UUxwBoF3#e1274708-aee2-4901-a4fa-40b9c3202c14
 		GET_PARTNER: async function({commit}) {
-			await axios.get('/partners1')
+			await axios.get('/partners')
 				.then(response => {
 						commit('setPartners', response.data.response)
 				})
