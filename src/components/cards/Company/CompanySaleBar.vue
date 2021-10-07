@@ -10,7 +10,7 @@
 			<div class="sale-progressbar tooltip">
 				
 					
-				<div class="sale-progressbar-line" :style="'width: '+ progressInPercent +'%'">
+				<div class="sale-progressbar-line" :style="'width: '+ (progressInPercent < 15 ? 15 : progressInPercent) +'%'">
 					<div class="sale-progressbar-val">
 						<div>
 							<span class="sale-progressbar-val-money">({{spent}})</span>

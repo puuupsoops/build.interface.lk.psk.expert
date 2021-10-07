@@ -4,13 +4,14 @@
 	<div class="content-elem">
 		<div class="company-head-item-title">Документы</div>
 			<div class="company-head-list-content" >
-				<ul class="company-head-list">
+				<ul class="company-head-list" v-if="data">
 					<li class="company-head-list-elem"
 							v-for="(document, id) in data"
 							:key="id"
+							
 							>
 						<img class="company-head-list-img" src="img/icon/doc.svg" alt="">
-						<a class="company-head-list-link" href="#">ЭС - счёт №{{document.number}} от {{document.date_str}}</a>
+						<a class="company-head-list-link" href="#CompanyCalendar" @click="docDate = document.expires">ЭС - счёт №{{document.number}} от {{document.date_str}}</a>
 					</li>
 				</ul>
 			</div>
@@ -22,12 +23,20 @@
 </template>
 
 <script>
+import { inject } from 'vue'
 export default {
 	props:{
 		data: {
 			type: Array
 		}
 	},
+	setup(){
+		
+		let docDate = inject('docDate');
+		return {
+			docDate,
+		}
+	}
 };
 </script>
 

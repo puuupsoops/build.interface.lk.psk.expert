@@ -14,16 +14,20 @@
 			<CompanyStorgeDoc :data="data.find(x => x.guid === modelValue).documents"></CompanyStorgeDoc>
 			-->
 
-			<div class="company-head-wrap">
-			<CompanyStorageCard 
-				v-for="(storage, id) in data" 
-				:key="id"
-				:data="storage"
-				:active="id===modelValue"
-				@onClick="$emit('update:modelValue', id)"
-			></CompanyStorageCard>
-			<CompanyStorgeDoc :data="data[modelValue].documents"></CompanyStorgeDoc>
-		</div>
+			<div class="company-head-wrap" v-if="modelValue!==null">
+				<CompanyStorageCard 
+					v-for="(storage, id) in data" 
+					:key="id"
+					:data="storage"
+					:active="id===modelValue"
+					@onClick="$emit('update:modelValue', id)"
+				></CompanyStorageCard>
+				<CompanyStorgeDoc :data="data[modelValue].documents"></CompanyStorgeDoc>
+			</div>
+			<div v-else class="company-head-wrap">
+				<CompanyStorageCard></CompanyStorageCard>
+				<CompanyStorgeDoc></CompanyStorgeDoc>
+			</div>
 
 </template>
 
@@ -32,7 +36,7 @@
 
 import CompanyStorageCard from '@/components/cards/Company/CompanyStorageCard.vue';
 import CompanyStorgeDoc from '@/components/cards/Company/CompanyStorgeDoc.vue';
-import { ref } from 'vue';
+
 
 export default {
 	props:{
@@ -41,7 +45,7 @@ export default {
 		},
 		modelValue: {
 			type: Number,
-			required: true
+			//required: true
 		}
 	},
 	emits: ['update:modelValue'],
@@ -50,10 +54,6 @@ export default {
 		CompanyStorgeDoc,
 	},
 	setup(){
-		let activeStorage = ref(0);
-		return {
-			activeStorage,
-		}
 	}
 }
 </script>

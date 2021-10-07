@@ -8,7 +8,7 @@
 			<PersonalBar></PersonalBar>
 
 		</div>
-
+		
 		<div class="company-head">
 			<div class="company-head-elem">
 				<CompanyStorageBar :data="companyStoragesData" v-model="activeStorageUid"></CompanyStorageBar>
@@ -22,7 +22,7 @@
 		<!---- Изза того что в тесте у складов одинаковые guid пришлось ставить костыль
 		<CompanyCalendar :data="companyStoragesData.find(x => x.guid === activeStorageUid).documents"></CompanyCalendar>
 		-->
-		<CompanyCalendar :data="companyStoragesData[activeStorageUid].documents"></CompanyCalendar>
+		<CompanyCalendar :data="activeStorageDocuments"></CompanyCalendar>
 	</div>
 </template>
 
@@ -37,7 +37,7 @@ import CompanyCalendar from '@/components/cards/Company/CompanyCalendar'
 import Preloader from '@/components/Preloader'
 
 import { useStore } from 'vuex'
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, computed, watch , provide} from 'vue'
 
 
 export default {
@@ -56,13 +56,22 @@ export default {
 		let isLoad = ref(true);
 		let activeCompanyUid = ref('');
 		let activeStorageUid = ref('');
-		watch(activeCompanyUid,() => {
-			//activeStorageUid.value = store.getters.getCompanyStoragesData(value)[0].guid;
-			activeStorageUid.value = 0;
-		});
-		onMounted(() => {
+		let docDate = ref('');
+		let aboutCompanyData = computed(() => store.getters.getCompanyData(activeCompanyUid.value));
+		let companyStoragesData = computed(() => store.getters.getCompanyStoragesData(activeCompanyUid.value));
+		let companyBarTopData = computed(() => store.getters.getCompanys);
+		let totalSpent = computed(() => store.getters.getCompanySpent(activeCompanyUid.value));
 
-		Promise.all([
+		watch(activeCompanyUid,() => { 
+			companyStoragesData.value.length === 0 ? 
+				activeStorageUid.value = null : activeStorageUid.value = 0;
+		});
+
+		let activeStorageDocuments = computed(() => companyStoragesData.value.length === 0 ?
+													null : companyStoragesData.value[activeStorageUid.value].documents );
+
+		onMounted(() => {
+			Promise.all([
 						store.dispatch('GET_PARTNER'),
 						store.dispatch('GET_MANAGER'),
 					])
@@ -72,13 +81,15 @@ export default {
 							activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
 						},500); })
 			});
+		provide('docDate', docDate ); //фича для обмена данными между компонентами. Связь между компонентом CompanyStorageDoc и CompanyCalendar
 		return {
-			aboutCompanyData: computed(() => store.getters.getCompanyData(activeCompanyUid.value)),
-			companyStoragesData: computed(() => store.getters.getCompanyStoragesData(activeCompanyUid.value)),
-			companyBarTopData: computed(() => store.getters.getCompanys),
-			totalSpent: computed(() => store.getters.getCompanySpent(activeCompanyUid.value)),
+			aboutCompanyData,
+			companyStoragesData,
+			companyBarTopData,
+			totalSpent,
 			activeCompanyUid,
 			activeStorageUid,
+			activeStorageDocuments,
 			isLoad,
 		}
 	}
