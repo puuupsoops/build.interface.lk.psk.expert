@@ -29,6 +29,14 @@ const routes = [
 			}
 	},
 	{
+		path: '/product', 
+		component: () => import('@/pages/product'),
+		name: 'Product',
+		meta:{
+				auth: true,
+			}
+	},
+	{
 		path: '/404',
 		component: () => import('@/pages/404'),
 		name: '404',

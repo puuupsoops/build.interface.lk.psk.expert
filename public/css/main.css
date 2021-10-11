@@ -1712,7 +1712,7 @@ a {
 		.company-card-box.orange {
 			background: -webkit-gradient(linear, left top, right top, from(#FFBF60), to(#FF9900));
 			background: -o-linear-gradient(left, #FFBF60 0%, #FF9900 100%);
-			bgrouacknd: linear-gradient(90deg, #FFBF60 0%, #FF9900 100%); }
+			background: linear-gradient(90deg, #FFBF60 0%, #FF9900 100%); }
 			.company-card-box.orange .company-card-sale:after {
 				border-left-color: #6B4101; }
 			.company-card-box.orange .company-card-sale-box {
@@ -2777,7 +2777,7 @@ a {
 		.order-product-prev-slider-img {
 			display: block;
 			width: 100%;
-			hieght: auto; }
+			height: auto; }
 		.order-product-prev-slider .slick-arrow {
 			position: absolute;
 			margin-top: -12px;

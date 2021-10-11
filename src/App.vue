@@ -13,6 +13,7 @@
 				<li><router-link tag="a" to="/" class="nav-link">Главнаяя (тест)</router-link></li>
 				<li><router-link tag="a" to="/catalog" class="nav-link">Каталог (тест)</router-link></li>
 				<li><router-link tag="a" to="/company" class="nav-link">Страница компании (тест)</router-link></li>
+				<li><router-link tag="a" to="/product" class="nav-link">Страница продукт (тест)</router-link></li>
 				<li><router-link tag="a" to="#" @click="logout" class="nav-link">Выход (тест)</router-link></li>
 
 			</ul>
