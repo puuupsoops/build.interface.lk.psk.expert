@@ -19,19 +19,20 @@
     </nav>
 
     
-    <div class="product-search-inline" >
+    <div class="product-search-inline" v-if="!loading" >
         <div class="product-search-input" >
-            <input type="text" placeholder="Поиск" autocomplete="off">
-            <img src="img/icon/cross.svg" alt="">
+            <input type="text" placeholder="Поиск" autocomplete="off" @keyup.enter="doSearch()" v-model="search_str">
+            <img src="img/icon/cross.svg" alt="" @click="search_str=''; isLoad=false">
         </div>
-        <button class="product-search-btn gradient-btn">
+        <button class="product-search-btn gradient-btn" @click="doSearch()">
             <div>Поиск</div>
         </button>
 
     </div>
-    <ProductHeaderCard :title="'Костюм “Финикс” бежевый/олива'" :price="'1000'"></ProductHeaderCard>
+    <Preloader v-if="loading"></Preloader>
+    <ProductHeaderCard :title="'Костюм “Финикс” бежевый/олива'" :price="'1000'" v-if="isLoad"></ProductHeaderCard>
 
-    <div class="content-wrap content-product-wrap">
+    <div class="content-wrap content-product-wrap" v-if="isLoad">
         <div class="content-wrap-elem">
             <ProductSearchResultCard></ProductSearchResultCard>
             <ProductMoreCard></ProductMoreCard>
@@ -58,12 +59,14 @@ import ProductAddInfoCard from '@/components/cards/Product/ProductAddInfoCard'
 import ProductSliderCard from '@/components/cards/Product/ProductSliderCard'
 import ProductParcelCard from '@/components/cards/Product/ProductParcelCard'
 import ProductInfoCard from '@/components/cards/Product/ProductInfoCard'
+import Preloader from '@/components/Preloader'
 
 import { useStore } from 'vuex'
 import { ref, onMounted, computed } from 'vue'
 
 export default {
     components:{
+        Preloader,
         PersonalBar,
         Notification,
         CompanyBarTop,
@@ -79,7 +82,9 @@ export default {
         let store = useStore();
 
         let activeCompanyUid = ref('');
-		let isLoad = ref(true);
+        let search_str = ref('')
+		let isLoad = ref(false);
+		let loading = ref(false);        
         let companyBarTopData = computed(() => store.getters.getCompanys);
         onMounted(() => {
 			Promise.all([
@@ -91,10 +96,23 @@ export default {
 							activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
 						},500); })
 			});
+        let doSearch = () => {
+            loading.value = true;
+            isLoad.value=false;
+            store.dispatch('SEARCH_PRODUCT', search_str.value)
+                .then(()=>{
+                    isLoad.value=true;
+                    })
+                .finally(() => {loading.value=false})
+        }
+
         return {
             isLoad,
+            loading,
             companyBarTopData,
-            activeCompanyUid
+            activeCompanyUid,
+            search_str,
+            doSearch
         }
     },
 }
