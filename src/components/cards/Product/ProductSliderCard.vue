@@ -1,34 +1,56 @@
 <template>
 <div class="product-slider-block content-elem">
-    <div class="product-slider-wrap">
-        <div class="product-slider slick-initialized slick-slider">
-            <button class="slick-prev slick-arrow" aria-label="Previous" type="button" style="">Previous</button>
-            <div class="slick-list draggable">
-                <div class="slick-track" style="opacity: 1; width: 1167px;">
-                    <div class="product-slider-elem slick-slide" style="width: 389px; position: relative; left: 0px; top: 0px; z-index: 998; opacity: 0; transition: opacity 500ms ease 0s;" tabindex="-1" data-slick-index="0" aria-hidden="true"><img class="product-slider-img" src="https://psk.expert/upload/iblock/b4d/kos619_new_bezh_chern1.jpg" alt=""></div><div class="product-slider-elem slick-slide" style="width: 389px; position: relative; left: -389px; top: 0px; z-index: 998; opacity: 0; transition: opacity 500ms ease 0s;" tabindex="-1" data-slick-index="1" aria-hidden="true"><img class="product-slider-img" src="https://psk.expert/upload/iblock/def/kos619_new_bezh_chern2.jpg" alt=""></div><div class="product-slider-elem slick-slide slick-current slick-active" style="width: 389px; position: relative; left: -778px; top: 0px; z-index: 999; opacity: 1;" data-slick-index="2" aria-hidden="false" tabindex="0">
-                        <img class="product-slider-img" :src="cur_img" alt="">
-                    </div>
-                </div>
-            </div>
-            <button class="slick-next slick-arrow" aria-label="Next" type="button" style="">Next</button>
-        </div>
+    <div class="product-slider">
+        <vueper-slides
+            lazy lazy-load-on-drag
+            class="no-shadow slider"
+            arrows-outside 
+            bullets-outside
+            ref="vueperslides1"
+            :touchable="false"
+            fade
+            :autoplay="false"
+            :bullets="false"
+            @slide="$refs.vueperslides2.goToSlide($event.currentSlide.index, { emit: false })"
+            fixed-height="300px"
+            slide-image-inside
+        >
+            <vueper-slide
+                v-for="(slide, i) in data"
+                :key="i"
+                :image="slide"
+                >
 
-        <div class="product-slider-nav slick-initialized slick-slider slick-vertical">  
-            <div class="slick-list draggable" >
-                <div class="slick-track" >
+                <template #loader>
+                    <i class="icon icon-loader spinning"></i>
+                    <span>Загрузка...</span>
+                </template>
+            </vueper-slide>
+        </vueper-slides>
 
-                    <div v-for="(link, i) in img" :key="i" class="product-slider-nav-elem slick-slide slick-active" 
-                        @click="cur_img=link.link"
-                    >
-                        <img class="product-slider-nav-img" :src="link.link" alt="">
-                       
-                    </div>
-                    
-                </div>
-            </div>
-        
-        </div>
-        
+        <vueper-slides
+            lazy lazy-load-on-drag
+            class="no-shadow thumbnails"
+            ref="vueperslides2"
+            @slide="$refs.vueperslides1.goToSlide($event.currentSlide.index, { emit: false })"
+            :visible-slides="3"
+            fixed-height="75px"
+            :bullets="false"
+            :touchable="false"
+            :gap="5"
+            slide-image-inside
+            :arrows="false">
+            <vueper-slide
+                v-for="(slide, i) in data"
+                :key="i"
+                :image="slide"
+                @click="$refs.vueperslides2.goToSlide(i)">
+                <template #loader>
+                    <i class="icon icon-loader spinning"></i>
+                    <span>Загрузка...</span>
+                </template>
+            </vueper-slide>
+        </vueper-slides>
     </div>
 
     <div class="product-slider-buttons">
@@ -41,7 +63,15 @@
 
 <script>
 import { ref } from 'vue'
+import { VueperSlides, VueperSlide } from 'vueperslides'
+import 'vueperslides/dist/vueperslides.css'
 export default {
+    components: { VueperSlides, VueperSlide },
+    props:{
+        data: {
+            type: Array
+        },
+    },
     setup(){
         let img = ref([]);
         let cur_img = ref('');
@@ -60,3 +90,51 @@ export default {
     }
 }
 </script>
+
+<style >
+.thumbnails {
+  margin: auto;
+    max-width: 300px;
+}
+
+.thumbnails .vueperslide {
+  box-sizing: border-box;
+  border: 1px solid #fff;
+  transition: 0.3s ease-in-out;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.thumbnails .vueperslide--active {
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  opacity: 1;
+  border-color: #000;
+}
+.thumbnails .vueperslide__image {
+    background-size: contain;
+    background-repeat: no-repeat;
+    outline: none;
+    border-radius: 6px;
+    overflow: hidden;
+    width: auto;
+}
+
+.product-slider-img {
+    max-width:300;
+    max-height:100%;
+}
+.product-slider{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+.slider .vueperslide__image {
+    background-size: contain;
+    background-repeat: no-repeat;
+    outline: none;
+    border-radius: 6px;
+    overflow: hidden;
+    width: auto;
+}
+
+</style>

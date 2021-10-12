@@ -1,4 +1,5 @@
 <template>
+<Preloader v-if="loader"></Preloader>
 	<div  v-if="isAuth">
 		<SideMenu></SideMenu>
 
@@ -25,10 +26,11 @@
 
 <script>
 import { useStore } from 'vuex'
-import { computed } from 'vue';
+import { computed, ref, provide } from 'vue';
 import SideMenu from './components/SideMenu.vue';
 import SideNavigation from './components/nav/SideNavigation.vue';
 import SideCatalogMenu from './components/nav/SideCatalogMenu.vue';
+import Preloader from '@/components/Preloader';
 
 //import Main from './pages/main.vue'
 //import Catalog from './pages/catalog.vue';
@@ -40,16 +42,19 @@ export default {
 		SideMenu,
 		SideNavigation,
 		SideCatalogMenu,
-
+		Preloader,
 	},
 
-	setup() {
+setup() {
 		let store = useStore();
 		store.dispatch('CHECK_AUTH')
+		let loader = ref(false);
+		provide('loader', loader ); 
 
 		return {
 			//возвращаем данные
 			isAuth: computed(() => store.getters.isAuthenticated),
+			loader,
 			logout: ()=>store.dispatch('LOGOUT'),
 		}
 	}

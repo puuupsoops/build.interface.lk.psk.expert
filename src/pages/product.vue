@@ -19,33 +19,36 @@
     </nav>
 
     
-    <div class="product-search-inline" v-if="!loading" >
+    <div class="product-search-inline"  >
         <div class="product-search-input" >
             <input type="text" placeholder="Поиск" autocomplete="off" @keyup.enter="doSearch()" v-model="search_str">
-            <img src="img/icon/cross.svg" alt="" @click="search_str=''; isLoad=false">
+            <img src="img/icon/cross.svg" alt="" @click="clearSearch();search_str.value = '';">
         </div>
         <button class="product-search-btn gradient-btn" @click="doSearch()">
             <div>Поиск</div>
-        </button>
+        </button><section></section>
 
     </div>
-    <Preloader v-if="loading"></Preloader>
-    <ProductHeaderCard :title="'Костюм “Финикс” бежевый/олива'" :price="'1000'" v-if="isLoad"></ProductHeaderCard>
-
-    <div class="content-wrap content-product-wrap" v-if="isLoad">
-        <div class="content-wrap-elem">
-            <ProductSearchResultCard></ProductSearchResultCard>
-            <ProductMoreCard></ProductMoreCard>
-            <ProductAddInfoCard></ProductAddInfoCard>
     
-        </div>
-        <div class="content-wrap-elem">
-            <ProductSliderCard></ProductSliderCard>
-            <ProductParcelCard></ProductParcelCard>
-            <ProductInfoCard></ProductInfoCard>
+    <div v-if="productFound">  
+        <ProductHeaderCard :title="String(product.NAME)" :price="String(product.PRICE)" :status="String(product.STATUS)" v-if="isLoad"></ProductHeaderCard>
+        <div class="content-wrap content-product-wrap" v-if="isLoad">
+            <div class="content-wrap-elem">
+                <ProductSearchResultCard :data="productFound" v-model="activeProductId" @click="loadProduct()"></ProductSearchResultCard>
+                <ProductMoreCard :data="productOffers"></ProductMoreCard>
+                <ProductAddInfoCard></ProductAddInfoCard>
+        
+            </div>
+            <div class="content-wrap-elem">
+                <ProductSliderCard :data="productImages"></ProductSliderCard>
+                <ProductParcelCard></ProductParcelCard>
+                <ProductInfoCard :data="product" :protect="productProtect"></ProductInfoCard>
+            </div>
         </div>
     </div>
-
+    <div v-else>
+        <div v-if="isLoad">не найдено</div>
+    </div>
 </template>
 
 <script>
@@ -59,14 +62,13 @@ import ProductAddInfoCard from '@/components/cards/Product/ProductAddInfoCard'
 import ProductSliderCard from '@/components/cards/Product/ProductSliderCard'
 import ProductParcelCard from '@/components/cards/Product/ProductParcelCard'
 import ProductInfoCard from '@/components/cards/Product/ProductInfoCard'
-import Preloader from '@/components/Preloader'
+
 
 import { useStore } from 'vuex'
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, inject } from 'vue'
 
 export default {
     components:{
-        Preloader,
         PersonalBar,
         Notification,
         CompanyBarTop,
@@ -84,8 +86,10 @@ export default {
         let activeCompanyUid = ref('');
         let search_str = ref('')
 		let isLoad = ref(false);
-		let loading = ref(false);        
-        let companyBarTopData = computed(() => store.getters.getCompanys);
+        let activeProductId = ref('');
+
+        const loader = inject('loader');
+
         onMounted(() => {
 			Promise.all([
 						store.dispatch('GET_PARTNER'),
@@ -96,23 +100,48 @@ export default {
 							activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
 						},500); })
 			});
+
+        let loadProduct = () => {
+            loader.value = true;
+//            store.commit('setProductClear');
+            store.dispatch('GET_PRODUCT_BY_ID', activeProductId.value)
+                .then(()=>{
+                    activeProductId.value=store.getters.getProduct.ID;
+                    })
+                .finally(() => {loader.value=false})
+        };
+
+        let clearSearch = () => {
+            isLoad.value = false;
+            store.commit('setSearchProductClear');
+        };
+
         let doSearch = () => {
-            loading.value = true;
-            isLoad.value=false;
+            clearSearch();
+            loader.value = true;
             store.dispatch('SEARCH_PRODUCT', search_str.value)
                 .then(()=>{
                     isLoad.value=true;
+                    activeProductId.value=store.getters.getProduct.ID;
                     })
-                .finally(() => {loading.value=false})
+                .finally(() => {loader.value=false})
         }
 
         return {
+            companyBarTopData: computed(() => store.getters.getCompanys),
+            resultSearch: computed(() => store.getters.getProductSearchResult),
+            productOffers: computed(() => store.getters.getProductOffers),
+            product: computed(() => store.getters.getProduct),
+            productFound: computed(() => store.getters.getProductFound),
+            productImages: computed(() => store.getters.getProductImages),
+            productProtect: computed(() => store.getters.getProductProtect),
             isLoad,
-            loading,
-            companyBarTopData,
             activeCompanyUid,
+            activeProductId,
             search_str,
-            doSearch
+            doSearch,
+            clearSearch,
+            loadProduct,
         }
     },
 }

@@ -18,6 +18,8 @@
 	position: relative;
 	width: 100%;
 	height: 100%;
+	left: 50%;
+	top: 50%;
 }
 .lds-ripple div {
 	position: absolute;
@@ -46,11 +48,14 @@
 	}
 }
 .ripple {
-		position: fixed;
-		top: 50%;
-		left: 50%;
-		margin-top: -50px;
-		margin-left: -50px;
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+
+	z-index: 1001;
+	background: rgba(0,0,0,.7);
 }
 
 </style>

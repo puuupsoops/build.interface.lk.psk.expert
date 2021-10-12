@@ -1,7 +1,6 @@
 <template>
 
-	<Preloader v-if="isLoad"></Preloader>
-	<div v-else>
+	<div v-if="isLoad">
 		<div class="top-line product-page">
 			<CompanyBarTop :data="companyBarTopData" v-model="activeCompanyUid"></CompanyBarTop>
 			<Notification></Notification>
@@ -34,10 +33,9 @@ import CompanyStorageBar from '@/components/cards/Company/CompanyStorageBar'
 import CompanyBarTop from '@/components/cards/Company/CompanyBarTop'
 import CompanySaleBar from '@/components/cards/Company/CompanySaleBar'
 import CompanyCalendar from '@/components/cards/Company/CompanyCalendar'
-import Preloader from '@/components/Preloader'
 
 import { useStore } from 'vuex'
-import { ref, onMounted, computed, watch , provide} from 'vue'
+import { ref, onMounted, computed, watch , provide, inject} from 'vue'
 
 
 export default {
@@ -49,11 +47,11 @@ export default {
 		Notification,
 		PersonalBar,
 		CompanyCalendar,
-		Preloader,
+	
 	},
 	setup(){
 		let store = useStore();
-		let isLoad = ref(true);
+		let isLoad = ref(false);
 		let activeCompanyUid = ref('');
 		let activeStorageUid = ref('');
 		let docDate = ref('');
@@ -61,7 +59,9 @@ export default {
 		let companyStoragesData = computed(() => store.getters.getCompanyStoragesData(activeCompanyUid.value));
 		let companyBarTopData = computed(() => store.getters.getCompanys);
 		let totalSpent = computed(() => store.getters.getCompanySpent(activeCompanyUid.value));
-
+		
+		const loader = inject('loader');
+		
 		watch(activeCompanyUid,() => { 
 			companyStoragesData.value.length === 0 ? 
 				activeStorageUid.value = null : activeStorageUid.value = 0;
@@ -71,14 +71,16 @@ export default {
 													null : companyStoragesData.value[activeStorageUid.value].documents );
 
 		onMounted(() => {
+			loader.value=true;
 			Promise.all([
 						store.dispatch('GET_PARTNER'),
 						store.dispatch('GET_MANAGER'),
 					])
 					//.catch(()=>{alert('error')})
 					.finally(() => { setTimeout(()=>{
-							isLoad.value = false;
 							activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
+							isLoad.value = true;
+							loader.value=false;
 						},500); })
 			});
 		provide('docDate', docDate ); //фича для обмена данными между компонентами. Связь между компонентом CompanyStorageDoc и CompanyCalendar

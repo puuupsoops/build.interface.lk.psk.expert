@@ -14,17 +14,18 @@
                     <div class="table-elem">Артикул</div>
                     <div class="table-elem">Наименование</div>
                 </div>
-                    <a class="table-row table-element" onclick="getProductByID(this)">
-                        <i style="display: none">16372</i>
-                        <div class="table-elem">КОС598Р</div>
-                        <div class="table-elem">Костюм "Финикс" св.серый/серый</div>
-                    </a>
-                    <a class="table-row table-element" onclick="getProductByID(this)">
-                        <i style="display: none">12729</i>
-                        <div class="table-elem">КОС598</div>
-                        <div class="table-elem">Костюм "Финикс" бежевый / т.бежевый</div>
-                    </a>
-            </div>        
+            
+                <a 
+                    :class=" modelValue===product.ID ? 'table-row table-element active' : 'table-row table-element'" 
+                    v-for="(product, i) in data"
+                    :key="i"
+                    @click="$emit('update:modelValue', product.ID)"
+                > 
+                    <i style="display: none">{{ product.ID }}</i>
+                    <div class="table-elem">{{ product.ARTICLE }}</div>
+                    <div class="table-elem">{{ product.NAME }}</div>
+                </a>
+            </div>     
         </div>
     </transition>
 </div>
@@ -35,9 +36,18 @@
 import { ref } from 'vue'
 
 export default {
+    props:{
+        data: {
+            type: Array
+        },
+        modelValue: {
+			type: String,
+			//required: true
+		},
+    },
+    emits: ['update:modelValue'],
     setup(){
         let show=ref(true);
-
         return{
             show
         }
@@ -52,19 +62,22 @@ export default {
     align-items: center;
     padding-right: 10px;
     }
-.table-head .text{
+.text{
     padding: 10px; 
     width: 30%; 
     font-size: 16px; 
     color: #A5A7A9;  
     line-height: 25px;
 }
-.table-head .hide-btn{
+.hide-btn{
     font-size: 16px;
     line-height: 25px;
     color: #A5A7A9;
     cursor: pointer;
+}
 
+.table-row.table-element.active {
+    border: 2px solid #FF9900;
 }
 .fade-enter-active, .fade-leave-active {
   transition: all 0.5s ease;
