@@ -1,0 +1,395 @@
+.product
+	&-search
+		+flex
+		margin: 20px 20px 20px 0px
+		align-items: center
+
+		&-top
+			+flex
+			padding:
+				top: 40px
+				left: 21px
+				right: 28px
+				bottom: 27px
+			justify-content: space-between
+			align-items: center
+			padding-right: 10px
+			+align-items(center)
+			
+			&-elem
+				+flex
+				//+align-items(center)
+
+				&:first-child
+					width: 100%
+					max-width: 183px
+
+				&:last-child
+					padding:
+						right: 30px
+		
+		&-bottom
+			overflow-y: auto
+
+		&-text
+			margin:
+				right: 10px
+			white-space: nowrap
+
+		&-input
+			display: flex
+			align-items: center
+			padding: 16px 30px 14px 30px
+			padding-right: 40px
+			margin-right: 20px
+			width: 100%
+			border: 0
+			border-radius: 60px
+			background-color: #292C32
+
+			input
+				width: 100%
+				font-size: 16px
+				line-height: 25px
+				color: #ffffff
+				border: 0
+				background-color: #292C32
+
+		&-clear
+			margin:
+				left: 30px
+			width: 100%
+			min-width: 16px
+			max-width: 16px
+			height: 16px
+			background-image: url('~@/assets/img/icon/cross.svg')
+			background-size: 100% auto
+			background-position: center center
+			background-repeat: no-repeat
+			cursor: pointer
+
+			&:hover
+				opacity: 0.5
+
+		&-table-wrap
+			position: relative
+			overflow-y: auto
+			
+		&-table
+			min-width: 435px 
+	
+		&-btn
+			display: flex
+			justify-content: space-around
+			padding: 16px 10px 14px 10px
+			max-width: 130px
+			align-items: center
+
+			div
+				position: relative
+				z-index: 10
+
+
+
+	&-more-info-block
+		margin:
+			top: 30px
+
+	&-more-info-table-wrap
+		overflow-y: auto
+
+		.more-info-table
+			min-width: 580px
+
+	&-slider-wrap
+		+flex
+		padding: 30px
+			bottom: 0
+		+justify-content(center)
+
+	&-slider
+		position: relative
+		margin:
+			right: 30px
+		width: 82%
+		max-width: 389px
+
+		&-elem 
+			width: 100%
+			outline: none
+			border-radius: 6px
+			overflow: hidden
+			
+		&-img
+			width: 100%
+
+		.slick-arrow
+			position: absolute
+			top: -12px
+			top: 50%
+			width: 13px
+			height: 24px
+			font-size: 0
+			background-color: transparent
+			background-size: cover
+			background-position: center center
+			background-repeat: no-repeat
+			border: 0
+			cursor: pointer
+			z-index: 10
+
+			&.slick-disabled
+				opacity: .5
+
+			&.slick-prev
+				left: -18px
+				background-image: url(~@/assets/img/icon/arrow-s-l.svg)
+			
+			&.slick-next
+				right: -18px
+				background-image: url(~@/assets/img/icon/arrow-s-r.svg)
+
+		&-nav
+			margin:
+				top: -30px
+			width: 18%
+			
+			&-elem
+				margin:
+					top: 30px
+				max-width: 118px
+				height: 100%
+				max-height: 205px
+				outline: none
+				+prefix(transition, $default-transition)
+				border-radius: 6px
+				overflow: hidden
+				opacity: .5
+			
+			.slick-current
+				opacity: 1
+
+			&-img
+				display: block
+				width: 100%
+				height: auto
+				border-radius: 6px
+
+		&-buttons
+			+flex
+			margin:
+				top: 30px
+			padding: 0 30px
+			width: 100%
+			background-color: #292C32
+			+justify-content(space-between)
+		
+		&-link
+			display: inline-block
+			padding: 11px 10px
+			width: 33.33%
+			font-size: 18px
+			line-height: 28px
+			color: $font-light-color
+			text-align: center
+			+prefix(transition, $default-transition)
+
+			&:hover
+				color: $accent-color
+
+	&-parcel
+		position: relative
+		margin:
+				top: 30px
+
+		&-wrap
+			+flex
+			+align-items(center)
+
+		&-elem
+			+flex
+			position: relative
+			margin:
+				right: 30px
+			padding: 40px
+			max-width: 370px
+			min-height: 244px
+			+prefix(transition, $default-transition)
+			+justify-content(center)
+			+flex-flow(column)
+
+
+			&.active
+				min-height: auto
+
+				.product-parcel-elem-name
+					position: relative
+					opacity: 1
+				
+				.product-parcel-elem-hide-btn
+					margin:
+						top: -12px
+					top: 50%
+
+			&-name
+				position: absolute
+				top: 0
+				left: 0
+				font-size: 16px
+				line-height: 25px
+				color: $font-light-color
+				pointer-events: none
+				opacity: 0
+			
+			.product-parcel-elem-hide-btn
+				display: none
+				position: absolute
+				margin: 0
+				top: 20px
+				right: 20px
+
+		&-row
+			+flex
+			margin:
+				bottom: 10px
+			font-size: 16px
+			color: $white
+			+align-items(center)
+
+			&:last-child
+				margin: 0
+		
+		&-text
+			margin:
+				right: 5px
+			color: $font-light-color
+
+		&-btn
+			margin: 5px
+			width: 40px
+			height: 40px
+			font-size: 16px
+			line-height: 25px
+			color: $white
+			background-color: #292C32
+			border: 0
+			border-radius: 6px
+			+prefix(transition, $default-transition)
+			cursor: pointer
+
+			&:hover
+				color: $accent-color
+		
+		&-hide-btn
+			margin: 0 0 0 auto
+				right: 15px
+			min-width: 85px
+
+	&-info
+		padding: 0
+		margin:
+			top: 30px
+
+		.content-elem-heading
+			padding: 40px 30px 20px 30px
+			+prefix(transition, $default-transition)
+
+			&-text
+				+prefix(transition, $default-transition)
+
+			&.hide
+				padding: 40px 30px
+
+				.product-info-tab-nav
+					display: none
+
+		&-tab
+			&-nav
+				+flex
+				margin:
+					left: 40px
+				+prefix(transition, $default-transition)
+
+			&-link
+				display: inline-block
+				padding: 0 30px
+				height: 40px
+				font-size: 12px
+				line-height: 37px
+				color: $font-light-color
+				text-align: center
+				border: 1px solid #292C32
+				+prefix(transition, $default-transition)
+				cursor: pointer
+
+				&:first-child
+					border-top-left-radius: 40px
+					border-bottom-left-radius: 40px 
+				
+				&:last-child
+					border-left: 0
+					border-top-right-radius: 40px
+					border-bottom-right-radius: 40px
+				
+				&.active
+					color: #9E6CFD
+					cursor: default
+
+				&:not(.active):hover
+					color: $accent-color
+			
+			&-elem
+				display: none
+
+				&.active
+					display: block
+
+		&-desc
+			display: none
+			padding:
+				bottom: 40px
+
+			p
+				margin:
+					top: 20px
+				padding: 0 30px
+				font-size: 14px
+				line-height: 20px
+				color: $font-light-color
+				
+				&:first-child
+					margin:
+						top: 0
+	
+		.content-properties
+			background-color: #292C32
+			+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.1))
+	
+		&-table-wrap
+			padding: 0 30px
+				bottom: 40px 
+
+			.table
+				padding: 30px
+				background-color: #292C32
+				border-radius: 6px
+				+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.1))
+				overflow-y: auto
+
+				&-wrap
+					min-width: 490px 
+
+				&-row
+					border-color: #53565B
+				
+				&-elem
+					padding:
+						left: 0
+						right: 0
+
+					&:first-child
+						width: 32%
+					
+					&:last-child
+						width: 68%
+

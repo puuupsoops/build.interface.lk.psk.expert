@@ -61,6 +61,7 @@ setup() {
 }
 </script>
 
-<style>
- 
+<style lang="sass">
+@import "@/assets/sass/main.sass"
+
 </style>

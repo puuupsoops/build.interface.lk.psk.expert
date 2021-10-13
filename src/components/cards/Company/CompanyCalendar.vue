@@ -75,10 +75,9 @@ export default {
 };
 </script>
 
-<style>
+<style lang="sass">
 
-.fc-event-title {
-	white-space: normal;
-}
+.fc-event-title
+  white-space: normal
 
 </style>

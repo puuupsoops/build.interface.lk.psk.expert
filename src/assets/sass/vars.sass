@@ -1,0 +1,1091 @@
+@import "var/services.sass"
+$accent-color: #FAC12E
+$white: #ffffff
+$font-light-color: #A5A7A9
+
+$bg-default-color: #1F2227
+$bg-dlight-color: #53565B
+
+$default-font: "Muli", sans-serif
+$default-transition: .35s
+$default-opacity: .8
+
+*, body, html 
+	margin: 0
+	padding: 0
+	font-family: $default-font
+	box-sizing: border-box
+
+html, body
+	min-width: 320px
+	height: auto
+	min-height: 100%
+	font-weight: 400
+	font-style: normal
+	color: $white
+	background-color: #15171C
+
+html
+	scroll-behavior: smooth
+
+body 
+	position: relative
+
+	&.modal-active
+		overflow: hidden
+
+button,
+input,
+textarea,
+select
+	outline: none
+	border-radius: 0
+	-moz-appearance: none
+	-webkit-appearance: none
+	+prefix(appearance, none)
+
+a
+	text-decoration: none
+	outline: none
+
+.gradient-btn
+	position: relative
+	padding: 10px
+		top: 13px
+		bottom: 12px
+	width: 100%
+	font-size: 16px
+	line-height: 25px
+	color: $white
+	text-align: center
+	border-radius: 60px
+	border: 0
+	cursor: pointer
+	+prefix(transition, $default-transition)
+	overflow: hidden
+
+	&:before,
+	&:after
+		content: ''
+		display: block
+		position: absolute
+		top: 0
+		left: 0
+		width: 100% 
+		height: 100%
+		border-radius: 60px
+		+prefix(transition, $default-transition)
+		z-index: 0
+	
+	&:before
+		background: -webkit-gradient(linear, left top, right top, from(#B995FE), to(#8444FC))
+		background: -o-linear-gradient(left, #B995FE 0%, #8444FC 100%)
+		background: linear-gradient(90deg, #B995FE 0%, #8444FC 100%)
+
+	&:after
+		background: -webkit-gradient(linear, left top, right top, from(#8444FC), to(#8444FC))
+		background: -o-linear-gradient(left, #8444FC 0%, #8444FC 100%)
+		background: linear-gradient(90deg, #8444FC 0%, #8444FC 100%)
+		opacity: 0
+	
+	&:hover
+		&:before
+			opacity: 0
+		
+		&:after
+			opacity: 1
+	
+	&-text
+		position: relative
+		z-index: 1
+
+.wrapper
+	height: 100%
+
+.content
+	padding: 
+		left: 175px
+		right: 15px
+		bottom: 30px
+	+prefix(transition, $default-transition)
+
+	&-heading-wrap
+		+flex
+		margin:
+			top: 30px
+		+flex-wrap(wrap)
+		+align-items(flex-end)
+
+		&-elem
+			+flex
+			+align-items(flex-end)
+			&:nth-child(1)
+				width: 44.51%
+				
+			&:nth-child(2)
+				margin:
+					left: 1.73%
+				width: 53.76%
+			
+		&-info
+			width: 100%
+
+	&-heading
+		font-size: 33px
+		color: $white
+
+		&-price
+			+flex
+			font-size: 21px
+			color: $white
+
+			&-value
+				margin:
+					left: 10px
+				color: #9E6CFD
+		
+		&-btn
+			+flex
+			margin: 0 0 0 auto
+			font-size: 21px
+			color: $font-light-color
+			+align-items(center)
+			+prefix(transition, $default-transition)
+			cursor: pointer
+
+			&-img
+				margin:
+					right: 11px
+				
+				path,
+				rect,
+				circle
+					+prefix(transition, $default-transition)
+
+			&:hover
+				color: $accent-color
+
+				.content-heading-btn-img
+					.fill
+						fill: $accent-color
+
+					.stroke
+						stroke: $accent-color 
+
+		&-info
+			+flex
+			margin:
+				top: 10px
+
+			&-elem
+				margin:
+					right: 30px
+				font-size: 12px
+				color: $font-light-color
+			
+			&-text
+				font-weight: 600
+
+	&-elem
+		width: 100%
+		border-radius: 6px
+		background-color: $bg-default-color
+		+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.2))
+		overflow: hidden
+			
+		&-active
+			border: 2px solid #FF9900
+
+		&.content-elem-info
+			margin:
+				top: 30px
+			padding: 40px 30px	
+
+		&-heading
+			+flex
+			+align-items(center)
+			
+			&-text
+				font-size: 21px
+				line-height: 32px
+				+prefix(transition, $default-transition)
+
+			&-btn
+				margin: 0 0 0 auto 
+					top: 6px
+				
+			&.hide
+				.content-elem-heading-text
+					font-size: 16px
+					line-height: 25px
+					color: $font-light-color
+		
+		&-desc
+			margin:
+				top: 17px
+			font-size: 16px
+			line-height: 23px
+			color: $font-light-color
+
+	&-wrap
+		+flex
+		+justify-content(space-between)
+
+		&.content-main-wrap
+			margin:
+				top: 60px
+
+			.content-wrap-elem
+
+				&:first-child
+					width: 65.96%
+				
+				&:last-child
+					padding:
+						left: 30px
+					width: 34.04%
+		
+		&.content-product-wrap
+			margin:
+				top: 15px
+
+			.content-wrap-elem
+				&:first-child
+					width: 53.76%
+				
+				&:last-child
+					width: 44.51%
+		
+		&.content-order-wrap
+			margin:
+				top: 15px
+				
+			.content-wrap-elem
+				&:first-child
+					width: 63.7%
+				
+				&:last-child
+					padding:
+						left: 30px
+					width: 36.3%
+
+	&-hide-btn
+		font-size: 16px
+		line-height: 25px
+		color: $font-light-color
+		cursor: pointer
+		+prefix(transition, $default-transition)
+
+		&:hover
+			color: $accent-color
+
+	&-properties
+		+flex
+		padding: 30px
+		background-color: $bg-default-color
+		+align-items(center)
+
+		&-text
+			margin: 
+				right: 13px
+			font-size: 16px 
+			line-height: 25px
+			color: $font-light-color
+		
+		&-elem
+			margin: 0 7px
+			width: 100%
+			max-width: 40px
+
+		&-img
+			display: block
+			width: 100%
+
+.news
+	+flex
+	padding: 30px
+	background-color: $bg-default-color
+	border-radius: 6px
+	+align-items(flex-start)
+	+prefix(transition, $default-transition)
+
+	&:hover
+		background-color: $bg-dlight-color
+
+		.news-heading-text
+			color: $accent-color
+
+	&-img-box
+		display: inline-block
+		position: relative
+		margin:
+			right: 60px
+		width: 100%
+		max-width: 185px
+		border-radius: 6px
+		overflow: hidden
+	
+	&-img
+		display: block
+		width: 100%
+		max-width: 100%
+		height: 100%
+		max-height: 100%
+	
+	&-heading
+		+flex
+		color: $white
+		+align-items(center)
+
+		&-text
+			margin:
+				right: 15px
+			font-size: 21px
+			line-height: 32px
+			+prefix(transition, $default-transition)
+		
+		&-date
+			margin: 0 0 0 auto
+				top: 7px
+			font-size: 12px
+			line-height: 18px
+	
+	&-description
+		margin:
+			top: 15px
+		font-size: 16px
+		line-height: 23px
+		color: $font-light-color
+
+.nav
+	margin:
+		top: 30px
+		left: -105px
+		right: -15px
+	padding:
+		left: 105px
+		right: 15px
+	background-color: $bg-default-color
+	+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.2))
+
+	&-list
+		+flex
+		list-style-type: none
+		+flex-wrap(wrap)
+
+		li
+			&.active
+				.nav-link 
+					color: $accent-color
+
+	&-link
+		display: inline-block
+		margin:
+			right: 40px
+		padding: 11px 0
+		font-size: 16px
+		line-height: 25px
+		color: $font-light-color
+		+prefix(transition, $default-transition)
+
+		&:hover
+			color: $accent-color
+
+.custom-select
+	width: 100%
+		
+.select2-container 
+	.select2-selection--single 
+		position: relative
+		height: 51px
+		background-color: #292C32
+		border: 0
+		border-radius: 40px
+		outline: none
+		+prefix(transition, $default-transition)
+		
+		.select2-selection__rendered
+			padding: 
+				left: 29px
+				right: 38px
+			font-size: 16px
+			line-height: 51px
+			color: $white
+
+		.select2-selection__arrow
+			display: block
+			position: absolute
+			top: 50%
+			right: 20px
+			width: 6px
+			height: 6px
+			+prefix(transform, translateY(-50%))
+
+			b
+				display: block
+				border-width: 6px 5px 0 5px
+				border-style: solid
+				border-color: #A5A7A9 transparent transparent transparent 
+				width: 6px
+				height: 6px
+
+.select2-container--default 
+	.select2-results__option
+		+prefix(transition, $default-transition)
+
+	.select2-results__option--highlighted[aria-selected]
+		color: #000
+		background-color: $font-light-color
+	
+	.select2-results__option[aria-selected=true]
+		color: #000
+		background-color: $accent-color
+
+	&.select2-container--open 
+		.select2-selection--single 
+			.select2-selection__arrow 
+				b
+					border-color: transparent transparent #A5A7A9 transparent 
+					border-width: 0px 5px 6px 5px
+
+.select2-dropdown
+	background-color: #292C32
+	border: 0
+
+.base
+	&-select
+		font-size: 21px
+		font-weight: 400
+		line-height: 30px
+		color: #9E6CFD
+		background-color: transparent
+		border: 0
+		cursor: pointer
+
+		option
+			font-size: 16px
+			color: $white
+			background-color: $bg-default-color
+			border: 0
+			outline: none
+			cursor: pointer
+
+.scroll-elem
+	position: relative
+
+.table
+	padding:
+		bottom: 24px
+	background-color: $bg-default-color
+	
+	.active 
+		border: 2px solid #FF9900 !important
+
+	&-more-info-arrow
+		position: absolute
+		display: block
+		right: 10px 
+		bottom: 10px
+		width: 25px
+		height: 25px
+		background-image: url(~@/assets/img/icon/arrow-n-r.svg)
+		background-size: 10px 16px
+		background-position: center center
+		background-repeat: no-repeat
+		background-color: $bg-default-color
+		border-radius: 3px
+		opacity: 0
+		+prefix(transition, $default-transition)
+		z-index: 10
+
+		&.active
+			opacity: 1
+
+	&-wrap
+		max-height: 427px
+		overflow-y: auto
+
+	&-row
+		+flex
+		border-bottom: 1px solid #292C32
+		cursor: pointer
+
+		&:last-child
+			border: 0
+
+		&:not(.table-heading):hover
+			.table-elem
+				color: $accent-color
+
+		&.table-heading
+			background-color: #292C32
+			border: 0
+
+			.table-elem
+				padding:
+					top: 16px
+					bottom: 14px
+				color: $font-light-color
+				text-transform: uppercase
+				cursor: default
+	
+	&-elem
+		+flex
+		position: relative
+		padding: 16px 40px
+		font-size: 14px
+		color: $white
+		line-height: 20px
+		+prefix(transition, $default-transition)
+		+align-items(center)
+
+		&-toggle
+			position: relative
+			cursor: pointer
+			+prefix(transition, $default-transition)
+			z-index: 11
+
+			&-arrow
+				+prefix(transition, $default-transition)
+				path
+					+prefix(transition, $default-transition)
+
+			&:hover
+				color: $accent-color
+
+				.table-elem-toggle-arrow
+					path
+						fill: $accent-color
+			
+			&.active
+				color: $accent-color
+
+				.table-elem-toggle-arrow
+					+prefix(transform, rotate(180deg))
+					path
+						fill: $accent-color
+	
+			&-arrow
+				margin:
+					left: 20px
+
+		&.error
+			color: #FF0000
+
+	&-heading
+		&-dropdown
+			display: none
+			position: absolute
+			padding:
+				top: 50px
+			top: 0
+			left: 25%
+			width: 100%
+			max-width: 250px
+			+prefix(transform, translateX(-50%))
+			z-index: 10
+
+			&-wrap
+				padding: 25px 30px
+				background-color: #292C32
+				+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.2))
+			
+			&-link
+				display: block
+				padding: 5px 0
+				font-size: 14px
+				font-weight: 400
+				line-height: 20px
+				color: $white
+				text-align: center
+				+prefix(transition, $default-transition)
+
+				&:hover
+					color: $accent-color
+
+	&-arrow
+		position: absolute
+		margin:
+			top: -6px
+		top: 50%
+		right: 0
+		width: 7px
+		height: 13px
+		background-image: url(~@/assets/img/icon/arrow-o-r.svg)
+		background-size: cover
+		background-position: center center
+		background-repeat: no-repeat
+		+prefix(transition, $default-transition)
+
+	&-checkbox
+		display: none
+		
+		&-wrap
+			position: relative
+			width: 15px
+			height: 15px
+		
+		&-label
+			display: block
+			position: relative
+			width: 15px
+			height: 15px
+			cursor: pointer
+
+			&:before,
+			&:after
+				content: ''
+				display: block
+				position: absolute
+				+prefix(transition, $default-transition)
+			
+			&:before
+				width: 15px
+				height: 15px
+				border: 1px solid #67696D
+				border-radius: 1px
+
+			&:after
+				margin:
+					top: -4px
+					left: -5px
+				top: 50%
+				left: 50%
+				width: 10px
+				height: 10px
+				background-image: url(~@/assets/img/icon/table-checkmark.svg)
+				background-size: 100% auto
+				background-position: center center 
+				background-repeat: no-repeat
+				opacity: 0
+
+		&:checked + .table-checkbox-label:before
+			border-color: $white
+		
+		&:checked + .table-checkbox-label:after
+			opacity: 1
+
+	&.product-search-table
+
+		.table-elem
+			&:first-child
+				width: 40%
+
+			&:last-child
+				width: 60%
+	
+	&.more-info-table
+		border-radius: 6px
+
+		.table-row
+			&.table-heading
+				.table-elem
+					padding:
+						top: 23px
+						bottom: 17px
+			
+
+		.table-elem
+			padding: 
+				top: 22px
+				left: 30px
+				right: 30px
+				bottom: 17px
+			width: 26.6%
+		
+			&:nth-child(4)
+				width: 20%
+
+	&.order-amount-table
+		&-row
+			+align-items(center)
+
+		.table-heading
+			.table-elem
+				padding: 
+					top: 21px
+					bottom: 19px
+
+		.table-elem
+			padding: 10px 30px
+			width: 17.5%
+
+			&:nth-child(1)
+				width: 20%
+				max-width: 175px
+
+			&:nth-child(4)
+				width: 25%
+			
+			&:nth-child(5)
+				width: 20%
+		
+	&.orders-list-table
+		padding:
+			bottom: 0
+			
+		.table
+			
+			&-row
+				padding: 0 30px
+			&-elem
+				padding: 15px 0 15px 0
+				font-size: 14px
+				line-height: 20px
+				
+				&:nth-child(1)
+					margin:
+						right: 1.92%
+					width: 5.63%
+				
+				&:nth-child(2)
+					margin:
+						right: 4.19%
+					width: 25.15%
+				
+				&:nth-child(3)
+					margin:
+						right: 4.79%
+					width: 14.97%
+				
+				&:nth-child(4),
+				&:nth-child(5),
+				&:nth-child(6),
+				&:nth-child(7)
+					width: 7.78%
+				
+				&:nth-child(4)
+					margin:
+						right: 2.99%
+				
+				&:nth-child(5),
+				&:nth-child(6)
+					margin:
+						right: 4.49%
+	
+	&.claim-new-list-table
+		padding:
+			bottom: 0
+			
+		.table
+			
+			&-row
+				padding: 0 30px
+
+			&-elem
+				padding: 15px 0 15px 0
+				font-size: 14px
+				line-height: 20px
+				
+				&:nth-child(1)
+					margin:
+						right: 1.73%
+					width: 0.87%
+				
+				&:nth-child(2)
+					margin:
+						right: 1.5%
+					width: 3.87%
+				
+				&:nth-child(3)
+					margin:
+						right: 4.19%
+					width: 25.15%
+				
+				&:nth-child(4)
+					margin:
+						right: 4.79%
+					width: 14.97%
+				
+				&:nth-child(5),
+				&:nth-child(6),
+				&:nth-child(7),
+				&:nth-child(8)
+					width: 7.78%
+				
+				&:nth-child(5)
+					margin:
+						right: 2.99%
+				
+				&:nth-child(6),
+				&:nth-child(7)
+					margin:
+						right: 4.49%
+
+.sale
+
+	&-head
+		+flex
+		+justify-content(space-between)
+		+align-items(flex-end)
+
+	&-title
+		font-size: 16px
+		font-weight: 700
+		line-height: 25px
+		color: $white
+	
+	&-lacks
+		font-size: 14px
+		font-weight: 400
+		line-height: 22px
+		color: $font-light-color
+	
+	&-progressbar-wrap
+		margin:
+			top: 5px
+		width: 100%
+
+	&-progressbar
+		width: 100%
+		background-color: #292C32
+		border-radius: 6px
+		+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.1))
+		overflow: hidden
+
+		&-line
+			display: inline-block
+			padding: 5px 20px 4px 20px
+			width: 15%
+			background-color: #53565B
+		
+		&-val
+			+flex
+			width: 100%
+			+justify-content(flex-end)
+			+align-items(center)
+			white-space: nowrap
+		
+			&-money
+				margin:
+					right: 15px
+				font-size: 14px
+				line-height: 22px
+				color: rgba(255, 255, 255, 0.6)
+			
+			&-percent
+				font-size: 21px
+				line-height: 31px
+				color: $accent-color
+
+		&-money
+			+flex
+			margin:
+				top: 5px
+			font-size: 14px
+			line-height: 22px
+			color: rgba(255, 255, 255, 0.6)
+			+justify-content(space-between)
+
+.sidebarOpen
+	
+	.content
+		padding:
+			left: 415px
+
+	.table
+
+		&.product-search-table
+			.table-elem
+				padding: 
+					left: 20px
+					right: 20px
+		
+		&.more-info-table
+			.table-elem
+				padding:
+					left: 15px
+					right: 15px
+		
+		&.order-amount-table
+			.table-elem
+				padding:
+					left: 15px
+					right: 15px
+
+	.product-parcel-elem 
+		padding:
+			left: 20px 
+			right: 20px
+	
+	.company
+		&-head
+			&-item
+				&-title
+					padding:
+						right: 30px
+					font-size: 18px
+					
+				.content-elem
+					padding:
+						left: 15px
+						right: 15px
+
+		&-card-sale-box
+			padding:
+				right: 15px
+
+.content-test
+	+flex
+	+flex-wrap(wrap)
+	+justify-content(space-between)
+	+align-items(flex-start)
+
+	.product-search,
+	.product-slider-block
+		width: 44.51%
+					
+				
+	.more-info-table,
+	.product-info
+		width: 53%
+
+.nav-tab
+	+flex
+	margin:
+		top: 25px
+		left: -105px
+		right: -15px
+	padding: 30px 15px
+		left: 105px
+	background-color: $bg-default-color
+	+align-items(center)
+
+	span
+		display: block
+		margin:
+			right: 25px
+		width: 100%
+		max-width: 80px
+		font-size: 12px
+		font-weight: 400
+		line-height: 18px
+		color: $font-light-color
+		white-space: nowrap
+
+	&-wrap
+		+flex
+		width: 100%
+	
+	&-elem
+		margin:
+			right: 30px
+		padding: 10px 10px 11px 10px
+		max-width: 290px
+		border: 2px solid #9E6CFD
+		
+		&:before,
+		&:after
+			display: none
+
+		&:last-child 
+			margin:
+				right: 0
+
+		&:not(.active):hover
+			background-color: rgba(158, 108, 253, .2)
+
+		&.active
+			border-color: transparent
+
+			.gradient-btn-text
+				font-weight: 700
+
+			&:before,
+			&:after
+				display: block
+
+.ui-datepicker
+	width: 100%
+	max-width: 290px
+	background-color: $bg-default-color
+	z-index: 0 !important
+
+	.ui-datepicker-header
+		+flex
+		padding: 10px 5px
+		// background-color: #292c33
+		+justify-content(center)
+		+align-items(center)
+
+	.ui-datepicker-prev,
+	.ui-datepicker-next
+		display: block
+		font-size: 0
+		width: 18px
+		height: 16px
+		background-size: 100% auto
+		background-position: center center
+		background-repeat: no-repeat
+		cursor: pointer
+	
+	.ui-datepicker-prev
+		background-image: url(~@/assets/img/icon/arrow-s-l.svg)
+		order: 1
+	
+	.ui-datepicker-next
+		background-image: url(~@/assets/img/icon/arrow-s-r.svg)
+		order: 3
+	
+	.ui-datepicker-title
+		font-size: 16px
+		font-weight: 400
+		line-height: 21px
+		order: 2
+	
+	.ui-datepicker-calendar
+		padding: 5px
+			top: 0
+		width: 100%
+		text-align: center
+		border: 
+			top: 1px solid #292c33
+
+		thead
+			th
+				padding: 3px 0
+
+		td
+			background-color: #292c33
+			border: 1px solid transparent
+			border-radius: 3px
+			+prefix(transition, $default-transition)
+
+			a
+				display: block
+				padding: 2px 1px
+				color: $white
+				+prefix(transition, $default-transition)
+
+			&.ui-datepicker-today
+				border: 1px solid $accent-color
+				a
+					font-weight: 700
+					color: $accent-color
+
+				&:hover
+					opacity: $default-opacity
+			
+			&.ui-datepicker-current-day
+				background-color: $accent-color
+
+				a
+					color: #292c33
+				
+				&:hover
+					opacity: $default-opacity
+			
+			&.ui-state-disabled 
+				cursor: default
+				
+
+		td:not(.ui-datepicker-unselectable):not(.ui-datepicker-today):not(.ui-datepicker-current-day)
+			&:hover
+				a
+					color: $accent-color
+	
+	
+
+	.ui-datepicker-unselectable
+		color: $font-light-color
+		opacity: .35

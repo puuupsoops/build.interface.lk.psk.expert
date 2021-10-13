@@ -1,0 +1,601 @@
+.company
+
+	&-head 
+		+flex
+		margin:
+			top: 30px
+
+		&-elem
+			&:nth-child(1)
+				width: 72.14%
+			
+			&:nth-child(2)
+				padding:
+					left: 30px
+				width: 27.86%
+		
+		&-wrap
+			+flex
+
+		&-item
+			position: relative
+			margin:
+				right: 30px
+			width: 33.33%
+
+			&:last-child
+				margin: 0
+			
+			.company-card-sale
+				top: 15px
+				right: -5px
+				+prefix(transform, translate(0))
+			
+			&.red
+				.company-card-sale					
+					&-box
+						background-color: #B9342D
+
+					&::after
+						border-left: 6px solid #86140E
+				
+				.highlight 
+					background-color: #B9342D
+			
+			&.yellow
+				.company-card-sale					
+					&-box
+						background-color: #A76C14
+
+					&::after
+						border-left: 6px solid #683F01
+				
+				.highlight 
+					background-color: #A76C14
+
+			.content-elem
+				padding: 20px 30px
+
+			&.documents
+				.content-elem
+					padding: 0
+				
+				.company-head-item-title
+					padding: 20px 30px
+					color: $font-light-color
+
+			&-title
+				padding:
+					right: 40px
+				font-size: 21px
+				line-height: 32px
+				+prefix(transition, $default-transition)
+			
+		&-info
+			margin:
+				top: 30px
+			padding:
+				bottom: 5px
+			border-bottom: 1px solid #292C32
+
+			&-row
+				+flex
+				margin:
+					bottom: 5px
+				+justify-content(space-between)
+				+align-items(center)
+			
+			&-elem
+				&.l
+					font-size: 16px
+					line-height: 25px
+
+				&.highlight
+					margin:
+						left: -30px
+					padding: 10px 30px
+					width: 100%
+					max-width: 258px
+					background-color: transparent
+					+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.1))
+					border:
+						top-right-radius: 40px
+						bottom-right-radius: 40px
+			
+			&-title,
+			&-val
+				display: block
+				text-align: right
+
+			&-title
+				font-size: 10px
+				line-height: 15px
+				color: rgba(255, 255, 255, 0.6)
+			
+			&-val
+				padding:
+					left: 10px
+				font-size: 14px
+				line-height: 22px
+				white-space: nowrap
+		
+		&-sale
+			padding:
+				top: 20px
+
+			.sale
+				&-title
+					font-size: 10px
+					line-height: 15px
+				
+				&-progressbar
+
+					&-line
+						padding: 5px 
+						width: 15%
+					
+					&-val
+						&-money
+							margin:
+								right: 10px
+							font-size: 10px
+							line-height: 15px
+						
+						&-percent
+							font-size: 14px
+							line-height: 20px
+					
+					&-money
+						font-size: 10px
+						line-height: 15px
+		
+		&-list
+			padding: 0px 30px 
+			list-style-type: none
+
+			&-elem
+				+flex
+				margin:
+					bottom: 10px
+				+align-items(center)
+
+			&-img
+				display: block
+				margin:
+					right: 10px
+				width: 16px
+				height: 20px
+
+			&-link
+				font-size: 12px
+				line-height: 18px
+				color: $font-light-color
+	
+		&-btn
+			display: block
+			margin:
+				top: 28px
+			padding: 11px 10px
+			width: 100%
+			font-size: 18px
+			line-height: 28px
+			color: $font-light-color
+			text-align: center
+			background-color: #292C32
+	
+		&-nav
+			margin:
+				top: 30px
+				left: -105px
+			padding:
+				left: 105px
+			background-color: #1F2227
+			+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.2))
+			border:
+				top-right-radius: 6px
+				bottom-right-radius: 6px
+
+			&-list
+				+flex
+				list-style-type: none
+				
+				li
+					margin:
+						right: 30px
+
+					&:last-child
+						margin: 0
+
+			&-link
+				display: block
+				padding: 12px 0 13px 0
+				font-size: 16px
+				line-height: 25px
+				color: $font-light-color
+				+prefix(transition, $default-transition)
+
+				&:hover
+					color: $accent-color
+
+		&-about
+			background: -webkit-gradient(linear, left top, right top, from(#FFBF60), to(#FF9900))
+			background: -o-linear-gradient(left, #FFBF60 0%, #FF9900 100%)
+			background: linear-gradient(90deg, #FFBF60 0%, #FF9900 100%)
+			
+			&-info
+				padding: 0 30px
+					top: 20px
+
+			&-title
+				font-size: 21px
+				line-height: 32px
+			
+			&-wrap
+				+flex
+				margin:
+					top: 15px
+				
+				.company-head-about-text
+					margin: 0 0 0 auto
+					text-align: right 
+
+			&-add
+				+flex
+				margin:
+					left: -30px
+				padding: 10px 30px
+				width: 100%
+				max-width: 260px
+				font-size: 16px
+				line-height: 25px
+				color: $white 
+				background-color: #A76C14
+				border:
+					top-right-radius: 30px
+					bottom-right-radius: 30px
+				+align-items(center)
+
+				&-img
+					margin:
+						right: 10px
+
+			&-text-wrap
+				+flex
+				margin: 0 -2px
+					top: 13px  
+				+justify-content(space-between)
+				+flex-wrap(wrap)
+
+			&-text
+				padding: 2px	
+				width: 50%
+
+				&:nth-child(even)
+					text-align: right
+
+				span
+					display: block
+				
+				&-top
+					font-size: 12px
+					line-height: 18px
+					color: rgba(255, 255, 255, 0.6)
+				
+				&-bottom
+					font-size: 14px
+					line-height: 22px
+					color: $white
+
+			&-btn-wrap
+				+flex
+				margin:
+					top: 19px
+
+			&-btn
+				display: block
+				padding: 11px 10px
+				width: 50%
+				font-size: 18px
+				line-height: 28px
+				color: $white
+				text-align: center
+				background-color: #A76C14
+				+prefix(transition, $default-transition)
+
+				&:hover
+					opacity: $default-opacity
+
+	&-sale
+		margin:
+			top: 30px
+		
+		.sale
+			&-progressbar
+				&-line
+					width: 73%
+
+	&-calendar
+		width: 100%
+		overflow-y: auto
+		-ms-overflow-style: none
+		scrollbar-width: none
+
+		&::-webkit-scrollbar
+			display: none
+		
+		&-wrap
+			+flex
+			margin:
+				top: 30px
+
+			.fc-view-harness
+				min-width: 735px
+
+			.fc th
+				text-align: left
+
+			.fc .fc-toolbar.fc-header-toolbar
+				padding: 0 5px
+
+			.fc-button
+				padding: 0 15px
+				background-color: transparent
+				color: $font-light-color
+				border: 0
+					right: 2px solid $font-light-color
+				+prefix(transition, $default-transition)
+				box-shadow: none !important
+				outline: none
+
+				&:focus
+					box-shadow: none
+
+				&:hover
+					color: $white
+					background-color: transparent
+					border:
+						right: 2px solid $font-light-color
+				
+				&:last-child
+					border: 0
+
+				&:not(:disabled).fc-button-active.fc-button-active
+					color: #9E6CFD
+					background-color: transparent
+					border:
+						right: 2px solid $font-light-color
+					box-shadow: none !important
+					outline: none
+
+				&:last-child.fc-button-active.fc-button-active
+					border: 0
+
+			.fc-toolbar-title
+				font-size: 33px
+				font-weight: 400
+				line-height: 51px
+				text-transform: capitalize
+		
+			.fc-theme-standard .fc-scrollgrid,
+			.fc-theme-standard th
+				border: 0
+
+			.fc-col-header-cell-cushion 
+				font-size: 14px
+				line-height: 20px
+				font-weight: 400
+				color: $font-light-color
+				text-transform: uppercase
+			
+			.fc-theme-standard td
+				border: 0
+			
+			.fc-daygrid-day
+				padding: 5px
+
+			.fc-daygrid-day-frame
+					padding: 15px 10px
+					background-color: #292C32
+					border-radius: 6px
+			
+			.fc-day-other
+				.fc-daygrid-day-top
+					opacity: 1
+					
+				.fc-daygrid-day-frame
+					opacity: .3
+
+			.fc .fc-daygrid-day.fc-day-today
+				background-color: transparent
+				.fc-daygrid-day-number
+					color: $accent-color
+
+			.fc-daygrid-day-top
+				+flex-flow(row)
+
+			.fc-timeGridWeek-view,
+			.fc-timeGridDay-view
+				.fc-timegrid-slots
+					tr:nth-child(even)
+						border-bottom: 1px solid #53565B 
+				
+				.fc-timegrid-cols
+					.fc-day-today
+						background-color: #292C32 
+
+		&-box
+			padding: 30px
+			width: 100%
+			max-width: 1470px			
+	
+	&-consultant
+		padding:
+			left: 30px
+		width: 100%
+		max-width: 320px
+		
+		&-info
+			padding: 30px
+		
+		&-img-box
+			position: relative
+			margin: 0 auto
+			padding:
+				bottom: 83%
+			width: 100%
+			max-width: 190px
+			border-radius: 300px
+			overflow: hidden
+		
+		&-img
+			position: absolute
+			top: 0
+			left: 0
+			right: 0
+			bottom: 0
+			width: 100%
+			height: 100%
+
+		&-name
+			margin:
+				top: 25px
+			font-size: 18px
+			line-height: 28px
+			text-align: center
+		
+		&-position
+			margin:
+				top: 5px
+				bottom: 19px
+			font-size: 12px
+			line-height: 18px
+			color: $font-light-color
+			text-align: center
+		
+		&-phone
+			display: block
+			position: relative
+			margin: 0 auto
+			padding: 6px 0
+				left: 33px
+			max-width: 160px
+			font-size: 16px
+			line-height: 25px
+			color: $white
+			+prefix(transition, $default-transition)
+
+			&::before
+				content: ''
+				display: block
+				position: absolute
+				margin:
+					top: -10px
+				top: 50%
+				left: 0
+				width: 20px
+				height: 20px
+				background-image: url(~@/assets/img/icon/phone.svg)
+				background-size: cover
+				background-position: center center
+				background-repeat: no-repeat
+
+			&:hover
+				opacity: $default-opacity
+		
+		&-time
+			margin:
+				top: 19px
+			text-align: center
+
+			&-title
+				font-size: 12px
+				line-height: 18px
+				color: $font-light-color
+
+			&-val
+				margin:
+					top: 5px
+				font-size: 14px
+				line-height: 22px
+
+		&-mail
+			+flex
+			padding: 15px 10px
+			font-size: 18px
+			line-height: 28px
+			color: $font-light-color
+			background-color: #292C32
+			+justify-content(center)
+			+align-items(center)
+			+prefix(transition, $default-transition)
+
+			&:hover
+				opacity: $default-opacity
+
+			&-img
+				margin:
+					right: 13px
+				width: 100%
+				max-width: 40px
+				
+	&-search 
+		&-wrap
+			+flex
+			margin:
+				bottom: 20px
+			+align-items(center)
+
+		&-input-wrap
+			position: relative
+			margin:
+				right: 30px
+			width: 100%
+			max-width: 740px
+
+		&-input
+			padding: 13px 30px 12px 30px
+				right: 40px
+			width: 100%
+			font-size: 16px
+			line-height: 25px 
+			color: $white
+			border: 0
+			border-radius: 60px
+			background-color: #292C32
+		
+			+placeholder()
+				color: $font-light-color
+		
+			&-clear
+				position: absolute
+				margin:
+					top: -8px
+				top: 50%
+				right: 20px
+				width: 16px
+				height: 16px
+				+prefix(transition, $default-transition)
+				cursor: pointer
+				
+				&:hover
+					opacity: $default-opacity
+		
+		&-btn
+			+flex
+			padding: 16px 10px 14px 10px
+			max-width: 130px
+			+justify-content(center)
+			+align-items(center)
+
+			&-img
+				position: relative
+				z-index: 10
+		
+		
+		
+	
+
+
+
+
+

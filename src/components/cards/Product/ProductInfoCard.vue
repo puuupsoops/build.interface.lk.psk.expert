@@ -29,9 +29,9 @@
                     <span v-html="data.DETAIL_TEXT"></span>
                 </p>
             </div>
-            <div :class="content_switch === 'characteristics' ? 'product-info-desc product-info-tab-elem active':'product-info-desc product-info-tab-elem'">
+            <div :class="content_switch === 'characteristics' ? 'product-info-table-wrap product-info-tab-elem active':'product-info-table-wrap product-info-tab-elem'">
                 <div class="table product-info-table scroll-elem">
-                    <div class="table-more-info-arrow"></div>
+                
                     <div class="table-wrap">
                         <div class="table-row"
                             v-for="(v, i) in data.CHARACTERISTICS"
@@ -44,6 +44,7 @@
                     </div>
                 </div>
             </div>
+            
         </div>
     </transition>
 </div>

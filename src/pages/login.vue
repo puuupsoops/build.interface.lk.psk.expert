@@ -111,44 +111,44 @@ export default {
 };
 </script>
 
-<style scoped>
-.auth-box {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, 70%);
-}
+<style scoped lang="sass">
 
-.bx-authform-content-container, .bx-authform-label-container {
-		font-size: 13px;
-		color: #5a6c77;
-		padding-bottom: 2px;
-}
+.auth-box
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translate(-50%, 70%)
 
-.bx-authform-input-container input[type="text"], .bx-authform-input-container input[type="password"] {
-		display: block;
-		width: 100%;
-		font-size: 18px;
-		height: 38px;
-		margin: 0;
-		padding: 0 4px;
-		border: 1px solid #ccd5db;
-		border-radius: 2px;
-		background: #f8fafc;
-		outline: 0;
-		-webkit-box-sizing: border-box;
-		-moz-box-sizing: border-box;
-		box-sizing: border-box;
-}
-.bx-authform-formgroup-container {
-		margin-bottom: 25px;
-}
 
-.bx-authform-input-container {
-		position: relative;
-}
-.bx-filter-param-text{
-		padding: 0 5px;
-}
+.bx-authform-content-container, .bx-authform-label-container
+  font-size: 13px
+  color: #5a6c77
+  padding-bottom: 2px
+
+
+.bx-authform-input-container input[type="text"], .bx-authform-input-container input[type="password"]
+  display: block
+  width: 100% 
+  font-size: 18px
+  height: 38px
+  margin: 0
+  padding: 0 4px
+  border: 1px solid #ccd5db
+  border-radius: 2px
+  background: #f8fafc
+  outline: 0
+  -webkit-box-sizing: border-box
+  -moz-box-sizing: border-box
+  box-sizing: border-box
+
+.bx-authform-formgroup-container
+  margin-bottom: 25px
+
+.bx-authform-input-container
+  position: relative
+
+.bx-filter-param-text
+  padding: 0 5px
+
 
 </style>

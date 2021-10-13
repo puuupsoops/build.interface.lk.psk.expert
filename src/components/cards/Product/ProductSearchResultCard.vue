@@ -1,15 +1,13 @@
 <template>
 
-<div class="product-search content-elem">
-    <div class="table-head"> 
-        <div class="text">Результаты поиска:</div>
-        <div class="hide-btn" @click="show = !show"> {{ !show ? 'Показать +' : 'Скрыть —' }}</div>
+<div class="product-search-table content-elem">
+    <div class="product-search-top"> 
+        <div class="product-search-top-elem">Результаты поиска:</div>
+        <div class="product-search-top-elem" @click="show = !show"> {{ !show ? 'Показать +' : 'Скрыть —' }}</div>
     </div>
     <transition name="fade">
         <div v-if="show" class="product-search-bottom product-search-table-wrap scroll-elem" >
-            <div class="table-more-info-arrow"></div>
-            <div id="table-found" class="table product-search-table">
-                
+            <div class="table product-search-table">
                 <div class="table-row table-heading">
                     <div class="table-elem">Артикул</div>
                     <div class="table-elem">Наименование</div>
@@ -19,7 +17,8 @@
                     :class=" modelValue===product.ID ? 'table-row table-element active' : 'table-row table-element'" 
                     v-for="(product, i) in data"
                     :key="i"
-                    @click="$emit('update:modelValue', product.ID)"
+                    @click="$emit('update:modelValue', product.ID); $emit('onClick', $event)"
+                    
                 > 
                     <i style="display: none">{{ product.ID }}</i>
                     <div class="table-elem">{{ product.ARTICLE }}</div>
@@ -45,7 +44,7 @@ export default {
 			//required: true
 		},
     },
-    emits: ['update:modelValue'],
+    emits: ['update:modelValue', 'onClick'],
     setup(){
         let show=ref(true);
         return{
@@ -56,29 +55,7 @@ export default {
 </script>
 
 <style scoped>
-.table-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-right: 10px;
-    }
-.text{
-    padding: 10px; 
-    width: 30%; 
-    font-size: 16px; 
-    color: #A5A7A9;  
-    line-height: 25px;
-}
-.hide-btn{
-    font-size: 16px;
-    line-height: 25px;
-    color: #A5A7A9;
-    cursor: pointer;
-}
 
-.table-row.table-element.active {
-    border: 2px solid #FF9900;
-}
 .fade-enter-active, .fade-leave-active {
   transition: all 0.5s ease;
 }

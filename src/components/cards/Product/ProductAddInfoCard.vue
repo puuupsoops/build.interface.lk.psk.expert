@@ -34,28 +34,27 @@ export default {
 </script>
 
 
-<style scoped>
+<style lang="sass" scoped>
 
-.fade-enter-active, .fade-leave-active {
-  transition: all 0.5s ease;
-}
-.fade-enter-from, .fade-leave-to {
-  transform: translateY(-20px);
-  opacity: 0;
-}
+.fade-enter-active, .fade-leave-active 
+  transition: all 0.5s ease
 
-.text-enter-active, .text-leave-active{
-    transition: all .5s ease;
-}
-.text-enter-from, .text-leave-to  {
-    font-size: 16px;
-    line-height: 25px;
-    color: #A5A7A9;
-}
+.fade-enter-from, .fade-leave-to 
+  transform: translateY(-20px)
+  opacity: 0
 
-.hide-text{
-    font-size: 16px;
-    line-height: 25px;
-    color: #A5A7A9;
-}
+
+.text-enter-active, .text-leave-active
+    transition: all .5s ease
+
+.text-enter-from, .text-leave-to
+    font-size: 16px
+    line-height: 25px
+    color: #A5A7A9
+
+.hide-text
+    font-size: 16px
+    line-height: 25px
+    color: #A5A7A9
+
 </style>
