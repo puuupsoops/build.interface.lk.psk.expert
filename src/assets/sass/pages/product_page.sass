@@ -1,8 +1,9 @@
 .product
+
 	&-search
 		+flex
 		margin: 20px 20px 20px 0px
-		align-items: center
+		+align-items(center)
 
 		&-top
 			+flex
@@ -38,7 +39,7 @@
 
 		&-input
 			display: flex
-			align-items: center
+			+align-items(center)
 			padding: 16px 30px 14px 30px
 			padding-right: 40px
 			margin-right: 20px
@@ -70,6 +71,7 @@
 
 			&:hover
 				opacity: 0.5
+				color: $accent-color
 
 		&-table-wrap
 			position: relative
@@ -88,8 +90,6 @@
 			div
 				position: relative
 				z-index: 10
-
-
 
 	&-more-info-block
 		margin:
@@ -279,11 +279,39 @@
 
 			&:hover
 				color: $accent-color
+
+			&.active
+				color: $accent-color
 		
 		&-hide-btn
 			margin: 0 0 0 auto
 				right: 15px
 			min-width: 85px
+
+		&-value
+			&-block
+				width: 100px
+			.active
+				color: $accent-color
+
+		&-input
+			vertical-align: top
+			outline: none
+			padding: 0
+			width: 90px	
+			height: 40px
+			text-indent: 10px
+			box-sizing: border-box
+			margin: 5px
+			font-size: 16px
+			line-height: 25px
+			color: $white
+			background-color: #292C32
+			border: 0
+			border-radius: 6px
+
+			&:focus
+				outline: 2px solid #292C32
 
 	&-info
 		padding: 0

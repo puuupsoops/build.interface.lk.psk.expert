@@ -10,6 +10,8 @@ $default-font: "Muli", sans-serif
 $default-transition: .35s
 $default-opacity: .8
 
+$active-color:  #FF9900
+
 *, body, html 
 	margin: 0
 	padding: 0
@@ -194,7 +196,7 @@ a
 		overflow: hidden
 			
 		&-active
-			border: 2px solid #FF9900
+			border: 2px solid $active-color
 
 		&.content-elem-info
 			margin:
@@ -479,7 +481,7 @@ a
 	background-color: $bg-default-color
 	
 	.active 
-		border: 2px solid #FF9900 !important
+		border: 2px solid $active-color !important
 
 	&-more-info-arrow
 		position: absolute

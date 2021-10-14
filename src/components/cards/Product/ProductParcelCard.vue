@@ -1,177 +1,110 @@
 <template>
 <div class="product-parcel">
-    <div class="product-parcel-wrap">
-            <div class="product-parcel-elem content-elem">
-                <div class="content-hide">
-                    <div class="product-parcel-row">
-                        <div class="product-parcel-text">Наценка: </div>
-                        <div class="product-parcel-value">
-                        <button class="product-parcel-btn">30</button>
-                        <button class="product-parcel-btn">%</button>
-                        <button class="product-parcel-btn">₽</button>
-                        </div>
-                    </div>
-                    <div class="product-parcel-row">
-                        <div class="product-parcel-text">Цена с наценкой: </div>
-                        <div class="product-parcel-value">1 300 ₽</div>
-                    </div>
-                </div>
-
-            </div>
-            
-            
-            <div class="product-parcel-elem content-elem" >
-                <div class="content-hide" >
-                    <div class="product-parcel-row">
-                        <div class="product-parcel-text">Количество: </div>
-                        <div class="product-parcel-value"> 
-                        <button class="product-parcel-btn">0</button>
-                        </div>
-                    </div>
-                    <div class="product-parcel-row">
-                        <div class="product-parcel-text">Сума: </div>
-                        <div class="product-parcel-value">1 300 ₽</div>
-                    </div>
-                    <div class="product-parcel-row">
-                        <div class="product-parcel-text">Средний вес: </div>
-                        <div class="product-parcel-value">25 кг</div>
-                    </div>
-                    <div class="product-parcel-row">
-                        <div class="product-parcel-text">Средний объем: </div>
-                        <div class="product-parcel-value">26 м.куб</div>
-                    </div>
-                </div>
-
-            </div>
-          
-         
-     
-        <div class="product-parcel-hide-btn content-hide-btn" @click="show = !show">{{ !show ? 'Показать +' : 'Скрыть —' }}</div>
-    </div>
+	<div class="product-parcel-wrap">
+			<div class="product-parcel-elem content-elem">
+				<transition name="fade1"  mode="out-in">
+					<div class="content-hide" v-if="show">
+						<div class="product-parcel-row">
+							<div class="product-parcel-text">Наценка: </div>
+							<div class="product-parcel-value">
+								<div class="product-parcel-value-block">
+									<input type="number" min="0" v-model="markup_val" class="product-parcel-input">
+									<button 
+											:class="'product-parcel-btn' + (parcel_type === 'percent' ? ' active':'')"
+											@click="parcel_type='percent'"
+									>%</button>
+									<button 
+											:class="'product-parcel-btn' + (parcel_type === 'add' ? ' active':'')"
+											@click="parcel_type='add'"
+									>₽</button>
+								</div>
+							</div>
+						</div>
+						<div class="product-parcel-row">
+							<div class="product-parcel-text">Цена с наценкой: </div>
+							<div class="product-parcel-value">{{ Number( markup ).toLocaleString() }} ₽</div>
+						</div>
+					</div>
+				</transition>
+				<div class="product-parcel-text" v-if="!show">Наценка</div>
+			</div>
+			<div class="product-parcel-elem content-elem">
+				<transition name="fade2">		
+					<div class="content-hide"  v-if="show">
+						<div class="product-parcel-row">
+							<div class="product-parcel-text">Количество: </div>
+							<div class="product-parcel-value"> 
+								<input type="number" min="0" v-model="count" class="product-parcel-input">
+							</div>
+						</div>
+						<div class="product-parcel-row">
+							<div class="product-parcel-text">Сума: </div>
+							<div class="product-parcel-value">{{ Number(markup * count).toLocaleString() }} ₽</div>
+						</div>
+						<div class="product-parcel-row">
+							<div class="product-parcel-text">Средний вес: </div>
+							<div class="product-parcel-value">{{ (Number(data.WEIGHT ? data.WEIGHT:0) * count).toFixed(3) }}</div>
+						</div>
+						<div class="product-parcel-row">
+							<div class="product-parcel-text">Средний объем: </div>
+							<div class="product-parcel-value">{{ (Number(data.VALUME ? data.VALUME:0) * count).toFixed(3) }}</div>
+						</div>
+					</div>
+				</transition>
+				<div class="product-parcel-text" v-if="!show">Количество</div>
+			</div>
+		<div class="product-parcel-hide-btn content-hide-btn" @click="show = !show">{{ !show ? 'Показать +' : 'Скрыть —' }}</div>
+	</div>
 </div>
 
 </template>
 
 
 <script>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 export default {
-    setup(){
-        let show=ref(true);
-
-        return{
-            show
-        }
-    }
+	props: {
+		data:{
+			type: Object
+		}
+	},
+	setup(props){
+		let show=ref(true);
+		let count = ref(1);
+		let markup_val = ref(0);
+		let parcel_type = ref('percent')
+		let markup = computed(()=>{
+			//console.log(Number(props.data.PRICE) + Number(markup).value * (Number(props.data.PRICE)/100));
+			if ( props.data.PRICE ){
+				return parcel_type.value === 'add' ? Number(props.data.PRICE)+Number(markup_val.value) : Number(props.data.PRICE) + Number(props.data.PRICE)/100*Number(markup_val.value)
+			} else return 0
+		})
+		return{
+			show,
+			count,
+			markup,
+			markup_val,
+			parcel_type
+		}
+	}
 }
 </script>
 
-<style scoped>
+<style lang="sass" scoped>
+.fade1-enter-active, .fade1-leave-active 
+  transition: all .3s ease
 
-.product-parcel {
-	position: relative;
-	margin-top: 30px; }
-	.product-parcel-wrap {
-		display: -webkit-box;
-		display: -webkit-flex;
-		display: -moz-flex;
-		display: -ms-flexbox;
-		display: flex;
-		-webkit-box-align: center;
-		-ms-flex-align: center;
-		-webkit-align-items: center;
-		-moz-align-items: center;
-		align-items: center; }
-	.product-parcel-elem {
-		display: -webkit-box;
-		display: -webkit-flex;
-		display: -moz-flex;
-		display: -ms-flexbox;
-		display: flex;
-		position: relative;
-		margin-right: 30px;
-		padding: 40px;
-		max-width: 370px;
-		min-height: 244px;
-		-webkit-transition: 0.35s;
-		-moz-transition: 0.35s;
-		-ms-transition: 0.35s;
-		-o-transition: 0.35s;
-		transition: 0.35s;
-		-webkit-box-pack: center;
-		-ms-flex-pack: center;
-		-webkit-justify-content: center;
-		-moz-justify-content: center;
-		justify-content: center;
-		-webkit-flex-flow: column;
-		-moz-flex-flow: column;
-		-ms-flex-flow: column;
-		flex-flow: column; }
-		.product-parcel-elem.active {
-			min-height: auto; }
-			.product-parcel-elem.active .product-parcel-elem-name {
-				position: relative;
-				opacity: 1; }
-			.product-parcel-elem.active .product-parcel-elem-hide-btn {
-				margin-top: -12px;
-				top: 50%; }
-		.product-parcel-elem-name {
-			position: absolute;
-			top: 0;
-			left: 0;
-			font-size: 16px;
-			line-height: 25px;
-			color: #A5A7A9;
-			pointer-events: none;
-			opacity: 0; }
-		.product-parcel-elem .product-parcel-elem-hide-btn {
-			display: none;
-			position: absolute;
-			margin: 0;
-			top: 20px;
-			right: 20px; }
-	.product-parcel-row {
-		display: -webkit-box;
-		display: -webkit-flex;
-		display: -moz-flex;
-		display: -ms-flexbox;
-		display: flex;
-		margin-bottom: 10px;
-		font-size: 16px;
-		color: #ffffff;
-		-webkit-box-align: center;
-		-ms-flex-align: center;
-		-webkit-align-items: center;
-		-moz-align-items: center;
-		align-items: center; }
-		.product-parcel-row:last-child {
-			margin: 0; }
-	.product-parcel-text {
-		margin-right: 5px;
-		color: #A5A7A9; }
-	.product-parcel-btn {
-		margin: 5px;
-		width: 40px;
-		height: 40px;
-		font-size: 16px;
-		line-height: 25px;
-		color: #ffffff;
-		background-color: #292C32;
-		border: 0;
-		border-radius: 6px;
-		-webkit-transition: 0.35s;
-		-moz-transition: 0.35s;
-		-ms-transition: 0.35s;
-		-o-transition: 0.35s;
-		transition: 0.35s;
-		cursor: pointer; }
-		.product-parcel-btn:hover {
-			color: #FAC12E; }
-	.product-parcel-hide-btn {
-		margin: 0 0 0 auto;
-			margin-right: 15px;
-		min-width: 85px; }
+.fade1-enter-from, .fade1-leave-to 
+  transform: translateY(-20px)
+  opacity: 0
+
+.fade2-enter-active, .fade2-leave-active 
+  transition: all .3s ease
+
+.fade2-enter-from, .fade2-leave-to 
+  transform: translateY(-20px)
+  opacity: 0
 
 
 </style>
