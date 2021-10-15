@@ -7,7 +7,7 @@
 					<a class="company-head-about-add" href="#">
 						<img
 							class="company-head-about-add-img"
-							src="img/icon/doc-add.svg"
+							src="@/assets/img/icon/doc-add.svg"
 							alt=""
 						/>Добавить заказ
 					</a>

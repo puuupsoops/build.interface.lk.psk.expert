@@ -16,7 +16,7 @@
 				<div class="content-wrap-elem">
 						<a class="banner" href="">
 								<div class="banner-img-box">
-										<img class="banner-img" src="style/img/product/product-4.png" alt="">
+										<img class="banner-img" src="@/assets/img/product/product-4.png" alt="">
 								</div>
 								<div class="banner-btn">Подробнее</div>
 						</a>

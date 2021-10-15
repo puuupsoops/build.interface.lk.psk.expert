@@ -27,7 +27,7 @@
 				</div>
 			</div>
 				<a class="company-consultant-mail" :title="managerData.email" :href="'mailto:'+managerData.email">
-					<img class="company-consultant-mail-img" src="img/icon/mail-send.svg" alt="">Написать
+					<img class="company-consultant-mail-img" src="@/assets/img/icon/mail-send.svg" alt="">Написать
 				</a>
 		</div>
 	</div>

@@ -6,9 +6,9 @@
 			<form class="company-search-wrap" action="">
 				<div class="company-search-input-wrap">
 					<input class="company-search-input" type="text" placeholder="Поиск">
-						<img class="company-search-input-clear" src="img/icon/cross.svg" alt="">
+						<img class="company-search-input-clear" src="@/assets/img/icon/cross.svg" alt="">
 				</div>
-				<button class="company-search-btn gradient-btn"><img class="company-search-btn-img" src="img/icon/search.svg" alt=""></button>
+				<button class="company-search-btn gradient-btn"><img class="company-search-btn-img" src="@/assets/img/icon/search.svg" alt=""></button>
 			</form>
 			<FullCalendar ref="fullCalendar" :options='calendarOptions'></FullCalendar>
 		</div>

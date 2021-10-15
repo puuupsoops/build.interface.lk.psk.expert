@@ -1,106 +1,134 @@
 <template>
 	<div class="auth-box" v-if="!isAuth">
-		<Preloader v-if="isLoad"></Preloader>
-		<div class="bx-authform" >
-			<h3 class="bx-title" style="text-align: center">Авторизация</h3>
-
-			<form> 
-				<div class="bx-authform-formgroup-container">
-					<div class="bx-authform-label-container">Логин</div>
-					<div class="bx-authform-input-container">
-						<input 
-							type="text" 
-							maxlength="255" 
-							v-model="login"/>
+		<div class="auth-form" >
+			<div class="auth-title">Авторизация</div>
+				<Form @submit="onLogin"> 
+					<div class="auth-formgroup">
+						<div class="auth-formgroup-label">Логин</div>
+						<div class="auth-formgroup-input">
+							<Field as="input" v-model="login" name="Login" rules="required|minLength:3">
+								
+							</Field>
+							<ErrorMessage name="Login" />
+						
+						</div>
 					</div>
-				</div>
 
-				<div class="bx-authform-formgroup-container">
-					<div class="bx-authform-label-container">Пароль</div>
-					<div class="bx-authform-input-container">
-						<input
-							type="password" 
-							maxlength="255"
-							autocomplete="off"
-							v-model="password"
-						/>
+					<div class="auth-formgroup">
+						<div class="auth-formgroup-label">Пароль</div>
+						<div class="auth-formgroup-input">
+							<Field as="input" type="password" v-model="password" name="password" rules="required|minLength:3">
+								
+							</Field>
+							<ErrorMessage name="password" />
+						
+						</div>
 					</div>
-				</div>
 
-				<div class="bx-authform-formgroup-container">
-					<div class="checkbox">
-						<label class="bx-filter-param-label">
+					<div class="auth-formgroup">
+						<div class="auth-param">
 							<input
+								class="auth-param-input"
 								type="checkbox"
+								id="save-me"
 								v-model="saved"
 							/>
-							<span class="bx-filter-param-text"
-								>Запомнить меня на этом компьютере</span
-							>
-						</label>
+							<label class="auth-param-text" for="save-me">
+								Запомнить меня на этом компьютере
+							</label>
+						</div>
 					</div>
-				</div>
-				<div class="bx-authform-formgroup-container" >
-					<input
-						type="submit"
-						:style="isLoad? 'background: linear-gradient(90deg, #8d8f92 0%, #303030 100%}' : 'background: linear-gradient(90deg, #b995fe 0%, #8444fc 100%)'"
-						class="gradient-btn"
-						:disabled="isLoad"
-						value="Войти"
-						@click.prevent="onLogin()"
-					/>
-				</div>
-			</form>
+					<div class="auth-formgroup" >
+						<input
+							type="submit"
+							:style="loader? 'background: linear-gradient(90deg, #8d8f92 0%, #303030 100%}' : 'background: linear-gradient(90deg, #b995fe 0%, #8444fc 100%)'"
+							class="gradient-btn"
+							:disabled="loader"
+							value="Войти"
+							
+						/>
+					</div>
+				</Form>
 			
 		</div>
-		
-
 
 	</div>
+<SnackBar v-model="loginError" :message="loginErrorMsg"></SnackBar>
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, inject } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router'
-import Preloader from '@/components/Preloader'
+import { Form, Field, ErrorMessage, defineRule } from 'vee-validate'
+import SnackBar from '@/components/cards/SnackBar';
+
 
 export default {
-	components: {
-		Preloader
-	},
+	components:{
+		Form,
+		Field,
+		ErrorMessage,
+		SnackBar
+	},	
 	setup(){
 		const store = useStore();
 		const router = useRouter();
 		const login = ref('');
 		const password = ref('');
 		const saved = ref(false);
+		const loader = inject('loader');
 
-		let isLoad = ref(false);
+		defineRule('required', value => {
+			if (!value || !value.length) { 
+				return 'Обязательное поле';	
+				}
+				return true;	
+		});
+		defineRule('minLength', (value, [limit]) => {
+			if (!value || !value.length) {
+				return true;
+			}
+			if (value.length < limit) {
+				return `Минимум ${limit} символа`;
+			}
+			return true;
+		});
 
-		let onLogin = () => {
-			isLoad.value = true;
-			setTimeout(() => {
-				store.dispatch('LOGIN', {
-						"login": login.value,
-						"password": password.value,
-						"save": saved.value,
-					})
-						.then(() => {
-								isLoad.value = false;
-								router.push({name: 'Main'});
-							})
-						.catch(() => {
-							password.value = '';
-							setTimeout(() => {isLoad.value = false;}, 3000);
+		let loginError = computed({
+			get: () => store.getters.getLoginError,
+			set: () => store.commit('clearLoginError')
+		})
+
+		let onLogin = (values) => {
+			console.log(values, null, 2);
+
+				loader.value=true;
+			
+				setTimeout(() => {
+					store.dispatch('LOGIN', {
+							"login": login.value,
+							"password": password.value,
+							"save": saved.value,
 						})
-					}, 1000);
+							.then(() => {
+									loader.value=false;
+									router.push({name: 'Main'});
+								})
+							.catch(() => {
+								password.value = '';
+								setTimeout(() => {loader.value=false;}, 3000);
+							})
+						}, 1000);
+			
 		};
 
 
 		return {
 			isAuth: computed(() => store.getters.isAuthenticated),
-			isLoad,
+			loginError,
+			loginErrorMsg: computed(() => store.getters.getLoginErrorMsg),
+			loader,
 			login,
 			password,
 			saved,
@@ -112,43 +140,6 @@ export default {
 </script>
 
 <style scoped lang="sass">
-
-.auth-box
-  position: absolute
-  top: 50%
-  left: 50%
-  transform: translate(-50%, 70%)
-
-
-.bx-authform-content-container, .bx-authform-label-container
-  font-size: 13px
-  color: #5a6c77
-  padding-bottom: 2px
-
-
-.bx-authform-input-container input[type="text"], .bx-authform-input-container input[type="password"]
-  display: block
-  width: 100% 
-  font-size: 18px
-  height: 38px
-  margin: 0
-  padding: 0 4px
-  border: 1px solid #ccd5db
-  border-radius: 2px
-  background: #f8fafc
-  outline: 0
-  -webkit-box-sizing: border-box
-  -moz-box-sizing: border-box
-  box-sizing: border-box
-
-.bx-authform-formgroup-container
-  margin-bottom: 25px
-
-.bx-authform-input-container
-  position: relative
-
-.bx-filter-param-text
-  padding: 0 5px
 
 
 </style>

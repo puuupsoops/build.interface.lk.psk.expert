@@ -13,9 +13,9 @@ state:  {
 	getters: {
 		isAuthenticated: state => !!state.token,
 		getLoginError: state => state.error_login,
-		getLoginerror_msg: state => state.error_login_msg,
+		getLoginErrorMsg: state => state.error_login_msg,
 		getError: state => state.error,
-		geterrorMsg: state => state.error_msg,
+		getErrorMsg: state => state.error_msg,
 	},
 	mutations: {
 		setAuth(state, data) {
@@ -35,9 +35,17 @@ state:  {
 			state.error = true;
 			state.error_msg = data;
 		},
+		setLoginError(state, data) {
+			state.error_login = true;
+			state.error_login_msg = data;
+		},
 		clearError: (state) => {
 			state.error = false;
 			state.error_msg = '';
+		},
+		clearLoginError: (state) => {
+			state.error_login = false;
+			state.error_login_msg = '';
 		},
 		checkAuth: (state) => {
 			state.token = localStorage.getItem('id_token')
@@ -46,6 +54,7 @@ state:  {
 	},
 	actions: {
 		LOGIN: async function({ commit }, data) {
+			commit('clearLoginError')
 			await axios.post('/auth', {login: data.login, password: data.password})
 				.then(response => {
 					console.log(response.data)
@@ -58,7 +67,7 @@ state:  {
 					}
 				})
 				.catch(error => {
-						commit('setError', error.response.error)
+						commit('setLoginError', error.response.data.error.message)
 				})
 		},
 		LOGOUT: function({commit}) {

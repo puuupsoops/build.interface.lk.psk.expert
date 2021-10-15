@@ -6,7 +6,7 @@
           <div class="prev-slider-new-box">
             <img
               class="prev-slider-new-img"
-              src="style/img/icon/horn.svg"
+              src="@/assets/img/icon/horn.svg"
               alt=""
             />
             <div class="prev-slider-new-text">Новинка</div>
