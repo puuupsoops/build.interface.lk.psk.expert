@@ -12,7 +12,7 @@
 			<div class="company-head-elem">
 				<CompanyStorageBar :data="companyStoragesData" v-model="activeStorageUid"></CompanyStorageBar>
 			</div>
-
+		
 			<div class="company-head-elem">
 				<CompanyAboutCard :data="aboutCompanyData"></CompanyAboutCard>
 			</div>

@@ -54,7 +54,7 @@ export default {
 	/* default opacity: 1;*/
 
 .slide-fade-leave-active 
-	transition: opacity 1s
+	transition: opacity .5s
 
 .slide-fade-leave-to 
 	opacity: 0
