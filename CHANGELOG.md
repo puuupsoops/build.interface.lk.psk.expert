@@ -1,4 +1,13 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-10-21 20:20 +0700
+
+    #14
+    
+    1. Удален jQuery
+    2. Вынесен отделно в компанент Debug блок со в ременными ссылками
+    3. Переработано SideMenu 
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-10-19 19:39 +0700
 
     #13

@@ -1,59 +1,110 @@
 <template>
-  
-    <div class="sidebar-menu-wrap">
+	<div class="sidebar-menu">
+		<div class="sidebar-heading">Моя компания</div>
+		<ul class="sidebar-nav">
+			<li
+				class="sidebar-nav-elem "
+				v-for="(item, id) in menu"
+				:key="id"
+			>
+				<div class="sidebar-nav-elem-wrap"
+					@click="active === id ? active = -1 : active = id "
+				>
+					<div class="sidebar-nav-arrow" v-if="item.children">
+						<img
+							:class="active===id ? 'sidebar-nav-arrow active': 'sidebar-nav-arrow'"
+							src="@/assets/img/icon/arrow-nav-r.svg"
+							alt=""
 
-        <div class="sidebar-heading">Моя компания</div>
+							/>
+				
+					</div>
+					<div :class="active===id ? 'sidebar-nav-text active' : 'sidebar-nav-text'">{{item.title}}</div>
+				</div>
+					<div v-if="item.children" :class="active===id ? 'sidebar-nav-dropdown active':'sidebar-nav-dropdown'">
+						<ul class="sidebar-nav-dropdown-list">
+							<li
+								v-for="(child, i) in item.children"
+								:key="i"
+							>
+								<a class="sidebar-nav-dropdown-link" href="/test/company/contracts/">
+									{{child.title}}
+								</a>
+							</li>
+						</ul>
+					</div>
 
-        <ul class="sidebar-nav">
+			</li>	
+		</ul>
 
-            <li class="sidebar-nav-elem">
-            <div class="sidebar-nav-elem-wrap">
-                <div class="sidebar-nav-arrow">
-                <svg class="sidebar-nav-arrow-img" width="9" height="13" viewBox="0 0 9 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8.11136 5.99274L2.32619 0.207681C2.19239 0.0737718 2.01377 0 1.82332 0C1.63286 0 1.45425 0.0737718 1.32044 0.207681L0.894407 0.633613C0.617182 0.911155 0.617182 1.36224 0.894407 1.63936L5.75235 6.4973L0.889017 11.3606C0.755213 11.4945 0.681335 11.6731 0.681335 11.8634C0.681335 12.054 0.755213 12.2325 0.889017 12.3665L1.31505 12.7923C1.44896 12.9262 1.62747 13 1.81793 13C2.00838 13 2.187 12.9262 2.3208 12.7923L8.11136 7.00198C8.24548 6.86764 8.31914 6.68829 8.31872 6.49762C8.31914 6.30622 8.24548 6.12697 8.11136 5.99274Z" fill="#A5A7A9"></path>
-                </svg>
-                </div>
-                <div class="sidebar-nav-text">Конструктор КП</div>
-            </div>
-            <div class="sidebar-nav-dropdown">
-                <ul class="sidebar-nav-dropdown-list">
-                <li><a class="sidebar-nav-dropdown-link" href="">Подбор транспорта</a></li>
-                <li><a class="sidebar-nav-dropdown-link" href="">Стандарты</a></li>
-                </ul>
-            </div>
-            </li>
+	</div>
 
-            <li class="sidebar-nav-elem">
-                <a class="sidebar-nav-link" href="">Персональные предложения</a>
-            </li>
-
-            <li class="sidebar-nav-elem">
-                <a class="sidebar-nav-link" href="">Каталог</a>
-            </li>
-
-            <li class="sidebar-nav-elem">
-                <a class="sidebar-nav-link" href="">Система скидок</a>
-            </li>
-
-        </ul>
-
-    </div>
-  
 </template>
 
 <script>
+import { ref } from 'vue';
+
 export default {
-    mounted(){
-
-        let $ = window.$;
-
-        $(function() {
-            
-        });
-    }
+	setup(){
+		let active = ref(-1)
+		let menu = ref([
+			{title: 'Мои компании', link: null , children: [
+				{title: 'Договоры', link: '/agreements'},
+			]},
+			{title: "Рабочий стол", link: null, children: [
+				{title: "Заказы", link: '/orders'},
+				{title: "Отгрузки", link: '/shipments'},
+				{title: "Претензии", link: '/claims'},
+				{title: "Возвраты", link: '/returns'},
+				{title: "Аналитика", link: '/analytics'},
+			]},
+			{title: 'Взаиморасчеты', link: null, children: [
+				{title: "Счета", link: '/bills'},
+				{title: "Реализации", link: '/realization'},
+				{title: "Корректировки", link: '/adjustments'},
+				{title: "Акты", link: '/acts'},
+				{title: "ЭДО", link: '/edo'},
+			]},
+			{title: 'Сертификаты', link: null, children: [
+				{title: "Разрешительная", link: '/permissive'},
+				{title: "Нормативная", link: '/regulatory'},
+				{title: "Доп.Информация", link: '/dop_info'},
+			]},
+			{title: 'Каталог', link: null, children: [
+				{title: "Электронный", link: '/dop_info'},
+				{title: "Интерактивный", link: '/dop_info'},
+			]},
+			{title: 'Акции и Предложения', link: '/promotions', children: null},
+			{title: 'Скидки', link: '/sale', children: null},
+			{title: 'Контакты', link: '/contacts', children: null},
+			{title: 'Помощь', link: '/help', children: null},
+		])
+		return{
+			menu,
+			active
+		}
+	}
 }
 </script>
 
-<style>
+<style lang="sass" scoped>
+.expand-enter-active 
+	animation: finished .5s reverse
+
+.expand-leave-active 
+	animation: finished .3s
+
+@keyframes finished
+	0%
+		opacity: 1 
+		top: 0
+	50%
+		opacity: 1 
+		top: 0
+	60% 
+		opacity: 1
+	100% 
+		opacity: 0 
+		top: -100vh
 
 </style>

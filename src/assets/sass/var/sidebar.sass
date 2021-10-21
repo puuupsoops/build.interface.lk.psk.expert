@@ -1,7 +1,7 @@
 .sidebar
 	+flex
 	position: fixed
-	padding: 70px 0
+	padding: 70px 20px
 	top: 0
 	left: 0
 	max-width: 70px
@@ -132,13 +132,28 @@
 			color: $font-light-color
 			+prefix(transition, $default-transition)
 			cursor: pointer
-		
+			&.active
+				color: $accent-color
+
 		&-arrow
 			position: absolute
 			top: 5px
 			left: 0
 			width: 7px
 			height: 13px
+
+			&.active 
+				transform: rotate(90deg)
+				-webkit-animation: spin .3s ease-in-out
+				-moz-animation: spin .3s linear
+				animation: spin .3s linear
+
+				+keyframes (spin)
+					0%
+						transform: rotate(0deg)
+					100%
+						transform: rotate(90deg)
+
 
 			&-img
 				width: 100%
@@ -147,20 +162,27 @@
 					+prefix(transition, $default-transition)
 		
 		&-dropdown
-			display: none
+			//display: none
+			overflow: hidden
+			max-height: 0
+			+prefix(transition,  $default-transition)
 			padding:
 				left: 20px
+
+			&.active
+				max-height: 500px
+				+prefix(transition,  max-height $default-transition)
 
 			&-list
 				padding: 
 					top: 5px
 				list-style-type: disc
 				list-style-position: inside
-
 				li
 					margin:
 						top: 5px
-			
+
+				
 			&-link
 				font-size: 16px
 				line-height: 25px

@@ -11,7 +11,7 @@
 
 		<div class="content-wrap content-main-wrap">
 				
-				<Showcase />
+<!--				<Showcase /> -->
 
 				<div class="content-wrap-elem">
 						<a class="banner" href="">
@@ -29,14 +29,14 @@
 import Notification from '../components/cards/Notification.vue';
 import PersonalBar  from '../components/cards/PersonalBar.vue';
 import CompanyBar   from '../components/cards/Company/CompanyBar.vue';
-import Showcase     from '../components/cards/Showcase.vue'; 
+//import Showcase     from '../components/cards/Showcase.vue'; 
 
 export default {
 		components: {
 				Notification,
 				PersonalBar,
 				CompanyBar,
-				Showcase
+//				Showcase
 		},
 		setup(){
 						//Временный контент список контрагентов для main-Page 
