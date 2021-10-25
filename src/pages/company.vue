@@ -71,8 +71,10 @@ export default {
 													null : companyStoragesData.value[activeStorageUid.value].documents );
 
 		onMounted(() => {
-			loader.value=true;
-			Promise.all([
+			if (!store.getters.isCompanysLoad || !store.getters.isManagerLoad)
+			{
+				loader.value=true;
+				Promise.all([
 						store.dispatch('GET_PARTNER'),
 						store.dispatch('GET_MANAGER'),
 					])
@@ -82,7 +84,11 @@ export default {
 							isLoad.value = true;
 							loader.value=false;
 						},500); })
-			});
+			} else {
+				activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
+				isLoad.value = true;
+			}
+		});
 		provide('docDate', docDate ); //фича для обмена данными между компонентами. Связь между компонентом CompanyStorageDoc и CompanyCalendar
 		return {
 			aboutCompanyData,

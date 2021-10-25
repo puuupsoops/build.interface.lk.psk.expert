@@ -100,26 +100,34 @@ export default {
 			set: () => store.commit('clearLoginError')
 		})
 
-		let onLogin = (values) => {
-			console.log(values, null, 2);
+		let onLogin = () => {
+			loader.value=true;
+			setTimeout(() => {
+				store.dispatch('LOGIN', {
+						"login": login.value,
+						"password": password.value,
+						"save": saved.value,
+					})
+						.then(() => {
 
-				loader.value=true;
-			
-				setTimeout(() => {
-					store.dispatch('LOGIN', {
-							"login": login.value,
-							"password": password.value,
-							"save": saved.value,
-						})
-							.then(() => {
-									loader.value=false;
-									router.push({name: 'Main'});
-								})
-							.catch(() => {
+							Promise.all([
+								store.dispatch('GET_PARTNER'),
+								store.dispatch('GET_MANAGER'),
+							])
+							.catch(()=>{
 								password.value = '';
 								setTimeout(() => {loader.value=false;}, 3000);
 							})
-						}, 1000);
+							.finally(() => {
+								loader.value=false;
+								router.push({name: 'Main'});
+							})		
+						})
+						.catch(() => {
+							password.value = '';
+							setTimeout(() => {loader.value=false;}, 3000);
+						})
+					}, 500);
 			
 		};
 

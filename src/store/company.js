@@ -8,6 +8,8 @@ export default ({
 		manager: {},
 	},
 	getters: {
+		isCompanysLoad: state => state.companys.length !== 0,
+		isManagerLoad: state => state.manager !== {},
 		getCompanys: state => state.companys,
 		getCompanyData : state => uid => {
 			let company = state.companys.find(x => x.uid === uid)

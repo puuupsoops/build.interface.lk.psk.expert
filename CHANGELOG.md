@@ -1,4 +1,12 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-10-23 20:20 +0700
+
+    #15
+    
+    1. Доработано меню Sidebar
+    2. В меню добавлен switch c debugMode
+    
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-10-21 20:20 +0700
 
     #14

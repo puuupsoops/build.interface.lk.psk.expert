@@ -90,19 +90,19 @@
 						<path class="fill stroke" d="M4.52555 11.2065H8.88681C9.2515 11.2065 9.583 10.9148 9.583 10.5103C9.583 10.1126 9.28454 9.8141 8.88681 9.8141H4.52555C4.16086 9.8141 3.82936 10.1058 3.82936 10.5103C3.82936 10.9148 4.16086 11.2065 4.52555 11.2065Z" fill="#A5A7A9" stroke="#A5A7A9" stroke-width="0.4"></path>
 						<path class="fill stroke" d="M8.88681 19.7935H4.52555C4.16086 19.7935 3.82936 20.0852 3.82936 20.4897C3.82936 20.8544 4.12103 21.1859 4.52555 21.1859H8.88681C9.2515 21.1859 9.583 20.8942 9.583 20.4897C9.583 20.1181 9.25842 19.7935 8.88681 19.7935Z" fill="#A5A7A9" stroke="#A5A7A9" stroke-width="0.4"></path>
 						<path class="fill stroke" d="M3.82936 13.8009C3.82936 14.1656 4.12103 14.4971 4.52555 14.4971H16.173C16.5377 14.4971 16.8692 14.2054 16.8692 13.8009C16.8692 13.4362 16.5775 13.1047 16.173 13.1047H4.52555C4.16086 13.1047 3.82936 13.3964 3.82936 13.8009Z" fill="#A5A7A9" stroke="#A5A7A9" stroke-width="0.4"></path>
-						<path class="fill stroke" d="M16.173 16.5595H4.52555C4.16086 16.5595 3.82936 16.8512 3.82936 17.2557C3.82936 17.6204 4.12103 17.9519 4.52555 17.9519H16.173C16.5377 17.9519 16.8692 17.6602 16.8692 17.2557C16.8692 16.858 16.5707 16.5595 16.173 16.5595Z" fill="#A5A7A9" stroke="#A5A7A9" stroke-width="0.4"></path>
+						<path class="fill stroke" d="M16.173 16.5	595H4.52555C4.16086 16.5595 3.82936 16.8512 3.82936 17.2557C3.82936 17.6204 4.12103 17.9519 4.52555 17.9519H16.173C16.5377 17.9519 16.8692 17.6602 16.8692 17.2557C16.8692 16.858 16.5707 16.5595 16.173 16.5595Z" fill="#A5A7A9" stroke="#A5A7A9" stroke-width="0.4"></path>
 					</svg>
 				</div>
 		</aside>  
 	</div>
 	<transition name="fade">
-		<SideNavigation v-if="collapsed"></SideNavigation>
+		<SideNavigation v-if="collapsed" v-model="active_item"></SideNavigation>
 	</transition>
 </template>
 
 <script>
 import SideNavigation from '@/components/nav/SideNavigation';
-import {inject} from 'vue';
+import {ref,inject} from 'vue';
 
 export default {
 		components: {
@@ -110,7 +110,8 @@ export default {
 		},
 		setup() {
 			let collapsed = inject('collapsed');
-			return { collapsed,  }
+			let active_item = ref(0);
+			return { collapsed, active_item}
 		}
 }
 </script>

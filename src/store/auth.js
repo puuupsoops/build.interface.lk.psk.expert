@@ -57,7 +57,7 @@ state:  {
 			commit('clearLoginError')
 			await axios.post('/auth', {login: data.login, password: data.password})
 				.then(response => {
-					console.log(response.data)
+					///console.log(response.data)
 					if (response.data.error === null) {
 						axios.defaults.headers.common.Authorization = `Bearer ${response.data.response.token}`;
 						commit('setAuth', {token:response.data.response.token, save:data.save})
