@@ -54,9 +54,11 @@ export default ({
 					})) : []
 		},
 		getCompanySpent: state => uid => {
-			let company = state.companys.find(x => x.uid === uid)
-			let res = company.storages.reduce((prev,cur) => prev + cur.spent, 0);
-			return res
+			if (uid){
+				let company = state.companys.find(x => x.uid === uid)
+				let res = company.storages.reduce((prev,cur) => prev + cur.spent, 0);
+				return res
+			} else { return 0 }
 		},
 		getManager: state => state.manager,
 	},

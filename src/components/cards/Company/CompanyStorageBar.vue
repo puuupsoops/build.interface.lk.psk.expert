@@ -8,7 +8,7 @@
 					:active="id===modelValue"
 					@onClick="$emit('update:modelValue', id)"
 				></CompanyStorageCard>
-				<CompanyStorgeDoc :data="data[modelValue].documents"></CompanyStorgeDoc>
+				<CompanyStorgeDoc :data="data[modelValue] ? data[modelValue].documents : null"></CompanyStorgeDoc>
 			</div>
 			<div v-else class="company-head-wrap">
 				<CompanyStorageCard></CompanyStorageCard>

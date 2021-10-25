@@ -6,7 +6,7 @@
 		</div>
 
 		<CompanyBar 
-				:data = mainFeed
+				:data = companys
 		/>
 
 		<div class="content-wrap content-main-wrap">
@@ -31,114 +31,29 @@ import PersonalBar  from '../components/cards/PersonalBar.vue';
 import CompanyBar   from '../components/cards/Company/CompanyBar.vue';
 //import Showcase     from '../components/cards/Showcase.vue'; 
 
+import { useStore } from 'vuex'
+import {  computed, onMounted, inject} from 'vue'
 export default {
-		components: {
-				Notification,
-				PersonalBar,
-				CompanyBar,
-//				Showcase
-		},
-		setup(){
-						//Временный контент список контрагентов для main-Page 
-		const mainFeed = [
-		{
-				id: 1,
-				name: 'ООО Столица',
-				agents: [
-					{  
-						name: 'ЭС',
-						debt: '-',
-						balance: '0',
-						discount: 35,
-					},
-					{
-						debt: '-',
-						balance: '0',
-						discount: 35,
-					}
-				]
-			},
+	components: {
+			Notification,
+			PersonalBar,
+			CompanyBar,
+	//				Showcase
+	},
+	setup(){
+		const store = useStore();
+		const loader = inject('loader');
+		onMounted(() => {
+			if (!store.getters.isCompanysLoad)
 			{
-				id: 2,
-				name: 'ООО Вектор',
-				agents: [
-					{
-						name: 'ЭС',
-						debt: '-',
-						balance: '0',
-						discount: 35,
-					},
-					{
-						name: 'ФРО',
-						debt: '-',
-						balance: '0',
-						discount: 35,
-					}
-				]
-			},
-			{
-				id: 3,
-				name: 'ООО Тристан',
-				agents: [
-					{
-						name: 'ЭС',
-						debt: '-',
-						balance: '0',
-						discount: 35,
-					},
-					{
-						name: 'ФРО',
-						debt: '-',
-						balance: '0',
-						discount: 35,
-					}
-				]
-			},
-			{
-				id: 4,
-				name: 'ООО Лама',
-				agents: [
-					{
-						name: 'ЭС',
-						debt: '-',
-						balance: '0',
-						discount: 35,
-					},
-					{
-						name: 'ФРО',
-						debt: '-',
-						balance: '0',
-						discount: 35,
-					}
-				]
-			},
-			{
-				id: 5,
-				name: 'ИП Лама',
-				agents: [
-					{
-						name: 'ЭС',
-						debt: '-',
-						balance: '0',
-						discount: 35,
-					},
-					{
-						name: 'ФРО',
-						debt: '-',
-						balance: '0',
-						discount: 35,
-					}
-				]
+				loader.value=true;
+				store.dispatch('GET_PARTNER').finally(() => loader.value=false)
 			}
-		]
-
-				return {
-						mainFeed
-				}
-		},
-		mounted(){
-
+		});
+		return {
+			companys: computed(() => store.getters.getCompanys),
 		}
+	}
 }
 </script>
 

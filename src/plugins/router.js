@@ -20,10 +20,12 @@ const routes = [
 				auth: true,	
 			}
 	},
+	
 	{
-		path: '/company', 
+		path: '/company/:id?', 
 		component: () => import('@/pages/company'),
 		name: 'Company',
+		props: true,
 		meta:{
 				auth: true,
 			}

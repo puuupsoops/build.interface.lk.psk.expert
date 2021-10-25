@@ -24,20 +24,20 @@
 							alt=""
 							/>
 					</div>
-					<div :class="modelValue===id ? 'sidebar-nav-text active' : 'sidebar-nav-text'">{{item.title}}</div>
+					<div :class="modelValue===id ? 'sidebar-nav-text active' : 'sidebar-nav-text'"> {{ item.title }} </div>
 				</div>
-					<div v-if="item.children" :class="modelValue===id ? 'sidebar-nav-dropdown active':'sidebar-nav-dropdown'">
-						<ul class="sidebar-nav-dropdown-list">
-							<li
-								v-for="(child, i) in item.children"
-								:key="i"
-							>
-								<router-link tag="a" :to="child.link" class="sidebar-nav-dropdown-link">{{child.title}}</router-link>
-							</li>
-						</ul>
-					</div>
+				<div v-if="item.children" :class="modelValue===id ? 'sidebar-nav-dropdown active':'sidebar-nav-dropdown'">
+					<ul class="sidebar-nav-dropdown-list">
+						<li
+							v-for="(child, i) in item.children"
+							:key="i"
+						>
+							<router-link tag="a" :to="child.link" class="sidebar-nav-dropdown-link" active-class="sidebar-nav-dropdown-link active"> {{ child.title }} </router-link>
 
-			</li>	
+						</li>
+					</ul>
+				</div>
+			</li>
 		</ul>
 		
 	</div>
@@ -83,7 +83,7 @@ export default {
 					{title: "Доп.Информация", link: '/dop_info'},
 				]},
 				{title: 'Каталог', link: null, children: [
-					{title: "Электронный", link: '/dop_info'},
+					{title: "Электронный", link: '/catalog'},
 					{title: "Интерактивный", link: '/dop_info'},
 				]},
 				{title: 'Акции и Предложения', link: '/promotions', children: null},
@@ -99,9 +99,10 @@ export default {
 				arr.push({title: element.name
 											.replace(/Общество с ограниченной ответственностью/, 'ООО')
 											.replace(/Акционерное общество/, 'АО'),
-							link: '/agreements'})	
+						link: '/company/'+element.uid,
+						})	
 			});
-			arr.push({title: 'Договоры', link: '/company'})
+			arr.push({title: 'Договоры', link: '/agreements'})
 			menu_start[0].children = arr;
 			return menu_start;
 		});

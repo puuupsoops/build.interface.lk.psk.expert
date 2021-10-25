@@ -6,6 +6,7 @@
         :key="item.id"
         :data = "item"
       />
+
     </div>
   </div>
 </template>

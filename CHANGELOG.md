@@ -1,4 +1,12 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-10-25 20:20 +0700
+
+    #16
+    
+    1. Добавлены ссылки с роутами для /company
+    2. Добавлен копонент на главную CompanyAboutSmallCard
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-10-23 20:20 +0700
 
     #15

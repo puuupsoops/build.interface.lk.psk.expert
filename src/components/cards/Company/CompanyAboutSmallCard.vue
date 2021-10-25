@@ -1,40 +1,65 @@
 <template>
-	<a class="company-card-item" href=""> 
-		<div class="company-card-name">ООО Столица</div>
+	<router-link tag="a" class="company-card-item" :to="'/company/'+data.uid"> 
+		<div class="company-card-name">{{data.name.replace(/Общество с ограниченной ответственностью/, 'ООО').replace(/Акционерное общество/, 'АО')}}</div>
 		<div class="company-card-box orange">
-			<div class="company-card-row">
-				<div class="company-card-title">ЭС</div>
+
+			<div v-if="data.storages[0]" class="company-card-row">
+				<div class="company-card-title">
+					{{data.storages[0].name.replace(/(ООО)|(\")|(\s)|([а-я])/g, '')}}</div>
 				<div class="company-card-info">
-					<div class="company-card-info-row">Долг: <span class="company-card-value">5 123 ₽</span></div>
-					<div class="company-card-info-row">Баланс: <span class="company-card-value">315 ₽</span></div>
+					<div class="company-card-info-row">Долг: <span class="company-card-value">{{ Number(data.storages[0].debt).toLocaleString() }} ₽</span></div>
+					<div class="company-card-info-row">Баланс: <span class="company-card-value">{{ Number(data.storages[0].balance).toLocaleString() }} ₽</span></div>
 				</div>
 				<div class="company-card-sale">
-				<div class="company-card-sale-box"><span class="company-card-sale-text">Скидка</span>
-					<div class="company-card-sale-value">5 %</div>
-				</div>
+					<div class="company-card-sale-box"><span class="company-card-sale-text">Скидка</span>
+						<div class="company-card-sale-value">{{data.storages[0].discount}} %</div>
+					</div>
 				</div>
 			</div>
-			<div class="company-card-row">
-				<div class="company-card-title">ФРО</div>
+			<div v-else class="company-card-row">
+				<div class="company-card-title">
+				<br>
+				</div>
 				<div class="company-card-info">
-					<div class="company-card-info-row">Долг: <span class="company-card-value">5 123 ₽</span></div>
-					<div class="company-card-info-row">Баланс: <span class="company-card-value">315 ₽</span></div>
+					<br>
+					<br>
+				</div>
+			</div>
+
+			<div v-if="data.storages[1]" class="company-card-row">
+				<div class="company-card-title">
+					{{data.storages[1].name.replace(/(ООО)|(\")|(\s)|([а-я])/g, '')}}</div>
+				<div class="company-card-info">
+					<div class="company-card-info-row">Долг: <span class="company-card-value">{{ Number(data.storages[1].debt).toLocaleString() }} ₽</span></div>
+					<div class="company-card-info-row">Баланс: <span class="company-card-value">{{ Number(data.storages[1].balance).toLocaleString() }} ₽</span></div>
 				</div>
 				<div class="company-card-sale">
-					<div class="company-card-sale-box">
-						<span class="company-card-sale-text">Скидка</span>
-					<div class="company-card-sale-value">3 %</div>
+					<div class="company-card-sale-box"><span class="company-card-sale-text">Скидка</span>
+						<div class="company-card-sale-value">{{data.storages[1].discount}} %</div>
+					</div>
 				</div>
+			</div>
+			<div v-else class="company-card-row">
+				<div class="company-card-title">
+				<br>
+				</div>
+				<div class="company-card-info">
+					<br>
+					<br>
 				</div>
 			</div>
 		</div>
 		<div class="company-card-more">Подробнее</div>
-	</a>
+	</router-link>
 </template>
-
 <script>
-	
+export default {
+	props:[ 'data'],
+	setup(){
 
+		return {}
+	}
+}
 </script>
 
 <style>
