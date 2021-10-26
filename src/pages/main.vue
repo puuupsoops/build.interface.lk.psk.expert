@@ -1,6 +1,6 @@
 <template>
 		<div class="top-line main-page">
-				<div class="top-line-menu-btn"><span></span><span></span><span></span></div>
+				
 				<Notification />
 				<PersonalBar />
 		</div>
@@ -13,14 +13,6 @@
 				
 <!--				<Showcase /> -->
 
-				<div class="content-wrap-elem">
-						<a class="banner" href="">
-								<div class="banner-img-box">
-										<img class="banner-img" src="@/assets/img/product/product-4.png" alt="">
-								</div>
-								<div class="banner-btn">Подробнее</div>
-						</a>
-				</div>
 
 		</div>
 </template>

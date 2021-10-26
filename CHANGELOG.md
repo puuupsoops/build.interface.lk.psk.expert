@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-10-26 12:52 +0700
+
+    #17
+    
+    1. В компоненте CompanyAboutSmallCard название складов теперь первые буквы слов в заглавном регистре
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-10-25 20:20 +0700
 
     #16
