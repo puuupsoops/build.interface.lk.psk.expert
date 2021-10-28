@@ -1,11 +1,11 @@
 <template>
 
 <Preloader v-if="loader"></Preloader>
-<div  v-if="isAuth">
-	<SideMenu></SideMenu>
+<div v-if="isAuth">
+	<SideMenu ></SideMenu>
 
 	<div :class="collapsed? 'sidebarOpen' :''">
-		<div class="content">
+		<div class="content" @click="collapsed=false">
 			<Debug></Debug>
 			<router-view></router-view>
 		</div>

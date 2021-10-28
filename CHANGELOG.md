@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-10-28 17:17 +0700
+
+    #18
+    
+    1. Переделан слайдер
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-10-26 12:52 +0700
 
     #17

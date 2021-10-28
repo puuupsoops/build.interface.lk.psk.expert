@@ -105,49 +105,89 @@
 		+flex
 		padding: 30px
 			bottom: 0
-		+justify-content(center)
-
+		+align-items(center)
+		+flex-wrap(nowrap)
+		//max-height: 570px
+		
 	&-slider
-		position: relative
-		margin:
-			right: 30px
-		width: 82%
-		max-width: 389px
+		+flex
+		
+		+flex-wrap(nowrap)
+		+justify-content(flex-start)
+		+align-items(flex-start)
+		overflow: hidden
 
-		&-elem 
+		&-slide 
+			+flex
+			flex: 0 0 100%
+			+align-items(flex-start)
+			+prefix(transition, $default-transition)
+		
+		& img
+			max-width: 380px
 			width: 100%
+			height: auto
 			outline: none
 			border-radius: 6px
-			overflow: hidden
+			position: relative
+			margin: 0 auto
 			
-		&-img
-			width: 100%
 
-		.slick-arrow
-			position: absolute
-			top: -12px
-			top: 50%
-			width: 13px
-			height: 24px
-			font-size: 0
+		&-small
+			+flex
+			flex: 0 0 25%
+			+flex-flow(column)
+			+justify-content(flex-start)
+			+align-items(center)
+			max-height: 570px
+			overflow: hidden
+
+			&-slide 
+				+prefix(transition, all 0.1s ease 0.1s)
+				opacity: 0.3
+
+				&:first-child 
+					opacity: 1
+
+			& img
+				min-width: 50px
+				max-width: 100px
+				height: auto
+				outline: none
+				border-radius: 6px
+				position: relative
+				
+				
+			
+
+		&-arrow
 			background-color: transparent
-			background-size: cover
 			background-position: center center
 			background-repeat: no-repeat
 			border: 0
 			cursor: pointer
-			z-index: 10
-
-			&.slick-disabled
-				opacity: .5
-
-			&.slick-prev
+			width: 100%
+			
+			height: 25px
+			z-index: 999
+			&.prev
 				left: -18px
 				background-image: url(~@/assets/img/icon/arrow-s-l.svg)
 			
-			&.slick-next
+			&.next
 				right: -18px
 				background-image: url(~@/assets/img/icon/arrow-s-r.svg)
+
+			&.plus
+				padding: 20px
+				top: -100px
+				left: -18px
+				background-image: url(~@/assets/img/icon/plus.svg)
+			
+			&.minus
+				padding: 20px
+				left: -18px
+				background-image: url(~@/assets/img/icon/minus.svg)
 
 		&-nav
 			margin:
@@ -174,7 +214,7 @@
 				width: 100%
 				height: auto
 				border-radius: 6px
-
+		
 		&-buttons
 			+flex
 			margin:

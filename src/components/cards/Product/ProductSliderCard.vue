@@ -1,140 +1,82 @@
 <template>
-<div class="product-slider-block content-elem">
-    <div class="product-slider">
-        <vueper-slides
-            lazy lazy-load-on-drag
-            class="no-shadow slider"
-            arrows-outside 
-            bullets-outside
-            ref="vueperslides1"
-            :touchable="false"
-            fade
-            :autoplay="false"
-            :bullets="false"
-            @slide="$refs.vueperslides2.goToSlide($event.currentSlide.index, { emit: false })"
-            fixed-height="300px"
-            slide-image-inside
-        >
-            <vueper-slide
-                v-for="(slide, i) in data"
-                :key="i"
-                :image="slide"
-                >
+<div class="content-elem">
+	<div class="product-slider-wrap" v-if="!loader">
+		<button class='product-slider-arrow prev' @click="previous"></button>
 
-                <template #loader>
-                    <i class="icon icon-loader spinning"></i>
-                    <span>Загрузка...</span>
-                </template>
-            </vueper-slide>
-        </vueper-slides>
+		<transition-group name="product-slider-trans" class='product-slider' tag="div">
+				<div v-for="slide in slides" class='product-slider-slide' :key="slide.id">
+					<img v-if="slide.src" :src="slide.src"  />
+				</div>
+		</transition-group>
+		<div class='product-slider-arrow next' @click="next"></div>
+		
+	
+		<transition-group name="product-slider-trans" class='product-slider-small' tag="div">
+			<div v-for="slide in slides" class='product-slider-small-slide' :key="slide.id">
+				<img v-if="slide.src" :src="slide.src"  />
+			</div>
+		</transition-group>
+	
 
-        <vueper-slides
-            lazy lazy-load-on-drag
-            class="no-shadow thumbnails"
-            ref="vueperslides2"
-            @slide="$refs.vueperslides1.goToSlide($event.currentSlide.index, { emit: false })"
-            :visible-slides="3"
-            fixed-height="75px"
-            :bullets="false"
-            :touchable="false"
-            :gap="5"
-            slide-image-inside
-            :arrows="false">
-            <vueper-slide
-                v-for="(slide, i) in data"
-                :key="i"
-                :image="slide"
-                @click="$refs.vueperslides2.goToSlide(i)">
-                <template #loader>
-                    <i class="icon icon-loader spinning"></i>
-                    <span>Загрузка...</span>
-                </template>
-            </vueper-slide>
-        </vueper-slides>
-    </div>
-
-    <div class="product-slider-buttons">
-        <a class="product-slider-link" href="#">Сертификаты</a>
-        <a id="product-slider-buttons-order" class="product-slider-link" href="#" style="display: block;">Заказать</a>
-        <a class="product-slider-link" href="#">Добавить в КП</a>
-    </div>
-</div>  
+	</div>
+		
+	
+	<div class="product-slider-buttons">
+		<a class="product-slider-link" href="#">Сертификаты</a>
+		<a id="product-slider-buttons-order" class="product-slider-link" href="#" style="display: block;">Заказать</a>
+		<a class="product-slider-link" href="#">Добавить в КП</a>
+	</div>
+	
+</div>
 </template>
 
 <script>
-import { ref } from 'vue'
-import { VueperSlides, VueperSlide } from 'vueperslides'
-import 'vueperslides/dist/vueperslides.css'
+import { ref, onUpdated, inject } from 'vue'
 export default {
-    components: { VueperSlides, VueperSlide },
-    props:{
-        data: {
-            type: Array
-        },
-    },
-    setup(){
-        let img = ref([]);
-        let cur_img = ref('');
-        
-        img.value = [
-            {link: 'https://psk.expert/upload/iblock/b4d/kos619_new_bezh_chern1.jpg'},
-            {link: 'https://psk.expert/upload/iblock/def/kos619_new_bezh_chern2.jpg'},
-            {link: 'https://psk.expert/upload/iblock/f3a/kos619_new_bezh_chern3.jpg'},
-        ];
+	props:{
+		data: {
+			type: Array
+		},
+	},
+	setup(props){
+		let slides = ref([]);
+	
+		const loader = inject('loader');
+		props.data.forEach( (v, i) => slides.value.push({id: i, src:v}));
+		// if (slides.value.length % 2 == 0){
+		// 			slides.value.push({id: slides.value.length, src:props.data[0]})
+		// 		}
 
-        cur_img.value = img.value[0].link;
-        return {
-            img,
-            cur_img
-        }
-    }
+		onUpdated( () => {
+				slides.value = [];
+				props.data.forEach( (v, i) => slides.value.push({id: i, src:v}));
+				// if (slides.value.length % 2 == 0){
+				// 	slides.value.push({id: slides.value.length, src:props.data[0]})
+				// }
+				});
+
+		let next = () => {
+			const first = slides.value.shift();
+			slides.value = slides.value.concat(first);
+		};
+		let previous = () => {
+			const last = slides.value.pop();
+			slides.value = [last].concat(slides.value);
+		};
+		
+
+		return {
+			loader,
+			slides,
+			next,
+			previous,
+			
+		}
+	}
 }
 </script>
 
-<style >
-.thumbnails {
-  margin: auto;
-    max-width: 300px;
-}
+<style lang="sass" scoped>
 
-.thumbnails .vueperslide {
-  box-sizing: border-box;
-  border: 1px solid #fff;
-  transition: 0.3s ease-in-out;
-  opacity: 0.7;
-  cursor: pointer;
-}
-
-.thumbnails .vueperslide--active {
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
-  opacity: 1;
-  border-color: #000;
-}
-.thumbnails .vueperslide__image {
-    background-size: contain;
-    background-repeat: no-repeat;
-    outline: none;
-    border-radius: 6px;
-    overflow: hidden;
-    width: auto;
-}
-
-.product-slider-img {
-    max-width:300;
-    max-height:100%;
-}
-.product-slider{
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-}
-.slider .vueperslide__image {
-    background-size: contain;
-    background-repeat: no-repeat;
-    outline: none;
-    border-radius: 6px;
-    overflow: hidden;
-    width: auto;
-}
 
 </style>
