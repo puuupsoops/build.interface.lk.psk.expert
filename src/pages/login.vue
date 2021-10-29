@@ -1,4 +1,5 @@
 <template>
+<div>
 	<div class="auth-box" v-if="!isAuth">
 		<div class="auth-form" >
 			<div class="auth-title">Авторизация</div>
@@ -53,7 +54,8 @@
 		</div>
 
 	</div>
-<SnackBar v-model="loginError" :message="loginErrorMsg"></SnackBar>
+	<SnackBar v-model="loginError" :message="loginErrorMsg"></SnackBar>
+</div>
 </template>
 
 <script>

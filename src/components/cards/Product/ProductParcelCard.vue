@@ -8,7 +8,7 @@
 							<div class="product-parcel-text">Наценка: </div>
 							<div class="product-parcel-value">
 								<div class="product-parcel-value-block">
-									<input type="number" min="0" v-model="markup_val" class="product-parcel-input">
+									<AmountInput v-model="markup_val" :min=0></AmountInput>
 									<button 
 											:class="'product-parcel-btn' + (parcel_type === 'percent' ? ' active':'')"
 											@click="parcel_type='percent'"
@@ -33,9 +33,7 @@
 					<div class="content-hide"  v-if="show">
 						<div class="product-parcel-row">
 							<div class="product-parcel-text">Количество: </div>
-							<div class="product-parcel-value"> 
-								<input type="number" min="0" v-model="count" class="product-parcel-input">
-							</div>
+							<AmountInput v-model="count"></AmountInput>
 						</div>
 						<div class="product-parcel-row">
 							<div class="product-parcel-text">Сума: </div>
@@ -61,13 +59,17 @@
 
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed } from 'vue';
+import AmountInput from '@/components/ui/AmountInput.vue';
 
 export default {
 	props: {
 		data:{
 			type: Object
 		}
+	},
+	components: {
+		AmountInput
 	},
 	setup(props){
 		let show=ref(true);

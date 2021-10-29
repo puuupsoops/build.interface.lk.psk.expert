@@ -1,4 +1,5 @@
 <template>
+<div>
 		<div class="top-line main-page">
 				
 				<Notification />
@@ -15,6 +16,7 @@
 
 
 		</div>
+	</div>
 </template>
 
 <script>

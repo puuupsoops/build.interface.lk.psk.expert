@@ -39,6 +39,14 @@ const routes = [
 			}
 	},
 	{
+		path: '/order', 
+		component: () => import('@/pages/order'),
+		name: 'Order',
+		meta:{
+				auth: true,
+			}
+	},
+	{
 		path: '/404',
 		component: () => import('@/pages/404'),
 		name: '404',

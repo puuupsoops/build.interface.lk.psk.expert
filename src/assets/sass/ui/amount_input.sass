@@ -1,0 +1,43 @@
+.amount
+	&-input
+		padding: 12px 10px 12px 15px
+		width: 100%
+		color: $font-light-color
+		background-color: #292C32
+		border: 0
+		border-radius: 6px
+		+prefix(user-select, none)
+		+prefix(transition, $default-transition)
+	
+		&:focus
+			color: $white
+	
+		&-wrap
+			position: relative
+			max-width: 80px
+			margin: 5px
+
+		&-arrow
+			+flex
+			position: absolute
+			right: 5px
+			width: 9px
+			height: 20px
+			+align-items(center)
+			cursor: pointer
+			
+			&-img
+				width: 100%
+
+				path
+					+prefix(transition, $default-transition)
+
+			&:hover
+				path
+					fill: #A5A7A9
+
+			&.plus
+				top: 0
+			
+			&.minus
+				bottom: 0

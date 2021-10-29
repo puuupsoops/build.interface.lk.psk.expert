@@ -1,4 +1,13 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-10-29 16:32 +0700
+
+    #19
+    
+    1. Добавлена страница order
+    2. Правки дизайна
+
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-10-28 17:17 +0700
 
     #18

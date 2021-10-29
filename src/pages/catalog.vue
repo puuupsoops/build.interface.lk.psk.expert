@@ -1,4 +1,5 @@
 <template>
+<div>
     <div class="top-line main-page">
         <div class="top-line-menu-btn"><span></span><span></span><span></span></div>
         <Notification />
@@ -23,6 +24,7 @@
       <div class="news-heading-text"><strong>Цена:</strong> {{item.prices.retail}} ₽</div>
     </div>
   </a>
+</div>
 </div>  
 </template>
 

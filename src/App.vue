@@ -7,7 +7,11 @@
 	<div :class="collapsed? 'sidebarOpen' :''">
 		<div class="content" @click="collapsed=false">
 			<Debug></Debug>
-			<router-view></router-view>
+			<router-view v-slot= "{ Component }">
+				<transition name="show" mode="out-in">
+					<component :is="Component"/>
+				</transition>
+			</router-view>
 		</div>
 	</div>
 </div>
@@ -56,5 +60,13 @@ setup() {
 
 <style lang="sass">
 @import "@/assets/sass/main.sass"
+
+.show-enter-active, .show-leave-active 
+  transition: all .2s ease
+
+.show-enter-from, .show-leave-to 
+  transform: translateX(-100px)
+  opacity: 0
+
 
 </style>
