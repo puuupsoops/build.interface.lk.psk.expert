@@ -62,14 +62,6 @@
 			&.active
 				opacity: 1
 
-		.mCSB_inside
-			+prefix(transition, $default-transition)
-
-			.mCSB_container
-				margin: 0
-				padding:
-					right: 25px
-
 	&-heading
 		font-size: 33px
 		line-height: 51px
@@ -129,7 +121,7 @@
 			+prefix(transition, $default-transition)
 			cursor: pointer
 			&.active
-				color: $accent-color
+				color: $active-color
 
 		&-arrow
 			position: absolute
@@ -183,8 +175,12 @@
 				line-height: 25px
 				color: $white
 
-				&.active
+				&:hover
 					color: $accent-color
+				
+				&.active
+					color: $active-color
+
 	&-switch input 
 		position: absolute
 		opacity: 0

@@ -9,7 +9,7 @@ export default ({
 	},
 	getters: {
 		isCompanysLoad: state => state.companys.length !== 0,
-		isManagerLoad: state => state.manager !== {},
+		isManagerLoad: state => Object.keys(state.manager).length !== 0,
 		getCompanys: state => state.companys,
 		getCompanyData : state => uid => {
 			let company = state.companys.find(x => x.uid === uid)

@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 import company from '@/store/company'
 import product from '@/store/product'
 import auth from '@/store/auth'
+import catalog from '@/store/catalog'
 
 
 export default createStore({
@@ -9,5 +10,6 @@ export default createStore({
 		auth,
 		company,
 		product,
+		catalog,
 	}
 })

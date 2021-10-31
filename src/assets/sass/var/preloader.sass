@@ -1,0 +1,38 @@
+
+.preloader-local
+	width: 100px
+	height: 100px
+	position: relative
+	display: flex
+	justify-content: center
+	align-items: center
+
+	&.circle1, &.circle2 
+		position: absolute
+		width: 10px
+		height: 10px
+		border-radius: 50%
+		border: 2px solid $accent-color
+		animation: anim12 1.2s ease-in infinite
+
+	&.circle2 
+		width: 60px
+		height: 60px
+		animation: anim12-2 1.2s ease-out infinite
+		border: 2px solid $active-color
+
+	+keyframes (anim12)
+		100% 
+			width: 60px
+			height: 60px
+			opacity: 0
+
+	+keyframes(anim12-2)
+		0% 
+			opacity: 0
+
+		100% 
+			width: 10px
+			height: 10px
+			opacity: 1
+

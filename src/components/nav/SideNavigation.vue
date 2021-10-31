@@ -32,8 +32,14 @@
 							v-for="(child, i) in item.children"
 							:key="i"
 						>
-							<router-link tag="a" :to="child.link" class="sidebar-nav-dropdown-link" active-class="sidebar-nav-dropdown-link active"> {{ child.title }} </router-link>
-
+							<router-link
+								tag="a"
+								:to="child.link" 
+								class="sidebar-nav-dropdown-link" 
+								active-class="sidebar-nav-dropdown-link active"
+							>
+								{{ child.title }}
+							</router-link>
 						</li>
 					</ul>
 				</div>

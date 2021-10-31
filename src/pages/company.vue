@@ -80,7 +80,7 @@ export default {
 	
 
 		onMounted(() => {
-			console.log('onMount')
+			//console.log('onMount')
 			if (!store.getters.isCompanysLoad || !store.getters.isManagerLoad)
 			{
 				loader.value=true;

@@ -1,0 +1,153 @@
+.catalog
+	+flex
+	+flex-wrap(wrap)
+	width: 100%
+	margin: 
+		top: 30px
+	&-head
+
+		&-card
+			
+			flex-grow: 1
+			height: 81px
+			background-color: $bg-default-color
+			z-index: 100
+			border-radius: 6px
+			+box-shadow(0px 0px 15px rgba(0, 0, 0, 0.5))
+			text-align: left
+			padding: 31px 30px
+			font-size: 20px
+	&-body
+		padding-left: 415px
+		width:100%
+
+	&-menu
+		+flex
+		+flex-flow(column)
+		+justify-content(flex-start)
+		+align-items(center)
+		margin: 
+			right: 30px
+		width: 100%
+		max-width: 285px
+		height: 100%
+		background-color: $bg-default-color
+		overflow-y: none
+		z-index: 100
+		border-radius: 6px
+
+		&-heading
+			+box-shadow(0px 0px 15px rgba(0, 0, 0, 0.5))
+			width: 100%
+			height: 81px
+			text-align: center
+			padding: 20px 0
+			font-size: 33px
+
+			&-add
+				float: right
+				width: 40px
+				cursor: pointer
+
+				&:hover
+					color: $accent-color
+		
+		&-nav
+			+flex
+			width: 100%
+			margin:
+				top: 30px
+				bottom: 20px
+			list-style-type: none
+			+align-items(flex-start)
+			+flex-flow(column)
+			
+			&-elem
+				display: inline-block
+				position: relative
+				margin:
+					bottom: 15px
+					left: 20px
+				
+				&-wrap
+					cursor: pointer
+
+					&:hover
+						.menu-nav-text,
+						.menu-nav-link
+							color: $accent-color
+						
+						.menu-nav-arrow-img
+							path
+								fill: $accent-color
+
+			&-text,
+			&-link
+				display: inline-block
+				padding:
+					left: 19px
+				font-size: 18px
+				line-height: 30px
+				font-weight: 400
+				color: $font-light-color
+				+prefix(transition, $default-transition)
+				cursor: pointer
+				&.active
+					color: $active-color
+
+			&-arrow
+				position: absolute
+				top: 5px
+				left: 0
+				width: 7px
+				height: 13px
+
+				&.active 
+					transform: rotate(90deg)
+					-webkit-animation: spin .3s ease-in-out
+					-moz-animation: spin .3s linear
+					animation: spin .3s linear
+
+					+keyframes (spin)
+						0%
+							transform: rotate(0deg)
+						100%
+							transform: rotate(90deg)
+
+
+				&-img
+					width: 100%
+
+					path
+						+prefix(transition, $default-transition)
+			
+			&-dropdown
+				//display: none
+				overflow: hidden
+				height: 0
+				+prefix(transition,  $default-transition)
+				padding:
+					left: 20px
+
+				&.active
+					height: auto
+					+prefix(transition,  $default-transition )
+
+				&-list
+					padding: 
+						top: 5px
+					list-style-type: none
+					list-style-position: outside
+					li
+						margin:
+							top: 5px
+					
+				&-link
+					font-size: 16px
+					line-height: 25px
+					color: $white
+
+					&.active
+						color: $active-color
+					&:hover
+						color: $accent-color

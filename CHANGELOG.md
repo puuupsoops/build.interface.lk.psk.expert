@@ -1,11 +1,19 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-10-31 16:32 +0700
+
+    #20
+    
+    1. Добавлена страница order
+    2. Правки дизайна
+    3. Изменена страница /catalog, добавлено меню по категориям, каталог подгружается.
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-10-29 16:32 +0700
 
     #19
     
     1. Добавлена страница order
     2. Правки дизайна
-
 
 Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-10-28 17:17 +0700

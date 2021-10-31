@@ -1,6 +1,6 @@
 {
   "name": "lk.psk.expert",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -8,26 +8,26 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@fullcalendar/core": "^5.9.0",
-    "@fullcalendar/daygrid": "^5.9.0",
-    "@fullcalendar/interaction": "^5.9.0",
-    "@fullcalendar/vue3": "^5.9.0",
+    "@fullcalendar/core": "^5.10.0",
+    "@fullcalendar/daygrid": "^5.10.0",
+    "@fullcalendar/interaction": "^5.10.0",
+    "@fullcalendar/vue3": "^5.10.0",
     "axios": "^0.21.4",
-    "vee-validate": "^4.5.2",
+    "vee-validate": "^4.5.4",
     "vue": "^3.0.0",
-    "vue-router": "^4.0.11",
+    "vue-router": "^4.0.12",
     "vueperslides": "^3.3.2",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
+    "@vue/cli-plugin-babel": "^4.5.15",
+    "@vue/cli-plugin-eslint": "^4.5.15",
+    "@vue/cli-service": "^4.5.15",
     "@vue/compiler-sfc": "^3.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^7.0.0",
-    "sass": "^1.27.0",
+    "eslint-plugin-vue": "^7.20.0",
+    "sass": "^1.43.4",
     "sass-loader": "^10.0.3"
   },
   "eslintConfig": {

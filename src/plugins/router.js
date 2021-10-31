@@ -13,9 +13,10 @@ const routes = [
 			}
 	},
 	{
-		path: '/catalog',
+		path: '/catalog/:id?',
 		component: () => import('@/pages/catalog'),
 		name: 'Catalog',
+		props: true,
 		meta:{
 				auth: true,	
 			}
