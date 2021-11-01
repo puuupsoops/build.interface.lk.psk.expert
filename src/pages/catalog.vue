@@ -7,40 +7,43 @@
 				<PersonalBar />
 		</div>
 
-	<div class="catalog">		
+	<div class="catalog">
+		<div :class="'catalog-elem-menu' + (showMenu ? ' menu-open' : '')">
 			<CatalogMenu :loading="loaderMenu" :data="catalogMenu" v-model:catalogName="currentCategory" v-model:showMenu="showMenu" />
-	
+		</div>
+		<div class="catalog-elem">
 			<div class="catalog-head-card">
 				<span v-if="currentCategory">{{currentCategory}}</span>
 				<span v-else>Выберите категорию из каталога</span>
 			</div>
+		</div>
 		
-		
-	</div>
 
-<PreloaderLocal v-if="loaderCatalog" />
-<div class="content-wrap content-main-wrap" style="flex-direction: column;" v-if="isLoad ">
-		
-	<a class="news" href="#" style="margin-bottom: 5px" 
-		v-for="item of catalog.products" 
-		:key="item.id"
-		>
+		<div :class="'catalog-body' + (showMenu ? ' menu-open' : '')">
+			<PreloaderLocal v-if="loaderCatalog" class="catalog-body-preloader" />
+			<div class="content-wrap content-main-wrap" style="flex-direction: column;" v-if="isLoad ">
 					
-		<div class="news-img-box">
-			<img class="news-img" :src="item.image" alt="" />
-		</div>
+				<a class="news" href="#" style="margin-bottom: 5px" 
+					v-for="item of catalog.products" 
+					:key="item.id"
+					>
+								
+					<div class="news-img-box">
+						<img class="news-img" :src="item.image" alt="" />
+					</div>
 
-		<div class="news-text">
-			<div class="news-heading">
-				<div class="news-heading-text">{{ item.title }}</div>
-				<div class="news-heading-date">{{ item.article }}</div>
+					<div class="news-text">
+						<div class="news-heading">
+							<div class="news-heading-text">{{ item.title }}</div>
+							<div class="news-heading-date">{{ item.article }}</div>
+						</div>
+						<div class="news-description">{{ item.description }}</div>
+						<div class="news-heading-text"><strong>Цена:</strong> {{item.prices.retail}} ₽</div>
+					</div>
+				</a>
 			</div>
-			<div class="news-description">{{ item.description }}</div>
-			<div class="news-heading-text"><strong>Цена:</strong> {{item.prices.retail}} ₽</div>
 		</div>
-	</a>
-</div>
-
+	</div>
 </div>
 </template>
 

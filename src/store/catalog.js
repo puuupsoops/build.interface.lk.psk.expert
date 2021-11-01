@@ -19,6 +19,9 @@ export default ({
 		setCatalog(state, data){
 			state.catalog = data
 		},
+		cleartCatalog(state){
+			state.catalog = {}
+		}
 	},
 	actions: {
 		GET_CATALOG_MENU: async function({commit}) {
@@ -31,6 +34,7 @@ export default ({
 				})
 		},
 		GET_CATALOG: async function({commit}, data) {
+			commit('cleartCatalog')
 			await axios.get(site_location + `/test/api/dashboard/catalog_page/ajax.php`, 
 				{
 					transformRequest: (data, headers) => {

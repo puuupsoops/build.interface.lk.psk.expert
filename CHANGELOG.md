@@ -1,4 +1,12 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-11-1 14:12 +0700
+
+    #21
+    
+    1. Правки дизайна на странице /catalog
+    2. Добавлена анимация в переключение страниц
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-10-31 16:32 +0700
 
     #20

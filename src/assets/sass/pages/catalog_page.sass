@@ -1,13 +1,42 @@
 .catalog
-	+flex
-	+flex-wrap(wrap)
-	width: 100%
+	display: grid
+	grid-template-columns: max(285px) 1fr
 	margin: 
 		top: 30px
+	
+	&-elem
+		margin:
+			left: 20px
+		height: 81px
+		
+		&-menu
+			grid-column-start: 1
+			grid-row-start: 1
+			grid-row-end: 2
+			margin: 
+				bottom: auto
+
+			&.menu-open
+				grid-row-end: 3
+
+	&-body
+		margin:
+			left: 20px
+		grid-column-start: 1
+		grid-column-end: 3
+		grid-row-start: 2
+		grid-row-end: 3
+		transform: translate3d(-8px, 0, 0) 
+
+		&.menu-open
+			grid-column-start: 2
+			
+		&-preloader
+			left: 50%
+
 	&-head
 
 		&-card
-			
 			flex-grow: 1
 			height: 81px
 			background-color: $bg-default-color
@@ -17,9 +46,6 @@
 			text-align: left
 			padding: 31px 30px
 			font-size: 20px
-	&-body
-		padding-left: 415px
-		width:100%
 
 	&-menu
 		+flex
