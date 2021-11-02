@@ -8,7 +8,12 @@
 	</div>
 	<nav class="nav">
 		<ul class="nav-list">
-		<li class="active"><a class="nav-link" href="#">Поиск товара</a></li>
+		<li class="active">
+			<router-link
+						tag="a"
+						class="nav-link" 
+						:to="'/product'">Поиск товара</router-link>
+		</li>
 		<li><a class="nav-link" href="#">Заказы</a></li>
 		<li><a class="nav-link" href="#">Отгрузки</a></li>
 		<li><a class="nav-link" href="#">Возвраты</a></li>
@@ -18,8 +23,8 @@
 		</ul>
 	</nav>
 
-	
-	<div class="product-search"  >
+
+	<div class="product-search" v-if="article==''">
 		<div class="product-search-input" >
 			<input type="text" placeholder="Поиск" autocomplete="off" @keyup.enter="doSearch()" v-model="search_str">
 			<div class="product-search-clear" @click="clearSearch();search_str = '';"></div>
@@ -29,7 +34,7 @@
 		</button><section></section>
 
 	</div>
-	
+
 	<div v-if="productFound">  
 		<ProductHeaderCard :title="String(product.NAME)" :price="String(product.PRICE)" :status="String(product.STATUS)" v-if="isLoad"></ProductHeaderCard>
 		<div class="content-wrap content-product-wrap" v-if="isLoad">
@@ -82,7 +87,8 @@ export default {
 		ProductParcelCard,
 		ProductInfoCard,
 	},
-	setup() {
+	props: ['article'],
+	setup(props) {
 		let store = useStore();
 
 		let activeCompanyUid = ref('');
@@ -93,19 +99,30 @@ export default {
 		const loader = inject('loader');
 
 		onMounted(() => {
-			Promise.all([
+			if (!store.getters.isCompanysLoad || !store.getters.isManagerLoad)
+				{
+					Promise.all([
 						store.dispatch('GET_PARTNER'),
-					])
-					//.catch(()=>{alert('error')})
-					.finally(() => { setTimeout(()=>{
-							isLoad.value = false;
-							activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
-						},500); })
-			});
+						])
+						//.catch(()=>{alert('error')})
+						.finally(() => { setTimeout(()=>{
+								activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
+							},500); })
+				}
+				// if get parametr aticle is not emty when using product page else using search
+			if (props.article !=='') {
+				loader.value = true;
+				store.dispatch('SEARCH_PRODUCT', props.article)
+					.then(()=>{
+						isLoad.value=true;
+						activeProductId.value=store.getters.getProduct.ID;
+						})
+					.finally(() => {loader.value=false})
+			}
+		});
 
 		let loadProduct = () => {
 			loader.value = true;
-//            store.commit('setProductClear');
 			store.dispatch('GET_PRODUCT_BY_ID', activeProductId.value)
 				.then(()=>{
 					activeProductId.value=store.getters.getProduct.ID;

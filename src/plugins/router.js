@@ -32,9 +32,10 @@ const routes = [
 			}
 	},
 	{
-		path: '/product', 
+		path: '/product/:article?', 
 		component: () => import('@/pages/product'),
 		name: 'Product',
+		props: true,
 		meta:{
 				auth: true,
 			}

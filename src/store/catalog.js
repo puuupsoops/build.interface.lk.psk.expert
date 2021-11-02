@@ -11,6 +11,16 @@ export default ({
 		isCatalogLoad: state => Object.keys(state.catalog).length !== 0,
 		getCatalogMenu: state => state.menu,
 		getCatalog: state => state.catalog,
+		getMenuCategoryName: state => id => {
+			for (var i in state.menu) {
+				if (typeof state.menu[i] == 'object') {
+					let res = state.menu[i].sub.find(cat => cat.code == id)
+					if (res) return res.name
+				}
+			}
+			return undefined
+			
+		},
 	},
 	mutations: {
 		setCatalogMenu(state, data){
@@ -19,7 +29,7 @@ export default ({
 		setCatalog(state, data){
 			state.catalog = data
 		},
-		cleartCatalog(state){
+		clearCatalog(state){
 			state.catalog = {}
 		}
 	},
@@ -34,7 +44,7 @@ export default ({
 				})
 		},
 		GET_CATALOG: async function({commit}, data) {
-			commit('cleartCatalog')
+			commit('clearCatalog')
 			await axios.get(site_location + `/test/api/dashboard/catalog_page/ajax.php`, 
 				{
 					transformRequest: (data, headers) => {

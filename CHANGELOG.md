@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-11-02 17:25 +0700
+
+    #22
+    
+    1. Связал страницу /catalog с /product. Теперь из каталога можно переходить к конкретному товару по клику
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-11-1 14:12 +0700
 
     #21

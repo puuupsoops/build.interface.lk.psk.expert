@@ -17,9 +17,9 @@ state:  {
 		getProductSearchResult: state => state.search_product_result,
 		getProductOffers: state => state.product_offers,
 		getProductFound: state => state.product_found,
-		getProduct: state => state.product,        
-		getProductImages: state => state.product_images,        
-		getProductProtect: state => state.product_protect,        
+		getProduct: state => state.product,
+		getProductImages: state => state.product_images,
+		getProductProtect: state => state.product_protect,
 	},
 	mutations: {
 		setSearchProductResult(state, data) {

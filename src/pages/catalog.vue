@@ -9,11 +9,12 @@
 
 	<div class="catalog">
 		<div :class="'catalog-elem-menu' + (showMenu ? ' menu-open' : '')">
-			<CatalogMenu :loading="loaderMenu" :data="catalogMenu" v-model:catalogName="currentCategory" v-model:showMenu="showMenu" />
+			<CatalogMenu :loading="loaderMenu" :data="catalogMenu" v-model:showMenu="showMenu" />
 		</div>
+
 		<div class="catalog-elem">
 			<div class="catalog-head-card">
-				<span v-if="currentCategory">{{currentCategory}}</span>
+				<span v-if="getMenuCategoryName">{{getMenuCategoryName}}</span>
 				<span v-else>Выберите категорию из каталога</span>
 			</div>
 		</div>
@@ -23,10 +24,13 @@
 			<PreloaderLocal v-if="loaderCatalog" class="catalog-body-preloader" />
 			<div class="content-wrap content-main-wrap" style="flex-direction: column;" v-if="isLoad ">
 					
-				<a class="news" href="#" style="margin-bottom: 5px" 
-					v-for="item of catalog.products" 
-					:key="item.id"
-					>
+				<router-link
+						tag="a"
+						class="news" 
+						v-for="item of catalog.products" 
+						:key="item.id"
+						:to="'/product/' + item.article" 
+				>
 								
 					<div class="news-img-box">
 						<img class="news-img" :src="item.image" alt="" />
@@ -37,10 +41,10 @@
 							<div class="news-heading-text">{{ item.title }}</div>
 							<div class="news-heading-date">{{ item.article }}</div>
 						</div>
-						<div class="news-description">{{ item.description }}</div>
+						<div class="news-description" v-html="item.description" ></div>
 						<div class="news-heading-text"><strong>Цена:</strong> {{item.prices.retail}} ₽</div>
 					</div>
-				</a>
+				</router-link>
 			</div>
 		</div>
 	</div>
@@ -55,6 +59,7 @@ import CatalogMenu  from '@/components/cards/Catalog/CatalogMenu.vue';
 import PreloaderLocal  from '@/components/PreloaderLocal.vue';
 
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router'
 import { ref, computed, onMounted, watch } from 'vue';
 
 export default {
@@ -67,14 +72,17 @@ export default {
 		props: ['id'],
 		setup(props){
 			const store = useStore();
-			//const {catalog, isLoad} = useCatalog('letnyaya',1);
+			const router = useRouter();
 			let loaderMenu = ref(false);
 			let loaderCatalog = ref(false);
 			let currentCategory = ref(null);
-			let showMenu = ref(true)
-			
+			let showMenu = ref(true);
+			let getMenuCategoryName = computed(() => store.getters.getMenuCategoryName(props.id));
+
 			watch( () => props.id, () => {
-				if (props.id !=='') {
+				store.commit('clearCatalog')
+				
+				if (props.id !=='' & props.id !== undefined) {
 					loaderCatalog.value = true;
 					store.dispatch('GET_CATALOG', {code: props.id, page: 1})
 						.then(() => {loaderCatalog.value = false})
@@ -85,8 +93,18 @@ export default {
 				if (!store.getters.isCatalogMenuLoad) {
 					loaderMenu.value = true;
 					store.dispatch('GET_CATALOG_MENU')
-						.then(() => {loaderMenu.value = false})
+						.then(() => {
+							loaderMenu.value = false;
+							if (!getMenuCategoryName.value) 
+								router.push({name: 'Catalog'});
+						})
 				}
+				store.commit('clearCatalog')
+				if (props.id !=='' & props.id !== undefined) {
+					loaderCatalog.value = true;
+					store.dispatch('GET_CATALOG', {code: props.id, page: 1})
+						.then(() => {loaderCatalog.value = false})
+					}
 			});
 
 			return{
@@ -95,7 +113,8 @@ export default {
 				loaderCatalog,
 				showMenu,
 				catalogMenu: computed(() => store.getters.getCatalogMenu),
-				catalog: computed(() => store.getters.getCatalog),				
+				catalog: computed(() => store.getters.getCatalog),
+				getMenuCategoryName,
 				isLoad: computed(() => store.getters.isCatalogLoad),
 			}
 		}
