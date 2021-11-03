@@ -18,7 +18,6 @@
 				<span v-else>Выберите категорию из каталога</span>
 			</div>
 		</div>
-		
 
 		<div :class="'catalog-body' + (showMenu ? ' menu-open' : '')">
 			<PreloaderLocal v-if="loaderCatalog" class="catalog-body-preloader" />
@@ -48,6 +47,7 @@
 			</div>
 		</div>
 	</div>
+	<a class="page_up_down_butn" href="#" v-if="scroll > 200">Наверх</a>
 </div>
 </template>
 
@@ -60,7 +60,7 @@ import PreloaderLocal  from '@/components/PreloaderLocal.vue';
 
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router'
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue';
 
 export default {
 		components:{
@@ -78,6 +78,10 @@ export default {
 			let currentCategory = ref(null);
 			let showMenu = ref(true);
 			let getMenuCategoryName = computed(() => store.getters.getMenuCategoryName(props.id));
+			let scroll = ref();
+			let onScroll = (e) => {
+				scroll.value = e.target.documentElement.scrollTop;
+			}
 
 			watch( () => props.id, () => {
 				store.commit('clearCatalog')
@@ -88,8 +92,9 @@ export default {
 						.then(() => {loaderCatalog.value = false})
 					}
 			})
-
+			onBeforeUnmount(() => { window.removeEventListener("scroll", onScroll)});
 			onMounted(() => {
+				window.addEventListener("scroll", onScroll);
 				if (!store.getters.isCatalogMenuLoad) {
 					loaderMenu.value = true;
 					store.dispatch('GET_CATALOG_MENU')
@@ -116,10 +121,11 @@ export default {
 				catalog: computed(() => store.getters.getCatalog),
 				getMenuCategoryName,
 				isLoad: computed(() => store.getters.isCatalogLoad),
+				scroll,
 			}
 		}
 };
 </script>
 
-<style>
+<style scoped>
 </style>
