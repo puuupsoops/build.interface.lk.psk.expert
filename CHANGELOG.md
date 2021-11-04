@@ -1,4 +1,13 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-11-04 20:98 +0700
+
+    #24
+    
+    1. Доработка комопонента ProductOffersOrderCard на странице /order
+    2. Изменение поведения компонентов imput и checkbutton
+    3. Правка дизайна
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-11-02 17:25 +0700
 
     #23

@@ -6,23 +6,7 @@
 		<PersonalBar></PersonalBar>
 		
 	</div>
-	<nav class="nav">
-		<ul class="nav-list">
-		<li class="active">
-			<router-link
-						tag="a"
-						class="nav-link" 
-						:to="'/product'">Поиск товара</router-link>
-		</li>
-		<li><a class="nav-link" href="#">Заказы</a></li>
-		<li><a class="nav-link" href="#">Отгрузки</a></li>
-		<li><a class="nav-link" href="#">Возвраты</a></li>
-		<li><a class="nav-link" href="#">Претензии</a></li>
-		<li><a class="nav-link" href="#">Договора</a></li>
-		<li><a class="nav-link" href="#">Взаиморасчеты</a></li>
-		</ul>
-	</nav>
-
+	<top-nav></top-nav>
 
 	<div class="product-search" v-if="article==''">
 		<div class="product-search-input" >
@@ -36,17 +20,29 @@
 	</div>
 
 	<div v-if="productFound">  
-		<ProductHeaderCard :title="String(product.NAME)" :price="String(product.PRICE)" :status="String(product.STATUS)" v-if="isLoad"></ProductHeaderCard>
+		<ProductHeaderCard
+			:title="String(product.NAME)"
+			:price="String(product.PRICE)"
+			:status="String(product.STATUS)"
+			v-if="isLoad"/>
 		<div class="content-wrap content-product-wrap" v-if="isLoad">
 			<div class="content-wrap-elem">
 
-				<ProductSearchResultCard :data="productFound" v-model="activeProductId" @onClick="loadProduct()"></ProductSearchResultCard>
-				<ProductMoreCard :data="productOffers"></ProductMoreCard>
+				<ProductSearchResultCard 
+					:data="productFound" 
+					:cardType="'search'"
+					v-model="activeProductId" 
+					@onClick="loadProduct()"
+
+				/>
+				<div class="content-elem-desc">
+					<ProductOffersCard :data="productOffers"/>
+				</div>
 				<ProductAddInfoCard></ProductAddInfoCard>
 		
 			</div>
 			<div class="content-wrap-elem">
-				<ProductSliderCard :data="productImages"></ProductSliderCard>
+				<ProductSliderCard :data="productImages" @toOrder="toOrder"></ProductSliderCard>
 				<ProductParcelCard :data="product"></ProductParcelCard>
 				<ProductInfoCard :data="product" :protect="productProtect"></ProductInfoCard>
 			</div>
@@ -64,14 +60,15 @@ import Notification from '@/components/cards/Notification'
 import CompanyBarTop from '@/components/cards/Company/CompanyBarTop'
 import ProductHeaderCard from '@/components/cards/Product/ProductHeaderCard'
 import ProductSearchResultCard from '@/components/cards/Product/ProductSearchResultCard'
-import ProductMoreCard from '@/components/cards/Product/ProductMoreCard'
+import ProductOffersCard from '@/components/cards/Product/ProductOffersCard'
 import ProductAddInfoCard from '@/components/cards/Product/ProductAddInfoCard'
 import ProductSliderCard from '@/components/cards/Product/ProductSliderCard'
 import ProductParcelCard from '@/components/cards/Product/ProductParcelCard'
 import ProductInfoCard from '@/components/cards/Product/ProductInfoCard'
-
+import TopNav from '@/components/nav/TopNav'
 
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import { ref, onMounted, computed, inject } from 'vue'
 
 export default {
@@ -81,22 +78,30 @@ export default {
 		CompanyBarTop,
 		ProductHeaderCard,
 		ProductSearchResultCard,
-		ProductMoreCard,
+		ProductOffersCard,
 		ProductAddInfoCard,
 		ProductSliderCard,
 		ProductParcelCard,
 		ProductInfoCard,
+		TopNav
 	},
 	props: ['article'],
 	setup(props) {
-		let store = useStore();
-
-		let activeCompanyUid = ref('');
-		let search_str = ref('')
-		let isLoad = ref(false);
-		let activeProductId = ref('');
-
+		const store = useStore();
+		const router = useRouter();
 		const loader = inject('loader');
+
+		const activeCompanyUid = ref('');
+		const search_str = ref('')
+		const isLoad = ref(false);
+		const activeProductId = ref('');
+		
+
+		const toOrder = () => {
+			router.push({name: 'Order'});
+			//store.dispatch('ADD_PRODUCT_TO_CART', store.getters.getPtoductToCart)
+			//	.then(()=>{router.push({name: 'Order'});})
+		}
 
 		onMounted(() => {
 			if (!store.getters.isCompanysLoad || !store.getters.isManagerLoad)
@@ -121,7 +126,7 @@ export default {
 			}
 		});
 
-		let loadProduct = () => {
+		const loadProduct = () => {
 			loader.value = true;
 			store.dispatch('GET_PRODUCT_BY_ID', activeProductId.value)
 				.then(()=>{
@@ -130,12 +135,12 @@ export default {
 				.finally(() => {loader.value=false})
 		};
 
-		let clearSearch = () => {
+		const clearSearch = () => {
 			isLoad.value = false;
 			store.commit('setSearchProductClear');
 		};
 
-		let doSearch = () => {
+		const doSearch = () => {
 			clearSearch();
 			loader.value = true;
 			store.dispatch('SEARCH_PRODUCT', search_str.value)
@@ -161,6 +166,7 @@ export default {
 			doSearch,
 			clearSearch,
 			loadProduct,
+			toOrder,
 		}
 	},
 }

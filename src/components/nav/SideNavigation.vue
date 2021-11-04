@@ -69,28 +69,28 @@ export default {
 			let menu_start = [
 				{title: 'Мои компании', link: null , children: [
 				]},
-				{title: "Рабочий стол", link: null, children: [
-					{title: "Заказы", link: '/orders'},
-					{title: "Отгрузки", link: '/shipments'},
-					{title: "Претензии", link: '/claims'},
-					{title: "Возвраты", link: '/returns'},
-					{title: "Аналитика", link: '/analytics'},
+				{title: 'Рабочий стол', link: null, children: [
+					{title: 'Заказы', link: '/orders'},
+					{title: 'Отгрузки', link: '/shipments'},
+					{title: 'Претензии', link: '/claims'},
+					{title: 'Возвраты', link: '/returns'},
+					{title: 'Аналитика', link: '/analytics'},
 				]},
-				{title: 'Взаиморасчеты', link: null, children: [
-					{title: "Счета", link: '/bills'},
-					{title: "Реализации", link: '/realization'},
-					{title: "Корректировки", link: '/adjustments'},
-					{title: "Акты", link: '/acts'},
-					{title: "ЭДО", link: '/edo'},
+				{title: 'Взаиморасчеты', link: '/settlements', children: [
+					{title: 'Счета', link: '/bills'},
+					{title: 'Реализации', link: '/realization'},
+					{title: 'Корректировки', link: '/adjustments'},
+					{title: 'Акты', link: '/acts'},
+					{title: 'ЭДО', link: '/edo'},
 				]},
 				{title: 'Сертификаты', link: null, children: [
-					{title: "Разрешительная", link: '/permissive'},
-					{title: "Нормативная", link: '/regulatory'},
-					{title: "Доп.Информация", link: '/dop_info'},
+					{title: 'Разрешительная', link: '/permissive'},
+					{title: 'Нормативная', link: '/regulatory'},
+					{title: 'Доп.Информация', link: '/dop_info'},
 				]},
 				{title: 'Каталог', link: null, children: [
-					{title: "Электронный", link: '/catalog'},
-					{title: "Интерактивный", link: '/dop_info'},
+					{title: 'Электронный', link: '/catalog'},
+					{title: 'Интерактивный', link: '/dop_info'},
 				]},
 				{title: 'Акции и Предложения', link: '/promotions', children: null},
 				{title: 'Скидки', link: '/sale', children: null},

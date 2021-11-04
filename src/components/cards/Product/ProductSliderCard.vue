@@ -12,7 +12,11 @@
 		
 	
 		<transition-group name="product-slider-trans" class='product-slider-small' tag="div">
-			<div v-for="slide in slides" class='product-slider-small-slide' :key="slide.id">
+			<div 
+				v-for="slide in slides"
+				class='product-slider-small-slide'
+				:key="slide.id"
+			>
 				<img v-if="slide.src" :src="slide.src"  />
 			</div>
 		</transition-group>
@@ -22,22 +26,28 @@
 		
 	
 	<div class="product-slider-buttons">
-		<a class="product-slider-link" href="#">Сертификаты</a>
-		<a id="product-slider-buttons-order" class="product-slider-link" href="#" style="display: block;">Заказать</a>
-		<a class="product-slider-link" href="#">Добавить в КП</a>
+		<div class="product-slider-link">Сертификаты</div>
+		<div
+			class="product-slider-link"
+			@click="$emit('toOrder', $event.target.click)"
+		>Заказать</div>
+		<div class="product-slider-link">Добавить в КП</div>
 	</div>
 	
 </div>
 </template>
 
 <script>
+
 import { ref, onUpdated, inject } from 'vue'
+
 export default {
 	props:{
 		data: {
 			type: Array
 		},
 	},
+	emits: ['toOrder'],
 	setup(props){
 		let slides = ref([]);
 	

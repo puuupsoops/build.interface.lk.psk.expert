@@ -498,9 +498,6 @@ a
 		bottom: 24px
 	background-color: $bg-default-color
 	
-	.active 
-		border: 2px solid $active-color !important
-
 	&-more-info-arrow
 		position: absolute
 		display: block
@@ -693,6 +690,9 @@ a
 
 			&:last-child
 				width: 60%
+
+		.table-row.active
+			border: 2px solid $active-color
 	
 	&.more-info-table
 		border-radius: 6px

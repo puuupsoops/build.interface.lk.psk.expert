@@ -1,5 +1,5 @@
 <template>
-    <div class="content-elem product-more-info-block">
+    <div class="content-elem ">
         <div class="product-more-info-table-wrap scroll-elem">
             <div class="table-more-info-arrow"></div>
             <div class="table more-info-table">

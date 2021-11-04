@@ -8,7 +8,7 @@
 							<div class="product-parcel-text">Наценка: </div>
 							<div class="product-parcel-value">
 								<div class="product-parcel-value-block">
-									<AmountInput v-model="markup_val" :min=0></AmountInput>
+									<AmountInput v-model="markup_val"></AmountInput>
 									<button 
 											:class="'product-parcel-btn' + (parcel_type === 'percent' ? ' active':'')"
 											@click="parcel_type='percent'"

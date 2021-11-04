@@ -15,7 +15,11 @@
 		&-wrap
 			position: relative
 			max-width: 80px
+			min-width: 80px
 			margin: 5px
+
+			&.disable
+				opacity: 0.3
 
 		&-arrow
 			+flex
@@ -25,14 +29,18 @@
 			height: 20px
 			+align-items(center)
 			cursor: pointer
-			
+
+			&.disable
+	
+				cursor: default
+
 			&-img
 				width: 100%
 
 				path
 					+prefix(transition, $default-transition)
 
-			&:hover
+			&:not(.disable):hover
 				path
 					fill: #A5A7A9
 

@@ -14,12 +14,20 @@ state:  {
 	},
 
 	getters: {
+		isProduct: state => Object.keys(state.product).length !== 0,
 		getProductSearchResult: state => state.search_product_result,
 		getProductOffers: state => state.product_offers,
 		getProductFound: state => state.product_found,
 		getProduct: state => state.product,
 		getProductImages: state => state.product_images,
 		getProductProtect: state => state.product_protect,
+		getPtoductToCart: state => ({
+			product: state.product,
+			product_found: state.product_found,
+			product_offers: state.product_offers,
+			product_images: state.product_images,
+			product_protect: state.product_protect,
+		}),
 	},
 	mutations: {
 		setSearchProductResult(state, data) {
