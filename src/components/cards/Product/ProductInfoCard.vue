@@ -14,16 +14,9 @@
 	<transition name="fade" mode="out-in">
 		<div class="content-hide"  v-if="show" >
 			<div :class="content_switch === 'detail' ? 'product-info-desc product-info-tab-elem active':'product-info-desc product-info-tab-elem'">
-				<div class="content-properties">
-					<div class="content-properties-text">Свойства:</div>
-
-					<div class="content-properties-elem" 
-						v-for="(p, i) in protect"
-						:key="i">
-						<img class="content-properties-img" :src="p.IMAGE" alt="" :title="p.NAME">
-					</div>
-					
-				</div>
+				<product-properties-card
+					:protect="protect"
+				/>
 				
 				<p>
 					<span v-html="data.DETAIL_TEXT"></span>
@@ -52,7 +45,9 @@
 
 <script>
 import { ref } from 'vue';
+import ProductPropertiesCard from '@/components/cards/Product/ProductPropertiesCard';
 export default {
+	components: { ProductPropertiesCard },
 	props: {
 		data: {
 		type: Object

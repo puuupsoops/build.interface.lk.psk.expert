@@ -4,11 +4,13 @@
 		class="amount-input"
 		type="text"
 		:disabled="disabled"
-		v-model="val"
+		:value="modelValue"
+		@input="$emit('update:modelValue', $event.target.value)"
+		
 		>
 	<div
 		:class="disabled ? 'amount-input-arrow plus disable' : 'amount-input-arrow plus'"
-		@click="changeVal(step)"
+		@click="changeStep(step)"
 		>
 
 		<svg class="amount-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -17,7 +19,7 @@
 	</div>
 	<div
 		:class="disabled ? 'amount-input-arrow minus disable' : 'amount-input-arrow minus'"
-		@click="changeVal(-step)"
+		@click="changeStep(-step)"
 	>
 		<svg class="amount-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path d="M5.28321 5.01341C4.88285 5.51774 4.11715 5.51774 3.71679 5.01341L1.0243 1.62176C0.504042 0.966397 0.970754 -1.64313e-07 1.80751 -2.37464e-07L7.19249 -7.08234e-07C8.02925 -7.81386e-07 8.49596 0.966397 7.9757 1.62176L5.28321 5.01341Z" fill="#53565B"></path>
@@ -27,7 +29,7 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue';
+import { watch } from 'vue';
 export default {
 	props:{
 		modelValue: {
@@ -46,32 +48,20 @@ export default {
 	emits: ['update:modelValue', 'onInput'],
 
 	setup(props, { emit }){
-		const val = ref (props.modelValue)
 		
-		watch( val, (new_val, prev_val) => {
-			
-			if (!/^\d+(\.\d{0,2})?$/.test(new_val) ){
-				val.value=prev_val;
-			}
-			
-			if (val.value !== props.modelValue) emit('onInput', props.modelValue);
-
-			if (String(new_val).slice(-1) === '.') {
-				emit('update:modelValue', String(new_val).substr(0, String(new_val).length-1))
-			} else {
-				emit('update:modelValue', new_val)
-			}
+		watch( ()=>props.modelValue, () => {
+			emit('update:modelValue', String(props.modelValue).replace(/[^\d;]/g, ''))
+			if (props.modelValue == '') emit('update:modelValue', 0)
+			emit('onInput')
 		});
-	
 
-		const changeVal = (v) => {
-			if (!props.disabled)
-				val.value=Number(val.value) + v;
+		const changeStep = (v) => {
+			if (!props.disabled & (Number(props.modelValue) + v) >= 0 )
+				emit('update:modelValue', Number(props.modelValue) + v)
 		}
 		
 		return {
-			changeVal,
-			val
+			changeStep,
 		}
 
 	}

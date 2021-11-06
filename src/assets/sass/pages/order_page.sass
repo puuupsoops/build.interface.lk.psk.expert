@@ -123,6 +123,10 @@
 			
 			&:hover
 				color: $accent-color
+			
+			&.disable .order-amount-more-text
+				cursor: default
+				color: $font-light-color
 	
 	&-list
 
@@ -415,3 +419,28 @@
 
 			&:hover
 				color: $accent-color
+	
+	&-info
+		padding: 11px 30px 12px 30px
+		width: 100%
+		max-width: 930px
+		font-size: 16px
+		color: $white
+		
+		+align-items(center)
+		
+		&-link
+			display: inline-block
+			
+			padding: 11px 0
+			font-size: 16px
+			line-height: 25px
+			color: $font-light-color
+			+prefix(transition, $default-transition)
+
+			&:hover
+				color: $accent-color
+				
+			&.active
+				color: $accent-color
+				

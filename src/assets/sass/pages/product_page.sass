@@ -230,6 +230,49 @@
 				color: $accent-color
 				cursor: pointer
 
+	&-slider-horisont
+		+flex
+		+flex-direction
+		+flex-wrap(nowrap)
+		+justify-content(flex-start)
+		+align-items(flex-start)
+		overflow: hidden
+		
+
+		&-slide 
+			+flex
+			flex: 0 0 34%
+			+align-items(flex-start)
+			+prefix(transition, $default-transition)
+		
+			& img
+				min-width: 100px
+				max-width: 150px
+				margin: 
+					right: 10px
+				height: auto
+				outline: none
+				border-radius: 6px
+				position: relative
+
+		&-small
+			+flex
+			flex: 0 0 25%
+			+flex-flow(column)
+			+justify-content(flex-start)
+			+align-items(center)
+			max-height: 570px
+			overflow: hidden
+
+			&-slide 
+				+prefix(transition, all 0.1s ease 0.1s)
+				opacity: 0.3
+
+				&:first-child 
+					opacity: 1
+
+			
+
 	&-parcel
 		position: relative
 		margin:
