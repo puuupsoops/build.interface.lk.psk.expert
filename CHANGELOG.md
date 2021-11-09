@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-11-09 20:09 +0700
+
+    #28
+    
+    1. Для каталога добавил CatalogPagination, теперь можно листать страницы
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-11-09 17:43 +0700
 
     #27

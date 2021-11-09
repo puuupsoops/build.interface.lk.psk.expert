@@ -30,9 +30,13 @@
 
 		&.menu-open
 			grid-column-start: 2
-			
+			height: 3000px			
 		&-preloader
 			left: 50%
+		
+		&-items
+			+flex
+			+flex-flow(column)
 
 	&-head
 
@@ -178,6 +182,46 @@
 					&:hover
 						color: $accent-color
 
+	&-pagination
+		+flex
+		+justify-content(center)
+		+align-items(center)
+
+		&-info
+			+flex
+			+justify-content(flex-end)
+			+align-items(center)
+			width: 100%
+		
+		&-text
+			color: $font-light-color
+
+		&-arrow
+			+flex
+			+justify-content(center)
+			+align-items(center)
+			padding:10px
+		
+			&:not(.disable):hover
+				cursor: pointer
+				color: $accent-color
+				path
+					fill: $accent-color
+				.catalog-pagination-arrow-text
+					max-width: 120px
+					opacity: 1
+
+			&.disable
+				cursor: default
+				opacity: 0.3
+
+			&-text
+				margin: 0 10px
+				max-width: 0px
+				overflow: hidden
+				opacity: 0
+				+prefix(transition, .6s)
+
 .catalog-item
 	+flex
 	padding: 30px
@@ -212,7 +256,7 @@
 	&-text
 		color: $font-light-color
 		margin: 
-			top: 20 px
+			top: 20px
 			bottom: 10px
 		max-height: 10em
 		overflow: hidden
@@ -222,7 +266,9 @@
 			+prefix(transition, $default-transition)
 			max-height: 150em
 			overflow: auto
-
+	
+	&-info
+		width: 100%
 	
 	&-more
 		color: $active-color
