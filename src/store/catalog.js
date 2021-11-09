@@ -19,8 +19,8 @@ export default ({
 				}
 			}
 			return undefined
-			
 		},
+		getPageCount: state => Math.floor(Number(state.catalog.total)/Number(state.catalog.count)),
 	},
 	mutations: {
 		setCatalogMenu(state, data){

@@ -1,4 +1,13 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-11-09 17:43 +0700
+
+    #27
+    
+    1. Парвки дизайна страници каталога
+    2. Добавлен компонент CatalogItem на котором ссылки на страницу с описанием и страницу с заказом
+
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-11-09 13:52 +0700
 
     #26

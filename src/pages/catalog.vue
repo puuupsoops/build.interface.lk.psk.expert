@@ -22,28 +22,18 @@
 		<div :class="'catalog-body' + (showMenu ? ' menu-open' : '')">
 			<PreloaderLocal v-if="loaderCatalog" class="catalog-body-preloader" />
 			<div class="content-wrap content-main-wrap" style="flex-direction: column;" v-if="isLoad ">
-					
-				<router-link
+				Страница {{currentPage}} из {{catalogPageCount}}
+				<!--<router-link
 						tag="a"
-						class="news" 
-						v-for="item of catalog.products" 
+						v-for="item of catalog.products"
 						:key="item.id"
-						:to="'/product/' + item.article" 
-				>
-								
-					<div class="news-img-box">
-						<img class="news-img" :src="item.image" alt="" />
-					</div>
-
-					<div class="news-text">
-						<div class="news-heading">
-							<div class="news-heading-text">{{ item.title }}</div>
-							<div class="news-heading-date">{{ item.article }}</div>
-						</div>
-						<div class="news-description" v-html="item.description" ></div>
-						<div class="news-heading-text"><strong>Цена:</strong> {{item.prices.retail}} ₽</div>
-					</div>
-				</router-link>
+						:to="'/product/' + item.article"
+				> -->
+					<CatalogItem 
+						v-for="item of catalog.products"
+						:key="item.id"
+						:data="item"/>
+				
 			</div>
 		</div>
 	</div>
@@ -56,6 +46,7 @@
 import Notification from '@/components/cards/Notification.vue';
 import PersonalBar  from '@/components/cards/PersonalBar.vue';
 import CatalogMenu  from '@/components/cards/Catalog/CatalogMenu.vue';
+import CatalogItem  from '@/components/cards/Catalog/CatalogItem.vue';
 import PreloaderLocal  from '@/components/PreloaderLocal.vue';
 
 import { useStore } from 'vuex';
@@ -67,6 +58,7 @@ export default {
 				Notification,
 				PersonalBar,
 				CatalogMenu,
+				CatalogItem,
 				PreloaderLocal
 		},
 		props: ['id'],
@@ -79,16 +71,17 @@ export default {
 			const showMenu = ref(true);
 			const getMenuCategoryName = computed(() => store.getters.getMenuCategoryName(props.id));
 			const scroll = ref();
+			const currentPage = ref(1);
 			const onScroll = (e) => {
 				scroll.value = e.target.documentElement.scrollTop;
 			}
 
 			watch( () => props.id, () => {
 				store.commit('clearCatalog')
-				
+
 				if (props.id !=='' & props.id !== undefined) {
 					loaderCatalog.value = true;
-					store.dispatch('GET_CATALOG', {code: props.id, page: 1})
+					store.dispatch('GET_CATALOG', {code: props.id, page: currentPage.value})
 						.then(() => {loaderCatalog.value = false})
 					}
 			})
@@ -100,7 +93,7 @@ export default {
 					store.dispatch('GET_CATALOG_MENU')
 						.then(() => {
 							loaderMenu.value = false;
-							if (!getMenuCategoryName.value) 
+							if (!getMenuCategoryName.value)
 								router.push({name: 'Catalog'});
 						})
 				}
@@ -117,8 +110,10 @@ export default {
 				loaderMenu,
 				loaderCatalog,
 				showMenu,
+				currentPage,
 				catalogMenu: computed(() => store.getters.getCatalogMenu),
 				catalog: computed(() => store.getters.getCatalog),
+				catalogPageCount:computed(() => store.getters.getPageCount),
 				getMenuCategoryName,
 				isLoad: computed(() => store.getters.isCatalogLoad),
 				scroll,

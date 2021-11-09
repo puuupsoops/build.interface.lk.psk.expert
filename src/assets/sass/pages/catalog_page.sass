@@ -177,3 +177,77 @@
 						color: $active-color
 					&:hover
 						color: $accent-color
+
+.catalog-item
+	+flex
+	padding: 30px
+	margin: 
+		top: 20px
+	
+	background-color: $bg-default-color
+	border-radius: 6px
+	+align-items(flex-start)
+	+prefix(transition, $default-transition)
+
+	//&:hover
+	//	background-color: $bg-dlight-color
+
+	&-img
+		display: inline-block
+		position: relative
+		margin:
+			right: 60px
+		width: 100%
+		max-width: 185px
+		border-radius: 6px
+		overflow: hidden
+
+	& img
+		display: block
+		width: 100%
+		max-width: 100%
+		height: 100%
+		max-height: 100%
+
+	&-text
+		color: $font-light-color
+		margin: 
+			top: 20 px
+			bottom: 10px
+		max-height: 10em
+		overflow: hidden
+		+prefix(transition, $default-transition)
+
+		&.more
+			+prefix(transition, $default-transition)
+			max-height: 150em
+			overflow: auto
+
+	
+	&-more
+		color: $active-color
+		padding: 5px
+		font-size: 10pt 
+		margin: 
+			bottom: 40px
+		
+	&-btn-block
+		+flex
+		+justify-content(flex-end)
+		width: 90%
+
+	&-btn
+		+flex
+		margin: 
+			left: 40px
+		color: $white
+		
+		&:hover
+			color: $accent-color
+			path
+				fill: $accent-color
+				
+	
+		& span
+			margin: 
+				left: 5px
