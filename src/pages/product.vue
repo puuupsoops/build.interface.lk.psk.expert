@@ -8,7 +8,8 @@
 	</div>
 	<top-nav></top-nav>
 
-	<div class="product-search" v-if="article==''">
+	<div class="product-search" v-if="article===''|| article===undefined">
+	
 		<div class="product-search-input" >
 			<input type="text" placeholder="Поиск" autocomplete="off" @keyup.enter="doSearch()" v-model="search_str">
 			<div class="product-search-clear" @click="clearSearch();search_str = '';"></div>
@@ -115,12 +116,17 @@ export default {
 							},500); })
 				}
 				// if get parametr aticle is not emty when using product page else using search
-			if (props.article !=='') {
+			if (props.article !=='' & props.article !== undefined) {
 				loader.value = true;
 				store.dispatch('SEARCH_PRODUCT', props.article)
 					.then(()=>{
+
 						isLoad.value=true;
-						activeProductId.value=store.getters.getProduct.ID;
+						if (store.getters.getProduct.ID)
+							activeProductId.value=store.getters.getProduct.ID;
+						else
+							router.push({name: 'Product'});
+						
 						})
 					.finally(() => {loader.value=false})
 			}

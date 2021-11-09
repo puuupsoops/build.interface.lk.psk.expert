@@ -1,14 +1,21 @@
 <template>
+
 	<div class="order-list content-elem">
 			<div class="order-list-top">
 			<div class="order-list-top-elem">
 				<div class="product-search-text">Контрагент:</div>
 				<select class="custom-select select2-hidden-accessible" style="width: 100%" tabindex="-1" aria-hidden="true" data-select2-id="43">
-				<option value="0" selected="" data-select2-id="45">ООО “Тристан”</option>
-				<option value="1">ООО “Тристан #2”</option>
-				<option value="2">ООО “Тристан #3”</option>
-				<option value="3">ООО “Тристан #4”</option>
-				</select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="44" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-a8q0-container"><span class="select2-selection__rendered" id="select2-a8q0-container" role="textbox" aria-readonly="true" title="ООО “Тристан”">ООО “Тристан”</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+					<option value="0" selected="" data-select2-id="45">ООО “Тристан”</option>
+					<option value="1">ООО “Тристан #2”</option>
+					<option value="2">ООО “Тристан #3”</option>
+					<option value="3">ООО “Тристан #4”</option>
+				</select>
+				<span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="44" style="width: 100%;">
+					<span class="selection">
+						<span 
+							class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" 
+							aria-disabled="false" aria-labelledby="select2-a8q0-container">
+							<span class="select2-selection__rendered" id="select2-a8q0-container" role="textbox" aria-readonly="true" title="ООО “Тристан”">ООО “Тристан”</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
 			</div>
 			<div class="order-list-top-elem">
 				<button class="order-list-btn">Добавить печатный каталог</button>
@@ -18,412 +25,66 @@
 			<div class="table-more-info-arrow"></div>
 			<div class="order-list-bottom-wrap"> 
 				<div class="order-list-row order-list-heading">
-				<div class="order-list-elem">№</div>
-				<div class="order-list-elem">Наименование</div>
-				<div class="order-list-elem">Цена</div>
-				<div class="order-list-elem">Кол-во</div>
-				<div class="order-list-elem">Стоимость</div>
-				<div class="order-list-elem">Комп.</div>
+					<div class="order-list-elem">№</div>
+					<div class="order-list-elem">Наименование</div>
+					<div class="order-list-elem">Цена</div>
+					<div class="order-list-elem">Кол-во</div>
+					<div class="order-list-elem">Стоимость</div>
+					<div class="order-list-elem">Комп.</div>
 				</div>
-				<div class="order-list-item">
-				<div class="order-list-row order-list-main-row">
+				<div 
+					:class="open.indexOf(key) !== -1 ? 'order-list-item active' : 'order-list-item'"
+					v-for="(item, key) in data.position"
+					:key="key"
+				>
+					<div 
+						class="order-list-row order-list-main-row"
+						@click="open.indexOf(key) === -1 ? open.push(key) : open.splice(open.indexOf(key),1)"
+					>
+						<div class="order-list-elem">
+							{{key+1}}
+						<div class="table-arrow"></div>
+					</div>
+
+					<div class="order-list-elem"><span v-html = "item.product.NAME"></span></div>
+					<div class="order-list-elem">{{ Number(item.product.PRICE).toLocaleString() }} ₽</div>
+					<div class="order-list-elem">{{ item.count }}</div>
+					<div class="order-list-elem">{{ Number(item.total).toLocaleString() }} ₽</div>
+					<div class="order-list-elem error">- 57</div>
 					<div class="order-list-elem">
-						1
-					<div class="table-arrow"></div>
+						<DeleteButton @onClick="removePosition(item.product.ID)"/>
 					</div>
-					<div class="order-list-elem">КОС598 Костюм “Финикс” бежевый/т. бежевый NEW</div>
-					<div class="order-list-elem">18 300 ₽</div>
-					<div class="order-list-elem">4</div>
-					<div class="order-list-elem">181 300 ₽</div>
-					<div class="order-list-elem error">- 57</div>
-					<div class="order-list-elem-delete">
-					<svg class="order-list-elem-delete-img" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<rect x="0.250031" y="2.07935" width="2.25351" height="22.5351" rx="1.12676" transform="rotate(-45 0.250031 2.07935)" fill="#A5A7A9"></rect>
-						<rect width="2.25351" height="22.5351" rx="1.12676" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 17.5282 2.07935)" fill="#A5A7A9"></rect>
-					</svg>
+					</div>
+					<div
+						:class="open.indexOf(key) !== -1 ? 'order-list-sublist active' : 'order-list-sublist'"
+					>
+						<div
+							v-for="(characteristic, k) in item.characteristics"
+							:key="k"
+							class="order-list-row"
+						>
+							<div class="order-list-elem"> </div>
+							<div class="order-list-elem">{{ characteristic.characteristic }}</div>
+							<div class="order-list-elem">{{ Number(characteristic.price).toLocaleString() }} ₽</div>
+							<div class="order-list-elem"> 
+								<AmountInput 
+									v-model="characteristic.count"
+									:min = "1"
+									:max = "characteristic.residue"
+									@onInput="updOrder()"
+								/>
+							</div>
+							<div class="order-list-elem">{{ Number(characteristic.price * characteristic.count).toLocaleString() }} ₽</div>
+							<div class="order-list-elem">Укомп.</div>
+							<div class="order-list-elem-delete">
+								<DeleteButton  @onClick="removeCharacteristic(characteristic.id)" />
+							</div>
+						</div>
+						
 					</div>
 				</div>
-				<div class="order-list-sublist" style="display: none;">
-					<div class="order-list-row">
-					<div class="order-list-elem"> </div>
-					<div class="order-list-elem">р. 48-50. рост 5/6</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem"> 
-						<div class="order-amount-table-input-wrap">
-						<input class="order-amount-table-input" type="text" value="0">
-						<div class="order-amount-table-input-arrow plus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M3.71679 0.986589C4.11715 0.482264 4.88285 0.482265 5.28321 0.986589L7.9757 4.37825C8.49596 5.0336 8.02925 6 7.19249 6L1.80751 6C0.970754 6 0.504041 5.0336 1.0243 4.37824L3.71679 0.986589Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						<div class="order-amount-table-input-arrow minus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M5.28321 5.01341C4.88285 5.51774 4.11715 5.51774 3.71679 5.01341L1.0243 1.62176C0.504042 0.966397 0.970754 -1.64313e-07 1.80751 -2.37464e-07L7.19249 -7.08234e-07C8.02925 -7.81386e-07 8.49596 0.966397 7.9757 1.62176L5.28321 5.01341Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						</div>
-					</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem">Укомп.</div>
-					<div class="order-list-elem-delete">
-						<svg class="order-list-elem-delete-img" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<rect x="0.250031" y="2.07935" width="2.25351" height="22.5351" rx="1.12676" transform="rotate(-45 0.250031 2.07935)" fill="#A5A7A9"></rect>
-						<rect width="2.25351" height="22.5351" rx="1.12676" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 17.5282 2.07935)" fill="#A5A7A9"></rect>
-						</svg>
-					</div>
-					</div>
-					<div class="order-list-row">
-					<div class="order-list-elem"> </div>
-					<div class="order-list-elem">р. 48-50. рост 5/6</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem"> 
-						<div class="order-amount-table-input-wrap">
-						<input class="order-amount-table-input" type="text" value="0">
-						<div class="order-amount-table-input-arrow plus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M3.71679 0.986589C4.11715 0.482264 4.88285 0.482265 5.28321 0.986589L7.9757 4.37825C8.49596 5.0336 8.02925 6 7.19249 6L1.80751 6C0.970754 6 0.504041 5.0336 1.0243 4.37824L3.71679 0.986589Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						<div class="order-amount-table-input-arrow minus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M5.28321 5.01341C4.88285 5.51774 4.11715 5.51774 3.71679 5.01341L1.0243 1.62176C0.504042 0.966397 0.970754 -1.64313e-07 1.80751 -2.37464e-07L7.19249 -7.08234e-07C8.02925 -7.81386e-07 8.49596 0.966397 7.9757 1.62176L5.28321 5.01341Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						</div>
-					</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem error">- 57</div>
-					<div class="order-list-elem-delete">
-						<svg class="order-list-elem-delete-img" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<rect x="0.250031" y="2.07935" width="2.25351" height="22.5351" rx="1.12676" transform="rotate(-45 0.250031 2.07935)" fill="#A5A7A9"></rect>
-						<rect width="2.25351" height="22.5351" rx="1.12676" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 17.5282 2.07935)" fill="#A5A7A9"></rect>
-						</svg>
-					</div>
-					</div>
-					<div class="order-list-row">
-					<div class="order-list-elem"> </div>
-					<div class="order-list-elem">р. 48-50. рост 5/6</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem"> 
-						<div class="order-amount-table-input-wrap">
-						<input class="order-amount-table-input" type="text" value="0">
-						<div class="order-amount-table-input-arrow plus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M3.71679 0.986589C4.11715 0.482264 4.88285 0.482265 5.28321 0.986589L7.9757 4.37825C8.49596 5.0336 8.02925 6 7.19249 6L1.80751 6C0.970754 6 0.504041 5.0336 1.0243 4.37824L3.71679 0.986589Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						<div class="order-amount-table-input-arrow minus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M5.28321 5.01341C4.88285 5.51774 4.11715 5.51774 3.71679 5.01341L1.0243 1.62176C0.504042 0.966397 0.970754 -1.64313e-07 1.80751 -2.37464e-07L7.19249 -7.08234e-07C8.02925 -7.81386e-07 8.49596 0.966397 7.9757 1.62176L5.28321 5.01341Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						</div>
-					</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem">Укомп.</div>
-					<div class="order-list-elem-delete">
-						<svg class="order-list-elem-delete-img" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<rect x="0.250031" y="2.07935" width="2.25351" height="22.5351" rx="1.12676" transform="rotate(-45 0.250031 2.07935)" fill="#A5A7A9"></rect>
-						<rect width="2.25351" height="22.5351" rx="1.12676" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 17.5282 2.07935)" fill="#A5A7A9"></rect>
-						</svg>
-					</div>
-					</div>
-					<div class="order-list-row">
-					<div class="order-list-elem"> </div>
-					<div class="order-list-elem">р. 48-50. рост 5/6</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem"> 
-						<div class="order-amount-table-input-wrap">
-						<input class="order-amount-table-input" type="text" value="0">
-						<div class="order-amount-table-input-arrow plus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M3.71679 0.986589C4.11715 0.482264 4.88285 0.482265 5.28321 0.986589L7.9757 4.37825C8.49596 5.0336 8.02925 6 7.19249 6L1.80751 6C0.970754 6 0.504041 5.0336 1.0243 4.37824L3.71679 0.986589Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						<div class="order-amount-table-input-arrow minus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M5.28321 5.01341C4.88285 5.51774 4.11715 5.51774 3.71679 5.01341L1.0243 1.62176C0.504042 0.966397 0.970754 -1.64313e-07 1.80751 -2.37464e-07L7.19249 -7.08234e-07C8.02925 -7.81386e-07 8.49596 0.966397 7.9757 1.62176L5.28321 5.01341Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						</div>
-					</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem">Укомп.</div>
-					<div class="order-list-elem-delete">
-						<svg class="order-list-elem-delete-img" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<rect x="0.250031" y="2.07935" width="2.25351" height="22.5351" rx="1.12676" transform="rotate(-45 0.250031 2.07935)" fill="#A5A7A9"></rect>
-						<rect width="2.25351" height="22.5351" rx="1.12676" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 17.5282 2.07935)" fill="#A5A7A9"></rect>
-						</svg>
-					</div>
-					</div>
-				</div>
-				</div>
-				<div class="order-list-item">
-				<div class="order-list-row order-list-main-row">
-					<div class="order-list-elem">
-						2
-					<div class="table-arrow"></div>
-					</div>
-					<div class="order-list-elem">КОС598 Костюм “Финикс” бежевый/т. бежевый NEW</div>
-					<div class="order-list-elem">18 300 ₽</div>
-					<div class="order-list-elem">4</div>
-					<div class="order-list-elem">181 300 ₽</div>
-					<div class="order-list-elem">Укомп.</div>
-					<div class="order-list-elem-delete">
-					<svg class="order-list-elem-delete-img" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<rect x="0.250031" y="2.07935" width="2.25351" height="22.5351" rx="1.12676" transform="rotate(-45 0.250031 2.07935)" fill="#A5A7A9"></rect>
-						<rect width="2.25351" height="22.5351" rx="1.12676" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 17.5282 2.07935)" fill="#A5A7A9"></rect>
-					</svg>
-					</div>
-				</div>
-				<div class="order-list-sublist">
-					<div class="order-list-row">
-					<div class="order-list-elem"> </div>
-					<div class="order-list-elem">р. 48-50. рост 5/6</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem"> 
-						<div class="order-amount-table-input-wrap">
-						<input class="order-amount-table-input" type="text" value="0">
-						<div class="order-amount-table-input-arrow plus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M3.71679 0.986589C4.11715 0.482264 4.88285 0.482265 5.28321 0.986589L7.9757 4.37825C8.49596 5.0336 8.02925 6 7.19249 6L1.80751 6C0.970754 6 0.504041 5.0336 1.0243 4.37824L3.71679 0.986589Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						<div class="order-amount-table-input-arrow minus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M5.28321 5.01341C4.88285 5.51774 4.11715 5.51774 3.71679 5.01341L1.0243 1.62176C0.504042 0.966397 0.970754 -1.64313e-07 1.80751 -2.37464e-07L7.19249 -7.08234e-07C8.02925 -7.81386e-07 8.49596 0.966397 7.9757 1.62176L5.28321 5.01341Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						</div>
-					</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem error">- 57</div>
-					<div class="order-list-elem-delete">
-						<svg class="order-list-elem-delete-img" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<rect x="0.250031" y="2.07935" width="2.25351" height="22.5351" rx="1.12676" transform="rotate(-45 0.250031 2.07935)" fill="#A5A7A9"></rect>
-						<rect width="2.25351" height="22.5351" rx="1.12676" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 17.5282 2.07935)" fill="#A5A7A9"></rect>
-						</svg>
-					</div>
-					</div>
-					<div class="order-list-row">
-					<div class="order-list-elem"> </div>
-					<div class="order-list-elem">р. 48-50. рост 5/6</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem"> 
-						<div class="order-amount-table-input-wrap">
-						<input class="order-amount-table-input" type="text" value="0">
-						<div class="order-amount-table-input-arrow plus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M3.71679 0.986589C4.11715 0.482264 4.88285 0.482265 5.28321 0.986589L7.9757 4.37825C8.49596 5.0336 8.02925 6 7.19249 6L1.80751 6C0.970754 6 0.504041 5.0336 1.0243 4.37824L3.71679 0.986589Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						<div class="order-amount-table-input-arrow minus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M5.28321 5.01341C4.88285 5.51774 4.11715 5.51774 3.71679 5.01341L1.0243 1.62176C0.504042 0.966397 0.970754 -1.64313e-07 1.80751 -2.37464e-07L7.19249 -7.08234e-07C8.02925 -7.81386e-07 8.49596 0.966397 7.9757 1.62176L5.28321 5.01341Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						</div>
-					</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem">Укомп.</div>
-					<div class="order-list-elem-delete">
-						<svg class="order-list-elem-delete-img" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<rect x="0.250031" y="2.07935" width="2.25351" height="22.5351" rx="1.12676" transform="rotate(-45 0.250031 2.07935)" fill="#A5A7A9"></rect>
-						<rect width="2.25351" height="22.5351" rx="1.12676" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 17.5282 2.07935)" fill="#A5A7A9"></rect>
-						</svg>
-					</div>
-					</div>
-					<div class="order-list-row">
-					<div class="order-list-elem"> </div>
-					<div class="order-list-elem">р. 48-50. рост 5/6</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem"> 
-						<div class="order-amount-table-input-wrap">
-						<input class="order-amount-table-input" type="text" value="0">
-						<div class="order-amount-table-input-arrow plus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M3.71679 0.986589C4.11715 0.482264 4.88285 0.482265 5.28321 0.986589L7.9757 4.37825C8.49596 5.0336 8.02925 6 7.19249 6L1.80751 6C0.970754 6 0.504041 5.0336 1.0243 4.37824L3.71679 0.986589Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						<div class="order-amount-table-input-arrow minus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M5.28321 5.01341C4.88285 5.51774 4.11715 5.51774 3.71679 5.01341L1.0243 1.62176C0.504042 0.966397 0.970754 -1.64313e-07 1.80751 -2.37464e-07L7.19249 -7.08234e-07C8.02925 -7.81386e-07 8.49596 0.966397 7.9757 1.62176L5.28321 5.01341Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						</div>
-					</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem">Укомп.</div>
-					<div class="order-list-elem-delete">
-						<svg class="order-list-elem-delete-img" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<rect x="0.250031" y="2.07935" width="2.25351" height="22.5351" rx="1.12676" transform="rotate(-45 0.250031 2.07935)" fill="#A5A7A9"></rect>
-						<rect width="2.25351" height="22.5351" rx="1.12676" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 17.5282 2.07935)" fill="#A5A7A9"></rect>
-						</svg>
-					</div>
-					</div>
-					<div class="order-list-row">
-					<div class="order-list-elem"> </div>
-					<div class="order-list-elem">р. 48-50. рост 5/6</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem"> 
-						<div class="order-amount-table-input-wrap">
-						<input class="order-amount-table-input" type="text" value="0">
-						<div class="order-amount-table-input-arrow plus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M3.71679 0.986589C4.11715 0.482264 4.88285 0.482265 5.28321 0.986589L7.9757 4.37825C8.49596 5.0336 8.02925 6 7.19249 6L1.80751 6C0.970754 6 0.504041 5.0336 1.0243 4.37824L3.71679 0.986589Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						<div class="order-amount-table-input-arrow minus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M5.28321 5.01341C4.88285 5.51774 4.11715 5.51774 3.71679 5.01341L1.0243 1.62176C0.504042 0.966397 0.970754 -1.64313e-07 1.80751 -2.37464e-07L7.19249 -7.08234e-07C8.02925 -7.81386e-07 8.49596 0.966397 7.9757 1.62176L5.28321 5.01341Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						</div>
-					</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem">Укомп.</div>
-					<div class="order-list-elem-delete">
-						<svg class="order-list-elem-delete-img" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<rect x="0.250031" y="2.07935" width="2.25351" height="22.5351" rx="1.12676" transform="rotate(-45 0.250031 2.07935)" fill="#A5A7A9"></rect>
-						<rect width="2.25351" height="22.5351" rx="1.12676" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 17.5282 2.07935)" fill="#A5A7A9"></rect>
-						</svg>
-					</div>
-					</div>
-				</div>
-				</div>
-				<div class="order-list-item">
-				<div class="order-list-row order-list-main-row">
-					<div class="order-list-elem">
-						3
-					<div class="table-arrow"></div>
-					</div>
-					<div class="order-list-elem">КОС598 Костюм “Финикс” бежевый/т. бежевый NEW</div>
-					<div class="order-list-elem">18 300 ₽</div>
-					<div class="order-list-elem">4</div>
-					<div class="order-list-elem">181 300 ₽</div>
-					<div class="order-list-elem">Укомп.</div>
-					<div class="order-list-elem-delete">
-					<svg class="order-list-elem-delete-img" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<rect x="0.250031" y="2.07935" width="2.25351" height="22.5351" rx="1.12676" transform="rotate(-45 0.250031 2.07935)" fill="#A5A7A9"></rect>
-						<rect width="2.25351" height="22.5351" rx="1.12676" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 17.5282 2.07935)" fill="#A5A7A9"></rect>
-					</svg>
-					</div>
-				</div>
-				<div class="order-list-sublist">
-					<div class="order-list-row">
-					<div class="order-list-elem"> </div>
-					<div class="order-list-elem">р. 48-50. рост 5/6</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem"> 
-						<div class="order-amount-table-input-wrap">
-						<input class="order-amount-table-input" type="text" value="0">
-						<div class="order-amount-table-input-arrow plus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M3.71679 0.986589C4.11715 0.482264 4.88285 0.482265 5.28321 0.986589L7.9757 4.37825C8.49596 5.0336 8.02925 6 7.19249 6L1.80751 6C0.970754 6 0.504041 5.0336 1.0243 4.37824L3.71679 0.986589Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						<div class="order-amount-table-input-arrow minus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M5.28321 5.01341C4.88285 5.51774 4.11715 5.51774 3.71679 5.01341L1.0243 1.62176C0.504042 0.966397 0.970754 -1.64313e-07 1.80751 -2.37464e-07L7.19249 -7.08234e-07C8.02925 -7.81386e-07 8.49596 0.966397 7.9757 1.62176L5.28321 5.01341Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						</div>
-					</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem">Укомп.</div>
-					<div class="order-list-elem-delete">
-						<svg class="order-list-elem-delete-img" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<rect x="0.250031" y="2.07935" width="2.25351" height="22.5351" rx="1.12676" transform="rotate(-45 0.250031 2.07935)" fill="#A5A7A9"></rect>
-						<rect width="2.25351" height="22.5351" rx="1.12676" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 17.5282 2.07935)" fill="#A5A7A9"></rect>
-						</svg>
-					</div>
-					</div>
-					<div class="order-list-row">
-					<div class="order-list-elem"> </div>
-					<div class="order-list-elem">р. 48-50. рост 5/6</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem"> 
-						<div class="order-amount-table-input-wrap">
-						<input class="order-amount-table-input" type="text" value="0">
-						<div class="order-amount-table-input-arrow plus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M3.71679 0.986589C4.11715 0.482264 4.88285 0.482265 5.28321 0.986589L7.9757 4.37825C8.49596 5.0336 8.02925 6 7.19249 6L1.80751 6C0.970754 6 0.504041 5.0336 1.0243 4.37824L3.71679 0.986589Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						<div class="order-amount-table-input-arrow minus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M5.28321 5.01341C4.88285 5.51774 4.11715 5.51774 3.71679 5.01341L1.0243 1.62176C0.504042 0.966397 0.970754 -1.64313e-07 1.80751 -2.37464e-07L7.19249 -7.08234e-07C8.02925 -7.81386e-07 8.49596 0.966397 7.9757 1.62176L5.28321 5.01341Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						</div>
-					</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem error">- 57</div>
-					<div class="order-list-elem-delete">
-						<svg class="order-list-elem-delete-img" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<rect x="0.250031" y="2.07935" width="2.25351" height="22.5351" rx="1.12676" transform="rotate(-45 0.250031 2.07935)" fill="#A5A7A9"></rect>
-						<rect width="2.25351" height="22.5351" rx="1.12676" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 17.5282 2.07935)" fill="#A5A7A9"></rect>
-						</svg>
-					</div>
-					</div>
-					<div class="order-list-row">
-					<div class="order-list-elem"> </div>
-					<div class="order-list-elem">р. 48-50. рост 5/6</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem"> 
-						<div class="order-amount-table-input-wrap">
-						<input class="order-amount-table-input" type="text" value="0">
-						<div class="order-amount-table-input-arrow plus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M3.71679 0.986589C4.11715 0.482264 4.88285 0.482265 5.28321 0.986589L7.9757 4.37825C8.49596 5.0336 8.02925 6 7.19249 6L1.80751 6C0.970754 6 0.504041 5.0336 1.0243 4.37824L3.71679 0.986589Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						<div class="order-amount-table-input-arrow minus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M5.28321 5.01341C4.88285 5.51774 4.11715 5.51774 3.71679 5.01341L1.0243 1.62176C0.504042 0.966397 0.970754 -1.64313e-07 1.80751 -2.37464e-07L7.19249 -7.08234e-07C8.02925 -7.81386e-07 8.49596 0.966397 7.9757 1.62176L5.28321 5.01341Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						</div>
-					</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem">Укомп.</div>
-					<div class="order-list-elem-delete">
-						<svg class="order-list-elem-delete-img" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<rect x="0.250031" y="2.07935" width="2.25351" height="22.5351" rx="1.12676" transform="rotate(-45 0.250031 2.07935)" fill="#A5A7A9"></rect>
-						<rect width="2.25351" height="22.5351" rx="1.12676" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 17.5282 2.07935)" fill="#A5A7A9"></rect>
-						</svg>
-					</div>
-					</div>
-					<div class="order-list-row">
-					<div class="order-list-elem"> </div>
-					<div class="order-list-elem">р. 48-50. рост 5/6</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem"> 
-						<div class="order-amount-table-input-wrap">
-						<input class="order-amount-table-input" type="text" value="0">
-						<div class="order-amount-table-input-arrow plus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M3.71679 0.986589C4.11715 0.482264 4.88285 0.482265 5.28321 0.986589L7.9757 4.37825C8.49596 5.0336 8.02925 6 7.19249 6L1.80751 6C0.970754 6 0.504041 5.0336 1.0243 4.37824L3.71679 0.986589Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						<div class="order-amount-table-input-arrow minus">
-							<svg class="order-amount-table-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M5.28321 5.01341C4.88285 5.51774 4.11715 5.51774 3.71679 5.01341L1.0243 1.62176C0.504042 0.966397 0.970754 -1.64313e-07 1.80751 -2.37464e-07L7.19249 -7.08234e-07C8.02925 -7.81386e-07 8.49596 0.966397 7.9757 1.62176L5.28321 5.01341Z" fill="#53565B"></path>
-							</svg>
-						</div>
-						</div>
-					</div>
-					<div class="order-list-elem">1 000 ₽</div>
-					<div class="order-list-elem">Укомп.</div>
-					<div class="order-list-elem-delete">
-						<svg class="order-list-elem-delete-img" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<rect x="0.250031" y="2.07935" width="2.25351" height="22.5351" rx="1.12676" transform="rotate(-45 0.250031 2.07935)" fill="#A5A7A9"></rect>
-						<rect width="2.25351" height="22.5351" rx="1.12676" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 17.5282 2.07935)" fill="#A5A7A9"></rect>
-						</svg>
-					</div>
-					</div>
-				</div>
-				</div>
+				
+				
 			</div>
 			</div>
 		</div>
@@ -491,3 +152,44 @@
 			</div>
 		</div>
 </template>
+
+<script>
+import { ref } from 'vue'
+import { useStore } from 'vuex'
+
+import AmountInput from '@/components/ui/AmountInput';
+import DeleteButton from '@/components/ui/DeleteButton';
+
+export default {
+	props: {
+		data: {
+			type: Object,
+		}
+	},
+	components: {
+		AmountInput,
+		DeleteButton,
+	},
+	setup() {
+		const store = useStore();
+		const open = ref([]);
+
+		let updOrder = () => {
+			store.commit('calcOrder')
+		}
+		let removePosition = (id) => {
+			store.dispatch('REMOVE_POSITION', id)
+		}
+		let removeCharacteristic = (id) => {
+			store.dispatch('REMOVE_CHARACTERISTIC', id)
+		}
+		return {
+			updOrder,
+			removePosition,
+			removeCharacteristic,
+			open
+		}
+	},
+}
+</script>
+

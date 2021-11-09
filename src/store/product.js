@@ -14,7 +14,7 @@ state:  {
 	},
 
 	getters: {
-		isProduct: state => Object.keys(state.product).length !== 0,
+		isProduct: state => Object.keys(state.product).length !== 0 & state.product.ID !== null,
 		getProductSearchResult: state => state.search_product_result,
 		getProductOffers: state => state.product_offers,
 		getProductFound: state => state.product_found,

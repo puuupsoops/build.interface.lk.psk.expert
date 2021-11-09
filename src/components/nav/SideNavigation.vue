@@ -119,25 +119,3 @@ export default {
 	}
 }
 </script>
-
-<style lang="sass" scoped>
-.expand-enter-active 
-	animation: finished .5s reverse
-
-.expand-leave-active 
-	animation: finished .3s
-
-@keyframes finished
-	0%
-		opacity: 1 
-		top: 0
-	50%
-		opacity: 1 
-		top: 0
-	60% 
-		opacity: 1
-	100% 
-		opacity: 0 
-		top: -100vh
-
-</style>

@@ -120,11 +120,17 @@
 
 			&-text
 				color: $accent-color
+			&-value
+				color: $white
 			
 			&:hover
 				color: $accent-color
 			
-			&.disable .order-amount-more-text
+			&.disable .order-amount-more-text 
+				cursor: default
+				color: $font-light-color
+				
+			&.disable .order-amount-more-value 
 				cursor: default
 				color: $font-light-color
 	
@@ -262,29 +268,22 @@
 			&.error
 				color: #FF5449
 
-			&-delete
-				position: absolute
-				top: 15px
-				right: 25px
-				width: 20px
-				height: 20px
-				+prefix(transition, $default-transition)
-				cursor: pointer
-
-				&-img
-					rect
-						+prefix(transition, $default-transition)
-
-				&:hover
-					.order-list-elem-delete-img
-						rect
-							fill: $accent-color
 
 		&-sublist
-			display: none
-			padding:
-				top: 10px
-				bottom: 10px
+			
+			overflow: hidden
+			max-height: 0
+			+prefix(transition,  $default-transition)
+			
+
+			&.active
+				padding:
+					top: 10px
+					bottom: 10px
+				display: block
+				max-height: 500px
+				+prefix(transition,  max-height $default-transition)
+
 
 			.order-list
 				&-row

@@ -38,7 +38,10 @@
 			/>
 		</div>
 	</div>
-	<OrderHeaderCard v-if="isOrder"/>
+	<OrderHeaderCard 
+		v-if="isOrder"
+		:data="order"
+	/>
 	<div class="content-heading-wrap proudct-heading-wrap" v-else>
 		<div class="content-heading-wrap-elem">
 			<div class="order-info">Добавьте позиции к заказу и тогда он будет сформирован</div>
@@ -49,6 +52,7 @@
 		<div class="content-wrap-elem">
 			<OrderCard 
 				v-if="isOrder"
+				:data="order"
 			/>
 		</div>
 		<div class="content-wrap-elem"> 
@@ -80,6 +84,7 @@ import OrderHeaderCard from '@/components/cards/Order/OrderHeaderCard';
 import OrderCard from '@/components/cards/Order/OrderCard';
 
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import { ref, computed, onMounted, inject } from 'vue'
 
 export default {
@@ -96,8 +101,10 @@ export default {
 		OrderHeaderCard,
 		OrderCard,
 	},
-	setup() {
+	props: ['article'],
+	setup(props) {
 		const store = useStore();
+		const router = useRouter();
 		const loader = inject('loader');
 		
 		const activeCompanyUid = ref('');
@@ -105,8 +112,18 @@ export default {
 		const characteristicArray = ref([]);
 
 		const addToOrder = () => {
-			console.log(characteristicArray.value)
-			store.dispatch('CREATE_ORDER')
+			let charArr = [];
+			characteristicArray.value.forEach(i => 
+				charArr.push({
+							id: i.id,
+							characteristic: i.characteristic,
+							count: i.count,
+							price: i.price,
+							residue: i.residue,
+						}))
+			store.dispatch('ADD_POSITION', {product: store.getters.getProduct, 
+											characteristics: charArr})
+
 		}
 
 		onMounted(() => {
@@ -116,7 +133,18 @@ export default {
 			}
 			activeProductId.value=store.getters.getProduct.ID;
 
-			// If order is empty then create newOrder and 
+			// if get parametr aticle is not emty when using product page else using search
+			if (props.article !=='' & props.article !== undefined) {
+				loader.value = true;
+				store.dispatch('SEARCH_PRODUCT', props.article)
+					.then(()=>{
+						if (store.getters.getProduct.ID)
+							activeProductId.value=store.getters.getProduct.ID;
+						else
+							router.push({name: 'Order'});
+						})
+					.finally(() => {loader.value=false})
+			}
 		});
 
 		const loadProduct = () => {
@@ -142,6 +170,7 @@ export default {
 			addToOrder,
 			characteristicArray,
 			isOrder: computed(() => store.getters.isOrder),
+			order: computed(() => store.getters.getOrder),
 		}
 	}
 }

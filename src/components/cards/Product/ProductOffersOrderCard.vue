@@ -23,6 +23,7 @@
 							<AmountInput 
 								v-model="offer.count" 
 								:disabled="Number(offer.residue) < 1"
+								:max="offer.residue"
 								@onInput="onInput(offer)"/>
 							<CheckButton 
 								v-model="offer.check" 
@@ -94,6 +95,10 @@ export default {
 			if (count.value > 0){
 				emit('update:modelValue', characteristicArray.value.filter(x => x.check))
 				emit('onClick')
+				characteristicArray.value.forEach( c => {
+					c.count = 0;
+					c.check = false;
+				})
 			}
 		}
 

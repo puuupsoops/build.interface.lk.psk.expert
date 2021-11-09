@@ -43,20 +43,32 @@ export default {
 			type: Boolean,
 			default: false
 		},
+		min: {
+			type: Number,
+			default: 0
+		},
+		max: {
+			type: Number,
+		},
 
 	},
 	emits: ['update:modelValue', 'onInput'],
 
 	setup(props, { emit }){
 		
-		watch( ()=>props.modelValue, () => {
+		watch( ()=>props.modelValue, (new_val, old_val) => {
 			emit('update:modelValue', String(props.modelValue).replace(/[^\d;]/g, ''))
-			if (props.modelValue == '') emit('update:modelValue', 0)
+			if (props.modelValue == '') 
+				emit('update:modelValue', 0)
+			if (props.max !== undefined & Number(new_val) > props.max )
+				emit('update:modelValue', old_val)
+			if (props.min !== undefined & Number(new_val) < props.min )
+				emit('update:modelValue', old_val)
 			emit('onInput')
 		});
 
 		const changeStep = (v) => {
-			if (!props.disabled & (Number(props.modelValue) + v) >= 0 )
+			if (!props.disabled )
 				emit('update:modelValue', Number(props.modelValue) + v)
 		}
 		

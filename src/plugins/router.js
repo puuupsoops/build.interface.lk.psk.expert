@@ -41,9 +41,10 @@ const routes = [
 			}
 	},
 	{
-		path: '/order', 
+		path: '/order/:article?', 
 		component: () => import('@/pages/order'),
 		name: 'Order',
+		props: true,
 		meta:{
 				auth: true,
 			}

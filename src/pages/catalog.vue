@@ -73,13 +73,13 @@ export default {
 		setup(props){
 			const store = useStore();
 			const router = useRouter();
-			let loaderMenu = ref(false);
-			let loaderCatalog = ref(false);
-			let currentCategory = ref(null);
-			let showMenu = ref(true);
-			let getMenuCategoryName = computed(() => store.getters.getMenuCategoryName(props.id));
-			let scroll = ref();
-			let onScroll = (e) => {
+			const loaderMenu = ref(false);
+			const loaderCatalog = ref(false);
+			const currentCategory = ref(null);
+			const showMenu = ref(true);
+			const getMenuCategoryName = computed(() => store.getters.getMenuCategoryName(props.id));
+			const scroll = ref();
+			const onScroll = (e) => {
 				scroll.value = e.target.documentElement.scrollTop;
 			}
 

@@ -1,4 +1,15 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-11-09 13:52 +0700
+
+    #26
+    
+    1. Страница формирования /order заказа готова.
+    2. Для /order добавлен параметр в router, формироовать заказ можно по ссылке /order/:article
+    3. Компоненты OrderHeaderCard и OrderCard интерактивные и связаны с таблицей приложений ProductOffersOrderCard
+    4. Количество добавляемых характеристик ограничено параметром остатка - больше добавить нельзя.
+    5. Правки дизайна
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-11-06 19:10 +0700
 
     #25
