@@ -11,6 +11,10 @@ export default ({
 		isCompanysLoad: state => state.companys.length !== 0,
 		isManagerLoad: state => Object.keys(state.manager).length !== 0,
 		getCompanys: state => state.companys,
+		getCompanysList: state => state.companys.map ( val => ({
+			id: val.uid,
+			name: val.name.replace(/Общество с ограниченной ответственностью/, 'ООО')
+							.replace(/Акционерное общество/, 'АО')})),
 		getCompanyData : state => uid => {
 			let company = state.companys.find(x => x.uid === uid)
 			return company ? ({
@@ -67,7 +71,8 @@ export default ({
 			state.companys = data
 		},
 		setManager(state,data){
-			state.manager = data[0]
+			// state.manager = data[0]
+			state.manager = data
 		}
 	},
 	actions: {

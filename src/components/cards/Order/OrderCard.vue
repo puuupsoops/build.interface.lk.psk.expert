@@ -4,18 +4,10 @@
 			<div class="order-list-top">
 			<div class="order-list-top-elem">
 				<div class="product-search-text">Контрагент:</div>
-				<select class="custom-select select2-hidden-accessible" style="width: 100%" tabindex="-1" aria-hidden="true" data-select2-id="43">
-					<option value="0" selected="" data-select2-id="45">ООО “Тристан”</option>
-					<option value="1">ООО “Тристан #2”</option>
-					<option value="2">ООО “Тристан #3”</option>
-					<option value="3">ООО “Тристан #4”</option>
-				</select>
-				<span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="44" style="width: 100%;">
-					<span class="selection">
-						<span 
-							class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" 
-							aria-disabled="false" aria-labelledby="select2-a8q0-container">
-							<span class="select2-selection__rendered" id="select2-a8q0-container" role="textbox" aria-readonly="true" title="ООО “Тристан”">ООО “Тристан”</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+				<SelectInput 
+					:data="companys"
+					v-model="selectCompany"
+				/>
 			</div>
 			<div class="order-list-top-elem">
 				<button class="order-list-btn">Добавить печатный каталог</button>
@@ -30,7 +22,7 @@
 					<div class="order-list-elem">Цена</div>
 					<div class="order-list-elem">Кол-во</div>
 					<div class="order-list-elem">Стоимость</div>
-					<div class="order-list-elem">Комп.</div>
+					
 				</div>
 				<div 
 					:class="open.indexOf(key) !== -1 ? 'order-list-item active' : 'order-list-item'"
@@ -50,7 +42,7 @@
 					<div class="order-list-elem">{{ Number(item.product.PRICE).toLocaleString() }} ₽</div>
 					<div class="order-list-elem">{{ item.count }}</div>
 					<div class="order-list-elem">{{ Number(item.total).toLocaleString() }} ₽</div>
-					<div class="order-list-elem error">- 57</div>
+
 					<div class="order-list-elem">
 						<DeleteButton @onClick="removePosition(item.product.ID)"/>
 					</div>
@@ -154,25 +146,39 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 
 import AmountInput from '@/components/ui/AmountInput';
 import DeleteButton from '@/components/ui/DeleteButton';
+import SelectInput from '@/components/ui/SelectInput';
 
 export default {
 	props: {
 		data: {
 			type: Object,
+		},
+		companys:{
+			type: Array,
+		},
+	modelValue: {
+			type: String,
+			required: true
 		}
 	},
+	emits: ['update:modelValue'],
 	components: {
 		AmountInput,
 		DeleteButton,
+		SelectInput,
 	},
-	setup() {
+	setup(props, { emit }) {
 		const store = useStore();
 		const open = ref([]);
+		const selectCompany = computed( {
+			get: () => props.modelValue,
+			set: (v) => emit('update:modelValue', v)
+		});
 
 		let updOrder = () => {
 			store.commit('calcOrder')
@@ -187,6 +193,7 @@ export default {
 			updOrder,
 			removePosition,
 			removeCharacteristic,
+			selectCompany,
 			open
 		}
 	},

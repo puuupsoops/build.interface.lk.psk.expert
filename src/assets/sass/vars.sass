@@ -414,63 +414,6 @@ a
 .custom-select
 	width: 100%
 		
-.select2-container 
-	.select2-selection--single 
-		position: relative
-		height: 51px
-		background-color: #292C32
-		border: 0
-		border-radius: 40px
-		outline: none
-		+prefix(transition, $default-transition)
-		
-		.select2-selection__rendered
-			padding: 
-				left: 29px
-				right: 38px
-			font-size: 16px
-			line-height: 51px
-			color: $white
-
-		.select2-selection__arrow
-			display: block
-			position: absolute
-			top: 50%
-			right: 20px
-			width: 6px
-			height: 6px
-			+prefix(transform, translateY(-50%))
-
-			b
-				display: block
-				border-width: 6px 5px 0 5px
-				border-style: solid
-				border-color: #A5A7A9 transparent transparent transparent 
-				width: 6px
-				height: 6px
-
-.select2-container--default 
-	.select2-results__option
-		+prefix(transition, $default-transition)
-
-	.select2-results__option--highlighted[aria-selected]
-		color: #000
-		background-color: $font-light-color
-	
-	.select2-results__option[aria-selected=true]
-		color: #000
-		background-color: $accent-color
-
-	&.select2-container--open 
-		.select2-selection--single 
-			.select2-selection__arrow 
-				b
-					border-color: transparent transparent #A5A7A9 transparent 
-					border-width: 0px 5px 6px 5px
-
-.select2-dropdown
-	background-color: #292C32
-	border: 0
 
 .base
 	&-select

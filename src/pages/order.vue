@@ -53,6 +53,8 @@
 			<OrderCard 
 				v-if="isOrder"
 				:data="order"
+				:companys="companyBarTopData"
+				v-model="activeCompanyUid"
 			/>
 		</div>
 		<div class="content-wrap-elem"> 
@@ -157,7 +159,7 @@ export default {
 		};
 
 		return {
-			companyBarTopData: computed(() => store.getters.getCompanys),
+			companyBarTopData: computed(() => store.getters.getCompanysList),
 			activeCompanyUid,
 			isProduct: computed(() => store.getters.isProduct),
 			activeProductId,

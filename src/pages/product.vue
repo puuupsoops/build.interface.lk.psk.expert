@@ -158,7 +158,7 @@ export default {
 		}
 
 		return {
-			companyBarTopData: computed(() => store.getters.getCompanys),
+			companyBarTopData: computed(() => store.getters.getCompanysList),
 			resultSearch: computed(() => store.getters.getProductSearchResult),
 			productOffers: computed(() => store.getters.getProductOffers),
 			product: computed(() => store.getters.getProduct),

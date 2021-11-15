@@ -1,4 +1,12 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-11-15 20:09 +0700
+
+    #29
+    
+    1. Добавил компонент SelectInput
+    2. На странице /order связал SelectInput с выбором company
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-11-09 20:09 +0700
 
     #28

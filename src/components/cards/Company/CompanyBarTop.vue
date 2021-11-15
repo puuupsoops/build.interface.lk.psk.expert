@@ -7,11 +7,9 @@
 									v-for="(company, i) in data" 
 									:key="i"
 									:class="getClassA(company)"
-									@click="$emit('update:modelValue', company.uid)"
+									@click="$emit('update:modelValue', company.id)"
 									href="#">
-								{{ company.name
-										.replace(/Общество с ограниченной ответственностью/, 'ООО')
-										.replace(/Акционерное общество/, 'АО')}}
+								{{ company.name}}
 							</a>
 						
 							<a class="top-line-card-add" href="#"></a>
@@ -34,7 +32,7 @@ export default {
 	emits: ['update:modelValue'],
 	setup(props){
 		let getClassA = (company) => {
-			return company.uid===props.modelValue ?
+			return company.id===props.modelValue ?
 					'top-line-card-item orange'
 					:'top-line-card-item green'
 		};

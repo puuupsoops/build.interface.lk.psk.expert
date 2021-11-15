@@ -58,7 +58,7 @@ export default {
 		let docDate = ref('');
 		let aboutCompanyData = computed(() => store.getters.getCompanyData(activeCompanyUid.value));
 		let companyStoragesData = computed(() => store.getters.getCompanyStoragesData(activeCompanyUid.value));
-		let companyBarTopData = computed(() => store.getters.getCompanys);
+		let companyBarTopData = computed(() => store.getters.getCompanysList);
 		let totalSpent = computed(() => store.getters.getCompanySpent(activeCompanyUid.value));
 		
 		const loader = inject('loader');
