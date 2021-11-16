@@ -81,8 +81,11 @@
 			</div>
 		</div>
 		<div class="order-list-buttons">
-			<button class="order-list-submit gradient-btn"> 
-			<div class="gradient-btn-text">Оформить заказ</div>
+			<button 
+				class="order-list-submit gradient-btn" 
+				@click="$emit('onClick')"
+			> 
+				<div class="gradient-btn-text">Оформить заказ</div>
 			</button>
 			<div class="order-list-buttons-wrap">
 			<div class="order-list-buttons-item later">
@@ -166,7 +169,7 @@ export default {
 			required: true
 		}
 	},
-	emits: ['update:modelValue'],
+	emits: ['update:modelValue', 'onClick'],
 	components: {
 		AmountInput,
 		DeleteButton,

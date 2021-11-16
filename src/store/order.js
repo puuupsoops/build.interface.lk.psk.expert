@@ -1,9 +1,9 @@
+import axios from '@/plugins/axios';
 
 export default {
 	state: {
 		order: {
 			id: null,		// Идентификатор заказа, генерируется отметкой времени, на стороне личного кабинета
-			user_id: 2,		// Идентификатор учетной записи в битрикс, берем из токена
 			total: 0,	// Общая стоимость заказа
 			count: 0,		// количество позиций в заказе ()
 			position: []	// массив с позициями товара
@@ -17,15 +17,27 @@ export default {
 		// 	guid: null, // идентификатор характеристики 
 		// 	quantity: 3   // количество позиций характеристики 
 		// }
+		error: null,
 	},
 	getters: {
+		getOrderError: state => state.error !== null,
+		getOrderErrorMsg: state => state.error,
 		isOrder: state => state.order.id !== null,
 		getOrder: state => state.order,
+		getOrderToAdd: state => (
+			{
+				id: state.id,
+		
+				total: state.total,
+				count: state.count,
+				position: []
+		})
 
 	},
 	mutations: {
 		createOrder(state){
 			state.order.id = (new Date()).getTime()
+			state.error = null;
 		},
 		addPosition(state, data){
 			let exist = state.order.position.find(x => x.product.ID == data.product.ID);
@@ -44,7 +56,6 @@ export default {
 
 		},
 		removePosition(state, id){
-			console. log(id)
 			state.order.position=state.order.position.filter(x=> Number(x.product.ID) !== Number(id));
 		},
 		removeCharacteristic(state, id){
@@ -83,6 +94,23 @@ export default {
 			state.order.total_weight = total_weight.toFixed(3);
 			
 			if (total == 0 ) state.order.id = null;
+		},
+		addOrder(){
+
+		},
+		setOrderError(state, data){
+			state.error = data
+		}, 
+		cleanOrderError(state){
+			state.error = null;
+		},
+		cleanOrder(state){
+			state.order = {
+				id: null,
+				total: 0,
+				count: 0,
+				position: []
+			}	
 		}
 	},
 	actions: {
@@ -105,6 +133,21 @@ export default {
 		REMOVE_CHARACTERISTIC:({ commit }, data) => {
 			commit('removeCharacteristic', data);
 			commit('calcOrder')
-		}
+		},
+		
+		ADD_ORDER: async function({ commit }, data) {
+			await axios.post('/order/add', data)
+				.then(response => {
+					console.log(response.data)
+					commit('addOrder')
+				})
+				.catch(error => {
+					
+					if (error.response.status == 400) {
+						commit('setOrderError', error.response.data.error.message)
+					}
+				})
+		},
+	
 	},
 }

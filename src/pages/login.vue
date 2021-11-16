@@ -61,9 +61,9 @@
 <script>
 import { ref, computed, inject } from 'vue';
 import { useStore } from 'vuex';
-import { useRouter } from 'vue-router'
-import { Form, Field, ErrorMessage, defineRule } from 'vee-validate'
-import SnackBar from '@/components/cards/SnackBar';
+import { useRouter } from 'vue-router';
+import { Form, Field, ErrorMessage, defineRule } from 'vee-validate';
+import SnackBar from '@/components/ui/SnackBar';
 
 
 export default {

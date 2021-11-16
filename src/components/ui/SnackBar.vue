@@ -5,7 +5,7 @@
 	<div class="notification" v-if="modelValue">
 		<div class="notification-card">  
 			<div class="notification-text">
-					{{message}}
+					<span v-html="message"></span>
 			</div>
 			<div class="notification-close" @click="$emit('update:modelValue', !modelValue)"></div>
 		</div>
@@ -44,7 +44,7 @@ export default {
 	opacity: 0
 
 .slide-fade-enter-active 
-	transition: all 0.5s ease 0.5s
+	transition: all 0.3s ease 0.3s
 
 .slide-fade-enter-to 
 	transform: translateY(0px)
@@ -54,7 +54,7 @@ export default {
 	/* default opacity: 1;*/
 
 .slide-fade-leave-active 
-	transition: opacity .5s
+	transition: opacity .3s
 
 .slide-fade-leave-to 
 	opacity: 0

@@ -18,64 +18,81 @@
 		opacity: 1
 
 
-.check
-	&-btn
-		margin:
-			left: 10px
-		
-		height: 40px
-		background-color: #292C32
-		border: 0
-		border-radius: 6px
-		cursor: pointer
-		+prefix(transition, $default-transition)
-		
-		&-img
-			width: 16px
-			margin: 
-				left: 12px
-				right: 12px
-			opacity: 0
-		
-			path
-				+prefix(transition, $default-transition)
-			&.active
-				opacity: 1
-
+.check-btn
+	margin:
+		left: 10px
+	
+	height: 40px
+	background-color: #292C32
+	border: 0
+	border-radius: 6px
+	cursor: pointer
+	+prefix(transition, $default-transition)
+	
+	&-img
+		width: 16px
+		margin: 
+			left: 12px
+			right: 12px
+		opacity: 0
+	
+		path
+			+prefix(transition, $default-transition)
 		&.active
-			background-color: #53565B
-			.check-btn-img
-				path
-					fill: $accent-color
+			opacity: 1
 
-		&.disable
-			opacity: 0.3
-			cursor: default
-			
-		&:not(.disable):hover
-			background-color: #53565B
-			.check-btn-img
-				opacity: 0.5
+	&.active
+		background-color: #53565B
+		.check-btn-img
+			path
+				fill: $accent-color
 
-				path
-					fill: $accent-color
+	&.disable
+		opacity: 0.3
+		cursor: default
+		
+	&:not(.disable):hover
+		background-color: #53565B
+		.check-btn-img
+			opacity: 0.5
+
+			path
+				fill: $accent-color
 
 
-.delete
-	&-btn
-		position: absolute
-		top: 15px
-		right: 25px
-		width: 20px
-		height: 20px
-		+prefix(transition, $default-transition)
-		cursor: pointer
+.delete-btn
+	position: absolute
+	top: 15px
+	right: 25px
+	width: 20px
+	height: 20px
+	+prefix(transition, $default-transition)
+	cursor: pointer
 
-		&-img
+	&-img
+		rect
+			+prefix(transition, $default-transition)
+
+	&:hover
+		.delete-btn-img
 			rect
-				+prefix(transition, $default-transition)
+				fill: $accent-color
 
-		&:hover
-			.delete-btn-img
-				rect
-					fill: $accent-color
+.default-btn
+	
+	bottom: 50px
+	padding: 10px 12px
+	right: 50px
+	font-size: 16px
+	line-height: 25px
+	border: 1px solid $active-color
+	border-radius: 6px
+	color: $font-light-color
+	background-color: $bg-dlight-color
+	cursor: pointer
+	+prefix(transition, $default-transition)
+
+	&:hover
+		color: $accent-color
+		background-color: $bg-default-color
+	

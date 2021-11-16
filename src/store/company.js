@@ -14,7 +14,8 @@ export default ({
 		getCompanysList: state => state.companys.map ( val => ({
 			id: val.uid,
 			name: val.name.replace(/Общество с ограниченной ответственностью/, 'ООО')
-							.replace(/Акционерное общество/, 'АО')})),
+							.replace(/Акционерное общество/, 'АО')
+							.replace(/Индивидуальный Предприниматель/, 'ИП')})),
 		getCompanyData : state => uid => {
 			let company = state.companys.find(x => x.uid === uid)
 			return company ? ({

@@ -55,6 +55,7 @@
 				:data="order"
 				:companys="companyBarTopData"
 				v-model="activeCompanyUid"
+				@onClick="addOrder"
 			/>
 		</div>
 		<div class="content-wrap-elem"> 
@@ -68,6 +69,8 @@
 			</div>
 		</div>
 	</div>
+	<OrderModal v-model="showModal"/>
+	<SnackBar v-model="error" :message="errorMsg"></SnackBar>
 </div>
 </div>
 </template>
@@ -84,6 +87,8 @@ import ProductPropertiesCard from '@/components/cards/Product/ProductPropertiesC
 import ProductSliderSmallCard from '@/components/cards/Product/ProductSliderSmallCard';
 import OrderHeaderCard from '@/components/cards/Order/OrderHeaderCard';
 import OrderCard from '@/components/cards/Order/OrderCard';
+import OrderModal from '@/components/cards/Order/OrderModal';
+import SnackBar from '@/components/ui/SnackBar';
 
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
@@ -102,6 +107,8 @@ export default {
 		ProductSliderSmallCard,
 		OrderHeaderCard,
 		OrderCard,
+		OrderModal,
+		SnackBar,
 	},
 	props: ['article'],
 	setup(props) {
@@ -111,7 +118,10 @@ export default {
 		
 		const activeCompanyUid = ref('');
 		const activeProductId = ref('');
+		const error = ref(false);
+		const errorMsg = ref('');
 		const characteristicArray = ref([]);
+		const showModal = ref(false)
 
 		const addToOrder = () => {
 			let charArr = [];
@@ -125,6 +135,20 @@ export default {
 						}))
 			store.dispatch('ADD_POSITION', {product: store.getters.getProduct, 
 											characteristics: charArr})
+
+		}
+		const addOrder = () => {
+			if (activeCompanyUid.value == '') {
+				error.value = true;
+				setTimeout(() => {error.value=false;}, 5000);
+				errorMsg.value = 'Для оформления заказа выберите контрагента';
+			} else {
+				showModal.value=true;
+				console.log(store.getters.getOrder)
+				setTimeout(() => {
+					store.dispatch('ADD_ORDER', store.getters.getOrderToAdd)
+				}, 3000);
+			}
 
 		}
 
@@ -159,6 +183,8 @@ export default {
 		};
 
 		return {
+			error,
+			errorMsg,
 			companyBarTopData: computed(() => store.getters.getCompanysList),
 			activeCompanyUid,
 			isProduct: computed(() => store.getters.isProduct),
@@ -170,6 +196,8 @@ export default {
 			productImages: computed(() => store.getters.getProductImages),
 			productProtect: computed(() => store.getters.getProductProtect),
 			addToOrder,
+			addOrder,
+			showModal,
 			characteristicArray,
 			isOrder: computed(() => store.getters.isOrder),
 			order: computed(() => store.getters.getOrder),

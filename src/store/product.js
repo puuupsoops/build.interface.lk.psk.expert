@@ -1,7 +1,7 @@
 import axios from '@/plugins/axios';
 
 
-let site_location = process.env.VUE_APP_SITE_LOCATIONL;
+// let site_location = process.env.VUE_APP_SITE_LOCATIONL;
 
 export default {
 state:  {
@@ -62,7 +62,7 @@ state:  {
 	},
 	actions: {
 		SEARCH_PRODUCT: async function({commit}, data) {
-			await axios.get(site_location + `/test/product-page/ajax.php?QUERY=${data}&OPTION=2`, {transformRequest: (data, headers) => {
+			await axios.get(`/product/search?QUERY=${data}&OPTION=2`, {transformRequest: (data, headers) => {
 				delete headers.common['Authorization'];
 				return data;
 				}})
@@ -71,7 +71,7 @@ state:  {
 				})
 		},
 		GET_PRODUCT_BY_ID: async function({commit}, data) {
-			await axios.get(site_location + `/test/product-page/ajax.php?QUERY=${data}&OPTION=9`, {transformRequest: (data, headers) => {
+			await axios.get(`/product/search?QUERY=${data}&OPTION=9`, {transformRequest: (data, headers) => {
 				delete headers.common['Authorization'];
 				return data;
 				}})
