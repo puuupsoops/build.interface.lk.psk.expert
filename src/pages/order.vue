@@ -120,22 +120,19 @@ export default {
 		const activeProductId = ref('');
 		const error = ref(false);
 		const errorMsg = ref('');
-		const characteristicArray = ref([]);
+		const characteristicArray = ref({position: [], position_presail:[]});
 		const showModal = ref(false)
 
 		const addToOrder = () => {
-			let charArr = [];
-			characteristicArray.value.forEach(i => 
-				charArr.push({
-							id: i.id,
-							characteristic: i.characteristic,
-							count: i.count,
-							price: i.price,
-							residue: i.residue,
-						}))
-			store.dispatch('ADD_POSITION', {product: store.getters.getProduct, 
-											characteristics: charArr})
-
+			store.dispatch('ADD_POSITION', { position: {
+												product: store.getters.getProduct, 
+												characteristics: characteristicArray.value.position
+											},
+											position_presail:{
+												product: store.getters.getProduct, 
+												characteristics: characteristicArray.value.position_presail
+											}
+			});
 		}
 		const addOrder = () => {
 			if (activeCompanyUid.value == '') {

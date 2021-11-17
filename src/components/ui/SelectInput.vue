@@ -2,7 +2,7 @@
 	<div class="select-input-container" ref="target">
 
 		<button 
-			:class="input_active ? 'select-input-btn active' : 'select-input-btn'"
+			:class="btn_class"
 			@click="input_active = !input_active"
 		>
 			{{ active_name}}
@@ -33,6 +33,10 @@ export default {
 		data: {
 			type: Array
 		},
+		error: {
+			type: Boolean,
+			default: false,
+		},
 		modelValue: {
 			type: String,
 			required: true
@@ -49,10 +53,20 @@ export default {
 			else
 				return '---'
 		});
-		onClickOutside(target, () => input_active.value=false)
+		onClickOutside(target, () => input_active.value=false);
 		
+		let btn_class = computed(() => {
+			let cls = 'select-input-btn';
+			if (input_active.value)
+				cls = cls + ' active';
+			if (props.error)
+				cls = cls + ' error';
+			return cls
+		});
+
 		return{
 			active_name,
+			btn_class,
 			input_active,
 			target
 		}

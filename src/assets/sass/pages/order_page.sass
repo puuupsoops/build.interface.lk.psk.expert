@@ -20,11 +20,11 @@
 						.table-elem
 							color: $accent-color
 
-						.order-amount-table-input
+						.amount-input
 							background-color: #53565B
 							color: $accent-color
 
-						.order-amount-table-input-arrow
+						.amount-input-arrow
 							&-img
 								path
 									fill: #A5A7A9
@@ -34,6 +34,15 @@
 									path
 										fill: $white
 					
+					&.presail
+						.table-elem
+							color: #f13f3f
+						.amount-input
+							color: #f13f3f
+						.check-btn-img
+							path
+								fill: #f13f3f
+
 			&-input
 				padding: 12px 10px 12px 15px
 				width: 100%
@@ -109,30 +118,36 @@
 							fill: $accent-color
 
 		&-more
-			padding: 10px
-				bottom: 11px
+			+flex
 			font-size: 18px
 			line-height: 28px
 			text-align: center
 			background-color: #292C32
-			cursor: pointer
+			border:
+					top: 1px solid $bg-default-color
 			+prefix(transition, $default-transition)
 
 			&-text
 				color: $accent-color
+				&.presail
+					color: #f13f3f
+					
 			&-value
 				color: $white
 			
-			&:hover
-				color: $accent-color
-			
-			&.disable .order-amount-more-text 
-				cursor: default
-				color: $font-light-color
-				
-			&.disable .order-amount-more-value 
-				cursor: default
-				color: $font-light-color
+			&-btn
+				cursor: pointer
+				width: 100%
+				padding: 10px
+					bottom: 11px
+				&:hover
+					background: $bg-dlight-color
+					color: $accent-color
+
+				&.disable
+					cursor: default
+					.order-amount-more-text
+						color: $font-light-color
 	
 	&-list
 
@@ -215,14 +230,25 @@
 		&-row
 			+flex
 			position: relative
-			+justify-content(space-between)
+			//+justify-content(space-between)
 
 			&.order-list-heading
-				background-color: transparent
 				cursor: default
-				
 				.order-list-elem
 					text-transform: uppercase
+
+			&.order-list-subheading
+				position: relative
+				font-size: 10px
+				padding:
+					top: 25px
+				line-height: 20px
+				color: $font-light-color
+				//text-transform: uppercase
+				background-color: $bg-color
+				+justify-content(space-around)
+				border:
+					top: 1px solid #292C32
 
 		&-elem
 			position: relative
@@ -254,7 +280,8 @@
 				margin:
 					right: 3.67%
 				width: 7.34%
-			
+				text-align: center
+
 			&:nth-child(5)
 				margin:
 					right: 3.67%
@@ -267,7 +294,6 @@
 
 			&.error
 				color: #FF5449
-
 
 		&-sublist
 			
@@ -561,3 +587,7 @@
 		+justify-content(space-between)
 		width: 100%
 		min-height: 50px
+		padding:
+			left: 20px
+			right: 20px
+			bottom: 10px

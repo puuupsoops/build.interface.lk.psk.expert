@@ -6,6 +6,7 @@
 				<div class="product-search-text">Контрагент:</div>
 				<SelectInput 
 					:data="companys"
+					:error="error"
 					v-model="selectCompany"
 				/>
 			</div>
@@ -14,76 +15,146 @@
 			</div>
 			</div>
 			<div class="order-list-bottom scroll-elem">
-			<div class="table-more-info-arrow"></div>
-			<div class="order-list-bottom-wrap"> 
-				<div class="order-list-row order-list-heading">
-					<div class="order-list-elem">№</div>
-					<div class="order-list-elem">Наименование</div>
-					<div class="order-list-elem">Цена</div>
-					<div class="order-list-elem">Кол-во</div>
-					<div class="order-list-elem">Стоимость</div>
+				
+				<div class="order-list-bottom-wrap"> 
 					
-				</div>
-				<div 
-					:class="open.indexOf(key) !== -1 ? 'order-list-item active' : 'order-list-item'"
-					v-for="(item, key) in data.position"
-					:key="key"
-				>
-					<div 
-						class="order-list-row order-list-main-row"
-						@click="open.indexOf(key) === -1 ? open.push(key) : open.splice(open.indexOf(key),1)"
-					>
-						<div class="order-list-elem">
-							{{key+1}}
-						<div class="table-arrow"></div>
-					</div>
-
-					<div class="order-list-elem"><span v-html = "item.product.NAME"></span></div>
-					<div class="order-list-elem">{{ Number(item.product.PRICE).toLocaleString() }} ₽</div>
-					<div class="order-list-elem">{{ item.count }}</div>
-					<div class="order-list-elem">{{ Number(item.total).toLocaleString() }} ₽</div>
-
-					<div class="order-list-elem">
-						<DeleteButton @onClick="removePosition(item.product.ID)"/>
-					</div>
-					</div>
-					<div
-						:class="open.indexOf(key) !== -1 ? 'order-list-sublist active' : 'order-list-sublist'"
-					>
-						<div
-							v-for="(characteristic, k) in item.characteristics"
-							:key="k"
-							class="order-list-row"
-						>
-							<div class="order-list-elem"> </div>
-							<div class="order-list-elem">{{ characteristic.characteristic }}</div>
-							<div class="order-list-elem">{{ Number(characteristic.price).toLocaleString() }} ₽</div>
-							<div class="order-list-elem"> 
-								<AmountInput 
-									v-model="characteristic.count"
-									:min = "1"
-									:max = "characteristic.residue"
-									@onInput="updOrder()"
-								/>
-							</div>
-							<div class="order-list-elem">{{ Number(characteristic.price * characteristic.count).toLocaleString() }} ₽</div>
-							<div class="order-list-elem">Укомп.</div>
-							<div class="order-list-elem-delete">
-								<DeleteButton  @onClick="removeCharacteristic(characteristic.id)" />
-							</div>
-						</div>
+					<div class="order-list-row order-list-heading" v-if="data.position.length>0">
+						<div class="order-list-elem">№</div>
+						<div class="order-list-elem">Наименование</div>
+						<div class="order-list-elem">Цена</div>
+						<div class="order-list-elem">Кол-во</div>
+						<div class="order-list-elem">Стоимость</div>
+						<div class="order-list-elem"></div>
 						
 					</div>
+					<div 
+						:class="open.indexOf(key) !== -1 ? 'order-list-item active' : 'order-list-item'"
+						v-for="(item, key) in data.position"
+						:key="key"
+					>
+						<div 
+							class="order-list-row order-list-main-row"
+							@click="open.indexOf(key) === -1 ? open.push(key) : open.splice(open.indexOf(key),1)"
+						>
+							<div class="order-list-elem">
+								{{key+1}}
+							<div class="table-arrow"></div>
+						</div>
+
+						<div class="order-list-elem"><span v-html = "item.product.NAME"></span></div>
+						<div class="order-list-elem">{{ Number(item.product.PRICE).toLocaleString() }} ₽</div>
+						<div class="order-list-elem">{{ item.count }}</div>
+						<div class="order-list-elem">{{ Number(item.total).toLocaleString() }} ₽</div>
+
+						<div class="order-list-elem-delete">
+							<DeleteButton @onClick="removePosition({position: true, id: item.product.ID})"/>
+						</div>
+						</div>
+						<div
+							:class="open.indexOf(key) !== -1 ? 'order-list-sublist active' : 'order-list-sublist'"
+						>
+							<div
+								v-for="(characteristic, k) in item.characteristics"
+								:key="k"
+								class="order-list-row"
+							>
+								<div class="order-list-elem"> </div>
+								<div class="order-list-elem">{{ characteristic.characteristic }}</div>
+								<div class="order-list-elem">{{ Number(characteristic.price).toLocaleString() }} ₽</div>
+								<div class="order-list-elem"> 
+									<AmountInput 
+										v-model="characteristic.count"
+										:min = "1"
+										:max = "characteristic.residue"
+										@onInput="updOrder()"
+									/>
+								</div>
+								<div class="order-list-elem">{{ Number(characteristic.price * characteristic.count).toLocaleString() }} ₽</div>
+								
+								<div class="order-list-elem-delete">
+									<DeleteButton  @onClick="removeCharacteristic({position: true, id: characteristic.id})" />
+								</div>
+							</div>
+							
+						</div>
+					</div>
+					
+					
 				</div>
-				
-				
-			</div>
+				<div class="order-list-bottom-wrap" v-if="data.position_presail.length > 0"> 
+					<div class="order-list-row order-list-subheading">
+						<div>Позиции для предзаказа</div>
+						
+					</div>
+					
+					<div class="order-list-row order-list-heading">
+						<div class="order-list-elem">№</div>
+						<div class="order-list-elem">Наименование</div>
+						<div class="order-list-elem">Цена</div>
+						<div class="order-list-elem">Кол-во</div>
+						<div class="order-list-elem">Стоимость</div>
+						<div class="order-list-elem"></div>
+						
+					</div>
+					<div 
+						:class="open_presail.indexOf(key) !== -1 ? 'order-list-item active' : 'order-list-item'"
+						v-for="(item, key) in data.position_presail"
+						:key="key"
+					>
+						<div 
+							class="order-list-row order-list-main-row"
+							@click="open_presail.indexOf(key) === -1 ? open_presail.push(key) : open_presail.splice(open_presail.indexOf(key),1)"
+						>
+							<div class="order-list-elem">
+								{{key+1}}
+							<div class="table-arrow"></div>
+						</div>
+
+						<div class="order-list-elem"><span v-html = "item.product.NAME"></span></div>
+						<div class="order-list-elem">{{ Number(item.product.PRICE).toLocaleString() }} ₽</div>
+						<div class="order-list-elem">{{ item.count }}</div>
+						<div class="order-list-elem">{{ Number(item.total).toLocaleString() }} ₽</div>
+
+						<div class="order-list-elem-delete">
+							<DeleteButton @onClick="removePosition({position_presail: true, id: item.product.ID})"/>
+						</div>
+						</div>
+						<div
+							:class="open_presail.indexOf(key) !== -1 ? 'order-list-sublist active' : 'order-list-sublist'"
+						>
+							<div
+								v-for="(characteristic, k) in item.characteristics"
+								:key="k"
+								class="order-list-row"
+							>
+								<div class="order-list-elem"> </div>
+								<div class="order-list-elem">{{ characteristic.characteristic }}</div>
+								<div class="order-list-elem">{{ Number(characteristic.price).toLocaleString() }} ₽</div>
+								<div class="order-list-elem"> 
+									<AmountInput 
+										v-model="characteristic.count"
+										:min = "characteristic.residue+1"
+										@onInput="updOrder()"
+									/>
+								</div>
+								<div class="order-list-elem">{{ Number(characteristic.price * characteristic.count).toLocaleString() }} ₽</div>
+								
+								<div class="order-list-elem-delete">
+									<DeleteButton  @onClick="removeCharacteristic({position_presail: true, id: characteristic.id})" />
+								</div>
+							</div>
+							
+						</div>
+					</div>
+					
+					
+				</div>
 			</div>
 		</div>
 		<div class="order-list-buttons">
 			<button 
 				class="order-list-submit gradient-btn" 
-				@click="$emit('onClick')"
+				@click="onClick()"
 			> 
 				<div class="gradient-btn-text">Оформить заказ</div>
 			</button>
@@ -178,6 +249,8 @@ export default {
 	setup(props, { emit }) {
 		const store = useStore();
 		const open = ref([]);
+		const open_presail = ref([]);
+		let error = ref(false);
 		const selectCompany = computed( {
 			get: () => props.modelValue,
 			set: (v) => emit('update:modelValue', v)
@@ -185,19 +258,29 @@ export default {
 
 		let updOrder = () => {
 			store.commit('calcOrder')
-		}
-		let removePosition = (id) => {
-			store.dispatch('REMOVE_POSITION', id)
-		}
-		let removeCharacteristic = (id) => {
-			store.dispatch('REMOVE_CHARACTERISTIC', id)
+		};
+		let removePosition = (data) => {
+			store.dispatch('REMOVE_POSITION', data)
+		};
+		let removeCharacteristic = (data) => {
+			store.dispatch('REMOVE_CHARACTERISTIC', data)
+		};
+		let onClick = () => {
+			if (props.modelValue == '') {
+				error.value = true;
+				setTimeout(() => {error.value=false;}, 5000);
+			}
+			emit('onClick');
 		}
 		return {
 			updOrder,
 			removePosition,
 			removeCharacteristic,
+			onClick,
 			selectCompany,
-			open
+			open,
+			open_presail,
+			error,
 		}
 	},
 }

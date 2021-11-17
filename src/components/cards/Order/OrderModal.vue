@@ -11,12 +11,7 @@
 			<div class="order-modal-header">
 				<h3 class="order-modal-header-title">Создание заказа</h3>
 			
-					<svg class="order-modal-header-close" 
-						@click="close()"
-						width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<rect x="0.250031" y="2.07935" width="2.25351" height="22.5351" rx="1.12676" transform="rotate(-45 0.250031 2.07935)" fill="#A5A7A9"/>
-						<rect width="2.25351" height="22.5351" rx="1.12676" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 17.5282 2.07935)" fill="#A5A7A9"/>
-					</svg>
+					<DeleteButton @onClick="close()"/>
 				
 			</div>
 			<div class="order-modal-body">
@@ -61,15 +56,17 @@
 
 <script>
 
-import Button from '@/components/ui/Button'
+import Button from '@/components/ui/Button';
+import DeleteButton from '@/components/ui/DeleteButton';
 
-import { ref, computed } from 'vue'
-import { useStore } from 'vuex'
-import { onClickOutside } from '@vueuse/core'
+import { ref, computed } from 'vue';
+import { useStore } from 'vuex';
+import { onClickOutside } from '@vueuse/core';
 
 export default {
 	components:{
 		Button,
+		DeleteButton,
 	},
 	props:{
 		modelValue:{

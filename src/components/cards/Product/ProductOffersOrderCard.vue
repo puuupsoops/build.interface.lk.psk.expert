@@ -12,23 +12,22 @@
 				</div>
 				<div class="table-wrap">
 					<div 
-						class="table-row"
+						:class="'table-row' + (offer.count > 0 ? ' active': '') +(offer.count > offer.residue ? ' presail': '')"
 						v-for="offer in characteristicArray"
 						:key="offer.id"
 					>
 						<div class="table-elem"><span v-html="offer.characteristic"></span></div>
 						<div class="table-elem"><span v-html="offer.residue"></span></div>
 						<div class="table-elem"><span v-html="Number(offer.price).toLocaleString() + ' ₽'"></span></div>
-						<div class="table-elem ">
+						<div class="table-elem">
 							<AmountInput 
-								v-model="offer.count" 
-								:disabled="Number(offer.residue) < 1"
-								:max="offer.residue"
+								v-model="offer.count" 								
 								@onInput="onInput(offer)"/>
+								
 							<CheckButton 
 								v-model="offer.check" 
-								:disabled="Number(offer.residue) < 1" 
 								@onClick="onCheck(offer)"/>
+							
 						</div>
 						<div class="table-elem"><span v-html="offer.PPDATA"></span></div>
 					</div>
@@ -36,11 +35,17 @@
 			</div>
 		</div>
 		<div 
-			:class="count == 0 ? 'order-amount-more disable' : 'order-amount-more'"
-			@click="addToOrder()"
-		>
-			<span class="order-amount-more-text">+ Добавить </span>
-			<span class="order-amount-more-value">({{count}})</span>
+			class="order-amount-more">
+			<div
+				:class="count != 0 || countPresail != 0 ? 'order-amount-more-btn':'order-amount-more-btn disable'" 
+				@click="addToOrder()"
+			>
+				<span class="order-amount-more-text">Добавить в заказ </span>
+				<span class="order-amount-more-value">({{count}})</span>
+				<span class="order-amount-more-text presail" v-if="countPresail > 0"> + предзаказ </span>
+				<span class="order-amount-more-value" v-if="countPresail > 0">({{countPresail}})</span>
+			</div>
+			
 		</div>
 	</div>
 </template>
@@ -71,30 +76,52 @@ export default {
 	setup(props, { emit }){
 		const characteristicArray = ref ([]);
 
-		const count = computed(() => characteristicArray.value.filter(x => x.check).length)
+		const count = computed(() => characteristicArray.value.filter(x => x.count <= x.residue & x.count > 0 ).length)
+		const countPresail = computed(() => characteristicArray.value.filter(x => x.count > x.residue).length)
 
 		const onCheck = (offer) => {
-			if (offer.residue > 0 & offer.count == 0) {
+			if (offer.check) {
 				characteristicArray.value.find(x => x.id == offer.id).count=1;
-			}
-			if (offer.residue > 0 & offer.check == false) {
+			} else {
 				characteristicArray.value.find(x => x.id == offer.id).count=0;
 			}
 		}
 
 		const onInput = (offer) => {
-			if (offer.residue > 0 & offer.count == 0) {
+			if (offer.count > 0) {
+				characteristicArray.value.find(x => x.id == offer.id).check=true;
+			} else {
 				characteristicArray.value.find(x => x.id == offer.id).check=false;
 			}
-			if (offer.residue > 0 & offer.count > 0) {
-				characteristicArray.value.find(x => x.id == offer.id).check=true;
-			}
+			
 		}
 
 		const addToOrder = () => {
-			if (count.value > 0){
-				emit('update:modelValue', characteristicArray.value.filter(x => x.check))
-				emit('onClick')
+			if (count.value > 0 || countPresail.value > 0){
+				let charArrPos = [];
+				let charArrPosPresail = [];
+				characteristicArray.value.forEach(x =>{ 
+					if (x.count > 0 & x.count <= x.residue ){
+						charArrPos.push({
+									id: x.id,
+									characteristic: x.characteristic,
+									count: x.count,
+									price: x.price,
+									residue: x.residue,
+								})
+					} 
+					if (x.count > x.residue) {
+						charArrPosPresail.push({
+									id: x.id,
+									characteristic: x.characteristic,
+									count: x.count,
+									price: x.price,
+									residue: x.residue,
+								})
+					}
+				});
+				emit('update:modelValue', {position: charArrPos, position_presail: charArrPosPresail});
+				emit('onClick');
 				characteristicArray.value.forEach( c => {
 					c.count = 0;
 					c.check = false;
@@ -111,7 +138,7 @@ export default {
 					price: item.PRICE,
 					ppdata: item.PPDATA,
 					count: 0,
-					check: false
+					check: false,
 				}
 			});
 		}
@@ -129,7 +156,8 @@ export default {
 			onInput,
 			addToOrder,
 			count,
-			characteristicArray
+			countPresail,
+			characteristicArray,
 		}
 	}
 }
