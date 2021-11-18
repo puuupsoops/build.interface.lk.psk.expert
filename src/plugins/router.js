@@ -50,6 +50,14 @@ const routes = [
 			}
 	},
 	{
+		path: '/orders', 
+		component: () => import('@/pages/orders'),
+		name: 'Orders',
+		meta:{
+				auth: true,
+			}
+	},
+	{
 		path: '/404',
 		component: () => import('@/pages/404'),
 		name: '404',

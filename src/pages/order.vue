@@ -141,9 +141,9 @@ export default {
 				errorMsg.value = 'Для оформления заказа выберите контрагента';
 			} else {
 				showModal.value=true;
-				console.log(store.getters.getOrder)
+				store.commit('addOrderPartnerID', activeCompanyUid.value);
 				setTimeout(() => {
-					store.dispatch('ADD_ORDER', store.getters.getOrderToAdd)
+					store.dispatch('ADD_ORDER', store.getters.getOrderToAdd);
 				}, 3000);
 			}
 

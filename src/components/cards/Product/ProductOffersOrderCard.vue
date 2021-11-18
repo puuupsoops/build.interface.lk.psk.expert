@@ -108,6 +108,8 @@ export default {
 									count: x.count,
 									price: x.price,
 									residue: x.residue,
+									guid: x.guid,
+									orgguid: x.orgguid,
 								})
 					} 
 					if (x.count > x.residue) {
@@ -117,6 +119,8 @@ export default {
 									count: x.count,
 									price: x.price,
 									residue: x.residue,
+									guid: x.guid,
+									orgguid: x.orgguid,
 								})
 					}
 				});
@@ -137,6 +141,8 @@ export default {
 					residue: item.RESIDUE,
 					price: item.PRICE,
 					ppdata: item.PPDATA,
+					guid: item.GUID,
+					orgguid: item.ORGGUID,
 					count: 0,
 					check: false,
 				}

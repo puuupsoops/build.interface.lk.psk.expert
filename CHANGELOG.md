@@ -1,4 +1,12 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-11-18 13:27 +0700
+
+    #32
+    
+    1. Готова модель для регистрации заказа.
+    2. Добавлена страница /orders
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-11-17 15:35 +0700
 
     #31

@@ -6,6 +6,7 @@ export default {
 			id: null,		// Идентификатор заказа, генерируется отметкой времени, на стороне личного кабинета
 			total: 0,	// Общая стоимость заказа
 			count: 0,		// количество позиций в заказе ()
+			partner_id: '', // GUID контрагента, к которому привязан заказа
 			position: [],	// массив с позициями товара
 			position_presail: [],	// массив с позициями товара
 		},
@@ -27,11 +28,26 @@ export default {
 		getOrder: state => state.order,
 		getOrderToAdd: state => (
 			{
-				id: state.id,
-		
-				total: state.total,
-				count: state.count,
-				position: []
+				id: state.order.id,
+				total: state.order.total,
+				count: state.order.count,
+				partner_id: state.partner_id,
+				position: state.order.position.map((x)=>({
+					guid: x.product.UID,
+					characteristics: x.characteristics.map((c)=>({
+						guid: c.guid,
+						orgguid: c.orgguid,
+						quantity: c.count,
+					})),
+				})),
+				position_presail: state.order.position_presail.map((x)=>({
+					guid: x.product.UID,
+					characteristics: x.characteristics.map((c)=>({
+						guid: c.guid,
+						orgguid: c.orgguid,
+						quantity: c.count,
+					})),
+				})),
 		})
 
 	},
@@ -39,7 +55,6 @@ export default {
 		createOrder(state){
 			state.order.id = (new Date()).getTime()
 			state.error = null;
-			console.log(state)
 		},
 		addPosition(state, data){
 			if (data.characteristics.length > 0)
@@ -143,8 +158,8 @@ export default {
 			
 			if (total == 0 & state.order.position_presail.length == 0 ) state.order.id = null;
 		},
-		addOrder(){
-
+		addOrder(state, data){
+			console.log(state, data)
 		},
 		setOrderError(state, data){
 			state.error = data
@@ -157,9 +172,13 @@ export default {
 				id: null,
 				total: 0,
 				count: 0,
+				partner_id: '',
 				position: [],
 				position_presail: []
 			}	
+		},
+		addOrderPartnerID (state, data) {
+			state.partner_id = data;
 		}
 	},
 	actions: {
@@ -187,8 +206,7 @@ export default {
 		ADD_ORDER: async function({ commit }, data) {
 			await axios.post('/order/add', data)
 				.then(response => {
-					console.log(response.data)
-					commit('addOrder')
+					commit('addOrder', response)
 				})
 				.catch(error => {
 					
