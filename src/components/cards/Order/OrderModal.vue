@@ -17,7 +17,8 @@
 			<div class="order-modal-body">
 			
 				<div v-if="!error">
-					<span class="loading">Ваш заказ регистрируется!
+					<div v-if="!isAddNewOrder">
+						<span class="loading">Ваш заказ регистрируется!
 						<br> Подождите минутку<span>.</span><span>.</span><span>.</span></span>
 
 						<svg  width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -39,6 +40,10 @@
 								repeatCount="indefinite" 
 								begin="0.1"/>
 						</svg>
+					</div>
+					<div v-else>
+						{{newOrder.message}} 
+					</div>
 				</div>
 				<div v-else>
 					{{errorMsg}}
@@ -48,6 +53,9 @@
 			<div class="order-modal-action" >
 				<Button v-if="error" :name="'Сохранить заказ'" @onClick="close()"/>
 				<Button v-if="error" :name="'Новый заказ'" @onClick="delOrder()"/>
+				<Button v-if="isAddNewOrder" :name="'Список заказов'" @onClick="toOrders()"/>
+				<Button v-if="isAddNewOrder" :name="'Новый заказ'" @onClick="delOrder()"/>
+				
 			</div>
 		</div>
 	</div>
@@ -62,6 +70,7 @@ import DeleteButton from '@/components/ui/DeleteButton';
 import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
 import { onClickOutside } from '@vueuse/core';
+import { useRouter } from 'vue-router';
 
 export default {
 	components:{
@@ -76,6 +85,7 @@ export default {
 	emits: ['update:modelValue'],
 	setup(props, { emit }){
 		const store = useStore();
+		const router = useRouter();
 		const shake = ref(false);
 		const target_modal = ref(null);
 		onClickOutside(target_modal, () => {
@@ -84,19 +94,31 @@ export default {
 		});
 		const close = () => {
 			store.commit('cleanOrderError');
+			store.commit('cleanAddOrder');
 			emit('update:modelValue', false);
-		}
+		};
 		const delOrder = () => {
 			store.commit('cleanOrder');
+			store.commit('cleanAddOrder');
 			emit('update:modelValue', false);
 		}
+		const toOrders = () => {
+			store.commit('cleanOrder');
+			store.commit('cleanAddOrder');
+			emit('update:modelValue', false);
+			router.push({name: 'Orders'});
+		};
+		
 		return {
 			close,
 			delOrder,
+			toOrders,
 			shake,
 			target_modal,
 			error: computed(() => store.getters.getOrderError),
 			errorMsg: computed(() => store.getters.getOrderErrorMsg),
+			isAddNewOrder: computed(() => store.getters.isOrderAddNew),
+			newOrder: computed(() => store.getters.getOrderAddNew),
 		}
 	}
 }

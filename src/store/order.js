@@ -19,11 +19,14 @@ export default {
 		// 	guid: null, // идентификатор характеристики 
 		// 	quantity: 3   // количество позиций характеристики 
 		// }
+		new_order: null,
 		error: null,
 	},
 	getters: {
 		getOrderError: state => state.error !== null,
 		getOrderErrorMsg: state => state.error,
+		isOrderAddNew: state => state.new_order !== null,
+		getOrderAddNew: state => state.new_order,
 		isOrder: state => state.order.id !== null,
 		getOrder: state => state.order,
 		getOrderToAdd: state => (
@@ -159,7 +162,11 @@ export default {
 			if (total == 0 & state.order.position_presail.length == 0 ) state.order.id = null;
 		},
 		addOrder(state, data){
-			console.log(state, data)
+	
+			state.new_order = data;
+		},
+		cleanAddOrder(state){
+			state.new_order = null;
 		},
 		setOrderError(state, data){
 			state.error = data
@@ -206,7 +213,7 @@ export default {
 		ADD_ORDER: async function({ commit }, data) {
 			await axios.post('/order/add', data)
 				.then(response => {
-					commit('addOrder', response)
+					commit('addOrder', response.data.response)
 				})
 				.catch(error => {
 					

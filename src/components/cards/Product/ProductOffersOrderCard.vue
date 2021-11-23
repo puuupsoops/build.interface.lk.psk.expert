@@ -29,7 +29,7 @@
 								@onClick="onCheck(offer)"/>
 							
 						</div>
-						<div class="table-elem"><span v-html="offer.PPDATA"></span></div>
+						<div class="table-elem"><span>{{offer.ppdata}}</span></div>
 					</div>
 				</div>
 			</div>

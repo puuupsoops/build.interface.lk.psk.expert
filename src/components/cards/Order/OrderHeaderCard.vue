@@ -1,7 +1,7 @@
 <template>
 <div class="content-heading-wrap proudct-heading-wrap">
 		<div class="content-heading-wrap-elem">
-		<div class="content-heading">Заказ № {{data.id}}</div>
+		<div class="content-heading">Заказ № Новый заказ от {{(new Date(data.id)).toLocaleDateString()}}</div>
 		</div>
 		<div class="content-heading-wrap-elem">
 		<div class="content-heading-price"> 

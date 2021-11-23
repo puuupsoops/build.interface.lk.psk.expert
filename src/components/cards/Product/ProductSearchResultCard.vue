@@ -12,18 +12,19 @@
 					<div class="table-elem">Артикул</div>
 					<div class="table-elem">Наименование</div>
 				</div>
-			
-				<a 
-					:class=" modelValue===product.ID ? 'table-row table-element active' : 'table-row table-element'" 
-					v-for="(product, i) in data"
-					:key="i"
-					@click="$emit('update:modelValue', product.ID); $emit('onClick', $event)"
-					
-				> 
-					<i style="display: none">{{ product.ID }}</i>
-					<div class="table-elem">{{ product.ARTICLE }}</div>
-					<div class="table-elem">{{ product.NAME }}</div>
-				</a>
+				<div class="table-wrap">
+					<a 
+						:class=" modelValue===product.ID ? 'table-row table-element active' : 'table-row table-element'" 
+						v-for="(product, i) in data"
+						:key="i"
+						@click="$emit('update:modelValue', product.ID); $emit('onClick', $event)"
+						
+					> 
+						<i style="display: none">{{ product.ID }}</i>
+						<div class="table-elem">{{ product.ARTICLE }}</div>
+						<div class="table-elem">{{ product.NAME }}</div>
+					</a>
+				</div>
 			</div>
 		</div>
 	</transition>
