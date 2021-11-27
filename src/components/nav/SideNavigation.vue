@@ -24,7 +24,22 @@
 							alt=""
 							/>
 					</div>
-					<div :class="modelValue===id ? 'sidebar-nav-text active' : 'sidebar-nav-text'"> {{ item.title }} </div>
+					<div 
+						:class="'sidebar-nav-text' + (modelValue==id ? ' active' : '') + (item.lock ? ' lock' : '')"
+					>
+						{{ item.title }} 
+						<span
+							v-if="item.lock"
+							class="tooltip"
+						>
+							<img src="@/assets/img/icon/lock.svg"/>
+							<span class="tooltiptext">Раздел находится в разработке</span>
+						</span>
+
+					</div>
+			
+			
+			
 				</div>
 				<div v-if="item.children" :class="modelValue===id ? 'sidebar-nav-dropdown active':'sidebar-nav-dropdown'">
 					<ul class="sidebar-nav-dropdown-list">
@@ -35,10 +50,17 @@
 							<router-link
 								tag="a"
 								:to="child.link" 
-								class="sidebar-nav-dropdown-link" 
+								:class="'sidebar-nav-dropdown-link' + (child.lock ? ' lock':'')" 
 								active-class="sidebar-nav-dropdown-link active"
 							>
 								{{ child.title }}
+								<span
+									v-if="child.lock"
+									class="tooltip"
+								>
+									<img src="@/assets/img/icon/lock.svg"/>
+									<span class="tooltiptext">Раздел находится в разработке</span>
+								</span>
 							</router-link>
 						</li>
 					</ul>
@@ -67,35 +89,36 @@ export default {
 		let isDebug = inject('isDebug');
 		let menu = computed(() => {
 			let menu_start = [
-				{title: 'Мои компании', link: null , children: [
+				{title: 'Мои компании', link: null, lock: false, children: [
 				]},
-				{title: 'Рабочий стол', link: null, children: [
-					{title: 'Заказы', link: '/orders'},
-					{title: 'Отгрузки', link: '/shipments'},
-					{title: 'Претензии', link: '/claims'},
-					{title: 'Возвраты', link: '/returns'},
-					{title: 'Аналитика', link: '/analytics'},
+				{title: 'Рабочий стол', link: null, lock: false, children: [
+					{title: 'Заказы', link: '/orders', lock: false},
+					{title: 'Отгрузки', link: '/shipments', lock: true},
+					{title: 'Претензии', link: '/claims', lock: true},
+					{title: 'Возвраты', link: '/returns', lock: true},
+					{title: 'Аналитика', link: '/analytics', lock: true},
 				]},
-				{title: 'Взаиморасчеты', link: '/settlements', children: [
-					{title: 'Счета', link: '/bills'},
-					{title: 'Реализации', link: '/realization'},
-					{title: 'Корректировки', link: '/adjustments'},
-					{title: 'Акты', link: '/acts'},
-					{title: 'ЭДО', link: '/edo'},
+				{title: 'Взаиморасчеты', link: '/settlements', lock: true, children: [
+					{title: 'Счета', link: '/bills', lock: true},
+					{title: 'Реализации', link: '/realization', lock: true},
+					{title: 'Корректировки', link: '/adjustments', lock: true},
+					{title: 'Акты', link: '/acts', lock: true},
+					{title: 'ЭДО', link: '/edo', lock: true},
 				]},
-				{title: 'Сертификаты', link: null, children: [
-					{title: 'Разрешительная', link: '/permissive'},
-					{title: 'Нормативная', link: '/regulatory'},
-					{title: 'Доп.Информация', link: '/dop_info'},
+				{title: 'Сертификаты', link: null, lock: true, children: [
+					{title: 'Разрешительная', link: '/permissive', lock: true},
+					{title: 'Нормативная', link: '/regulatory', lock: true},
+					{title: 'Доп.Информация', link: '/dop_info', lock: true},
 				]},
-				{title: 'Каталог', link: null, children: [
-					{title: 'Электронный', link: '/catalog'},
-					{title: 'Интерактивный', link: '/dop_info'},
+				{title: 'Каталог', link: null, lock: false, children: [
+					{title: 'Поиск товара', link: '/product', lock: false},
+					{title: 'Электронный', link: '/catalog', lock: false},
+					{title: 'Интерактивный', link: '/dop_info', lock: true},
 				]},
-				{title: 'Акции и Предложения', link: '/promotions', children: null},
-				{title: 'Скидки', link: '/sale', children: null},
-				{title: 'Контакты', link: '/contacts', children: null},
-				{title: 'Помощь', link: '/help', children: null},
+				{title: 'Акции и Предложения', link: '/promotions', lock: true, children: null },
+				{title: 'Скидки', link: '/sale', lock: true, children: null},
+				{title: 'Контакты', link: '/contacts', lock: true, children: null},
+				{title: 'Помощь', link: '/help', lock: true, children: null},
 			]
 			let arr = [];
 			if (!store.getters.isCompanysLoad) {
@@ -106,9 +129,10 @@ export default {
 											.replace(/Общество с ограниченной ответственностью/, 'ООО')
 											.replace(/Акционерное общество/, 'АО'),
 						link: '/company/'+element.uid,
+						lock: false,
 						})	
 			});
-			arr.push({title: 'Договоры', link: '/agreements'})
+			arr.push({title: 'Договоры', link: '/agreements', lock: true})
 			menu_start[0].children = arr;
 			return menu_start;
 		});

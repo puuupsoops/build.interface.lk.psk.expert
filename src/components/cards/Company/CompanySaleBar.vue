@@ -105,37 +105,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.tooltip
-  position: relative
-  display: inline-block
-  border-bottom: 1px dotted black
-  width: 100%
 
-.tooltip .tooltiptext 
-  visibility: hidden
-  width: 250px
-  background-color: black
-  color: #fff
-  text-align: center
-  border-radius: 6px
-  padding: 10px 10px
-
-  /* Position the tooltip */
-  position: absolute
-  z-index: 1
-
-.tooltip:hover .tooltiptext 
-  visibility: visible
-
-.tooltiptext td
-  text-align: left
-
-.tooltiptext td:last-child
-  text-align: center
-  padding: 0px, 0px, 0px, 40px
-
-.tooltiptext
-  th
-    padding: 10px
 
 </style>

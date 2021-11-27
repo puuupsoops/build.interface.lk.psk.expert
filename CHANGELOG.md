@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-11-27 20:50 +0700
+
+    #35
+    
+    1. В меню разделы находящиеся в разработке стали отображаться с замком. Появилась подсказка.
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-11-27 18:07 +0700
 
     #34

@@ -1,0 +1,31 @@
+.tooltip
+	//position: relative
+	//display: inline-block
+	
+	width: 100%
+
+	& .tooltiptext 
+		visibility: hidden
+		width: 250px
+		background-color: black
+		color: #fff
+		text-align: center
+		border-radius: 6px
+		padding: 10px 10px
+		position: absolute
+		z-index: 1000
+	&:hover .tooltiptext 
+		visibility: visible
+
+.tooltiptext
+	& td
+		text-align: left
+	& th
+		padding: 10px
+	& td:last-child
+		text-align: center
+		padding: 0px, 0px, 0px, 40px
+
+
+
+
