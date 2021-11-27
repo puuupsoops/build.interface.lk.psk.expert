@@ -66,6 +66,14 @@ const routes = [
 			}
 	},
 	{
+		path: '/500',
+		component: () => import('@/pages/500'),
+		name: '500',
+		meta:{
+				auth: true,
+			}
+	},
+	{
 		path: '/:pathMatch(.*)*',
 		redirect: '/404',
 		meta:{

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { watch } from 'vue'
 
 export default {
 		props: {
@@ -26,13 +26,19 @@ export default {
 			message: {
 				type: String
 			},
+			timeout: {
+				default: 10000,
+				type: Number,
+			}
 		},
 		emits: ['update:modelValue'],
-		setup(){
-				let show = ref(true)
-				return {
-						show
-				}
+		setup(props, { emit }){				
+			watch(() => props.modelValue, () => {
+				if (props.modelValue) 
+					setTimeout(()=>{emit('update:modelValue',false)}, props.timeout)
+			})
+			return {
+			}
 		}
 }
 </script>

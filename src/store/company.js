@@ -83,12 +83,18 @@ export default ({
 				.then(response => {
 						commit('setPartners', response.data.response)
 				})
+				.catch( error => {
+					commit('setError', 'Request GET_PARTNER error:<br>'+error)
+				})
 				
 		},
 		GET_MANAGER: async function({commit}) {
 			await axios.get('/manager')
 				.then(response => {
 						commit('setManager', response.data.response)
+				})
+				.catch( error => {
+					commit('setError', 'Request GET_MANAGER error:<br>'+error)
 				})
 				
 		},

@@ -12,6 +12,7 @@
 					<component :is="Component"/>
 				</transition>
 			</router-view>
+			<SnackBar v-model="error" :message="errorMsg"></SnackBar>
 		</div>
 	</div>
 </div>
@@ -24,8 +25,7 @@ import { computed, ref, provide } from 'vue';
 import SideMenu from '@/components/nav/SideMenu.vue';
 import Preloader from '@/components/Preloader';
 import Debug from '@/components/nav/Debug';
-//import Main from './pages/main.vue'
-//import Catalog from './pages/catalog.vue';
+import SnackBar from '@/components/ui/SnackBar';
 
 //Composition API = On
 export default {
@@ -33,7 +33,8 @@ export default {
 	components: {
 		SideMenu,
 		Preloader,
-		Debug
+		Debug,
+		SnackBar
 	},
 
 setup() {
@@ -45,14 +46,18 @@ setup() {
 		provide('loader', loader ); 
 		provide('collapsed', collapsed ); 
 		provide('isDebug', isDebug ); 
-
+		let error  = computed({
+			get: () => store.getters.getError,
+			set: () => store.commit('clearError')
+		});
 		return {
 			//возвращаем данные
 			isAuth: computed(() => store.getters.isAuthenticated),
 			loader,
 			collapsed,
 			isDebug,
-			
+			error,
+			errorMsg: computed(() => store.getters.getErrorMsg),
 		}
 	}
 }

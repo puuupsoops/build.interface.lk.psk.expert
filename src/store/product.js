@@ -78,6 +78,10 @@ state:  {
 				.then(response => {
 					commit('setSearchProductResult', response.data)
 				})
+				.catch( error => {
+					commit('setError', 'Request SEARCH_PRODUCT error:<br>'+error)
+				})
+
 		},
 		GET_PRODUCT_BY_ID: async function({commit}, data) {
 			await axios.get(`/product/search?QUERY=${data}&OPTION=9`, {transformRequest: (data, headers) => {
@@ -86,6 +90,9 @@ state:  {
 				}})
 				.then(response => {
 					commit('setProductResult', response.data)
+				})
+				.catch( error => {
+					commit('setError', 'Request GET_PRODUCT_BY_ID error:<br>'+error)
 				})
 		}
 

@@ -1,4 +1,12 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-11-27 18:07 +0700
+
+    #34
+    
+    1. Реализован компонент с новостями и слайдер предложений
+    2. Главная страница готова.
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-11-23 21:34 +0700
 
     #33

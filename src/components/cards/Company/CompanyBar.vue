@@ -1,11 +1,13 @@
 <template>
   <div class="company-card">
     <div class="company-card-wrap">
-      <CompanyAboutSmallCard 
-        v-for="item in data" 
-        :key="item.id"
-        :data = "item"
-      />
+        <PreloaderLocal v-if="loading"/>
+        <CompanyAboutSmallCard 
+            v-else
+            v-for="item in data" 
+            :key="item.id"
+            :data = "item"
+        />
 
     </div>
   </div>
@@ -13,14 +15,20 @@
 
 <script>
 import CompanyAboutSmallCard from '@/components/cards/Company/CompanyAboutSmallCard';
+import PreloaderLocal from '@/components/PreloaderLocal.vue';
 export default {
   props:{
     data: {
       type: Array
+    },
+    loading: {
+        type: Boolean,
+        default: false
     }
   },
   components:{
-    CompanyAboutSmallCard 
+    CompanyAboutSmallCard,
+    PreloaderLocal
   }
 }
 </script>

@@ -34,6 +34,7 @@ state:  {
 		setError(state, data) {
 			state.error = true;
 			state.error_msg = data;
+			router.push('/500');
 		},
 		setLoginError(state, data) {
 			state.error_login = true;

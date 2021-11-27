@@ -1,27 +1,43 @@
-.main-page
 
-	.sidebar-menu
-		display: block
-	
-	// .content
-	// 	padding:
-	// 		left: 415px
-
-.prev-slider
-	margin: 0 -15px
+.case-slider-wrap
+	+flex
+	+align-items(center)
+	+flex-wrap(nowrap)
+	margin: 
+		right: -25px
+		left: -25px
 		top: 30px
+		
+
+.case-slider
+	+flex
+	+flex-wrap(nowrap)
+	+justify-content(flex-start)
+	+align-items(flex-start)
+	overflow: hidden
+	max-height: 530px
 
 	&-elem
+		+flex
+		+align-items(flex-start)
+		+prefix(transition, $default-transition)
 		position: relative
-		margin: 0 15px
+		flex: 0 0 25%
 		width: 100%
 		outline: none
+		height: 100%
+		
 		
 		&-wrap
+			+flex
+			+flex-flow(column)
+			+justify-content(space-between)
 			position: relative
+			width: 250px
 			background-color: $bg-default-color
 			border-radius: 6px
-
+			height: 500px
+			
 		&-box
 			padding: 25px
 				bottom: 17px
@@ -126,32 +142,22 @@
 			color: $font-light-color
 			text-transform: uppercase
 			+prefix(transition, $default-transition)
-	
-	.slick-arrow
-		position: absolute
-		margin:
-			top: -12px
-		top: 50%
-		width: 13px
-		height: 24px
-		font-size: 0
+
+	&-arrow
 		background-color: transparent
-		background-size: cover
 		background-position: center center
 		background-repeat: no-repeat
 		border: 0
-		z-index: 10
 		cursor: pointer
-
-		&.slick-disabled
-			opacity: .5
-
-		&.slick-prev
-			left: -7px
+		min-width: 25px
+		height: 25px
+		z-index: 999
+		&.prev
+			left: -18px
 			background-image: url(~@/assets/img/icon/arrow-s-l.svg)
 		
-		&.slick-next
-			right: -7px
+		&.next
+			right: -18px
 			background-image: url(~@/assets/img/icon/arrow-s-r.svg)
 
 .banner
