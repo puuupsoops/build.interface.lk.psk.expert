@@ -92,33 +92,42 @@ export default {
 				{title: 'Мои компании', link: null, lock: false, children: [
 				]},
 				{title: 'Рабочий стол', link: null, lock: false, children: [
+					{title: 'Поиск товара', link: '/product', lock: false},
 					{title: 'Заказы', link: '/orders', lock: false},
 					{title: 'Отгрузки', link: '/shipments', lock: true},
-					{title: 'Претензии', link: '/claims', lock: true},
-					{title: 'Возвраты', link: '/returns', lock: true},
-					{title: 'Аналитика', link: '/analytics', lock: true},
+					{title: 'Конструктор КП', link: '/kp', lock: true},
+					{title: 'История', link: '/history', lock: true},
+					
 				]},
-				{title: 'Взаиморасчеты', link: '/settlements', lock: true, children: [
-					{title: 'Счета', link: '/bills', lock: true},
-					{title: 'Реализации', link: '/realization', lock: true},
-					{title: 'Корректировки', link: '/adjustments', lock: true},
-					{title: 'Акты', link: '/acts', lock: true},
-					{title: 'ЭДО', link: '/edo', lock: true},
+				{title: 'Логистика', link: '/settlements', lock: true, children: [
+					{title: 'Заявка на отгрузку', link: '/', lock: true},
+					{title: 'Адреса Доставки', link: '/', lock: true},
 				]},
 				{title: 'Сертификаты', link: null, lock: true, children: [
 					{title: 'Разрешительная', link: '/permissive', lock: true},
 					{title: 'Нормативная', link: '/regulatory', lock: true},
 					{title: 'Доп.Информация', link: '/dop_info', lock: true},
 				]},
+				{title: 'Взаиморасчеты', link: '/settlements', lock: true, children: [
+					{title: 'Счета', link: '/bills', lock: true},
+					{title: 'Реализации', link: '/realization', lock: true},
+					{title: 'Корректировки', link: '/adjustments', lock: true},
+					{title: 'Акты сверки', link: '/acts', lock: true},
+					{title: 'ЭДО', link: '/edo', lock: true},
+				]},
 				{title: 'Каталог', link: null, lock: false, children: [
-					{title: 'Поиск товара', link: '/product', lock: false},
 					{title: 'Электронный', link: '/catalog', lock: false},
 					{title: 'Интерактивный', link: '/dop_info', lock: true},
 				]},
-				{title: 'Акции и Предложения', link: '/promotions', lock: true, children: null },
-				{title: 'Скидки', link: '/sale', lock: true, children: null},
+				{title: 'Маркетинг', link: null, lock: true, children: [
+					{title: 'Баннеры', link: '/banners', lock: true},
+					{title: 'Фотографический материал', link: '/photo_mat', lock: true},
+					{title: 'Обучающий материал', link: '/ed_mat', lock: true},
+					{title: 'Интеграции', link: '/ingration', lock: true},
+				]},
+				{title: 'Novelty', link: '/Novelty', lock: true, children: null },
 				{title: 'Контакты', link: '/contacts', lock: true, children: null},
-				{title: 'Помощь', link: '/help', lock: true, children: null},
+				{title: 'Help', link: '/help', lock: true, children: null},
 			]
 			let arr = [];
 			if (!store.getters.isCompanysLoad) {
@@ -132,7 +141,9 @@ export default {
 						lock: false,
 						})	
 			});
-			arr.push({title: 'Договоры', link: '/agreements', lock: true})
+			arr.push({title: 'Договоры', link: '/agreements', lock: true});
+			arr.push({title: 'Аналитика', link: '/analytics', lock: true});
+			arr.push({title: 'Программа лояльности', link: '/loyalty', lock: true});
 			menu_start[0].children = arr;
 			return menu_start;
 		});

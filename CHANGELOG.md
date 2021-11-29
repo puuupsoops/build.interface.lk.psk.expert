@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-11-29 16:31 +0700
+
+    #36
+    
+    1. Изменения в меню навигации SideNavigation
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-11-27 20:50 +0700
 
     #35
