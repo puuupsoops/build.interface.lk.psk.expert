@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-11-30 19:27 +0700
+
+    #37
+    
+    1. Обновлен дизайн страницы входа
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-11-29 16:31 +0700
 
     #36

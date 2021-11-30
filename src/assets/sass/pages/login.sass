@@ -1,65 +1,385 @@
 
 .auth
 
-    &-box
-        position: absolute
-        top: 50%
-        left: 50%
-        transform: translate(-50%, 70%)
-        
-    &-title
-        text-align: center
-        font-size: 18px
+	&-box
+		position: absolute
+		top: 50%
+		left: 50%
+		transform: translate(-50%, 70%)
+		
+	&-title
+		text-align: center
+		font-size: 18px
 
-    &-formgroup
-        margin-bottom: 25px
+	&-formgroup
+		margin-bottom: 25px
 
-        &-label
-            font-size: 13px
-            color: #5a6c77
-            padding-bottom: 2px
+		&-label
+			font-size: 13px
+			color: #5a6c77
+			padding-bottom: 2px
 
-        &-input
-            position: relative
+		&-input
+			position: relative
 
-            input
-                display: block
-                width: 100% 
-                font-size: 18px
-                height: 38px
-                margin: 0
-                padding: 0 4px
-                border: 1px solid #ccd5db
-                border-radius: 2px
-                background: #f8fafc
-                outline: 0
-                -webkit-box-sizing: border-box
-                -moz-box-sizing: border-box
-                box-sizing: border-box
+			input
+				display: block
+				width: 100% 
+				font-size: 18px
+				height: 38px
+				margin: 0
+				padding: 0 4px
+				border: 1px solid #ccd5db
+				border-radius: 2px
+				background: #f8fafc
+				outline: 0
+				-webkit-box-sizing: border-box
+				-moz-box-sizing: border-box
+				box-sizing: border-box
 
 
-    &-param
-        display: flex
-        align-items: center
+	&-param
+		display: flex
+		align-items: center
 
-        &-text
-            padding: 0 5px
-        
-        &-input
-            color:  #f8fafc
-            cursor: default
-            appearance: auto
-            box-sizing: border-box
-            margin: 3px 3px 3px 4px
-            
-           
-            // height: 15px
-            // width: 15px 
-            // background: #f8fafc
+		&-text
+			padding: 0 5px
+		
+		&-input
+			color:  #f8fafc
+			cursor: default
+			appearance: auto
+			box-sizing: border-box
+			margin: 3px 3px 3px 4px
+			
+		   
+			// height: 15px
+			// width: 15px 
+			// background: #f8fafc
 
-            // &:checked
-            //     background: #5a6c77
+			// &:checked
+			//     background: #5a6c77
 
-    &-error
-        position: absolute
-        
+	&-error
+		position: absolute
+		
+
+.authorization
+	+flex
+	+align-items(center)
+	+justify-content(center)
+	padding: 60px 0
+	position: relative
+	width: 100%
+	min-height: 100vh
+	background-color: #080005
+	overflow: hidden
+
+	&::before
+		content: ''
+		position: absolute
+		top: -10%
+		left: -10%
+		width: 120%
+		height: 120%
+		z-index: 1
+		overflow: hidden
+		background-image: url(~@/assets/img/login/def.jpg)
+		background-position: center
+		background-repeat: no-repeat
+		background-size: cover
+		-webkit-transform: scale(1) rotate(0)
+		transform: scale(1) rotate(0)
+		opacity: 0.5
+	
+	&-body 
+		padding: 40px 30px 45px
+		position: relative
+		-webkit-box-flex: 0
+		-ms-flex: 0 0 calc(100% - 40px)
+		flex: 0 0 calc(100% - 40px)
+		width: calc(100% - 40px)
+		max-width: 320px
+		z-index: 2
+		background: url(~@/assets/img/login/body-bg.png) center/100% 100% no-repeat
+		/* background-color: rgba(21, 23, 28, 0.8)
+		/*border-radius: 50% 50% 45% 45% /* 15% 15% 55% 55% */
+
+	&-logo 
+		margin: 0px auto 30px
+		width: 58%
+
+		& img 
+			width: 100%
+			height: 100%
+			-o-object-fit: contain
+			object-fit: contain
+
+	&-form 
+		width: 100%
+		text-align: center
+
+	&-input 
+		padding: 0 15px
+		margin: 0px 0px 10px 0px
+		display: block
+		width: 100%
+		height: 45px
+		color: #fff
+		font-family: "P22UndergroundPro"
+		font-size: 14px
+		font-weight: 300
+		text-align: center
+		background-color: rgba(255, 255, 255, 0.2)
+		border-radius: 15px
+		border: none
+		outline: none
+		-webkit-appearance: none
+		-moz-appearance: none
+		appearance: none
+		+placeholder()
+			opacity: 1
+			visibility: visible
+			color: #9f9d9c
+			+prefix(transition, opacity 0.2s ease)
+			+prefix(transition, visibility 0.2s ease)
+			
+
+		&:focus::-webkit-input-placeholder 
+			opacity: 0
+			visibility: hidden
+
+
+		&t:focus::-moz-placeholder 
+			opacity: 0
+			visibility: hidden
+
+
+		&:focus:-ms-input-placeholder 
+			opacity: 0
+			visibility: hidden
+
+
+		&:focus::-ms-input-placeholder 
+			opacity: 0
+			visibility: hidden
+
+
+		&:focus::placeholder 
+			opacity: 0
+			visibility: hidden
+
+	&-check 
+		padding: 0px 0px 0px 19px
+		margin: 5px 0px 20px
+		display: inline-block
+		position: relative
+		cursor: pointer
+		-webkit-tap-highlight-color: transparent
+
+
+		& .check-input 
+			position: absolute
+			width: 1px
+			height: 1px
+			overflow: hidden
+			clip: rect(0 0 0 0)
+
+
+		& .checkbox-custom 
+			display: inline-block
+			position: absolute
+			top: 50%
+			left: 0
+			transform: translateY(-50%)
+			width: 14px
+			height: 14px
+			overflow: hidden
+
+			background-color: #fff
+			border: 1px solid #000
+			border-radius: 4px
+			-webkit-box-shadow: inset 0 0 3px 0px rgba(0, 0, 0, 0.6)
+			box-shadow: inset 0 0 3px 0px rgba(0, 0, 0, 0.6)
+
+
+		& .checkbox-custom::after 
+			content: ''
+			position: absolute
+			top: 0
+			left: 0
+			width: 100%
+			height: 100%
+			background: url(~@/assets/img/login/check.svg) center/contain no-repeat
+			-webkit-transform: scale(0)
+			transform: scale(0)
+			+prefix(transition, transform 0.2s ease)
+
+
+
+		& .check-txt 
+			color: #9f9d9c
+			font-family: "P22UndergroundPro"
+			font-size: 12px
+			line-height: 1
+
+
+		& .check-input:checked + .checkbox-custom:after 
+			-webkit-transform: scale(1)
+			transform: scale(1)
+
+	&-btn 
+		-webkit-appearance: none
+		-moz-appearance: none
+		appearance: none
+		-webkit-tap-highlight-color: transparent
+		margin: 0px auto
+		width: 110px
+		height: 35px
+		display: block
+		color: rgba(255, 255, 255, 0.75)
+		font-family: "P22UndergroundPro"
+		font-size: 14px
+		font-weight: 500
+		background: -webkit-gradient(linear, left top, left bottom, from(#e37c4b), to(#9a4b7d))
+		background: linear-gradient(to bottom, #e37c4b, #9a4b7d)
+		border-radius: 20px
+		border: none
+		cursor: pointer
+		outline: none
+		opacity: 1
+		-webkit-transition: opacity 0.2s ease
+		transition: opacity 0.2s ease
+
+
+		&:hover 
+			opacity: 0.8
+
+	&-bottom 
+		position: absolute
+		bottom: 30px
+		left: 0
+		width: 100%
+		z-index: 2
+		text-align: center
+		color: #9f9d9c
+		font-family: "P22UndergroundPro"
+		font-size: 12px
+		font-weight: 300
+		letter-spacing: 0.5px
+
+
+@media (max-width: 1100px) 
+	.authorization::before 
+		background-image: url(~@/assets/img/login/def-tablet.jpg)
+	
+
+	@supports (background-blend-mode: multiply) 
+		.authorization::before 
+			background-image: url(~@/assets/img/login/02-tablet.jpg), url(~@/assets/img/login/01-tablet.jpg)
+		
+	
+
+
+@media (max-width: 767.98px) 
+	.authorization::before 
+		background-image: url(~@/assets/img/login/def-mob.jpg)
+	
+
+	@supports (background-blend-mode: multiply) 
+		.authorization::before 
+			background-image: url(~@/assets/img/login/02-mob.jpg), url(~@/assets/img/login/01-mob.jpg)
+		
+	
+
+
+@media (max-width: 576px) 
+	.authorization 
+		padding: 45px 0
+	
+
+	.authorization-body 
+		padding: 35px 25px 40px
+		max-width: 300px
+	
+
+	.authorization-logo 
+		margin: 0px auto 25px
+	
+
+	.authorization-input 
+		height: 40px
+	
+
+	.authorization-btn 
+		width: 100px
+	
+
+	.authorization-bottom 
+		bottom: 20px
+	
+
+
++keyframes(auth-bg-animate) 
+	0% 
+		background-position: 50% 50%, center
+		-webkit-transform: scale(1) rotate(0deg)
+		transform: scale(1) rotate(0deg)
+		opacity: 0.5
+	
+
+	20% 
+		background-position: 1% 50%, center
+		-webkit-transform: scale(1.2) rotate(-6deg)
+		transform: scale(1.2) rotate(-6deg)
+		opacity: 0.65
+	
+
+	30% 
+		background-position: 1% 1%, center
+		-webkit-transform: scale(1.3) rotate(-12deg)
+		transform: scale(1.3) rotate(-12deg)
+		opacity: 1
+	
+
+	46% 
+		background-position: 50% 50%, center
+		-webkit-transform: scale(1.5) rotate(-18deg)
+		transform: scale(1.5) rotate(-18deg)
+		opacity: 0.4
+	
+
+	67% 
+		background-position: 99% 50%, center
+		-webkit-transform: scale(1.1) rotate(-6deg)
+		transform: scale(1.1) rotate(-6deg)
+		opacity: 0.6
+	
+
+	85% 
+		background-position: 99% 99%, center
+		-webkit-transform: scale(1.2) rotate(5deg)
+		transform: scale(1.2) rotate(5deg)
+		opacity: 0.9
+	
+
+	100% 
+		background-position: 50% 50%, center
+		-webkit-transform: scale(1) rotate(0deg)
+		transform: scale(1) rotate(0deg)
+		opacity: 0.5
+
+
+
+
+@supports (background-blend-mode: multiply)
+	.authorization::before
+		background-image: url(~@/assets/img/login/02.jpg), url(~@/assets/img/login/01.jpg)
+		background-position: 50% 50%, center
+		background-repeat: no-repeat
+		background-size: 150% 150%, cover
+		background-blend-mode: multiply
+		background-color: transparent
+		-webkit-animation: auth-bg-animate 30s linear 0s infinite alternate
+		animation: auth-bg-animate 30s linear 0s infinite alternate
+	

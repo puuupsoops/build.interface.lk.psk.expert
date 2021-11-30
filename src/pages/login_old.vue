@@ -1,59 +1,59 @@
 <template>
 <div>
+	<div class="auth-box" v-if="!isAuth">
+		<div class="auth-form" >
+			<div class="auth-title">Авторизация</div>
+				<Form @submit="onLogin"> 
+					<div class="auth-formgroup">
+						<div class="auth-formgroup-label">Логин</div>
+						<div class="auth-formgroup-input">
+							<Field as="input" v-model="login" name="Login" rules="required|minLength:3">
+								
+							</Field>
+							<ErrorMessage name="Login" />
+						
+						</div>
+					</div>
 
-	<div class="authorization" v-if="!isAuth">
-		<div class="authorization-body">
-			<div class="authorization-logo">
-				<img src="~@/assets/img/login/logo.png" alt="логотип">
-			</div>
-			<Form @submit="onLogin" class="authorization-form">
+					<div class="auth-formgroup">
+						<div class="auth-formgroup-label">Пароль</div>
+						<div class="auth-formgroup-input">
+							<Field as="input" type="password" v-model="password" name="password" rules="required|minLength:3">
+								
+							</Field>
+							<ErrorMessage name="password" />
+						
+						</div>
+					</div>
 
-				<Field 
-					as="input"
-					v-model="login"
-					class="authorization-input"
-					name="Login"
-					placeholder="Логин"
-					autocomplete="off"
-					rules="required|minLength:3"
-				/>
-				<ErrorMessage name="Login" />
-				<Field
-					as="input"
-					type="password"
-					v-model="password"
-					class="authorization-input"
-					name="password"
-					placeholder="Пароль"
-					autocomplete="off"
-					rules="required|minLength:3"
-				/>
+					<div class="auth-formgroup">
+						<div class="auth-param">
+							<input
+								class="auth-param-input"
+								type="checkbox"
+								id="save-me"
+								v-model="saved"
+							/>
+							<label class="auth-param-text" for="save-me">
+								Запомнить меня на этом компьютере
+							</label>
+						</div>
+					</div>
+					<div class="auth-formgroup" >
+						<input
+							type="submit"
+							:style="loader? 'background: linear-gradient(90deg, #8d8f92 0%, #303030 100%}' : 'background: linear-gradient(90deg, #b995fe 0%, #8444fc 100%)'"
+							class="gradient-btn"
+							:disabled="loader"
+							value="Войти"
+							
+						/>
+					</div>
+				</Form>
 			
-				<label class="authorization-check">
-					<input 
-						v-model="saved"
-						class="check-input"
-						type="checkbox"
-						name="remember"
-					>
-					<span class="checkbox-custom"></span>
-					<span class="check-txt">Запомнить меня</span>
-				</label>
-
-				<button
-					class="authorization-btn"
-					type="submit"
-					:disabled="loader"
-				>Войти</button>
-			</Form>
 		</div>
 
-		<div class="authorization-bottom">
-			Produced by Expert Workwear
-		</div>
 	</div>
-
-
 	<SnackBar v-model="loginError" :message="loginErrorMsg"></SnackBar>
 </div>
 </template>
@@ -80,7 +80,7 @@ export default {
 		const password = ref('');
 		const saved = ref(false);
 		const loader = inject('loader');
-		
+
 		defineRule('required', value => {
 			if (!value || !value.length) { 
 				return 'Обязательное поле';	

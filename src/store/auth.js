@@ -69,6 +69,7 @@ state:  {
 				})
 				.catch(error => {
 						commit('setLoginError', error.response.data.error.message)
+						return Promise.reject('Error')
 				})
 		},
 		LOGOUT: function({commit}) {
