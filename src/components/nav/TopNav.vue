@@ -30,7 +30,7 @@ export default {
 		const menu = [
 			{title: 'Поиск товара', link: '/product', lock: false},
 			{title: 'Заказы', link: '/orders', lock: false},
-			{title: 'Отгрузки', link: '/shipments', lock: true},
+			{title: 'Отгрузки', link: '/shipments', lock: false},
 			{title: 'Претензии', link: '/claims', lock: true},
 			{title: 'Возвраты', link: '/returns', lock: true},
 			{title: 'Договоры', link: '/agreements', lock: true},

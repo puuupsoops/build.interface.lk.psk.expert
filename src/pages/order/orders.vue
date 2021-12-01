@@ -45,10 +45,10 @@
 				</svg>
 				<div class="content-heading-btn-text">Новый заказ</div>
 			</div>
-			</div>
 		</div>
-		<div class="orders-heading-search">
-			<div class="orders-heading-search-elem" >
+	</div>
+	<div class="orders-heading-search">
+		<div class="orders-heading-search-elem" >
 			<div class="product-search-text">Поиск по: </div>
 			<div class="orders-heading-search-select-wrap">
 				<div class="orders-heading-search-select-elem">
@@ -57,20 +57,19 @@
 				/>
 				</div>
 				<div class="orders-heading-search-select-elem" >
-				<SelectInput 
-					:data="dogovor"
-				/>
-				
+					<SelectInput 
+						:data="dogovor"
+					/>
 				</div>
 			</div>
 			<div class="product-search-clear"></div>
-			</div>
-			<div class="orders-heading-search-elem">
+		</div>
+		<div class="orders-heading-search-elem">
 			<div class="orders-heading-search-btn gradient-btn">
-			<div class="gradient-btn-text">Поиск</div>
-			</div>
+				<div class="gradient-btn-text">Поиск</div>
 			</div>
 		</div>
+	</div>
 		<div class="orders-list-wrap content-elem">
 			<div class="table orders-list-table scroll-elem">
 			<div class="table-more-info-arrow"></div>

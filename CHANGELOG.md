@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-12-01 15:48 +0700
+
+    #38
+    
+    1. Добавлены статические страницы shipments и shipments/request
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-11-30 19:27 +0700
 
     #37

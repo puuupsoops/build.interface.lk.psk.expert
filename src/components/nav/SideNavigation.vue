@@ -94,13 +94,13 @@ export default {
 				{title: 'Рабочий стол', link: null, lock: false, children: [
 					{title: 'Поиск товара', link: '/product', lock: false},
 					{title: 'Заказы', link: '/orders', lock: false},
-					{title: 'Отгрузки', link: '/shipments', lock: true},
+					{title: 'Отгрузки', link: '/shipments', lock: false},
 					{title: 'Конструктор КП', link: '/kp', lock: true},
 					{title: 'История', link: '/history', lock: true},
 					
 				]},
-				{title: 'Логистика', link: '/settlements', lock: true, children: [
-					{title: 'Заявка на отгрузку', link: '/', lock: true},
+				{title: 'Логистика', link: '/settlements', lock: false, children: [
+					{title: 'Заявка на отгрузку', link: '/shipments/request', lock: false},
 					{title: 'Адреса Доставки', link: '/', lock: true},
 				]},
 				{title: 'Сертификаты', link: null, lock: true, children: [

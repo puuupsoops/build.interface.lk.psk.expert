@@ -42,7 +42,7 @@ const routes = [
 	},
 	{
 		path: '/order/:article?', 
-		component: () => import('@/pages/order'),
+		component: () => import('@/pages/order/order'),
 		name: 'Order',
 		props: true,
 		meta:{
@@ -51,12 +51,29 @@ const routes = [
 	},
 	{
 		path: '/orders', 
-		component: () => import('@/pages/orders'),
+		component: () => import('@/pages/order/orders'),
 		name: 'Orders',
 		meta:{
 				auth: true,
 			}
 	},
+	{
+		path: '/shipments', 
+		component: () => import('@/pages/shipment/shipments'),
+		name: 'Shipments',
+		meta:{
+				auth: true,
+			}
+	},
+	{
+		path: '/shipments/request', 
+		component: () => import('@/pages/shipment/request'),
+		name: 'ShipmentsRequest',
+		meta:{
+				auth: true,
+			}
+	},
+
 	{
 		path: '/404',
 		component: () => import('@/pages/404'),
