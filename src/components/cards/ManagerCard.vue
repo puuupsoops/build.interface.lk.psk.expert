@@ -20,6 +20,17 @@
 							class="company-consultant-phone" :href="'tel:'+managerData.phone2">{{managerData.phone2}}
 						</a>
 					</div>
+
+					<div class="company-consultant-info-about"> 
+						<div class="company-consultant-name">Иванов Иван Иванович</div>
+						<div class="company-consultant-position">Руководитель</div>
+					</div>
+					<div class="company-consultant-contact">
+						<a 
+							class="company-consultant-phone" href="tel:">495-103-3030 доб.577
+						</a>
+					</div>
+
 					<div class="company-consultant-time">
 						<div class="company-consultant-time-title">Режим работы</div>
 						<div class="company-consultant-time-val">Пн-Пт, 9:00 - 18:00 МСК</div>

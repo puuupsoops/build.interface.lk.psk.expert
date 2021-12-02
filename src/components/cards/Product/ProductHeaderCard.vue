@@ -9,6 +9,12 @@
             <div class="content-heading-price-text">Ваша цена: </div>
             <div class="content-heading-price-value">{{ Number(price ? price : 0 ).toLocaleString() }} ₽</div>
         </div>
+                <div class="content-heading-wrap-elem">
+            <div class="content-heading-price"> 
+            <div class="content-heading-price-text">Оптовая цена: </div>
+            <div class="content-heading-price-value">{{ Number(price ? price : 0 ).toLocaleString() }} ₽</div>
+            </div>
+        </div>
         <div class="content-heading-btn">
             <svg class="content-heading-btn-img" width="30" height="29" viewBox="0 0 30 29" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path class="fill" fill-rule="evenodd" clip-rule="evenodd" d="M3 2H18.75C19.3023 2 19.75 2.44772 19.75 3V15H21.75V3C21.75 1.34315 20.4069 0 18.75 0H3C1.34315 0 0 1.34315 0 3V21.8571C0 23.514 1.34315 24.8571 3 24.8571H16.4846C16.1942 24.6822 16 24.3638 16 24V22.8571H3C2.44772 22.8571 2 22.4094 2 21.8571V3C2 2.44772 2.44772 2 3 2Z" fill="#A5A7A9"></path>

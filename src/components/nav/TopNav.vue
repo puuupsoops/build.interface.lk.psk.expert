@@ -31,8 +31,10 @@ export default {
 			{title: 'Поиск товара', link: '/product', lock: false},
 			{title: 'Заказы', link: '/orders', lock: false},
 			{title: 'Отгрузки', link: '/shipments', lock: false},
-			{title: 'Претензии', link: '/claims', lock: true},
-			{title: 'Возвраты', link: '/returns', lock: true},
+			{title: 'Претензии', link: '/claims', lock: false},
+			{title: 'Претензия', link: '/claim', lock: false},
+			{title: 'Претензия-страница-успешно', link: '/claim_success', lock: false},
+			//{title: 'Возвраты', link: '/returns', lock: true},
 			{title: 'Договоры', link: '/agreements', lock: true},
 			{title: 'Взаиморасчеты', link: '/settlements', lock: true},
 		];

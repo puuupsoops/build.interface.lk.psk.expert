@@ -91,6 +91,38 @@ const routes = [
 			}
 	},
 	{
+		path: '/personal',
+		component: () => import('@/pages/tmp_personal'),
+		name: 'Personal',
+		meta:{
+				auth: true,
+			}
+	},
+	{
+		path: '/claims',
+		component: () => import('@/pages/claim/tmp_claim_main'),
+		name: 'ClaimMain',
+		meta:{
+				auth: true,
+			}
+	},
+	{
+		path: '/claim',
+		component: () => import('@/pages/claim/tmp_claim'),
+		name: 'Claim',
+		meta:{
+				auth: true,
+			}
+	},
+	{
+		path: '/claim_success',
+		component: () => import('@/pages/claim/tmp_claim_success'),
+		name: 'ClaimSuccess',
+		meta:{
+				auth: true,
+			}
+	},
+	{
 		path: '/:pathMatch(.*)*',
 		redirect: '/404',
 		meta:{

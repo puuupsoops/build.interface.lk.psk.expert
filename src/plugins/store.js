@@ -6,7 +6,6 @@ import catalog from '@/store/catalog'
 import order from '@/store/order'
 import main_page from '@/store/main_page'
 
-
 export default createStore({
 	modules:{
 		auth,
