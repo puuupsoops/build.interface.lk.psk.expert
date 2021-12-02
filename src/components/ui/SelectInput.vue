@@ -39,7 +39,7 @@ export default {
 		},
 		modelValue: {
 			type: String,
-			required: true
+			default: '',
 		}
 	},
 	emits: ['update:modelValue','onInput'],
@@ -55,7 +55,7 @@ export default {
 		});
 		onClickOutside(target, () => input_active.value=false);
 		
-		let btn_class = computed(() => {
+		const btn_class = computed(() => {
 			let cls = 'select-input-btn';
 			if (input_active.value)
 				cls = cls + ' active';

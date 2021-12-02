@@ -1,4 +1,18 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-12-02 19:18 +0700
+
+    #40
+    
+    1. На странице Заявка на отгрузку представление заполняется из полей формы
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-12-02 19:18 +0700
+
+    #39
+    
+    1. Добавлена таблица на страницу с заказами
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-12-01 15:48 +0700
 
     #38

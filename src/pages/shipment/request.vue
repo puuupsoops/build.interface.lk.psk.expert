@@ -56,13 +56,13 @@
               </a>
         </div>
         </div>
-        <form class="shipment-form shipment-form-pickup" action="">
+        <div class="shipment-form shipment-form-pickup">
             <transition name="show" mode="out-in">
                 <component :is="activeCard"/>
                 
             </transition>
 
-        </form>
+        </div>
     </div>
 </template>
 
