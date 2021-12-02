@@ -4,9 +4,17 @@
 	&-container
 		position: relative
 		width: 100%
-
-		
-
+		&.right
+			padding-left: 1px
+			.select-input-btn
+				border-top-left-radius: 0px
+				border-bottom-left-radius: 0px
+				
+		&.left
+			padding-right: 1px
+			.select-input-btn
+				border-top-right-radius: 0px
+				border-bottom-right-radius: 0px
 	&-btn
 		position: relative
 		width: 100%
@@ -32,7 +40,6 @@
 			height: 6px
 			border-right: 2px solid $white
 			border-bottom: 2px solid $white
-
 		
 		
 		&.active

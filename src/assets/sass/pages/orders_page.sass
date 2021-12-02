@@ -1,5 +1,5 @@
 .orders
-	&-heading
+	&-heading   
 		+flex
 		position: relative
 		margin:
@@ -100,15 +100,72 @@
 				max-width: 245px
 		
 	&-list
+		width: 100%
+		margin: 0px
+		padding: 0px
+		border-radius: 6px
+		background-color: $bg-default-color
+		+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.2))
+		
+			
+		&-row
+			+flex
+			position: relative
+			&.orders-list-heading
+				cursor: default
+				text-transform: uppercase
+			
+		&-main-row
+			background-color: #292C32
+			+prefix(transition, $default-transition)
+			cursor: pointer
+
+			&:hover
+				color: $accent-color
+
+		&-elem
+			position: relative
+			padding: 16px 10px 14px 10px
+			font-size: 14px
+			line-height: 20px
+			//color: $font-light-color
+			+prefix(transition, $default-transition)
+			
+
+			&:nth-child(1)
+				text-align: center
+				padding:
+					left: 10px
+				
+				width: 5.5%
+
+			&:nth-child(2)
+				width: 100%	
+			&:nth-child(3)
+				width: 30%
+			&:nth-child(4)
+				width: 10%
+				text-align: center
+			&:nth-child(5)
+				width: 20%
+				text-align: center
+			&:nth-child(6)
+				text-align: center
+				width: 20%
+			&:nth-child(7)
+				width: 20%
+				
+
+			&.error
+				color: #FF5449
+
+
 		&-wrap
 			margin:
 				top: 30px
 		
 		&-table
 			overflow-y: auto
-			
-			&-wrap
-				min-width: 930px
 				
 			.table-row
 				position: relative
@@ -125,25 +182,29 @@
 					.orders-list-more
 						color: $accent-color
 		
-		&-item 
-			position: relative
-
+		&-item
+			margin:
+				bottom: 5px
+			
 			&.active
-				.table-elem
-					color: $accent-color
-				
-				.orders-list-more
-					color: $accent-color
-
 				.table-arrow
 					+prefix(transform, rotate(-90deg))
+				
+				.orders-list-sublist
+					.order-list-row
+						background-color: transparent
 
+			&:last-child
+				margin: 0
+
+		
 		&-more
 			font-size: 14px
 			line-height: 20px
 			color: $white
-			background-color: transparent
 			border: 0
+			border-bottom: 1px dotted $white
+			background-color: transparent
 			+prefix(transition, $default-transition)
 			cursor:  pointer
 
@@ -151,34 +212,47 @@
 				color: $accent-color
 
 			&-dropdown 
-				display: none
+				//display: none
+				visibility: hidden
 				position: absolute
 				padding: 25px 30px
 				top: 50px
-				right: -35px
+				right: 5px
 				background-color: #292C32
 				border:
 					bottom-left-radius: 6px
-				+box-shadow(0px 9px 10px rgba(0, 0, 0, 0.2))
+				+box-shadow(0px 0px 20px rgba(0, 0, 0, 0.8))
+				+flex
 				+flex-flow(column)
 				z-index: 5
 
 				&.active
-					+flex
+					visibility: visible
+					
 
 				&-link
 					padding: 5px 0
 					font-size: 14px
 					line-height: 20px
 					color: $white
-					+prefix(transition, $default-transition)
+					
 					white-space: nowrap
 
 					&:hover
 						color: $accent-color
 
 		&-info
-			display: none
+			overflow: hidden
+			max-height: 0
+			+prefix(transition,  $default-transition)
+			
+			&.active 
+				padding:
+					top: 10px
+					bottom: 10px
+				display: block
+				max-height: 1000px
+				+prefix(transition,  max-height $default-transition)
 
 			&-row
 				+flex
