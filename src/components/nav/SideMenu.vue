@@ -10,14 +10,23 @@
 					</svg>
 				</div>
 				<div class="sidebar-btn">
+					<router-link
+						tag="a"
+						to="/"
+					>
 					<svg class="sidebar-btn-img" width="30" height="25" viewBox="0 0 30 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<rect class="stroke" x="1" y="1" width="28" height="19" rx="2" stroke="#A5A7A9" stroke-width="2"></rect>
 						<rect class="fill" x="12" y="21" width="2" height="2" fill="#A5A7A9"></rect>
 						<rect class="fill" x="16" y="21" width="2" height="2" fill="#A5A7A9"></rect>
 						<rect class="fill" x="8" y="23" width="14" height="2" rx="1" fill="#A5A7A9"></rect>
 					</svg>
+					</router-link>
 				</div>
 				<div class="sidebar-btn">
+				<router-link
+					tag="a"
+					to="/order"
+				>
 					<svg class="sidebar-btn-img" width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<rect class="fill" x="0.0802612" y="2.04846" width="4.25606" height="2.07613" rx="1.03806" fill="#A5A7A9"></rect>
 						<rect class="fill" x="3.9931" y="2" width="17.8806" height="2.07613" rx="1.03806" transform="rotate(69.6255 3.9931 2)" fill="#A5A7A9"></rect>
@@ -31,8 +40,13 @@
 						<circle class="stroke" cx="9.42285" cy="24.8858" r="2.11419" stroke="#A5A7A9" stroke-width="2"></circle>
 						<circle class="stroke" cx="20.8415" cy="24.8858" r="2.11419" stroke="#A5A7A9" stroke-width="2"></circle>
 					</svg>
+				</router-link>
 				</div>
 				<div class="sidebar-btn">
+					<router-link
+						tag="a"
+						to="/orders"
+					>
 					<svg class="sidebar-btn-img" width="31" height="29" viewBox="0 0 31 29" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<rect class="stroke" x="1" y="1" width="19.75" height="22.8571" rx="2" stroke="#A5A7A9" stroke-width="2"></rect>
 						<circle cx="21.2322" cy="20.1964" r="8.80357" fill="#1F2227"></circle>
@@ -43,8 +57,10 @@
 						<rect class="fill" x="11.3929" y="13" width="1.7" height="7.25" rx="0.85" transform="rotate(90 11.3929 13)" fill="#A5A7A9"></rect>
 						<rect class="fill" x="14.5" y="9" width="1.7" height="10.3571" rx="0.85" transform="rotate(90 14.5 9)" fill="#A5A7A9"></rect>
 					</svg>
+					</router-link>
 				</div>
 				<div class="sidebar-btn">
+					
 					<svg class="sidebar-btn-img" width="30" height="27" viewBox="0 0 30 27" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path class="stroke fill" d="M15.8769 0.95H15.8769L3.40436 0.95L3.40434 0.95C1.85974 0.950656 0.60776 2.20264 0.607104 3.74723V3.74725L0.607104 23.2527C0.60776 24.7974 1.85974 26.0493 3.40434 26.05H15.8769C17.4215 26.0493 18.6735 24.7974 18.6741 23.2528V3.74725C18.6735 2.20264 17.4215 0.950656 15.8769 0.95ZM17.4752 23.2526C17.4727 24.1343 16.7584 24.8486 15.8767 24.8511H3.4045C2.52283 24.8486 1.8085 24.1343 1.80601 23.2526V3.74739C1.8085 2.86573 2.52283 2.1514 3.4045 2.1489H15.8767C16.7584 2.1514 17.4727 2.86573 17.4752 3.74739V23.2526Z" fill="#A5A7A9" stroke="#A5A7A9" stroke-width="0.1"></path>
 						<path class="stroke fill" d="M11.0419 10.0159H11.0418L8.23957 10.0159L8.23943 10.0159C7.90887 10.0169 7.64106 10.2847 7.64012 10.6152V10.6154L7.64012 13.0879L7.64012 13.088C7.64106 13.4186 7.90887 13.6864 8.23943 13.6873H8.23957L11.0418 13.6873L11.0419 13.6873C11.3725 13.6864 11.6403 13.4186 11.6412 13.088V13.0879L11.6412 10.6154L11.6412 10.6152C11.6403 10.2847 11.3725 10.0169 11.0419 10.0159ZM10.4423 12.4884H8.83902V11.2148H10.4423V12.4884Z" fill="#A5A7A9" stroke="#A5A7A9" stroke-width="0.1"></path>
@@ -63,8 +79,13 @@
 						<path class="stroke fill" d="M18.7835 9.85415C17.7173 9.85415 16.85 10.7215 16.85 11.7877C16.85 12.8539 17.7173 13.7211 18.7835 13.7211C19.8497 13.7211 20.7169 12.8538 20.7169 11.7876C20.7169 10.7214 19.8497 9.85415 18.7835 9.85415ZM18.7835 12.6702C18.297 12.6702 17.9009 12.2741 17.9009 11.7876C17.9009 11.3012 18.297 10.9051 18.7835 10.9051C19.27 10.9051 19.666 11.3012 19.666 11.7876C19.666 12.2741 19.27 12.6702 18.7835 12.6702Z" fill="#A5A7A9" stroke="#A5A7A9" stroke-width="0.3"></path>
 						<path class="stroke fill" d="M23.2163 14.2813C22.1501 14.2813 21.2829 15.1485 21.2829 16.2147C21.2829 17.2809 22.1501 18.1482 23.2163 18.1482C24.2825 18.1482 25.1498 17.281 25.1498 16.2147C25.1498 15.1485 24.2825 14.2813 23.2163 14.2813ZM23.2163 17.0972C22.7298 17.0972 22.3338 16.7011 22.3338 16.2147C22.3338 15.7282 22.7299 15.3321 23.2163 15.3321C23.7028 15.3321 24.0989 15.7282 24.0989 16.2147C24.0989 16.7011 23.7028 17.0972 23.2163 17.0972Z" fill="#A5A7A9" stroke="#A5A7A9" stroke-width="0.3"></path>
 					</svg>
+					
 				</div>
 				<div class="sidebar-btn">
+					<router-link
+						tag="a"
+						to="/shipments/request"
+					>
 					<svg class="sidebar-btn-img" width="32" height="21" viewBox="0 0 32 21" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<rect class="fill" x="2.06573" y="4.13147" width="10.3286" height="2.06571" rx="1.03286" fill="#A5A7A9"></rect>
 						<rect class="fill" y="7.74646" width="10.3286" height="2.06571" rx="1.03286" fill="#A5A7A9"></rect>
@@ -82,6 +103,8 @@
 						<circle class="stroke" cx="10.6824" cy="17.4406" r="2.21652" stroke="#A5A7A9" stroke-width="2"></circle>
 						<circle class="stroke" cx="23.8737" cy="17.4406" r="2.21652" stroke="#A5A7A9" stroke-width="2"></circle>
 					</svg>
+					
+					</router-link>
 				</div>
 				<div class="sidebar-btn">
 					<svg class="sidebar-btn-img" width="26" height="30" viewBox="0 0 26 30" fill="none" xmlns="http://www.w3.org/2000/svg">

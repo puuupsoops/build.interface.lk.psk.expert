@@ -13,7 +13,7 @@
 				<div class="sale-progressbar-line" :style="'width: '+ (progressInPercent < 15 ? 15 : progressInPercent) +'%'">
 					<div class="sale-progressbar-val">
 						<div>
-							<span class="sale-progressbar-val-money">({{spent}})</span>
+							<span class="sale-progressbar-val-money">({{spent.toFixed(2).toLocaleString()}})</span>
 							<span class="sale-progressbar-val-percent">{{progressInPercent}}%</span>
 						</div>
 					</div>

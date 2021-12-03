@@ -3,8 +3,10 @@
 		<div style="margin: 0 0 0 170px; display: inline-flex;">
 			Debug
 			<label class="sidebar-switch">
+				
 				<input id="input" v-model="isDebug" type="checkbox" />
 				<div></div>
+				
 			</label>
 		</div>
 		<div class="sidebar-heading">{{modelValue==-1 ? 'Мои компании': menu[modelValue].title}}</div>
@@ -67,7 +69,12 @@
 				</div>
 			</li>
 		</ul>
-		
+		<div class="sidebar-logo">
+			<img src="@/assets/img/lamp.png"/>
+			<div class="sidebar-logo-text">
+				<span>Сделай лучше<br>наше сотрудничество</span>
+			</div>
+		</div>
 	</div>
 
 </template>

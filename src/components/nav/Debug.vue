@@ -11,6 +11,7 @@
 					<li><router-link tag="a" to="/product" class="nav-link" active-class="nav-link active">Продукт</router-link></li>
 					<li><router-link tag="a" to="/order" class="nav-link" active-class="nav-link active">Заказ</router-link></li>
 					<li><router-link tag="a" to="/orders" class="nav-link" active-class="nav-link active">Заказы</router-link></li>
+					<li><router-link tag="a" to="/shipments" class="nav-link" active-class="nav-link active">Отгрузки</router-link></li>
 					<li><router-link tag="a" to="#" @click="logout" class="nav-link">Выход</router-link></li>
 				</ul>
 			</nav>

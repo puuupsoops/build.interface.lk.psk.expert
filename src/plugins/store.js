@@ -5,6 +5,7 @@ import auth from '@/store/auth'
 import catalog from '@/store/catalog'
 import order from '@/store/order'
 import orders from '@/store/orders'
+import shipments from '@/store/shipments'
 import main_page from '@/store/main_page'
 
 
@@ -16,6 +17,7 @@ export default createStore({
 		catalog,
 		order,
 		orders,
+		shipments,
 		main_page,
 	}
 })
