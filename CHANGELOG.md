@@ -1,4 +1,12 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2021-12-03 18:55 +0700
+
+    #42
+    
+    1. В SideMenu добавил ссылку на сайт psk.expert
+    2. Исправлена формулировка на странице с созданием заказа
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-12-03 17:05 +0700
 
     #41
