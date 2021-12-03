@@ -89,7 +89,7 @@ export default {
 	setup(){
 		const store = useStore();
 		const activeCompanyUid = ref('');
-		const search = ref({left: 0, right: 0});
+		const search = ref({left: 1, right: 0});
 		const dogovor = ref([
 			{id: 1, name:'По умолчанию № 1'},
 			{id: 2, name:'По умолчанию № 2'},

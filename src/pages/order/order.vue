@@ -11,7 +11,9 @@
 <div v-if="!isProduct" class="order-info">
 	Для оформления заказа выберите товар в 
 	<router-link tag="a" to="/catalog" class="order-info-link">каталоге</router-link> 
-	и нажмите Заказать.
+	или воспользуйтесь 
+	<router-link tag="a" to="/product" class="order-info-link">поиском</router-link>.
+
 </div>
 <div v-else>
 		<ProductHeaderCard
