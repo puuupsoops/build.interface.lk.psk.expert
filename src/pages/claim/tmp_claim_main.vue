@@ -11,30 +11,24 @@
       <div class="orders-heading-elem">
         <div class="orders-heading-item">
           <div class="orders-heading-text">Контрагент:</div>
-          <select class="custom-select" style="width: 100%">
-            <option value="0" selected>ООО “Вектор”</option>
-            <option value="1">ООО “Вектор”</option>
-            <option value="2">ООО “Вектор”</option>
-            <option value="3">ООО “Вектор”</option>
-          </select>
+				<SelectInput 
+					:data="companyBarTopData"
+					v-model="activeCompanyUid"
+				/>
         </div>
         <div class="orders-heading-item">
           <div class="orders-heading-text">Договор:</div>
-          <select class="custom-select" style="width: 100%">
-            <option value="0" selected>По умолчанию</option>
-            <option value="1">По умолчанию № 1</option>
-            <option value="2">По умолчанию № 2</option>
-            <option value="3">По умолчанию № 3</option>
-          </select>
+                       <SelectInput 
+                            :data="data.contracts"
+                            v-model="contracts"
+                        />
         </div>
         <div class="orders-heading-item">
           <div class="orders-heading-text">Период:</div>
-          <select class="custom-select" style="width: 100%">
-            <option value="0" selected>01.01.2020 - 31.01.2020</option>
-            <option value="1">01.01.2020 - 31.01.2020</option>
-            <option value="2">01.01.2020 - 31.01.2020</option>
-            <option value="3">01.01.2020 - 31.01.2020</option>
-          </select>
+                       <SelectInput 
+                            :data="data.period"
+                            v-model="period"
+                        />
         </div>
         <div class="orders-heading-clean"></div>
       </div>
@@ -104,20 +98,16 @@
         <div class="product-search-text">Поиск по:</div>
         <div class="orders-heading-search-select-wrap">
           <div class="orders-heading-search-select-elem">
-            <select class="custom-select" style="width: 100%">
-              <option value="0" selected>Статус</option>
-              <option value="1">Статус №2</option>
-              <option value="2">Статус №3</option>
-              <option value="3">Статус №4</option>
-            </select>
+                       <SelectInput 
+                            :data="data.status"
+                            v-model="status"
+                        />
           </div>
           <div class="orders-heading-search-select-elem">
-            <select class="custom-select" style="width: 100%">
-              <option value="0" selected>Статус</option>
-              <option value="1">Статус №2</option>
-              <option value="2">Статус №3</option>
-              <option value="3">Статус №4</option>
-            </select>
+                       <SelectInput 
+                            :data="data.status"
+                            v-model="status"
+                        />
           </div>
         </div>
         <div class="product-search-clear"></div>
@@ -633,14 +623,64 @@ import Notification from "@/components/cards/Notification";
 import CompanyBarTop from "@/components/cards/Company/CompanyBarTop";
 import TopNav from "@/components/nav/TopNav";
 
+import SelectInput from '@/components/ui/SelectInput';
+import { useStore } from 'vuex'
+import { ref,computed,onMounted }from 'vue';
+
 export default {
   components: {
     PersonalBar,
     Notification,
     CompanyBarTop,
     TopNav,
+    SelectInput
   },
-  setup() {},
+  setup() {
+    const store = useStore();
+    const activeCompanyUid = ref('');
+    const data = ref({
+        partners: [
+          {id: 1, name:'ООО Вектор'},
+          {id: 2, name:'ООО Вектор'},
+          {id: 3, name:'ООО Вектор'}
+        ],
+        contracts: [
+          {id: 1, name:'По умолчанию'},
+          {id: 2, name:'По умолчанию'},
+          {id: 3, name:'По умолчанию'},
+        ],
+        period: [
+          {id: 1, name:'01.01.2021-31.01.2021'},
+          {id: 2, name:'01.02.2021-28.02.2021'},
+          {id: 3, name:'01.03.2021-31.03.2021'},
+          {id: 4, name:'01.04.2021-30.04.2021'},
+        ],
+        status: [
+          {id: 1, name:'По умолчанию'},
+          {id: 2, name:'Статус №1'},
+          {id: 3, name:'Статус №2'},
+        ]
+        
+      });
+	
+		onMounted(() => {
+			if (!store.getters.isCompanysLoad)
+			{
+				store.dispatch('GET_PARTNER')
+					.then(() =>{
+						activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
+					})
+			}
+			
+		});
+
+
+    return {
+      companyBarTopData: computed(() => store.getters.getCompanysList),
+      activeCompanyUid,
+      data
+    }
+  },
 };
 </script>
 

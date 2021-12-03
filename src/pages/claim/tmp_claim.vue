@@ -27,21 +27,17 @@
                 <div class="shipment-heading-elem">
                     <div class="orders-heading-item">
                         <div class="orders-heading-text">Контрагент:</div>
-                        <select class="custom-select" style="width: 100%">
-                <option value="0" selected>ООО “Вектор”</option>
-                <option value="1">ООО “Вектор”</option>
-                <option value="2">ООО “Вектор”</option>
-                <option value="3">ООО “Вектор”</option>
-              </select>
+				<SelectInput 
+					:data="companyBarTopData"
+					v-model="activeCompanyUid"
+				/>
                     </div>
                     <div class="orders-heading-item">
                         <div class="orders-heading-text">Договор:</div>
-                        <select class="custom-select" style="width: 100%">
-                <option value="0" selected>По умолчанию</option>
-                <option value="1">По умолчанию № 1</option>
-                <option value="2">По умолчанию № 2</option>
-                <option value="3">По умолчанию № 3</option>
-              </select>
+                       <SelectInput 
+                            :data="data.contracts"
+                            v-model="contracts"
+                        />
                     </div>
                 </div>
                 <div class="shipment-heading-elem">
@@ -60,18 +56,30 @@
 
             <div class="nav-tab claim-tab"><span>Причина претензии:</span>
                 <div class="nav-tab-wrap">
-                    <a class="nav-tab-elem gradient-btn active" href="">
-                        <div class="gradient-btn-text">Недостача</div>
-                    </a>
-                    <a class="nav-tab-elem gradient-btn" href="">
-                        <div class="gradient-btn-text">Пересорт</div>
-                    </a>
-                    <a class="nav-tab-elem gradient-btn" href="">
-                        <div class="gradient-btn-text">Качество</div>
-                    </a>
-                    <a class="nav-tab-elem gradient-btn" href="">
-                        <div class="gradient-btn-text">Другое</div>
-                    </a>
+                     <a 
+                :class="'nav-tab-elem gradient-btn' + ( activeCard =='var1' ? ' active' : '' )" 
+                @click="activeCard ='var1'"
+              >
+                <div class="gradient-btn-text">Недостача</div>
+              </a>
+              <a 
+                :class="'nav-tab-elem gradient-btn' + ( activeCard =='var2' ? ' active' : '' )" 
+                @click="activeCard ='var2'"
+              >
+                 <div class="gradient-btn-text">Пересорт</div>
+              </a>
+              <a 
+                :class="'nav-tab-elem gradient-btn' + ( activeCard =='var3' ? ' active' : '' )" 
+                @click="activeCard ='var3'"
+              >
+                  <div class="gradient-btn-text">Качество</div>
+              </a>
+                            <a 
+                :class="'nav-tab-elem gradient-btn' + ( activeCard =='var4' ? ' active' : '' )" 
+                @click="activeCard ='var4'"
+              >
+                  <div class="gradient-btn-text">Другое</div>
+              </a>
                 </div>
             </div>
 
@@ -741,14 +749,54 @@ import Notification from "@/components/cards/Notification";
 import CompanyBarTop from "@/components/cards/Company/CompanyBarTop";
 import TopNav from "@/components/nav/TopNav";
 
+import SelectInput from '@/components/ui/SelectInput';
+
+import { useStore } from 'vuex'
+import { ref,computed,onMounted }from 'vue';
+
 export default {
   components: {
     PersonalBar,
     Notification,
     CompanyBarTop,
     TopNav,
+    SelectInput
   },
-  setup() {},
+  setup() {    
+          const store = useStore();
+    const activeCompanyUid = ref('');
+    const activeCard = ref('var1')
+      const data = ref({
+        partners: [
+          {id: 1, name:'ООО Вектор'},
+          {id: 2, name:'ООО Вектор'},
+          {id: 3, name:'ООО Вектор'}
+        ],
+        contracts: [
+          {id: 1, name:'По умолчанию'},
+          {id: 2, name:'По умолчанию'},
+          {id: 3, name:'По умолчанию'},
+        ],
+        
+      });
+
+		onMounted(() => {
+			if (!store.getters.isCompanysLoad)
+			{
+				store.dispatch('GET_PARTNER')
+					.then(() =>{
+						activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
+					})
+			}
+			
+		});
+
+    return {
+              companyBarTopData: computed(() => store.getters.getCompanysList),
+      activeCompanyUid,
+      data,
+      activeCard
+    }},
 };
 </script>
 

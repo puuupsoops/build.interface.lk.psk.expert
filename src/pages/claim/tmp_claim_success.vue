@@ -1,6 +1,6 @@
 <template>
   <div>
-          <div class="top-line product-page">
+    <div class="top-line product-page">
       <CompanyBarTop :data="companyBarTopData" v-model="activeCompanyUid" />
       <Notification />
       <PersonalBar />
@@ -9,7 +9,7 @@
 
           <div class="claim-success">
           <div class="claim-success-wrap">
-            <div class="claim-succes-img"><img src="style/img/icon/success.svg" alt=""></div>
+            <div class="claim-succes-img"><img src="@/../public/upload/icon/success.svg" alt=""></div>
             <div class="claim-success-text">Спасибо, пртензия  № 145 принята к рассмотрению.</div>
             <div class="order-list-buttons-wrap">
               <div class="order-list-buttons-item later">
@@ -80,6 +80,9 @@ import Notification from "@/components/cards/Notification";
 import CompanyBarTop from "@/components/cards/Company/CompanyBarTop";
 import TopNav from "@/components/nav/TopNav";
 
+import { useStore } from 'vuex'
+import { ref,computed,onMounted }from 'vue';
+
 export default {
   components: {
     PersonalBar,
@@ -87,7 +90,25 @@ export default {
     CompanyBarTop,
     TopNav,
   },
-  setup() {},
+  setup() {    
+          const store = useStore();
+    const activeCompanyUid = ref('');
+
+		onMounted(() => {
+			if (!store.getters.isCompanysLoad)
+			{
+				store.dispatch('GET_PARTNER')
+					.then(() =>{
+						activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
+					})
+			}
+			
+		});
+
+    return {
+      companyBarTopData: computed(() => store.getters.getCompanysList),
+      activeCompanyUid,
+    }},
 };
 </script>
 
