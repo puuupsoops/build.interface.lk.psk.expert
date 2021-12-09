@@ -25,7 +25,12 @@
                 <div class="shipment-form-elem-title"><span>Дата отгрузки</span></div>
                 <div class="shipment-form-row">
                   <div class="shipment-form-date">
-                    <input class="shipment-form-input shipment-form-date-input hasDatepicker" type="text" placeholder="Выберите дату" name="date" autocomplete="off" id="dp1638343521413">
+                    <input class="shipment-form-input shipment-form-date-input hasDatepicker" type="text" placeholder="Выберите дату" name="date" autocomplete="off" >
+                    <datepicker 
+                        class="ui-datepicker"
+                        v-model="picked" 
+                        :locale="ru"
+                    />
                   </div>
                   <div class="shipment-form-btn shipment-form-urgently-btn">Срочно</div>
                 </div>
@@ -79,11 +84,15 @@
 <script>
 import SelectInput from '@/components/ui/SelectInput';
 
+
+
+
 import { ref }from 'vue';
 
 export default {
     components: {
         SelectInput,
+     
     },
     setup() {
 		const data = ref({
@@ -106,8 +115,11 @@ export default {
             car: '',
             gosnum: ''
         });
+        
         const address = ref(1);
+        const picked = ref(new Date())
         return {
+            picked,
             data, 
             address
         }
