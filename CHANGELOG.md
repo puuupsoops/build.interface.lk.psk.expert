@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-01-05 17:43 +0700
+
+    #44
+    
+    1. Добавлена поддержка TypeScript. Переезжаем на TS
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2021-12-09 19:52 +0700
 
     #43
