@@ -21,11 +21,13 @@
 
 <script>
 import { useStore } from 'vuex'
-import { computed, ref, provide } from 'vue';
-import SideMenu from '@/components/nav/SideMenu.vue';
-import Preloader from '@/components/Preloader';
-import Debug from '@/components/nav/Debug';
-import SnackBar from '@/components/ui/SnackBar';
+import { computed, ref, provide, } from 'vue'
+import SideMenu from '@/components/nav/SideMenu.vue'
+import Preloader from '@/components/Preloader.vue'
+import Debug from '@/components/nav/Debug.vue'
+import SnackBar from '@/components/ui/SnackBar.vue'
+import { AuthActions } from './store/auth/actions'
+import { AuthMutations } from './store/auth/mutstions'
 
 //Composition API = On
 export default {
@@ -38,18 +40,19 @@ export default {
 	},
 
 setup() {
-		let store = useStore();
-		store.dispatch('CHECK_AUTH')
-		let loader = ref(false);
-		let collapsed = ref(false);
-		let isDebug = ref(true);
-		provide('loader', loader ); 
-		provide('collapsed', collapsed ); 
-		provide('isDebug', isDebug ); 
+		let store = useStore()
+		console.log(store)
+		store.dispatch(AuthActions.CHECK_AUTH)
+		let loader = ref(false)
+		let collapsed = ref(false)
+		let isDebug = ref(true)
+		provide('loader', loader )
+		provide('collapsed', collapsed )
+		provide('isDebug', isDebug )
 		let error  = computed({
 			get: () => store.getters.getError,
-			set: () => store.commit('clearError')
-		});
+			set: () => store.commit(AuthMutations.CLEAR_ERROR)
+		})
 		return {
 			//возвращаем данные
 			isAuth: computed(() => store.getters.isAuthenticated),

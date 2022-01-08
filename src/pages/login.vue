@@ -63,7 +63,8 @@ import { ref, computed, inject } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { Form, Field, ErrorMessage, defineRule } from 'vee-validate';
-import SnackBar from '@/components/ui/SnackBar';
+import SnackBar from '@/components/ui/SnackBar.vue';
+import { AuthMutations } from '@/store/auth/mutstions';
 
 
 export default {
@@ -99,7 +100,7 @@ export default {
 
 		let loginError = computed({
 			get: () => store.getters.getLoginError,
-			set: () => store.commit('clearLoginError')
+			set: () => store.commit(AuthMutations.CLEAR_LOGIN_ERROR)
 		})
 
 		let onLogin = () => {

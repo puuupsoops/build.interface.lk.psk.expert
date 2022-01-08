@@ -1,7 +1,7 @@
 
 import { createRouter, createWebHistory } from 'vue-router';
 //import { useStore } from 'vuex';
-import store from '@/plugins/store'
+import { store } from '@/store'
 
 const routes = [
 	{

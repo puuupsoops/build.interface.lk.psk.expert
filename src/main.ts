@@ -1,8 +1,9 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './plugins/router'
-import store from './plugins/store'
-
+import { store } from './store'
+import { actions } from "@/store/auth/actions"
+console.log(actions)
 
 
 //import jQuery from 'jquery'

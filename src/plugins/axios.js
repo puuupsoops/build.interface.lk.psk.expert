@@ -1,6 +1,6 @@
 
 import axios from "axios";
-import store from '@/plugins/store'
+import { store } from '@/store'
 
 
 let api_location = process.env.VUE_APP_API_LOCATIONL + '/api'
