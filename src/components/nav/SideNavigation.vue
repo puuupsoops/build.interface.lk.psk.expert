@@ -109,7 +109,7 @@ export default {
 				]},
 				{title: 'Логистика', link: '/settlements', lock: false, children: [
 					{title: 'Заявка на отгрузку', link: '/shipments/request', lock: false},
-					{title: 'Адреса Доставки', link: '/', lock: true},
+					{title: 'Адреса Доставки', link: '/shipments/adress', lock: true},
 				]},
 				{title: 'Сертификаты', link: null, lock: true, children: [
 					{title: 'Разрешительная', link: '/permissive', lock: true},

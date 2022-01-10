@@ -1,0 +1,127 @@
+
+.ui-datepicker
+	position: absolute
+	display: none
+	width: 100%
+	max-width: 290px
+	background-color: $bg-default-color
+	z-index: 2
+	+prefix(transition, $default-transition)
+	
+
+	&.active
+		display: block
+		+box-shadow(0px 0px 20px rgba(0, 0, 0, 0.8))
+
+	&-header
+		+flex
+		padding: 10px 15px
+		// background-color: #292c33
+		+justify-content(space-between)
+		+align-items(center)
+
+	&-prev,&-next
+		display: block
+		font-size: 0
+		width: 18px
+		height: 16px
+		background-size: 100% auto
+		background-position: center center
+		background-repeat: no-repeat
+		cursor: pointer
+		&:hover
+			rect
+				fill: $accent-color
+				+prefix(transition, $default-transition)
+		rect
+			+prefix(transition, $default-transition)
+
+	&-title
+		font-size: 16px
+		font-weight: 400
+		line-height: 21px
+	
+	&-calendar
+		padding: 5px
+			top: 0
+		width: 100%
+		text-align: center
+		border: 
+			top: 1px solid #292c33
+
+		thead
+			th
+				padding: 3px 0
+	
+		td
+			background-color: #292c33
+			border: 1px solid transparent
+			border-radius: 3px
+			cursor: pointer
+			padding: 2px 1px
+			color: $white
+			+prefix(transition, $default-transition)
+
+			&.today
+				border: 1px solid $accent-color
+				font-weight: 700
+				color: $accent-color
+
+			&:hover
+				+prefix(transition, $default-transition)
+				color: $accent-color
+			
+
+			&.select
+				background-color: $accent-color
+				color: #292c33
+			
+			&.disable
+				cursor: default
+				color: $font-light-color
+				opacity: .35
+
+
+	&-date
+		position: relative
+		width: 100%
+		width: 290px
+
+
+		&:before
+			content: ''
+			display: block
+			position: absolute
+			top: 50%
+			right: 20px
+			width: 25px
+			height: 25px
+			background-image: url(~@/assets/img/icon/calendar.svg)
+			background-size: 100% auto
+			background-position: center center
+			background-repeat: no-repeat
+			z-index: 2
+			+prefix(transform, translateY(-60%))
+
+		& input
+			position: relative
+			padding: 13px 19px
+			width: 100%
+			font-size: 16px
+			font-weight: 400
+			line-height: 24px
+			color: $white
+			background-color: #292c33
+			border: 0
+			border-radius: 100px
+			padding:
+				right: 46px
+			z-index: 1
+			+prefix(transition, $default-transition)
+				
+			&.active
+				border: 
+					radius: 25px
+					bottom-left-radius: 0
+					bottom-right-radius: 0
+				+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.2))
