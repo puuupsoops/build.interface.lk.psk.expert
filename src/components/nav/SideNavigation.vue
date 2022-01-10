@@ -102,7 +102,7 @@ export default {
 					{title: 'Поиск товара', link: '/product', lock: false},
 					{title: 'Заказы', link: '/orders', lock: false},
 					{title: 'Отгрузки', link: '/shipments', lock: false},
-					{title: 'Претензии', link:'/claims', lock: true},
+					{title: 'Претензии', link:'/claims', lock: false},
 					{title: 'Конструктор КП', link: '/kp', lock: true},
 					{title: 'История', link: '/history', lock: true},
 					

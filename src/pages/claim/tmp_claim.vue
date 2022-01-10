@@ -734,9 +734,15 @@
 
                 <div class="claim-bottom">
                     <a class="claim-add-basis" href="">Добавить основание</a>
-                    <div class="gradient-btn claim-submit">
+                    <!--<div class="gradient-btn claim-submit">-->
+			<router-link 
+				tag="div" 
+				:to="'/claim_success'"
+				class="gradient-btn claim-submit"
+			>
                         <div class="gradient-btn-text">Оформить претензию</div>
-                    </div>
+                        </router-link>
+                    <!--</div>-->
                 </div>
 
             </div>

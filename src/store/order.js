@@ -211,6 +211,7 @@ export default {
 		},
 		
 		ADD_ORDER: async function({ commit }, data) {
+			console.log(data);
 			await axios.post('/order/add', data)
 				.then(response => {
 					commit('addOrder', response.data.response)

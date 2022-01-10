@@ -35,6 +35,11 @@
 
       <div class="orders-heading-elem">
         <div class="content-heading-btn">
+			<router-link 
+				tag="a" 
+				:to="'/claim'"
+				class="content-heading-btn"
+			>
           <svg
             class="content-heading-btn-img"
             width="26"
@@ -89,6 +94,7 @@
             ></path>
           </svg>
           <div class="content-heading-btn-text">Создать претензию</div>
+        </router-link>
         </div>
       </div>
     </div>
