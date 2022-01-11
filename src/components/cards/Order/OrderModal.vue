@@ -64,13 +64,14 @@
 
 <script>
 
-import Button from '@/components/ui/Button';
-import DeleteButton from '@/components/ui/DeleteButton';
+import Button from '@/components/ui/Button.vue'
+import DeleteButton from '@/components/ui/DeleteButton.vue'
 
-import { ref, computed } from 'vue';
-import { useStore } from 'vuex';
-import { onClickOutside } from '@vueuse/core';
-import { useRouter } from 'vue-router';
+import { ref, computed } from 'vue'
+import { useStore } from 'vuex'
+import { onClickOutside } from '@vueuse/core'
+import { useRouter } from 'vue-router'
+import { key } from '@/store'
 
 export default {
 	components:{
@@ -84,7 +85,7 @@ export default {
 	},
 	emits: ['update:modelValue'],
 	setup(props, { emit }){
-		const store = useStore();
+		const store = useStore(key);
 		const router = useRouter();
 		const shake = ref(false);
 		const target_modal = ref(null);

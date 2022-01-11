@@ -35,11 +35,12 @@
 
 <script>
 import { useStore } from 'vuex'
+import { key } from '@/store'
 import { ref, computed, onMounted } from 'vue'
 
 export default {
 	setup(){
-		let store = useStore();
+		let store = useStore(key);
 		let isLoad = ref(true);
 		onMounted(() => {
 			if (Object.keys(store.getters.getManager).length == 0 ){

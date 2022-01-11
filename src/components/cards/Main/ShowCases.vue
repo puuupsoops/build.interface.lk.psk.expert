@@ -24,6 +24,7 @@
 <script>
 import CaseCard from '@/components/cards/Main/CaseCard';
 import PreloaderLocal from '@/components/PreloaderLocal.vue';
+import { key } from '@/store';
 
 import { ref, computed, onMounted, } from 'vue';
 import { useStore } from 'vuex';
@@ -34,7 +35,7 @@ export default {
 		PreloaderLocal,
 	},
 	setup(){
-		const store = useStore();
+		const store = useStore(key);
 		let loading = ref(false);
 		
 		onMounted( () =>

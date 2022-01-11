@@ -77,26 +77,28 @@
 </div>
 </template>
 
-<script>
-import PersonalBar from '@/components/cards/PersonalBar'
-import Notification from '@/components/cards/Notification'
-import CompanyBarTop from '@/components/cards/Company/CompanyBarTop'
-import TopNav from '@/components/nav/TopNav'
-import ProductHeaderCard from '@/components/cards/Product/ProductHeaderCard'
-import ProductSearchResultCard from '@/components/cards/Product/ProductSearchResultCard'
-import ProductOffersOrderCard from '@/components/cards/Product/ProductOffersOrderCard'
-import ProductPropertiesCard from '@/components/cards/Product/ProductPropertiesCard';
-import ProductSliderSmallCard from '@/components/cards/Product/ProductSliderSmallCard';
-import OrderHeaderCard from '@/components/cards/Order/OrderHeaderCard';
-import OrderCard from '@/components/cards/Order/OrderCard';
-import OrderModal from '@/components/cards/Order/OrderModal';
-import SnackBar from '@/components/ui/SnackBar';
+<script lang="ts">
+import PersonalBar from '@/components/cards/PersonalBar.vue'
+import Notification from '@/components/cards/Notification.vue'
+import CompanyBarTop from '@/components/cards/Company/CompanyBarTop.vue'
+import TopNav from '@/components/nav/TopNav.vue'
+import ProductHeaderCard from '@/components/cards/Product/ProductHeaderCard.vue'
+import ProductSearchResultCard from '@/components/cards/Product/ProductSearchResultCard.vue'
+import ProductOffersOrderCard from '@/components/cards/Product/ProductOffersOrderCard.vue'
+import ProductPropertiesCard from '@/components/cards/Product/ProductPropertiesCard.vue'
+import ProductSliderSmallCard from '@/components/cards/Product/ProductSliderSmallCard.vue'
+import OrderHeaderCard from '@/components/cards/Order/OrderHeaderCard.vue'
+import OrderCard from '@/components/cards/Order/OrderCard.vue'
+import OrderModal from '@/components/cards/Order/OrderModal.vue'
+import SnackBar from '@/components/ui/SnackBar.vue'
 
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { ref, computed, onMounted, inject } from 'vue'
+import { ref, computed, onMounted, defineComponent } from 'vue'
+import { key } from '@/store'
+import { KeysMutations } from '@/store/keys/mutations'
 
-export default {
+export default defineComponent({
 	components: {
 		PersonalBar,
 		Notification,
@@ -114,9 +116,12 @@ export default {
 	},
 	props: ['article'],
 	setup(props) {
-		const store = useStore();
+		const store = useStore(key);
 		const router = useRouter();
-		const loader = inject('loader');
+		const loader = computed<boolean>({
+			get: () => store.getters.getLoader,
+			set: (val: boolean) => store.commit(KeysMutations.SET_LOADER, val)
+		})
 		
 		const activeCompanyUid = ref('');
 		const activeProductId = ref('');
@@ -202,5 +207,5 @@ export default {
 			order: computed(() => store.getters.getOrder),
 		}
 	}
-}
+})
 </script>

@@ -36,6 +36,7 @@ import CompanyCalendar from '@/components/cards/Company/CompanyCalendar'
 import { useStore } from 'vuex'
 import { ref, onMounted, computed, watch , provide, inject} from 'vue'
 import { useRouter } from 'vue-router'
+import { key } from '@/store'
 
 export default {
 	components: {
@@ -50,7 +51,7 @@ export default {
 	},
 	props: ['id'],
 	setup(props){
-		const store = useStore();
+		const store = useStore(key);
 		const router = useRouter();
 		let isLoad = ref(false);
 		let activeCompanyUid = ref(props.id);

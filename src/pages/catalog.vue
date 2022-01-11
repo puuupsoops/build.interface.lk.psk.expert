@@ -54,18 +54,19 @@
 
 <script>
 
-import Notification from '@/components/cards/Notification.vue';
-import PersonalBar  from '@/components/cards/PersonalBar.vue';
-import CatalogMenu  from '@/components/cards/Catalog/CatalogMenu.vue';
-import CatalogItem  from '@/components/cards/Catalog/CatalogItem.vue';
-import CatalogPagination  from '@/components/cards/Catalog/CatalogPagination.vue';
-import PreloaderLocal  from '@/components/PreloaderLocal.vue';
+import Notification from '@/components/cards/Notification.vue'
+import PersonalBar  from '@/components/cards/PersonalBar.vue'
+import CatalogMenu  from '@/components/cards/Catalog/CatalogMenu.vue'
+import CatalogItem  from '@/components/cards/Catalog/CatalogItem.vue'
+import CatalogPagination  from '@/components/cards/Catalog/CatalogPagination.vue'
+import PreloaderLocal  from '@/components/PreloaderLocal.vue'
 
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router'
-import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount, watch, defineComponent } from 'vue'
+import { key } from '@/store';
 
-export default {
+export default defineComponent({
 		components:{
 				Notification,
 				PersonalBar,
@@ -76,7 +77,7 @@ export default {
 		},
 		props: ['id'],
 		setup(props){
-			const store = useStore();
+			const store = useStore(key)
 			const router = useRouter();
 			const loaderMenu = ref(false);
 			const loaderCatalog = ref(false);
@@ -144,7 +145,7 @@ export default {
 				scroll,
 			}
 		}
-};
+});
 </script>
 
 <style scoped>

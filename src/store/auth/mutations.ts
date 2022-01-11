@@ -1,11 +1,12 @@
 import { MutationTree } from "vuex";
-import { AuthState } from "@/store/auth/types";
+import { AuthState } from "./types";
 
 import axios from '@/plugins/axios';
 import router from '@/plugins/router';
 
 export enum AuthMutations {
 	SET_AUTH = "SET_AUTH",
+	SET_SAVE_AUTH = "SET_SAVE_AUTH",
 	LOGOUT = "LOGOUT",
 	SET_ERROR = "SET_ERROR",
 	SET_LOGIN_ERROR = "SET_LOGIN_ERROR",
@@ -17,8 +18,10 @@ export enum AuthMutations {
 export const mutations: MutationTree<AuthState> = {
 	[AuthMutations.SET_AUTH] (state, data) {
 		state.token = data;
-		if (data.save) {
-			localStorage.setItem('id_token', data.token);
+	},
+	[AuthMutations.SET_SAVE_AUTH] (state) {
+		if (state.token) {
+			localStorage.setItem('id_token', state.token);
 		}
 	},
 	[AuthMutations.LOGOUT] (state) {

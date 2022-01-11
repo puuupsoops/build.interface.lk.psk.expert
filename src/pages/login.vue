@@ -58,16 +58,18 @@
 </div>
 </template>
 
-<script>
-import { ref, computed, inject } from 'vue';
-import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
-import { Form, Field, ErrorMessage, defineRule } from 'vee-validate';
-import SnackBar from '@/components/ui/SnackBar.vue';
-import { AuthMutations } from '@/store/auth/mutstions';
+<script lang="ts">
+import { ref, computed, defineComponent } from 'vue'
+import { useStore } from 'vuex'
+import { key } from '@/store'
+import { useRouter } from 'vue-router'
+import { Form, Field, ErrorMessage, defineRule } from 'vee-validate'
+import SnackBar from '@/components/ui/SnackBar.vue'
+import { AuthMutations } from '@/store/auth/mutations'
+import { AuthActions } from '@/store/auth/actions'
+import { KeysMutations } from '@/store/keys/mutations'
 
-
-export default {
+export default defineComponent({
 	components:{
 		Form,
 		Field,
@@ -75,20 +77,24 @@ export default {
 		SnackBar
 	},	
 	setup(){
-		const store = useStore();
+		const store = useStore(key);
 		const router = useRouter();
 		const login = ref('');
 		const password = ref('');
 		const saved = ref(false);
-		const loader = inject('loader');
 		
-		defineRule('required', value => {
+		const loader = computed<boolean>({
+			get: () => store.getters.getLoader,
+			set: (val: boolean) => store.commit(KeysMutations.SET_LOADER, val)
+		})
+		
+		defineRule('required', (value: string) => {
 			if (!value || !value.length) { 
 				return 'Обязательное поле';	
 				}
 				return true;	
 		});
-		defineRule('minLength', (value, [limit]) => {
+		defineRule('minLength', (value: string, [limit]: number[]) => {
 			if (!value || !value.length) {
 				return true;
 			}
@@ -106,13 +112,12 @@ export default {
 		let onLogin = () => {
 			loader.value=true;
 			setTimeout(() => {
-				store.dispatch('LOGIN', {
+				store.dispatch(AuthActions.LOGIN, {
 						"login": login.value,
 						"password": password.value,
-						"save": saved.value,
 					})
 						.then(() => {
-
+							if (saved.value) store.commit(AuthMutations.SET_SAVE_AUTH)
 							Promise.all([
 								store.dispatch('GET_PARTNER'),
 								store.dispatch('GET_MANAGER'),
@@ -147,7 +152,7 @@ export default {
 		}
 
 	}
-};
+});
 </script>
 
 <style scoped lang="sass">

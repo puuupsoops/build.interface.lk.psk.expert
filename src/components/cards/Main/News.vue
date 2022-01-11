@@ -25,12 +25,13 @@
 
 <script lang="ts">
 
+import { key } from '@/store';
 import { ref, computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
 
 export default {
 	setup() {
-		const store = useStore();
+		const store = useStore(key);
 		const loader = ref(false);
 		
 		onMounted(() => {

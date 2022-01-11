@@ -30,17 +30,18 @@
 </div>
 </template>
 
-<script>
-import Notification from '@/components/cards/Notification.vue';
-import PersonalBar  from '@/components/cards/PersonalBar.vue';
-import CompanyBar   from '@/components/cards/Company/CompanyBar.vue';
-import News from '@/components/cards/Main/News.vue';
-import ShowCases from '@/components/cards/Main/ShowCases.vue';
+<script lang="ts">
+import Notification from '@/components/cards/Notification.vue'
+import PersonalBar  from '@/components/cards/PersonalBar.vue'
+import CompanyBar   from '@/components/cards/Company/CompanyBar.vue'
+import News         from '@/components/cards/Main/News.vue'
+import ShowCases from '@/components/cards/Main/ShowCases.vue'
 
 import { useStore } from 'vuex'
-import {  computed, onMounted, ref} from 'vue'
+import { computed, defineComponent, onMounted, ref} from 'vue'
+import { key } from '@/store'
 
-export default {
+export default defineComponent({
 	components: {
 			Notification,
 			PersonalBar,
@@ -49,7 +50,7 @@ export default {
 			ShowCases
 	},
 	setup(){
-		const store = useStore();
+		const store = useStore(key);
 		const loading = ref(false);
 		onMounted(() => {
 			if (!store.getters.isCompanysLoad)
@@ -64,7 +65,7 @@ export default {
 			companys: computed(() => store.getters.getCompanys),
 		}
 	}
-}
+})
 </script>
 
 <style>

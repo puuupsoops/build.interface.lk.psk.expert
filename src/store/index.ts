@@ -2,12 +2,13 @@ import { InjectionKey } from 'vue'
 import { createStore, Store } from 'vuex'
 // import company from '@/store/company'
 // import product from '@/store/product'
-import { auth } from '@/store/auth/index'
+import { auth } from './auth/index'
 // import catalog from '@/store/catalog'
 // import order from '@/store/order'
 // import orders from '@/store/orders'
 // import shipments from '@/store/shipments'
 // import main_page from '@/store/main_page'
+import { keys } from './keys/index'
 
 
 // export default createStore({
@@ -25,10 +26,12 @@ import { auth } from '@/store/auth/index'
 
 
 export interface RootState {}
+export const key: InjectionKey<Store<RootState>> = Symbol()
 
 export const store = createStore<RootState>({
 	state: {},
 	modules:{
 		auth,
+		keys,
 	}
 })

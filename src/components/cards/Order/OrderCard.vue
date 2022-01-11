@@ -218,9 +218,10 @@
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 
-import AmountInput from '@/components/ui/AmountInput';
-import DeleteButton from '@/components/ui/DeleteButton';
-import SelectInput from '@/components/ui/SelectInput';
+import AmountInput from '@/components/ui/AmountInput.vue'
+import DeleteButton from '@/components/ui/DeleteButton.vue'
+import SelectInput from '@/components/ui/SelectInput.vue'
+import { key } from '@/store';
 
 export default {
 	props: {
@@ -242,7 +243,7 @@ export default {
 		SelectInput,
 	},
 	setup(props, { emit }) {
-		const store = useStore();
+		const store = useStore(key);
 		const open = ref([]);
 		const open_presail = ref([]);
 		let error = ref(false);
