@@ -1,24 +1,21 @@
 // API response /auth
 //
+
+import { ResponseError } from "./Error";
+
 // Input Data
-export interface AuthData{
+export interface AuthRequest{
 	login: string,
 	password: string
 }
 
 
 // Output Data
-export interface Auth{
-	response: AuthResponse,
-	error: AuthError|null
-}
-
 export interface AuthResponse{
-	token: string
+	response: Auth,
+	error: ResponseError|null
 }
 
-
-export interface AuthError{
-	code: number,
-	message: string
+export interface Auth{
+	token: string
 }

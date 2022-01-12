@@ -145,7 +145,7 @@ export default defineComponent({
 			if (!store.getters.isCompanysLoad) {
 				store.dispatch('GET_PARTNER');
 			}
-			store.getters.getCompanys.forEach(element => {
+			store.getters.getCompanys.forEach((element: { name: string; uid: string; }) => {
 				arr.push({title: element.name
 											.replace(/Общество с ограниченной ответственностью/, 'ООО')
 											.replace(/Акционерное общество/, 'АО'),

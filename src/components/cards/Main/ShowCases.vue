@@ -22,12 +22,14 @@
 </template>
 
 <script>
-import CaseCard from '@/components/cards/Main/CaseCard';
-import PreloaderLocal from '@/components/PreloaderLocal.vue';
+import CaseCard from '@/components/cards/Main/CaseCard.vue'
+import PreloaderLocal from '@/components/PreloaderLocal.vue'
 import { key } from '@/store';
 
 import { ref, computed, onMounted, } from 'vue';
 import { useStore } from 'vuex';
+import { CasesActions } from '@/store/cases/actions';
+import { CasesMutations } from '@/store/cases/mutations';
 
 export default {
 	components: {
@@ -42,7 +44,7 @@ export default {
 		{
 			if (!store.getters.isShowCases) {
 				loading.value=true;
-				store.dispatch('GET_SHOW_CASE')
+				store.dispatch(CasesActions.GET_CASE)
 					.finally(() => {
 						loading.value=false;
 					})
@@ -53,16 +55,16 @@ export default {
 	
 
 		let next = () => {
-			store.commit('setSowCaseNext');
+			store.commit(CasesMutations.SET_CASE_NEXT);
 		};
 		let previous = () => {
-			store.commit('setSowCasePrev');
+			store.commit(CasesMutations.SET_CASE_PREV);
 		};
 
 		return {
 			loading,
-			isLoad: computed(() => store.getters.isShowCases),
-			showCases: computed(() => store.getters.getShowCases),
+			isLoad: computed(() => store.getters.isCases),
+			showCases: computed(() => store.getters.getCases),
 			next,
 			previous,
 		};

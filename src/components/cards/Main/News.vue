@@ -26,6 +26,7 @@
 <script lang="ts">
 
 import { key } from '@/store';
+import { NewsActions } from '@/store/news/actions';
 import { ref, computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
 
@@ -37,7 +38,7 @@ export default {
 		onMounted(() => {
 			if (!store.getters.isNews) {
 				loader.value=true;
-				store.dispatch('GET_NEWS')
+				store.dispatch(NewsActions.GET_NEWS)
 					.finally(() => {
 						loader.value=false;
 					})

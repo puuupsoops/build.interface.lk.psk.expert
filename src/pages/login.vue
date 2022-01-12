@@ -10,7 +10,7 @@
 
 				<Field 
 					as="input"
-					v-model="login"
+					v-model="authData.login"
 					class="authorization-input"
 					name="Login"
 					placeholder="Логин"
@@ -21,7 +21,7 @@
 				<Field
 					as="input"
 					type="password"
-					v-model="password"
+					v-model="authData.password"
 					class="authorization-input"
 					name="password"
 					placeholder="Пароль"
@@ -68,6 +68,8 @@ import SnackBar from '@/components/ui/SnackBar.vue'
 import { AuthMutations } from '@/store/auth/mutations'
 import { AuthActions } from '@/store/auth/actions'
 import { KeysMutations } from '@/store/keys/mutations'
+import { AuthRequest } from '@/models/Auth'
+import { CompanyActions } from '@/store/company/actions'
 
 export default defineComponent({
 	components:{
@@ -79,9 +81,12 @@ export default defineComponent({
 	setup(){
 		const store = useStore(key);
 		const router = useRouter();
-		const login = ref('');
-		const password = ref('');
-		const saved = ref(false);
+		const authData = ref<AuthRequest>({
+			login: '',
+			password: ''
+		})
+
+		const saved = ref<boolean>(false);
 		
 		const loader = computed<boolean>({
 			get: () => store.getters.getLoader,
@@ -112,18 +117,15 @@ export default defineComponent({
 		let onLogin = () => {
 			loader.value=true;
 			setTimeout(() => {
-				store.dispatch(AuthActions.LOGIN, {
-						"login": login.value,
-						"password": password.value,
-					})
+				store.dispatch(AuthActions.LOGIN, authData.value)
 						.then(() => {
 							if (saved.value) store.commit(AuthMutations.SET_SAVE_AUTH)
 							Promise.all([
-								store.dispatch('GET_PARTNER'),
-								store.dispatch('GET_MANAGER'),
+								store.dispatch(CompanyActions.GET_COMPANYS),
+								store.dispatch(CompanyActions.GET_MANAGER)
 							])
 							.catch(()=>{
-								password.value = '';
+								authData.value.password = '';
 								setTimeout(() => {loader.value=false;}, 3000);
 							})
 							.finally(() => {
@@ -132,7 +134,7 @@ export default defineComponent({
 							})		
 						})
 						.catch(() => {
-							password.value = '';
+							authData.value.password = '';
 							setTimeout(() => {loader.value=false;}, 3000);
 						})
 					}, 500);
@@ -145,8 +147,7 @@ export default defineComponent({
 			loginError,
 			loginErrorMsg: computed(() => store.getters.getLoginErrorMsg),
 			loader,
-			login,
-			password,
+			authData,
 			saved,
 			onLogin,
 		}

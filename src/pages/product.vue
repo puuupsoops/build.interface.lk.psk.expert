@@ -121,7 +121,7 @@ export default defineComponent({
 							},500); })
 				}
 				// if get parametr aticle is not emty when using product page else using search
-			if (props.article !=='' & props.article !== undefined) {
+			if (props.article !=='' && props.article !== undefined) {
 				loader.value = true;
 				store.dispatch('SEARCH_PRODUCT', props.article)
 					.then(()=>{

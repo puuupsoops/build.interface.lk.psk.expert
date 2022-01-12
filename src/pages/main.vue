@@ -40,6 +40,7 @@ import ShowCases from '@/components/cards/Main/ShowCases.vue'
 import { useStore } from 'vuex'
 import { computed, defineComponent, onMounted, ref} from 'vue'
 import { key } from '@/store'
+import { CompanyActions } from '@/store/company/actions'
 
 export default defineComponent({
 	components: {
@@ -56,7 +57,7 @@ export default defineComponent({
 			if (!store.getters.isCompanysLoad)
 			{
 				loading.value=true;
-				store.dispatch('GET_PARTNER').finally(() => loading.value=false)
+				store.dispatch(CompanyActions.GET_COMPANYS).finally(() => loading.value=false)
 			}
 		});
 		return {

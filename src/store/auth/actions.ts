@@ -1,9 +1,9 @@
 import axios from '@/plugins/axios'
 import { ActionTree } from "vuex"
 import { RootState } from "@/store"
-import { AuthState } from "@/store/auth/types"
+import { AuthState } from "./types"
 import { AuthMutations } from "./mutations"
-import { AuthData, Auth } from '@/models/Auth'
+import { AuthRequest, Auth, AuthResponse } from '@/models/Auth'
 
 export enum AuthActions {
 	LOGIN = "LOGIN",
@@ -12,17 +12,17 @@ export enum AuthActions {
 }
 
 export const actions: ActionTree<AuthState, RootState> =  {
-	async [AuthActions.LOGIN] ({ commit }, data: AuthData) {
+	async [AuthActions.LOGIN] ({ commit }, data: AuthRequest) {
 		commit(AuthMutations.CLEAR_LOGIN_ERROR)
 
-		await axios.post<Auth>('/auth', data)
+		await axios.post<AuthResponse>('/auth', <AuthRequest>data)
 			.then(response => {
-				const data = <Auth>response.data
+				const data = <Auth>response.data.response
 				if (response.data.error === null) {
-					axios.defaults.headers.common.Authorization = `Bearer ${data.response.token}`
-					commit(AuthMutations.SET_AUTH, data.response.token)
+					axios.defaults.headers.common.Authorization = `Bearer ${data.token}`
+					commit(AuthMutations.SET_AUTH, data.token)
 				} else {
-					commit(AuthMutations.CLEAR_ERROR, data.error?.message);
+					commit(AuthMutations.CLEAR_ERROR, response.data.error?.message);
 					return Promise.reject('Error')
 				}
 			})

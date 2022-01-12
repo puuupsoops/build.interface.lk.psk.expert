@@ -3,7 +3,7 @@ import axios from "axios";
 import { store } from '@/store'
 
 
-let api_location = process.env.VUE_APP_API_LOCATIONL + '/api'
+const api_location = process.env.VUE_APP_API_LOCATIONL + '/api'
 
 const instanse = axios.create({
 	baseURL: api_location,

@@ -1,13 +1,14 @@
 import { InjectionKey } from 'vue'
 import { createStore, Store } from 'vuex'
-// import company from '@/store/company'
-// import product from '@/store/product'
 import { auth } from './auth/index'
-// import catalog from '@/store/catalog'
-// import order from '@/store/order'
-// import orders from '@/store/orders'
-// import shipments from '@/store/shipments'
-// import main_page from '@/store/main_page'
+import { company } from './company/index'
+import { news } from './news/index'
+import { cases } from './cases/index'
+import product from '@/store/product'
+import { catalog } from './catalog/index'
+import order from '@/store/order'
+import orders from '@/store/orders'
+import shipments from '@/store/shipments'
 import { keys } from './keys/index'
 
 
@@ -32,6 +33,14 @@ export const store = createStore<RootState>({
 	state: {},
 	modules:{
 		auth,
-		keys,
+		company,
+		news,
+		cases,
+		product,
+		catalog,
+		order,
+		orders,
+		shipments,
+		keys
 	}
 })

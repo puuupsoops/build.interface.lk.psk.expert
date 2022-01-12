@@ -6,7 +6,7 @@ import { store } from '@/store'
 const routes = [
 	{
 		path: '/', 
-		component: () => import('@/pages/main'),
+		component: () => import('@/pages/main.vue'),
 		name: 'Main',
 		meta:{
 				auth: true,
@@ -14,7 +14,7 @@ const routes = [
 	},
 	{
 		path: '/catalog/:id?',
-		component: () => import('@/pages/catalog'),
+		component: () => import('@/pages/catalog.vue'),
 		name: 'Catalog',
 		props: true,
 		meta:{
@@ -24,7 +24,7 @@ const routes = [
 	
 	{
 		path: '/company/:id?', 
-		component: () => import('@/pages/company'),
+		component: () => import('@/pages/company.vue'),
 		name: 'Company',
 		props: true,
 		meta:{
@@ -33,7 +33,7 @@ const routes = [
 	},
 	{
 		path: '/product/:article?', 
-		component: () => import('@/pages/product'),
+		component: () => import('@/pages/product.vue'),
 		name: 'Product',
 		props: true,
 		meta:{
@@ -42,7 +42,7 @@ const routes = [
 	},
 	{
 		path: '/order/:article?', 
-		component: () => import('@/pages/order/order'),
+		component: () => import('@/pages/order/order.vue'),
 		name: 'Order',
 		props: true,
 		meta:{
@@ -51,7 +51,7 @@ const routes = [
 	},
 	{
 		path: '/orders', 
-		component: () => import('@/pages/order/orders'),
+		component: () => import('@/pages/order/orders.vue'),
 		name: 'Orders',
 		meta:{
 				auth: true,
@@ -59,7 +59,7 @@ const routes = [
 	},
 	{
 		path: '/shipments', 
-		component: () => import('@/pages/shipment/shipments'),
+		component: () => import('@/pages/shipment/shipments.vue'),
 		name: 'Shipments',
 		meta:{
 				auth: true,
@@ -67,7 +67,7 @@ const routes = [
 	},
 	{
 		path: '/shipments/request', 
-		component: () => import('@/pages/shipment/request'),
+		component: () => import('@/pages/shipment/request.vue'),
 		name: 'ShipmentsRequest',
 		meta:{
 				auth: true,
@@ -76,7 +76,7 @@ const routes = [
 
 	{
 		path: '/404',
-		component: () => import('@/pages/404'),
+		component: () => import('@/pages/404.vue'),
 		name: '404',
 		meta:{
 				auth: true,
@@ -84,7 +84,7 @@ const routes = [
 	},
 	{
 		path: '/500',
-		component: () => import('@/pages/500'),
+		component: () => import('@/pages/500.vue'),
 		name: '500',
 		meta:{
 				auth: true,
@@ -99,7 +99,7 @@ const routes = [
 	},
 	{
 		path: '/login', 
-		component: () => import('@/pages/login'),
+		component: () => import('@/pages/login.vue'),
 		name: 'Login'
 	},
 

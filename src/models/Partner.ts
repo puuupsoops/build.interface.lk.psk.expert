@@ -1,6 +1,15 @@
 
+// API response /partners
 
-export interface Partners {
+import { ResponseError } from "./Error";
+
+// Output Data
+export interface PartnerResponse{
+	response: Partner[],
+	error: ResponseError|null
+}
+
+export interface Partner {
     uid:           string;
     name:          string;
     city:          string;

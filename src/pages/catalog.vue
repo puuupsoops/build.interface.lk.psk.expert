@@ -52,19 +52,20 @@
 </div>
 </template>
 
-<script>
-
+<script lang="ts">
 import Notification from '@/components/cards/Notification.vue'
 import PersonalBar  from '@/components/cards/PersonalBar.vue'
 import CatalogMenu  from '@/components/cards/Catalog/CatalogMenu.vue'
 import CatalogItem  from '@/components/cards/Catalog/CatalogItem.vue'
 import CatalogPagination  from '@/components/cards/Catalog/CatalogPagination.vue'
 import PreloaderLocal  from '@/components/PreloaderLocal.vue'
-
-import { useStore } from 'vuex';
+import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { ref, computed, onMounted, onBeforeUnmount, watch, defineComponent } from 'vue'
-import { key } from '@/store';
+import { key } from '@/store'
+import { CatalogActions } from '@/store/catalog/actions'
+import { CatalogMutations } from '@/store/catalog/mutations'
+import { CatalogRequest } from '@/models/Catalog'
 
 export default defineComponent({
 		components:{
@@ -83,30 +84,28 @@ export default defineComponent({
 			const loaderCatalog = ref(false);
 			const currentCategory = ref(null);
 			const showMenu = ref(true);
-			const getMenuCategoryName = computed(() => store.getters.getMenuCategoryName(props.id));
+			const getMenuCategoryName = computed(() => store.getters.getMenuCategoryName(<number>props.id));
 			const scroll = ref();
 			const currentPage = ref(1);
-
-			const onScroll = (e) => {
+			
+			const onScroll = (e: any) => {
 				scroll.value = e.target.documentElement.scrollTop;
 			}
-
-			const changePage = (offset) => {
-				if (currentPage.value + offset >= 1 & currentPage.value + offset <= store.getters.getPageCount)
+			const changePage = (offset: number) => {
+				if (currentPage.value + offset >= 1 && currentPage.value + offset <= store.getters.getPageCount)
 				{
 					currentPage.value = currentPage.value + offset;
 					loaderCatalog.value = true;
-					store.dispatch('GET_CATALOG', {code: props.id, page: currentPage.value})
+					store.dispatch(CatalogActions.GET_CATALOG, {SECTION: props.id, PAGE: currentPage.value})
 						.then(() => {loaderCatalog.value = false})
 				}
 			}
-
 			watch( () => props.id, () => {
-				store.commit('clearCatalog')
+				store.commit(CatalogMutations.CLEAR_CATALOG)
 				currentPage.value = 1;
-				if (props.id !=='' & props.id !== undefined) {
+				if (props.id !=='' && props.id !== undefined) {
 					loaderCatalog.value = true;
-					store.dispatch('GET_CATALOG', {code: props.id, page: currentPage.value})
+					store.dispatch(CatalogActions.GET_CATALOG, {SECTION: props.id, PAGE: currentPage.value})
 						.then(() => {loaderCatalog.value = false})
 					}
 			})
@@ -115,21 +114,20 @@ export default defineComponent({
 				window.addEventListener("scroll", onScroll);
 				if (!store.getters.isCatalogMenuLoad) {
 					loaderMenu.value = true;
-					store.dispatch('GET_CATALOG_MENU')
+					store.dispatch(CatalogActions.GET_CATALOG_MENU)
 						.then(() => {
 							loaderMenu.value = false;
 							if (!getMenuCategoryName.value)
 								router.push({name: 'Catalog'});
 						})
 				}
-				store.commit('clearCatalog')
-				if (props.id !=='' & props.id !== undefined) {
+				store.commit(CatalogMutations.CLEAR_CATALOG)
+				if (props.id !=='' && props.id !== undefined) {
 					loaderCatalog.value = true;
-					store.dispatch('GET_CATALOG', {code: props.id, page: currentPage.value})
+					store.dispatch(CatalogActions.GET_CATALOG, {SECTION: props.id, PAGE: currentPage.value})
 						.then(() => {loaderCatalog.value = false})
 					}
 			});
-
 			return{
 				currentCategory,
 				loaderMenu,

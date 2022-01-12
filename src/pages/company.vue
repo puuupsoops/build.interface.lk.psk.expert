@@ -4,7 +4,6 @@
 			<CompanyBarTop :data="companyBarTopData" v-model="activeCompanyUid"></CompanyBarTop>
 			<Notification></Notification>
 			<PersonalBar></PersonalBar>
-
 		</div>
 		
 		<div class="company-head">
