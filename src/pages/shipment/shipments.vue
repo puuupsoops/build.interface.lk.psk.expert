@@ -77,6 +77,7 @@ import ShipmentsListCard from '@/components/cards/Shipment/ShipmentsListCard.vue
 import { useStore } from 'vuex'
 import { ref, computed, onMounted, defineComponent } from 'vue'
 import { key } from '@/store'
+import { CompanyActions } from '@/store/company/actions'
 
 export default defineComponent({
 	components:{
@@ -123,7 +124,7 @@ export default defineComponent({
 			store.commit('setShipments');
 			if (!store.getters.isCompanysLoad)
 			{
-				store.dispatch('GET_PARTNER')
+				store.dispatch(CompanyActions.GET_COMPANYS)
 					.then(() =>{
 						activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
 					})

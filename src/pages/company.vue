@@ -36,6 +36,7 @@ import { useStore } from 'vuex'
 import { ref, onMounted, computed, watch , provide, inject} from 'vue'
 import { useRouter } from 'vue-router'
 import { key } from '@/store'
+import { CompanyActions } from '@/store/company/actions'
 
 export default {
 	components: {
@@ -85,8 +86,8 @@ export default {
 			{
 				loader.value=true;
 				Promise.all([
-						store.dispatch('GET_PARTNER'),
-						store.dispatch('GET_MANAGER'),
+						store.dispatch(CompanyActions.GET_COMPANYS),
+						store.dispatch(CompanyActions.GET_MANAGER),
 					])
 					//.catch(()=>{alert('error')})
 					.finally(() => { setTimeout(()=>{

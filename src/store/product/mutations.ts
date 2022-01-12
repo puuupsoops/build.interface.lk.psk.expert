@@ -1,0 +1,43 @@
+import { MutationTree } from "vuex";
+import { ProductState, DEFAULT_PRODUCT } from "./types";
+
+
+export enum ProductMutations {
+	SET_SEARCH_PRODUCT_RESULT = "SET_SEARCH_PRODUCT_RESULT",
+	SET_SEARCH_PRODUCT_CLEAR = "SET_SEARCH_PRODUCT_CLEAR",
+	SET_PRODUCT_RESULT = "SET_PRODUCT_RESULT",
+	SET_PRODUCT_CLEAR = "SET_PRODUCT_CLEAR",
+}
+
+export const mutations: MutationTree<ProductState> = {
+	[ProductMutations.SET_SEARCH_PRODUCT_RESULT](state, data) {
+		state.search_product_result = data;
+		state.product_offers = data.OFFERS;
+		state.product_found = data.FOUND;
+		state.product = data.PRODUCT;
+		state.product_images = data.IMAGES;
+		state.product_protect = data.PROTECT;
+	},
+	[ProductMutations.SET_SEARCH_PRODUCT_CLEAR](state) {
+		state.search_product_result = [];
+		state.product_offers = [];
+		state.product_found = [];
+		state.product = DEFAULT_PRODUCT;
+		state.product_images = [];
+		state.product_protect = [];
+	},
+	[ProductMutations.SET_PRODUCT_RESULT](state, data){
+		state.product = data.PRODUCT;
+		state.product_images = data.IMAGES;
+		state.product_offers = data.OFFERS;
+		state.product_protect = data.PROTECT;
+		
+	},
+	[ProductMutations.SET_PRODUCT_CLEAR](state){
+		state.product = DEFAULT_PRODUCT;
+		state.product_images = [];
+		state.product_offers = [];
+		state.product_protect = [];
+	}
+
+}

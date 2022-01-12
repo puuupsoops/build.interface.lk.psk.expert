@@ -35,13 +35,13 @@ export interface CatalogRequest{
 	PAGE: number;
 }
 export interface Catalog {
-	products: Product[];
+	products: CatalogProduct[];
 	count:    number;
 	total:    number;
 	page:     number;
 }
 
-export interface Product {
+export interface CatalogProduct {
 	id:          string;
 	title:       string;
 	description: string;

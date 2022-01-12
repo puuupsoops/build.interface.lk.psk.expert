@@ -84,6 +84,7 @@ import { key } from '@/store';
 import { computed, defineComponent } from 'vue';
 import { useStore } from 'vuex';
 import { KeysMutations } from '@/store/keys/mutations';
+import { CompanyActions } from '@/store/company/actions';
 
 export default defineComponent({
 	props: {
@@ -143,7 +144,7 @@ export default defineComponent({
 			]
 			let arr = [];
 			if (!store.getters.isCompanysLoad) {
-				store.dispatch('GET_PARTNER');
+				store.dispatch(CompanyActions.GET_COMPANYS);
 			}
 			store.getters.getCompanys.forEach((element: { name: string; uid: string; }) => {
 				arr.push({title: element.name

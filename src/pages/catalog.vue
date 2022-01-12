@@ -62,10 +62,9 @@ import PreloaderLocal  from '@/components/PreloaderLocal.vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { ref, computed, onMounted, onBeforeUnmount, watch, defineComponent } from 'vue'
-import { key } from '@/store'
+import { key } from '@/store';
 import { CatalogActions } from '@/store/catalog/actions'
 import { CatalogMutations } from '@/store/catalog/mutations'
-import { CatalogRequest } from '@/models/Catalog'
 
 export default defineComponent({
 		components:{
@@ -78,16 +77,15 @@ export default defineComponent({
 		},
 		props: ['id'],
 		setup(props){
-			const store = useStore(key)
+			const store = useStore(key);
 			const router = useRouter();
 			const loaderMenu = ref(false);
 			const loaderCatalog = ref(false);
 			const currentCategory = ref(null);
 			const showMenu = ref(true);
-			const getMenuCategoryName = computed(() => store.getters.getMenuCategoryName(<number>props.id));
+			const getMenuCategoryName = computed(() => store.getters.getMenuCategoryName(props.id));
 			const scroll = ref();
 			const currentPage = ref(1);
-			
 			const onScroll = (e: any) => {
 				scroll.value = e.target.documentElement.scrollTop;
 			}
@@ -143,7 +141,7 @@ export default defineComponent({
 				scroll,
 			}
 		}
-});
+})
 </script>
 
 <style scoped>

@@ -97,6 +97,8 @@ import { useRouter } from 'vue-router'
 import { ref, computed, onMounted, defineComponent } from 'vue'
 import { key } from '@/store'
 import { KeysMutations } from '@/store/keys/mutations'
+import { CompanyActions } from '@/store/company/actions'
+import { ProductActions } from '@/store/product/actions'
 
 export default defineComponent({
 	components: {
@@ -159,14 +161,14 @@ export default defineComponent({
 		onMounted(() => {
 			if (!store.getters.isCompanysLoad)
 			{
-				store.dispatch('GET_PARTNER')
+				store.dispatch(CompanyActions.GET_COMPANYS)
 			}
 			activeProductId.value=store.getters.getProduct.ID;
 
 			// if get parametr aticle is not emty when using product page else using search
 			if (props.article !=='' && props.article !== undefined) {
 				loader.value = true;
-				store.dispatch('SEARCH_PRODUCT', props.article)
+				store.dispatch(ProductActions.SEARCH_PRODUCT, props.article)
 					.then(()=>{
 						if (store.getters.getProduct.ID)
 							activeProductId.value=store.getters.getProduct.ID;

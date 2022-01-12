@@ -64,6 +64,7 @@ import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { Form, Field, ErrorMessage, defineRule } from 'vee-validate';
 import SnackBar from '@/components/ui/SnackBar';
+import { CompanyActions } from '@/store/company/actions';
 
 
 export default {
@@ -113,8 +114,8 @@ export default {
 						.then(() => {
 
 							Promise.all([
-								store.dispatch('GET_PARTNER'),
-								store.dispatch('GET_MANAGER'),
+								store.dispatch(CompanyActions.GET_COMPANYS),
+								store.dispatch(CompanyActions.GET_MANAGER),
 							])
 							.catch(()=>{
 								password.value = '';

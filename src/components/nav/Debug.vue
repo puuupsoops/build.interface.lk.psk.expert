@@ -25,6 +25,7 @@
 <script lang="ts">
 
 import { key } from '@/store';
+import { AuthActions } from '@/store/auth/actions';
 import { KeysMutations } from '@/store/keys/mutations';
 import { computed, defineComponent } from 'vue';
 import { useStore } from 'vuex'
@@ -39,7 +40,7 @@ export default defineComponent({
 		})
 		return{
 			isDebug,
-			logout: ()=>store.dispatch('LOGOUT'),
+			logout: ()=>store.dispatch(AuthActions.LOGOUT),
 		}
 	}	
 })
