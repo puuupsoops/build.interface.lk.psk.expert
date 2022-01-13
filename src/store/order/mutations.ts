@@ -26,10 +26,10 @@ export const mutations: MutationTree<OrderState> = {
 	[OrderMutations.ADD_POSITION] (state, data: OrderStatePosition): void{
 		if (data.characteristics.length > 0)
 		{
-			let exist = state.order.position.find(x => x.product.ID == data.product.ID);
+			const exist = state.order.position.find(x => x.product.ID == data.product.ID);
 			if (exist) {
-				let add_characteristics = data.characteristics.filter(x => {
-					let e = exist?.characteristics.find(m => m.ID == x.ID)
+				const add_characteristics = data.characteristics.filter(x => {
+					const e = exist?.characteristics.find(m => m.ID == x.ID)
 					if (e){
 						e.count = Number(e.count) + Number(x.count)
 						if (Number(e.count) > Number(e.RESIDUE)) e.count=e.RESIDUE
@@ -45,11 +45,11 @@ export const mutations: MutationTree<OrderState> = {
 	[OrderMutations.ADD_POSITION_PRESAIL] (state, data: OrderStatePosition): void{
 		if (data.characteristics.length > 0)
 		{
-			let exist = state.order.position_presail.find(x => x.product.ID == data.product.ID);
+			const exist = state.order.position_presail.find(x => x.product.ID == data.product.ID);
 			if (exist) {
 				//console.log(exist)
-				let add_characteristics = data.characteristics.filter(x => {
-					let e = exist?.characteristics.find(m => m.ID == x.ID)
+				const add_characteristics = data.characteristics.filter(x => {
+					const e = exist?.characteristics.find(m => m.ID == x.ID)
 					if (e){
 						e.count = Number(e.count) + Number(x.count)
 					} else 
@@ -92,8 +92,8 @@ export const mutations: MutationTree<OrderState> = {
 		state.order.position.forEach(pos => {
 			let total_pos = 0;
 			let total_count_pos = 0;
-			let total_valume_pos = Number(pos.product.VALUME);
-			let total_weigth_pos = Number(pos.product.WEIGHT);
+			const total_valume_pos = Number(pos.product.VALUME);
+			const total_weigth_pos = Number(pos.product.WEIGHT);
 			pos.characteristics.forEach( c => {
 				total_pos = total_pos + Number(c.PRICE) * Number(c.count);
 				total_count_pos = total_count_pos + Number(c.count);
