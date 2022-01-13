@@ -80,11 +80,11 @@
 </template>
 
 <script lang="ts">
-import { key } from '@/store';
-import { computed, defineComponent } from 'vue';
-import { useStore } from 'vuex';
-import { KeysMutations } from '@/store/keys/mutations';
-import { CompanyActions } from '@/store/company/actions';
+import { key } from '@/store'
+import { computed, defineComponent } from 'vue'
+import { useStore } from 'vuex'
+import { KeysMutations } from '@/store/keys/mutations'
+import { CompanyActions } from '@/store/company/actions'
 
 export default defineComponent({
 	props: {
@@ -98,7 +98,7 @@ export default defineComponent({
 		const store = useStore(key);
 		const isDebug = computed<boolean>({
 			get: () => store.getters.getIsDebug,
-			set: (val: boolean) => store.commit(KeysMutations.SET_COLLAPSED, val)
+			set: (val: boolean) => store.commit(KeysMutations.SET_IS_DEBUG, val)
 		})
 		const menu = computed(() => {
 			let menu_start = [

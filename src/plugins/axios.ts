@@ -1,6 +1,8 @@
 
 import axios from "axios";
 import { store } from '@/store'
+import { AuthActions } from "@/store/auth/actions";
+import { AuthMutations } from "@/store/auth/mutations";
 
 
 const api_location = process.env.VUE_APP_API_LOCATIONL + '/api'
@@ -23,12 +25,12 @@ instanse.interceptors.response.use(
 	async (error) =>  {
 		try {
 			if (error.response.status == 401 && error.response.config.url != '/auth') {
-				await store.dispatch('LOGOUT')
+				await store.dispatch(AuthActions.LOGOUT)
 			}
 			return Promise.reject(error);
 		} catch (e) {
 			
-			store.commit('setError', 'Ошибка ответа сервера: <br>' + e.message)
+			store.commit(AuthMutations.SET_ERROR, 'Ошибка ответа сервера: <br>' + e.message)
 		}
 	});
 

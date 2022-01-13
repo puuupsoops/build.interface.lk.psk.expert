@@ -97,8 +97,12 @@ import { useRouter } from 'vue-router'
 import { ref, computed, onMounted, defineComponent } from 'vue'
 import { key } from '@/store'
 import { KeysMutations } from '@/store/keys/mutations'
-import { CompanyActions } from '@/store/company/actions'
+import { OrderActions } from '@/store/order/actions'
+import { OrderMutations } from '@/store/order/mutations'
 import { ProductActions } from '@/store/product/actions'
+import { CompanyActions } from '@/store/company/actions'
+import { OrderStateAddPosition } from '@/store/order/types'
+
 
 export default defineComponent({
 	components: {
@@ -133,15 +137,17 @@ export default defineComponent({
 		const showModal = ref(false)
 
 		const addToOrder = () => {
-			store.dispatch('ADD_POSITION', { position: {
-												product: store.getters.getProduct, 
-												characteristics: characteristicArray.value.position
-											},
-											position_presail:{
-												product: store.getters.getProduct, 
-												characteristics: characteristicArray.value.position_presail
-											}
-			});
+			let new_pos = { 
+					position: {
+						product: store.getters.getProduct, 
+						characteristics: characteristicArray.value.position
+					},
+					position_presail:{
+						product: store.getters.getProduct, 
+						characteristics: characteristicArray.value.position_presail
+					}
+				}
+			store.dispatch(OrderActions.ADD_POSITION, <OrderStateAddPosition>new_pos);
 		}
 		const addOrder = () => {
 			if (activeCompanyUid.value == '') {
@@ -150,9 +156,9 @@ export default defineComponent({
 				errorMsg.value = 'Для оформления заказа выберите контрагента';
 			} else {
 				showModal.value=true;
-				store.commit('addOrderPartnerID', activeCompanyUid.value);
+				store.commit(OrderMutations.ADD_ORDER_PARTNER_ID, activeCompanyUid.value);
 				setTimeout(() => {
-					store.dispatch('ADD_ORDER', store.getters.getOrderToAdd);
+					store.dispatch(OrderActions.ADD_ORDER, store.getters.getOrderToAdd);
 				}, 3000);
 			}
 
@@ -181,7 +187,7 @@ export default defineComponent({
 
 		const loadProduct = () => {
 			loader.value = true;
-			store.dispatch('GET_PRODUCT_BY_ID', activeProductId.value)
+			store.dispatch(ProductActions.GET_PRODUCT_BY_ID, activeProductId.value)
 				.then(()=>{
 					activeProductId.value=store.getters.getProduct.ID;
 					})

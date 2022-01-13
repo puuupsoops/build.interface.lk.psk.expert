@@ -222,6 +222,8 @@ import AmountInput from '@/components/ui/AmountInput.vue'
 import DeleteButton from '@/components/ui/DeleteButton.vue'
 import SelectInput from '@/components/ui/SelectInput.vue'
 import { key } from '@/store';
+import { OrderMutations } from '@/store/order/mutations'
+import { OrderActions } from '@/store/order/actions'
 
 export default {
 	props: {
@@ -253,13 +255,13 @@ export default {
 		});
 
 		let updOrder = () => {
-			store.commit('calcOrder')
+			store.commit(OrderMutations.CALC_ORDER)
 		};
 		let removePosition = (data) => {
-			store.dispatch('REMOVE_POSITION', data)
+			store.dispatch(OrderActions.REMOVE_POSITION, data)
 		};
 		let removeCharacteristic = (data) => {
-			store.dispatch('REMOVE_CHARACTERISTIC', data)
+			store.dispatch(OrderActions.REMOVE_CHARACTERISTIC, data)
 		};
 		let onClick = () => {
 			if (props.modelValue == '') {

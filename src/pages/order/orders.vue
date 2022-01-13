@@ -77,6 +77,7 @@ import { useStore } from 'vuex'
 import { ref, computed, onMounted, defineComponent } from 'vue'
 import { key } from '@/store'
 import { CompanyActions } from '@/store/company/actions'
+import { OrdersMutations } from '@/store/orders/mutations'
 
 export default defineComponent({
 	components:{
@@ -119,7 +120,7 @@ export default defineComponent({
 
 	
 		onMounted(() => {
-			store.commit('setOrders');
+			store.commit(OrdersMutations.SET_ORDERS);
 			if (!store.getters.isCompanysLoad)
 			{
 				store.dispatch(CompanyActions.GET_COMPANYS)

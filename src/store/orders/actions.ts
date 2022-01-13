@@ -1,13 +1,13 @@
 import axios from '@/plugins/axios'
 import { ActionTree } from "vuex"
 import { RootState } from "@/store"
-import { EmptyState } from "./types"
+import { OrdersState } from "./types"
 
 
-export enum EmptyActions {
+export enum OrdersActions {
 	EMPTY = "EMPTY",
 }
 
-export const actions: ActionTree<EmptyState, RootState> =  {
+export const actions: ActionTree<OrdersState, RootState> =  {
 	
 }

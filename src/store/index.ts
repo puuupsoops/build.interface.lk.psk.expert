@@ -6,9 +6,9 @@ import { news } from './news/index'
 import { cases } from './cases/index'
 import { product } from './product/index'
 import { catalog } from './catalog/index'
-import order from '@/store/order'
-import orders from '@/store/orders'
-import shipments from '@/store/shipments'
+import { order } from './order/index'
+import { orders } from './orders/index'
+import { shipments } from './shipments/index'
 import { keys } from './keys/index'
 
 

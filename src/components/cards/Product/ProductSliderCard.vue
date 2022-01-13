@@ -39,15 +39,12 @@
 
 <script lang="ts">
 
-import { key } from '@/store';
+import { key } from '@/store'
 import { ref, onUpdated, computed, defineComponent } from 'vue'
-import { useStore } from 'vuex';
-import { KeysMutations } from '@/store/keys/mutations';
+import { useStore } from 'vuex'
+import { KeysMutations } from '@/store/keys/mutations'
+import { Sliders } from '@/models/Components'
 
-interface Sliders{
-	id: number;
-	src: string;
-}
 
 export default defineComponent({
 	props:{
@@ -64,14 +61,14 @@ export default defineComponent({
 			get: () => store.getters.getLoader,
 			set: (val: boolean) => store.commit(KeysMutations.SET_LOADER, val)
 		})
-		props.data?.forEach( (v, i) => slides.value.push(<Sliders>{ id: i, src: v }));
+		props.data?.forEach( (v, i) => slides.value.push(<Sliders>{ id: i, src: v }))
 		// if (slides.value.length % 2 == 0){
 		// 			slides.value.push({id: slides.value.length, src:props.data[0]})
 		// 		}
 
 		onUpdated( () => {
 				slides.value = [];
-				props.data?.forEach( (v, i) => slides.value.push(<Sliders>{id: i, src: v}));
+				props.data?.forEach( (v, i) => slides.value.push(<Sliders>{id: i, src: v}))
 				// if (slides.value.length % 2 == 0){
 				// 	slides.value.push({id: slides.value.length, src:props.data[0]})
 				// }

@@ -72,6 +72,7 @@ import { useStore } from 'vuex'
 import { onClickOutside } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 import { key } from '@/store'
+import { OrderMutations } from '@/store/order/mutations'
 
 export default {
 	components:{
@@ -94,18 +95,18 @@ export default {
 			setTimeout(() => {shake.value=false;}, 500);
 		});
 		const close = () => {
-			store.commit('cleanOrderError');
-			store.commit('cleanAddOrder');
+			store.commit(OrderMutations.CLEAN_ORDER_ERROR);
+			store.commit(OrderMutations.CLEAN_ADD_ORDER);
 			emit('update:modelValue', false);
 		};
 		const delOrder = () => {
-			store.commit('cleanOrder');
-			store.commit('cleanAddOrder');
+			store.commit(OrderMutations.CLEAN_ORDER);
+			store.commit(OrderMutations.CLEAN_ADD_ORDER);
 			emit('update:modelValue', false);
 		}
 		const toOrders = () => {
-			store.commit('cleanOrder');
-			store.commit('cleanAddOrder');
+			store.commit(OrderMutations.CLEAN_ORDER);
+			store.commit(OrderMutations.CLEAN_ADD_ORDER);
 			emit('update:modelValue', false);
 			router.push({name: 'Orders'});
 		};
