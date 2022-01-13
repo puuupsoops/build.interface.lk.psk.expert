@@ -10,7 +10,7 @@
 
 				<Field 
 					as="input"
-					v-model="login"
+					v-model="authData.login"
 					class="authorization-input"
 					name="Login"
 					placeholder="Логин"
@@ -21,7 +21,7 @@
 				<Field
 					as="input"
 					type="password"
-					v-model="password"
+					v-model="authData.password"
 					class="authorization-input"
 					name="password"
 					placeholder="Пароль"
@@ -58,15 +58,20 @@
 </div>
 </template>
 
-<script>
-import { ref, computed, inject } from 'vue';
-import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
-import { Form, Field, ErrorMessage, defineRule } from 'vee-validate';
-import SnackBar from '@/components/ui/SnackBar';
+<script lang="ts">
+import { ref, computed, defineComponent } from 'vue'
+import { useStore } from 'vuex'
+import { key } from '@/store'
+import { useRouter } from 'vue-router'
+import { Form, Field, ErrorMessage, defineRule } from 'vee-validate'
+import SnackBar from '@/components/ui/SnackBar.vue'
+import { AuthMutations } from '@/store/auth/mutations'
+import { AuthActions } from '@/store/auth/actions'
+import { KeysMutations } from '@/store/keys/mutations'
+import { AuthRequest } from '@/models/Auth'
+import { CompanyActions } from '@/store/company/actions'
 
-
-export default {
+export default defineComponent({
 	components:{
 		Form,
 		Field,
@@ -74,20 +79,27 @@ export default {
 		SnackBar
 	},	
 	setup(){
-		const store = useStore();
+		const store = useStore(key);
 		const router = useRouter();
-		const login = ref('');
-		const password = ref('');
-		const saved = ref(false);
-		const loader = inject('loader');
+		const authData = ref<AuthRequest>({
+			login: '',
+			password: ''
+		})
+
+		const saved = ref<boolean>(false);
 		
-		defineRule('required', value => {
+		const loader = computed<boolean>({
+			get: () => store.getters.getLoader,
+			set: (val: boolean) => store.commit(KeysMutations.SET_LOADER, val)
+		})
+		
+		defineRule('required', (value: string) => {
 			if (!value || !value.length) { 
 				return 'Обязательное поле';	
 				}
 				return true;	
 		});
-		defineRule('minLength', (value, [limit]) => {
+		defineRule('minLength', (value: string, [limit]: number[]) => {
 			if (!value || !value.length) {
 				return true;
 			}
@@ -99,25 +111,21 @@ export default {
 
 		let loginError = computed({
 			get: () => store.getters.getLoginError,
-			set: () => store.commit('clearLoginError')
+			set: () => store.commit(AuthMutations.CLEAR_LOGIN_ERROR)
 		})
 
 		let onLogin = () => {
 			loader.value=true;
 			setTimeout(() => {
-				store.dispatch('LOGIN', {
-						"login": login.value,
-						"password": password.value,
-						"save": saved.value,
-					})
+				store.dispatch(AuthActions.LOGIN, authData.value)
 						.then(() => {
-
+							if (saved.value) store.commit(AuthMutations.SET_SAVE_AUTH)
 							Promise.all([
-								store.dispatch('GET_PARTNER'),
-								store.dispatch('GET_MANAGER'),
+								store.dispatch(CompanyActions.GET_COMPANYS),
+								store.dispatch(CompanyActions.GET_MANAGER)
 							])
 							.catch(()=>{
-								password.value = '';
+								authData.value.password = '';
 								setTimeout(() => {loader.value=false;}, 3000);
 							})
 							.finally(() => {
@@ -126,7 +134,7 @@ export default {
 							})		
 						})
 						.catch(() => {
-							password.value = '';
+							authData.value.password = '';
 							setTimeout(() => {loader.value=false;}, 3000);
 						})
 					}, 500);
@@ -139,14 +147,13 @@ export default {
 			loginError,
 			loginErrorMsg: computed(() => store.getters.getLoginErrorMsg),
 			loader,
-			login,
-			password,
+			authData,
 			saved,
 			onLogin,
 		}
 
 	}
-};
+});
 </script>
 
 <style scoped lang="sass">

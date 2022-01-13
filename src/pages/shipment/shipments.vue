@@ -65,19 +65,22 @@
 
 
 
-<script>
-import PersonalBar from '@/components/cards/PersonalBar';
-import Notification from '@/components/cards/Notification';
-import CompanyBarTop from '@/components/cards/Company/CompanyBarTop';
-import TopNav from '@/components/nav/TopNav';
-import SelectInput from '@/components/ui/SelectInput';
-import OrdersSearchCard from '@/components/cards/Order/OrdersSearchCard';
-import ShipmentsListCard from '@/components/cards/Shipment/ShipmentsListCard'
+<script lang="ts">
+import PersonalBar from '@/components/cards/PersonalBar.vue'
+import Notification from '@/components/cards/Notification.vue'
+import CompanyBarTop from '@/components/cards/Company/CompanyBarTop.vue'
+import TopNav from '@/components/nav/TopNav.vue'
+import SelectInput from '@/components/ui/SelectInput.vue'
+import OrdersSearchCard from '@/components/cards/Order/OrdersSearchCard.vue'
+import ShipmentsListCard from '@/components/cards/Shipment/ShipmentsListCard.vue'
 
 import { useStore } from 'vuex'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, defineComponent } from 'vue'
+import { key } from '@/store'
+import { CompanyActions } from '@/store/company/actions'
+import { ShipmentsMutations } from '@/store/shipments/mutations'
 
-export default {
+export default defineComponent({
 	components:{
 		PersonalBar,
 		Notification,
@@ -88,7 +91,7 @@ export default {
 		ShipmentsListCard
 	},
 	setup(){
-		const store = useStore();
+		const store = useStore(key);
 		const activeCompanyUid = ref('');
 		const search = ref({left: 1, right: 0});
 		const dogovor = ref([
@@ -119,10 +122,10 @@ export default {
 
 	
 			onMounted(() => {
-			store.commit('setShipments');
+			store.commit(ShipmentsMutations.SET_SHIPMENT);
 			if (!store.getters.isCompanysLoad)
 			{
-				store.dispatch('GET_PARTNER')
+				store.dispatch(CompanyActions.GET_COMPANYS)
 					.then(() =>{
 						activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
 					})
@@ -140,5 +143,5 @@ export default {
 			search,
 		}
 	}
-}
+})
 </script>

@@ -130,20 +130,27 @@
 	</transition>
 </template>
 
-<script>
-import SideNavigation from '@/components/nav/SideNavigation';
-import {ref,inject} from 'vue';
+<script lang="ts">
+import SideNavigation from '@/components/nav/SideNavigation.vue'
+import { key } from '@/store'
+import { KeysMutations } from '@/store/keys/mutations'
+import {ref, defineComponent, computed} from 'vue'
+import { useStore } from 'vuex'
 
-export default {
+export default defineComponent({
 		components: {
 			SideNavigation
 		},
 		setup() {
-			let collapsed = inject('collapsed');
+			const store = useStore(key)
+			const collapsed = computed<boolean>({
+					get: () => store.getters.getCollapsed,
+					set: (val: boolean) => store.commit(KeysMutations.SET_COLLAPSED, val)
+				})
 			let active_item = ref(0);
 			return { collapsed, active_item}
 		}
-}
+})
 </script>
 
 

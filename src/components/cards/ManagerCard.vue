@@ -46,16 +46,18 @@
 
 <script>
 import { useStore } from 'vuex'
+import { key } from '@/store'
 import { ref, computed, onMounted } from 'vue'
+import { CompanyActions } from '@/store/company/actions'
 
 export default {
 	setup(){
-		let store = useStore();
+		let store = useStore(key);
 		let isLoad = ref(true);
 		onMounted(() => {
 			if (Object.keys(store.getters.getManager).length == 0 ){
-				console.log('GET_MANAGER')
-				store.dispatch('GET_MANAGER')
+				
+				store.dispatch(CompanyActions.GET_MANAGER)
 					.then(() => {
 						isLoad.value = false;
 					})}

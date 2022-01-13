@@ -23,22 +23,28 @@
 
 </template>
 
-<script>
+<script lang="ts">
 
-import { inject } from 'vue';
+import { key } from '@/store';
+import { AuthActions } from '@/store/auth/actions';
+import { KeysMutations } from '@/store/keys/mutations';
+import { computed, defineComponent } from 'vue';
 import { useStore } from 'vuex'
 
-export default {
+export default defineComponent({
 	
 	setup(){
-		let store = useStore();
-		let isDebug = inject('isDebug');
+		const store = useStore(key)
+		const isDebug = computed<boolean>({
+			get: () => store.getters.getIsDebug,
+			set: (val: boolean) => store.commit(KeysMutations.SET_IS_DEBUG, val)
+		})
 		return{
 			isDebug,
-			logout: ()=>store.dispatch('LOGOUT'),
+			logout: ()=>store.dispatch(AuthActions.LOGOUT),
 		}
 	}	
-}
+})
 </script>
 
 

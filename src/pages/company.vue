@@ -4,7 +4,6 @@
 			<CompanyBarTop :data="companyBarTopData" v-model="activeCompanyUid"></CompanyBarTop>
 			<Notification></Notification>
 			<PersonalBar></PersonalBar>
-
 		</div>
 		
 		<div class="company-head">
@@ -24,20 +23,23 @@
 	</div>
 </template>
 
-<script>
-import PersonalBar from '@/components/cards/PersonalBar'
-import Notification from '@/components/cards/Notification'
-import CompanyAboutCard from '@/components/cards/Company/CompanyAboutCard'
-import CompanyStorageBar from '@/components/cards/Company/CompanyStorageBar'
-import CompanyBarTop from '@/components/cards/Company/CompanyBarTop'
-import CompanySaleBar from '@/components/cards/Company/CompanySaleBar'
-import CompanyCalendar from '@/components/cards/Company/CompanyCalendar'
+<script lang="ts">
+import PersonalBar from '@/components/cards/PersonalBar.vue'
+import Notification from '@/components/cards/Notification.vue'
+import CompanyAboutCard from '@/components/cards/Company/CompanyAboutCard.vue'
+import CompanyStorageBar from '@/components/cards/Company/CompanyStorageBar.vue'
+import CompanyBarTop from '@/components/cards/Company/CompanyBarTop.vue'
+import CompanySaleBar from '@/components/cards/Company/CompanySaleBar.vue'
+import CompanyCalendar from '@/components/cards/Company/CompanyCalendar.vue'
 
 import { useStore } from 'vuex'
-import { ref, onMounted, computed, watch , provide, inject} from 'vue'
+import { ref, onMounted, computed, watch , provide,  defineComponent} from 'vue'
 import { useRouter } from 'vue-router'
+import { key } from '@/store'
+import { CompanyActions } from '@/store/company/actions'
+import { KeysMutations } from '@/store/keys/mutations'
 
-export default {
+export default defineComponent({
 	components: {
 		CompanyAboutCard,
 		CompanyStorageBar,
@@ -50,18 +52,21 @@ export default {
 	},
 	props: ['id'],
 	setup(props){
-		const store = useStore();
+		const store = useStore(key);
 		const router = useRouter();
 		let isLoad = ref(false);
 		let activeCompanyUid = ref(props.id);
-		let activeStorageUid = ref(0);
+		let activeStorageUid = ref<number|null>(0);
 		let docDate = ref('');
 		let aboutCompanyData = computed(() => store.getters.getCompanyData(activeCompanyUid.value));
 		let companyStoragesData = computed(() => store.getters.getCompanyStoragesData(activeCompanyUid.value));
 		let companyBarTopData = computed(() => store.getters.getCompanysList);
 		let totalSpent = computed(() => store.getters.getCompanySpent(activeCompanyUid.value));
 		
-		const loader = inject('loader');
+		const loader = computed<boolean>({
+			get: () => store.getters.getLoader,
+			set: (val: boolean) => store.commit(KeysMutations.SET_LOADER, val)
+		})
 
 		watch( () => props.id, () => {
 			if (props.id !=='') {
@@ -76,7 +81,7 @@ export default {
 		});
 
 		let activeStorageDocuments = computed(() => companyStoragesData.value.length === 0 ?
-													null : companyStoragesData.value[activeStorageUid.value].documents );
+													null : companyStoragesData.value[activeStorageUid.value? activeStorageUid.value:0].documents );
 	
 
 		onMounted(() => {
@@ -85,8 +90,8 @@ export default {
 			{
 				loader.value=true;
 				Promise.all([
-						store.dispatch('GET_PARTNER'),
-						store.dispatch('GET_MANAGER'),
+						store.dispatch(CompanyActions.GET_COMPANYS),
+						store.dispatch(CompanyActions.GET_MANAGER),
 					])
 					//.catch(()=>{alert('error')})
 					.finally(() => { setTimeout(()=>{
@@ -118,7 +123,7 @@ export default {
 			isLoad,
 		}
 	}
-}
+})
 </script>
 
 <style>

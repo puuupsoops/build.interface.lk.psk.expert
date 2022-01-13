@@ -19,16 +19,20 @@
 <router-view v-else></router-view>
 </template>
 
-<script>
+<script lang="ts">
 import { useStore } from 'vuex'
-import { computed, ref, provide } from 'vue';
-import SideMenu from '@/components/nav/SideMenu.vue';
-import Preloader from '@/components/Preloader';
-import Debug from '@/components/nav/Debug';
-import SnackBar from '@/components/ui/SnackBar';
+import { key } from './store'
+import { computed, defineComponent } from 'vue'
+import SideMenu from '@/components/nav/SideMenu.vue'
+import Preloader from '@/components/Preloader.vue'
+import Debug from '@/components/nav/Debug.vue'
+import SnackBar from '@/components/ui/SnackBar.vue'
+import { AuthActions } from './store/auth/actions'
+import { AuthMutations } from './store/auth/mutations'
+import { KeysMutations } from './store/keys/mutations'
 
 //Composition API = On
-export default {
+export default defineComponent({
 	name: 'App',
 	components: {
 		SideMenu,
@@ -37,19 +41,29 @@ export default {
 		SnackBar
 	},
 
-setup() {
-		let store = useStore();
-		store.dispatch('CHECK_AUTH')
-		let loader = ref(false);
-		let collapsed = ref(false);
-		let isDebug = ref(true);
-		provide('loader', loader ); 
-		provide('collapsed', collapsed ); 
-		provide('isDebug', isDebug ); 
-		let error  = computed({
+	setup() {
+		let store = useStore(key)
+		store.dispatch(AuthActions.CHECK_AUTH)
+
+		const loader = computed<boolean>({
+			get: () => store.getters.getLoader,
+			set: (val: boolean) => store.commit(KeysMutations.SET_LOADER, val)
+		})
+		const isDebug = computed<boolean>({
+			get: () => store.getters.getIsDebug,
+			set: (val: boolean) => store.commit(KeysMutations.SET_COLLAPSED, val)
+		})
+		const collapsed = computed<boolean>({
+			get: () => store.getters.getCollapsed,
+			set: (val: boolean) => store.commit(KeysMutations.SET_COLLAPSED, val)
+		})
+
+
+		
+		const error  = computed({
 			get: () => store.getters.getError,
-			set: () => store.commit('clearError')
-		});
+			set: () => store.commit(AuthMutations.CLEAR_ERROR)
+		})
 		return {
 			//возвращаем данные
 			isAuth: computed(() => store.getters.isAuthenticated),
@@ -60,7 +74,7 @@ setup() {
 			errorMsg: computed(() => store.getters.getErrorMsg),
 		}
 	}
-}
+})
 </script>
 
 <style lang="sass">

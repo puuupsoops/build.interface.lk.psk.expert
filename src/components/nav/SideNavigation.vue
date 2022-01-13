@@ -79,11 +79,14 @@
 
 </template>
 
-<script>
-import { computed, inject } from 'vue';
-import { useStore } from 'vuex';
+<script lang="ts">
+import { key } from '@/store'
+import { computed, defineComponent } from 'vue'
+import { useStore } from 'vuex'
+import { KeysMutations } from '@/store/keys/mutations'
+import { CompanyActions } from '@/store/company/actions'
 
-export default {
+export default defineComponent({
 	props: {
 		modelValue: {
 			type: Number,
@@ -92,9 +95,12 @@ export default {
 	},
 	emits: ['update:modelValue'],
 	setup(){
-		const store = useStore();
-		let isDebug = inject('isDebug');
-		let menu = computed(() => {
+		const store = useStore(key);
+		const isDebug = computed<boolean>({
+			get: () => store.getters.getIsDebug,
+			set: (val: boolean) => store.commit(KeysMutations.SET_IS_DEBUG, val)
+		})
+		const menu = computed(() => {
 			let menu_start = [
 				{title: 'Мои компании', link: null, lock: false, children: [
 				]},
@@ -139,9 +145,9 @@ export default {
 			]
 			let arr = [];
 			if (!store.getters.isCompanysLoad) {
-				store.dispatch('GET_PARTNER');
+				store.dispatch(CompanyActions.GET_COMPANYS);
 			}
-			store.getters.getCompanys.forEach(element => {
+			store.getters.getCompanys.forEach((element: { name: string; uid: string; }) => {
 				arr.push({title: element.name
 											.replace(/Общество с ограниченной ответственностью/, 'ООО')
 											.replace(/Акционерное общество/, 'АО'),
@@ -160,5 +166,5 @@ export default {
 			isDebug
 		}
 	}
-}
+})
 </script>

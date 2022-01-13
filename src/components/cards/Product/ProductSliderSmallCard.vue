@@ -30,11 +30,15 @@
 </div>
 </template>
 
-<script>
+<script lang="ts">
 
-import { ref, onUpdated, inject } from 'vue'
+import { key } from '@/store'
+import { KeysMutations } from '@/store/keys/mutations';
+import { ref, onUpdated, computed, defineComponent } from 'vue'
+import { useStore } from 'vuex'
+import { Sliders } from '@/models/Components'
 
-export default {
+export default defineComponent({
 	props:{
 		data: {
 			type: Array
@@ -42,30 +46,33 @@ export default {
 	},
 	emits: ['toOrder'],
 	setup(props){
-		let slides = ref([]);
-	
-		const loader = inject('loader');
-		props.data.forEach( (v, i) => slides.value.push({id: i, src:v}));
+		let slides = ref<Sliders[]>([])
+		let store = useStore(key)
+		const loader = computed<boolean>({
+			get: () => store.getters.getLoader,
+			set: (val: boolean) => store.commit(KeysMutations.SET_LOADER, val)
+		})
+		props.data?.forEach( (v, i) => slides.value.push(<Sliders>{id: i, src:v}))
 		// if (slides.value.length % 2 == 0){
 		// 			slides.value.push({id: slides.value.length, src:props.data[0]})
 		// 		}
 
 		onUpdated( () => {
-				slides.value = [];
-				props.data.forEach( (v, i) => slides.value.push({id: i, src:v}));
+				slides.value = []
+				props.data?.forEach( (v, i) => slides.value.push(<Sliders>{id: i, src:v}))
 				// if (slides.value.length % 2 == 0){
 				// 	slides.value.push({id: slides.value.length, src:props.data[0]})
 				// }
 				});
 
 		let next = () => {
-			const first = slides.value.shift();
-			slides.value = slides.value.concat(first);
-		};
+			const first = <Sliders>slides.value.shift()
+			slides.value = slides.value.concat(first)
+		}
 		let previous = () => {
-			const last = slides.value.pop();
-			slides.value = [last].concat(slides.value);
-		};
+			const last = <Sliders>slides.value.pop()
+			slides.value = [last].concat(slides.value)
+		}
 		
 
 		return {
@@ -76,7 +83,7 @@ export default {
 			
 		}
 	}
-}
+})
 </script>
 
 <style lang="sass" scoped>

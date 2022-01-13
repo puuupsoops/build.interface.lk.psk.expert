@@ -77,26 +77,34 @@
 </div>
 </template>
 
-<script>
-import PersonalBar from '@/components/cards/PersonalBar'
-import Notification from '@/components/cards/Notification'
-import CompanyBarTop from '@/components/cards/Company/CompanyBarTop'
-import TopNav from '@/components/nav/TopNav'
-import ProductHeaderCard from '@/components/cards/Product/ProductHeaderCard'
-import ProductSearchResultCard from '@/components/cards/Product/ProductSearchResultCard'
-import ProductOffersOrderCard from '@/components/cards/Product/ProductOffersOrderCard'
-import ProductPropertiesCard from '@/components/cards/Product/ProductPropertiesCard';
-import ProductSliderSmallCard from '@/components/cards/Product/ProductSliderSmallCard';
-import OrderHeaderCard from '@/components/cards/Order/OrderHeaderCard';
-import OrderCard from '@/components/cards/Order/OrderCard';
-import OrderModal from '@/components/cards/Order/OrderModal';
-import SnackBar from '@/components/ui/SnackBar';
+<script lang="ts">
+import PersonalBar from '@/components/cards/PersonalBar.vue'
+import Notification from '@/components/cards/Notification.vue'
+import CompanyBarTop from '@/components/cards/Company/CompanyBarTop.vue'
+import TopNav from '@/components/nav/TopNav.vue'
+import ProductHeaderCard from '@/components/cards/Product/ProductHeaderCard.vue'
+import ProductSearchResultCard from '@/components/cards/Product/ProductSearchResultCard.vue'
+import ProductOffersOrderCard from '@/components/cards/Product/ProductOffersOrderCard.vue'
+import ProductPropertiesCard from '@/components/cards/Product/ProductPropertiesCard.vue'
+import ProductSliderSmallCard from '@/components/cards/Product/ProductSliderSmallCard.vue'
+import OrderHeaderCard from '@/components/cards/Order/OrderHeaderCard.vue'
+import OrderCard from '@/components/cards/Order/OrderCard.vue'
+import OrderModal from '@/components/cards/Order/OrderModal.vue'
+import SnackBar from '@/components/ui/SnackBar.vue'
 
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { ref, computed, onMounted, inject } from 'vue'
+import { ref, computed, onMounted, defineComponent } from 'vue'
+import { key } from '@/store'
+import { KeysMutations } from '@/store/keys/mutations'
+import { OrderActions } from '@/store/order/actions'
+import { OrderMutations } from '@/store/order/mutations'
+import { ProductActions } from '@/store/product/actions'
+import { CompanyActions } from '@/store/company/actions'
+import { OrderStateAddPosition } from '@/store/order/types'
 
-export default {
+
+export default defineComponent({
 	components: {
 		PersonalBar,
 		Notification,
@@ -114,9 +122,12 @@ export default {
 	},
 	props: ['article'],
 	setup(props) {
-		const store = useStore();
+		const store = useStore(key);
 		const router = useRouter();
-		const loader = inject('loader');
+		const loader = computed<boolean>({
+			get: () => store.getters.getLoader,
+			set: (val: boolean) => store.commit(KeysMutations.SET_LOADER, val)
+		})
 		
 		const activeCompanyUid = ref('');
 		const activeProductId = ref('');
@@ -126,15 +137,17 @@ export default {
 		const showModal = ref(false)
 
 		const addToOrder = () => {
-			store.dispatch('ADD_POSITION', { position: {
-												product: store.getters.getProduct, 
-												characteristics: characteristicArray.value.position
-											},
-											position_presail:{
-												product: store.getters.getProduct, 
-												characteristics: characteristicArray.value.position_presail
-											}
-			});
+			let new_pos = { 
+					position: {
+						product: store.getters.getProduct, 
+						characteristics: characteristicArray.value.position
+					},
+					position_presail:{
+						product: store.getters.getProduct, 
+						characteristics: characteristicArray.value.position_presail
+					}
+				}
+			store.dispatch(OrderActions.ADD_POSITION, <OrderStateAddPosition>new_pos);
 		}
 		const addOrder = () => {
 			if (activeCompanyUid.value == '') {
@@ -143,9 +156,9 @@ export default {
 				errorMsg.value = 'Для оформления заказа выберите контрагента';
 			} else {
 				showModal.value=true;
-				store.commit('addOrderPartnerID', activeCompanyUid.value);
+				store.commit(OrderMutations.ADD_ORDER_PARTNER_ID, activeCompanyUid.value);
 				setTimeout(() => {
-					store.dispatch('ADD_ORDER', store.getters.getOrderToAdd);
+					store.dispatch(OrderActions.ADD_ORDER, store.getters.getOrderToAdd);
 				}, 3000);
 			}
 
@@ -154,14 +167,14 @@ export default {
 		onMounted(() => {
 			if (!store.getters.isCompanysLoad)
 			{
-				store.dispatch('GET_PARTNER')
+				store.dispatch(CompanyActions.GET_COMPANYS)
 			}
 			activeProductId.value=store.getters.getProduct.ID;
 
 			// if get parametr aticle is not emty when using product page else using search
-			if (props.article !=='' & props.article !== undefined) {
+			if (props.article !=='' && props.article !== undefined) {
 				loader.value = true;
-				store.dispatch('SEARCH_PRODUCT', props.article)
+				store.dispatch(ProductActions.SEARCH_PRODUCT, props.article)
 					.then(()=>{
 						if (store.getters.getProduct.ID)
 							activeProductId.value=store.getters.getProduct.ID;
@@ -174,7 +187,7 @@ export default {
 
 		const loadProduct = () => {
 			loader.value = true;
-			store.dispatch('GET_PRODUCT_BY_ID', activeProductId.value)
+			store.dispatch(ProductActions.GET_PRODUCT_BY_ID, activeProductId.value)
 				.then(()=>{
 					activeProductId.value=store.getters.getProduct.ID;
 					})
@@ -202,5 +215,5 @@ export default {
 			order: computed(() => store.getters.getOrder),
 		}
 	}
-}
+})
 </script>

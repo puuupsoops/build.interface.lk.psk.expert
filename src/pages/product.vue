@@ -55,24 +55,29 @@
 </div>
 </template>
 
-<script>
-import PersonalBar from '@/components/cards/PersonalBar'
-import Notification from '@/components/cards/Notification'
-import CompanyBarTop from '@/components/cards/Company/CompanyBarTop'
-import ProductHeaderCard from '@/components/cards/Product/ProductHeaderCard'
-import ProductSearchResultCard from '@/components/cards/Product/ProductSearchResultCard'
-import ProductOffersCard from '@/components/cards/Product/ProductOffersCard'
-import ProductAddInfoCard from '@/components/cards/Product/ProductAddInfoCard'
-import ProductSliderCard from '@/components/cards/Product/ProductSliderCard'
-import ProductParcelCard from '@/components/cards/Product/ProductParcelCard'
-import ProductInfoCard from '@/components/cards/Product/ProductInfoCard'
-import TopNav from '@/components/nav/TopNav'
+<script lang="ts">
+import PersonalBar from '@/components/cards/PersonalBar.vue'
+import Notification from '@/components/cards/Notification.vue'
+import CompanyBarTop from '@/components/cards/Company/CompanyBarTop.vue'
+import ProductHeaderCard from '@/components/cards/Product/ProductHeaderCard.vue'
+import ProductSearchResultCard from '@/components/cards/Product/ProductSearchResultCard.vue'
+import ProductOffersCard from '@/components/cards/Product/ProductOffersCard.vue'
+import ProductAddInfoCard from '@/components/cards/Product/ProductAddInfoCard.vue'
+import ProductSliderCard from '@/components/cards/Product/ProductSliderCard.vue'
+import ProductParcelCard from '@/components/cards/Product/ProductParcelCard.vue'
+import ProductInfoCard from '@/components/cards/Product/ProductInfoCard.vue'
+import TopNav from '@/components/nav/TopNav.vue'
 
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { ref, onMounted, computed, inject } from 'vue'
+import { ref, onMounted, computed, defineComponent } from 'vue'
+import { key } from '@/store'
+import { KeysMutations } from '@/store/keys/mutations'
+import { CompanyActions } from '@/store/company/actions'
+import { ProductActions } from '@/store/product/actions'
+import { ProductMutations } from '@/store/product/mutations'
 
-export default {
+export default defineComponent({
 	components:{
 		PersonalBar,
 		Notification,
@@ -88,9 +93,12 @@ export default {
 	},
 	props: ['article'],
 	setup(props) {
-		const store = useStore();
+		const store = useStore(key);
 		const router = useRouter();
-		const loader = inject('loader');
+		const loader = computed<boolean>({
+			get: () => store.getters.getLoader,
+			set: (val: boolean) => store.commit(KeysMutations.SET_LOADER, val)
+		})
 
 		const activeCompanyUid = ref('');
 		const search_str = ref('')
@@ -108,7 +116,7 @@ export default {
 			if (!store.getters.isCompanysLoad || !store.getters.isManagerLoad)
 				{
 					Promise.all([
-						store.dispatch('GET_PARTNER'),
+						store.dispatch(CompanyActions.GET_COMPANYS),
 						])
 						//.catch(()=>{alert('error')})
 						.finally(() => { setTimeout(()=>{
@@ -116,9 +124,9 @@ export default {
 							},500); })
 				}
 				// if get parametr aticle is not emty when using product page else using search
-			if (props.article !=='' & props.article !== undefined) {
+			if (props.article !=='' && props.article !== undefined) {
 				loader.value = true;
-				store.dispatch('SEARCH_PRODUCT', props.article)
+				store.dispatch(ProductActions.SEARCH_PRODUCT, props.article)
 					.then(()=>{
 
 						isLoad.value=true;
@@ -134,7 +142,7 @@ export default {
 
 		const loadProduct = () => {
 			loader.value = true;
-			store.dispatch('GET_PRODUCT_BY_ID', activeProductId.value)
+			store.dispatch(ProductActions.GET_PRODUCT_BY_ID, activeProductId.value)
 				.then(()=>{
 					activeProductId.value=store.getters.getProduct.ID;
 					})
@@ -143,13 +151,13 @@ export default {
 
 		const clearSearch = () => {
 			isLoad.value = false;
-			store.commit('setSearchProductClear');
+			store.commit(ProductMutations.SET_SEARCH_PRODUCT_CLEAR);
 		};
 
 		const doSearch = () => {
 			clearSearch();
 			loader.value = true;
-			store.dispatch('SEARCH_PRODUCT', search_str.value)
+			store.dispatch(ProductActions.SEARCH_PRODUCT, search_str.value)
 				.then(()=>{
 					isLoad.value=true;
 					activeProductId.value=store.getters.getProduct.ID;
@@ -175,7 +183,7 @@ export default {
 			toOrder,
 		}
 	},
-}
+})
 </script>
 
 
