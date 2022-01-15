@@ -1,17 +1,17 @@
 import axios from '@/plugins/axios'
 import { ActionTree } from "vuex"
 import { RootState } from "@/store"
-import { OrderState, OrderStateAddPosition } from "./types"
+import { OrderState, OrderStatePosition } from "./types"
 import { OrderMutations } from './mutations'
 import { Order } from '@/models/Order'
 
 
 export enum OrderActions {
-	CREATE_ORDER = "CREATE_ORDER",
-	ADD_POSITION = "ADD_POSITION",
-	REMOVE_POSITION = "REMOVE_POSITION",
-	REMOVE_CHARACTERISTIC = "REMOVE_CHARACTERISTIC",
-	ADD_ORDER = "ADD_ORDER",
+	CREATE_ORDER = "CREATE_ORDER_ACTION",
+	ADD_POSITION = "ADD_POSITION_ACTION",
+	REMOVE_POSITION = "REMOVE_POSITION_ACTION",
+	REMOVE_CHARACTERISTIC = "REMOVE_CHARACTERISTIC_ACTION",
+	ADD_ORDER = "ADD_ORDER_ACTION",
 }
 
 export const actions: ActionTree<OrderState, RootState> =  {
@@ -19,11 +19,11 @@ export const actions: ActionTree<OrderState, RootState> =  {
 		commit(OrderMutations.CREATE_ORDER);
 	},
 
-	[OrderActions.ADD_POSITION] ({ commit, getters }, data: OrderStateAddPosition) {
+	[OrderActions.ADD_POSITION] ({ commit, getters }, data: OrderStatePosition) {
 		// If order is empty then create newOrder and 
 		if (!getters.isOrder) commit(OrderMutations.CREATE_ORDER);
-		commit(OrderMutations.ADD_POSITION, data.position);
-		commit(OrderMutations.ADD_POSITION_PRESAIL, data.position_presail);
+		commit(OrderMutations.ADD_POSITION, data);
+		commit(OrderMutations.CALC_PRESAIL);
 		commit(OrderMutations.CALC_ORDER);
 	},
 	[OrderActions.REMOVE_POSITION] ({ commit }, data) {

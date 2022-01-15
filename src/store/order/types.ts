@@ -24,27 +24,13 @@ export interface OrderStateOrder {
 export interface OrderStatePosition {
 	product:         Product;
 	characteristics: OrderStatePositionOffer[];
-	total:           number;
-	count:           number;
+	total?:           number;
+	count?:           number;
 }
-
+//ProductOffersOrderCard возвращает тип
 export interface OrderStatePositionOffer extends Offer {
 	count:           number;
 }
-
-export interface OrderStateAddPosition {
-	position: {
-		product: Product, 
-		characteristics: any
-	},
-	position_presail:{
-		product: Product, 
-		characteristics: any
-	}
-}
-
-
-
 
 
 export const DefaultOrder: OrderStateOrder = {

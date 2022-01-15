@@ -12,13 +12,13 @@
 				</div>
 				<div class="table-wrap">
 					<div 
-						:class="'table-row' + (offer.count > 0 ? ' active': '') +(offer.count > offer.residue ? ' presail': '')"
+						:class="'table-row' + (offer.count > 0 ? ' active': '') +(offer.count > offer.RESIDUE ? ' presail': '')"
 						v-for="offer in characteristicArray"
-						:key="offer.id"
+						:key="offer.ID"
 					>
-						<div class="table-elem"><span v-html="offer.characteristic"></span></div>
-						<div class="table-elem"><span v-html="offer.residue"></span></div>
-						<div class="table-elem"><span v-html="Number(offer.price).toLocaleString() + ' ₽'"></span></div>
+						<div class="table-elem"><span v-html="offer.CHARACTERISTIC"></span></div>
+						<div class="table-elem"><span v-html="offer.RESIDUE"></span></div>
+						<div class="table-elem"><span v-html="Number(offer.PRICE).toLocaleString() + ' ₽'"></span></div>
 						<div class="table-elem">
 							<AmountInput 
 								v-model="offer.count" 								
@@ -29,7 +29,7 @@
 								@onClick="onCheck(offer)"/>
 							
 						</div>
-						<div class="table-elem"><span>{{offer.ppdata}}</span></div>
+						<div class="table-elem"><span>{{offer.PPDATA}}</span></div>
 					</div>
 				</div>
 			</div>
@@ -51,80 +51,80 @@
 </template>
 
 
-<script>
+<script lang="ts">
 
-import AmountInput from '@/components/ui/AmountInput';
-import CheckButton from '@/components/ui/CheckButton';
+import AmountInput from '@/components/ui/AmountInput.vue'
+import CheckButton from '@/components/ui/CheckButton.vue'
+import { Offer } from '@/models/Product'
+import { OrderStatePositionOffer } from '@/store/order/types'
+//ProductOffersOrderCard используется для составления заказа
+export interface OrderStateAddPositionItem extends OrderStatePositionOffer{
+	check:           boolean;	
+}
 
-import { ref, computed, watch, onMounted } from 'vue';
 
-export default {
+import { ref, computed, watch, onMounted, defineComponent, PropType } from 'vue'
+export default defineComponent({
 	components: {
 		AmountInput,
 		CheckButton
 	},
 	props:{
 		data: {
-			type: Array
+			type: Array as PropType<Offer[]>,
+			required: true,
 		},
 		modelValue:{
-			
+			type: Array as PropType<OrderStatePositionOffer[]>
 		},
 	},
 	emits:['update:modelValue', 'onClick'],
 
 	setup(props, { emit }){
-		const characteristicArray = ref ([]);
+		const characteristicArray = ref<OrderStateAddPositionItem[]> ([]);
 
-		const count = computed(() => characteristicArray.value.filter(x => x.count <= x.residue & x.count > 0 ).length)
-		const countPresail = computed(() => characteristicArray.value.filter(x => x.count > x.residue).length)
+		const count = computed(() => characteristicArray.value.filter(x => x.count > 0 ).length)
+		const countPresail = computed(() => characteristicArray.value.filter(x => x.count > x.RESIDUE).length)
 
-		const onCheck = (offer) => {
+		const onCheck = (offer: OrderStateAddPositionItem) => {
 			if (offer.check) {
-				characteristicArray.value.find(x => x.id == offer.id).count=1;
+				let cnt = characteristicArray.value.find(x => x.ID == offer.ID)
+				if (cnt) cnt.count = 1;
 			} else {
-				characteristicArray.value.find(x => x.id == offer.id).count=0;
+				let cnt = characteristicArray.value.find(x => x.ID == offer.ID)
+				if (cnt) cnt.count = 0;
 			}
 		}
 
-		const onInput = (offer) => {
+		const onInput = (offer: OrderStateAddPositionItem) => {
 			if (offer.count > 0) {
-				characteristicArray.value.find(x => x.id == offer.id).check=true;
+				let chk = characteristicArray.value.find(x => x.ID == offer.ID)
+				if (chk) chk.check = true
+				
 			} else {
-				characteristicArray.value.find(x => x.id == offer.id).check=false;
+				let chk = characteristicArray.value.find(x => x.ID == offer.ID)
+				if (chk) chk.check = false
 			}
 			
 		}
 
 		const addToOrder = () => {
-			if (count.value > 0 || countPresail.value > 0){
-				let charArrPos = [];
-				let charArrPosPresail = [];
+			if (count.value > 0){
+				let charArrPos = <OrderStatePositionOffer[]>[]
 				characteristicArray.value.forEach(x =>{ 
-					if (x.count > 0 & x.count <= x.residue ){
-						charArrPos.push({
-									id: x.id,
-									characteristic: x.characteristic,
+					if ( x.count > 0 ){
+						charArrPos.push(<OrderStatePositionOffer>{
+									ID: x.ID,
+									CHARACTERISTIC: x.CHARACTERISTIC,
 									count: x.count,
-									price: x.price,
-									residue: x.residue,
-									guid: x.guid,
-									orgguid: x.orgguid,
-								})
-					} 
-					if (x.count > x.residue) {
-						charArrPosPresail.push({
-									id: x.id,
-									characteristic: x.characteristic,
-									count: x.count,
-									price: x.price,
-									residue: x.residue,
-									guid: x.guid,
-									orgguid: x.orgguid,
+									PRICE: x.PRICE,
+									RESIDUE: x.RESIDUE,
+									GUID: x.GUID,
+									ORGGUID: x.ORGGUID,
 								})
 					}
 				});
-				emit('update:modelValue', {position: charArrPos, position_presail: charArrPosPresail});
+				emit('update:modelValue', charArrPos);
 				emit('onClick');
 				characteristicArray.value.forEach( c => {
 					c.count = 0;
@@ -135,14 +135,14 @@ export default {
 
 		const init = () => {
 			characteristicArray.value = props.data.map(item => {
-				return {
-					id: item.ID,
-					characteristic: item.CHARACTERISTIC,
-					residue: item.RESIDUE,
-					price: item.PRICE,
-					ppdata: item.PPDATA,
-					guid: item.GUID,
-					orgguid: item.ORGGUID,
+				return <OrderStateAddPositionItem>{
+					ID: item.ID,
+					CHARACTERISTIC: item.CHARACTERISTIC,
+					RESIDUE: item.RESIDUE,
+					PRICE: item.PRICE,
+					PPDATA: item.PPDATA,
+					GUID: item.GUID,
+					ORGGUID: item.ORGGUID,
 					count: 0,
 					check: false,
 				}
@@ -166,5 +166,5 @@ export default {
 			characteristicArray,
 		}
 	}
-}
+})
 </script>

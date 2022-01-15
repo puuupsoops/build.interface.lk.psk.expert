@@ -6,10 +6,10 @@ import { DefaultNewOrder, DefaultOrder, OrderState, OrderStatePosition, OrderSta
 export enum OrderMutations {
 	CREATE_ORDER = "CREATE_ORDER",
 	ADD_POSITION = "ADD_POSITION",
-	ADD_POSITION_PRESAIL = "ADD_POSITION_PRESAIL",
 	REMOVE_POSITION = "REMOVE_POSITION",
 	REMOVE_CHARACTERISTIC = "REMOVE_CHARACTERISTIC",
 	CALC_ORDER = "CALC_ORDER",
+	CALC_PRESAIL = "CALC_PRESAIL",
 	ADD_ORDER = "ADD_ORDER",
 	CLEAN_ADD_ORDER = "CLEAN_ADD_ORDER",
 	SET_ORDER_ERROR = "SET_ORDER_ERROR",
@@ -24,42 +24,52 @@ export const mutations: MutationTree<OrderState> = {
 		state.error = null;
 	},
 	[OrderMutations.ADD_POSITION] (state, data: OrderStatePosition): void{
+
 		if (data.characteristics.length > 0)
 		{
 			const exist = state.order.position.find(x => x.product.ID == data.product.ID);
-			if (exist) {
-				const add_characteristics = data.characteristics.filter(x => {
-					const e = exist?.characteristics.find(m => m.ID == x.ID)
-					if (e){
-						e.count = Number(e.count) + Number(x.count)
-						if (Number(e.count) > Number(e.RESIDUE)) e.count=e.RESIDUE
-					} else 
-					return true
-				});
-				exist.characteristics = exist.characteristics.concat(add_characteristics);
+			if (exist) { // если уже добавлено
+				data.characteristics.forEach(char => {
+					const exist_char = exist.characteristics.find(x => x.ID == char.ID);
+					if (exist_char) {  // усли у тавара уже добавлена характеристика, то проссумировать количество
+						exist_char.count = exist_char.count + char.count
+					} else { // добавить новую характиристику 
+						exist.characteristics.push( Object.assign({}, char));
+						
+					}
+				})
 			} else
-				state.order.position.push(data);
+				state.order.position.push(data)
 		}
-
 	},
-	[OrderMutations.ADD_POSITION_PRESAIL] (state, data: OrderStatePosition): void{
-		if (data.characteristics.length > 0)
-		{
-			const exist = state.order.position_presail.find(x => x.product.ID == data.product.ID);
-			if (exist) {
-				//console.log(exist)
-				const add_characteristics = data.characteristics.filter(x => {
-					const e = exist?.characteristics.find(m => m.ID == x.ID)
-					if (e){
-						e.count = Number(e.count) + Number(x.count)
-					} else 
-					return true
-				});
-				exist.characteristics = exist.characteristics.concat(add_characteristics);
-			} else
-				state.order.position_presail.push(data);
-		}
-
+	[OrderMutations.CALC_PRESAIL] (state): void { // Если в массиве с позициями количество больше чем остаток - переместить разницу в массив position_presail
+		state.order.position.forEach(pos => {
+			pos.characteristics.forEach(char => {
+				if (char.count > char.RESIDUE) {
+					const presail_count = char.count - char.RESIDUE
+					char.count = char.RESIDUE
+					const exist = state.order.position_presail.find(x => x.product.ID == pos.product.ID);
+					if (exist) { // если уже добавлен продукт
+						const exist_char = exist.characteristics.find(x => x.ID == char.ID);
+						if (exist_char) {  // усли у тавара уже добавлена характеристика, то проссумировать количество
+							exist_char.count = exist_char.count + presail_count
+						} else { // добавить новую характиристику 
+							exist.characteristics.push( Object.assign({}, char));
+							const e = exist.characteristics.find(x=> x.ID == char.ID)
+							if (e) e.count = presail_count
+						}
+					} else { //добавить новый продукт
+						const new_pos = <OrderStatePosition>{
+							product: pos.product,
+							characteristics: []
+						}
+						new_pos.characteristics.push( Object.assign({}, char))
+						new_pos.characteristics[0].count = presail_count
+						state.order.position_presail.push(new_pos)
+					}
+				}
+			})
+		})
 	},
 	[OrderMutations.REMOVE_POSITION] (state, data): void{
 		if (data.position)
@@ -67,7 +77,7 @@ export const mutations: MutationTree<OrderState> = {
 		if (data.position_presail)
 			state.order.position_presail=state.order.position_presail.filter(x=> Number(x.product.ID) !== Number(data.id));
 	},
-	[OrderMutations.REMOVE_CHARACTERISTIC] (state, data){
+	[OrderMutations.REMOVE_CHARACTERISTIC] (state, data): void{
 		if (data.position)
 		{
 			state.order.position.forEach(pos => {
@@ -83,7 +93,7 @@ export const mutations: MutationTree<OrderState> = {
 			state.order.position_presail = state.order.position_presail.filter(x=> x.characteristics.length > 0)
 		}
 	},
-	[OrderMutations.CALC_ORDER] (state){
+	[OrderMutations.CALC_ORDER] (state): void{
 		let total = 0;
 		let total_count = 0;
 		let total_valume = 0;
@@ -125,22 +135,22 @@ export const mutations: MutationTree<OrderState> = {
 		
 		if (total == 0 && state.order.position_presail.length == 0 ) state.order.id = 0;
 	},
-	[OrderMutations.ADD_ORDER] (state, data: NewOrder){
+	[OrderMutations.ADD_ORDER] (state, data: NewOrder): void{
 		state.new_order = data;
 	},
 	[OrderMutations.CLEAN_ADD_ORDER] (state){
 		state.new_order = DefaultNewOrder;
 	},
-	[OrderMutations.SET_ORDER_ERROR] (state, data: string|null){
+	[OrderMutations.SET_ORDER_ERROR] (state, data: string|null): void{
 		state.error = data
 	}, 
-	[OrderMutations.CLEAN_ORDER] (state){
+	[OrderMutations.CLEAN_ORDER] (state): void{
 		state.error = null;
 	},
-	[OrderMutations.CLEAN_ORDER] (state){
+	[OrderMutations.CLEAN_ORDER] (state): void{
 		state.order = DefaultOrder
 	},
-	[OrderMutations.ADD_ORDER_PARTNER_ID] (state, data: string) {
+	[OrderMutations.ADD_ORDER_PARTNER_ID] (state, data: string): void{
 		state.partner_id = data;
 	}
 

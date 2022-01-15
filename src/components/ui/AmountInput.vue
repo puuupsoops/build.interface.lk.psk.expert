@@ -5,7 +5,7 @@
 		type="text"
 		:disabled="disabled"
 		:value="modelValue"
-		@input="$emit('update:modelValue', $event.target.value)"
+		@input="$emit('update:modelValue', Number($event.target.value))"
 		
 		>
 	<div
@@ -28,11 +28,12 @@
 </div>
 </template>
 
-<script>
-import { watch } from 'vue';
-export default {
+<script lang="ts">
+import { defineComponent, watch } from 'vue';
+export default defineComponent({
 	props:{
 		modelValue: {
+			type: Number,
 			required: true
 		},
 		step: {
@@ -57,17 +58,19 @@ export default {
 	setup(props, { emit }){
 		
 		watch( ()=>props.modelValue, (new_val, old_val) => {
-			emit('update:modelValue', String(props.modelValue).replace(/[^\d;]/g, ''))
-			if (props.modelValue == '') 
+			
+			if (isNaN(new_val)) emit('update:modelValue', old_val)
+			
+			if (String(props.modelValue) == '') 
 				emit('update:modelValue', 0)
-			if (props.max !== undefined & Number(new_val) > props.max )
+			if (props.max !== undefined && Number(new_val) > props.max )
 				emit('update:modelValue', old_val)
-			if (props.min !== undefined & Number(new_val) < props.min )
+			if (props.min !== undefined && Number(new_val) < props.min )
 				emit('update:modelValue', old_val)
 			emit('onInput')
 		});
 
-		const changeStep = (v) => {
+		const changeStep = (v: number) => {
 			if (!props.disabled )
 				emit('update:modelValue', Number(props.modelValue) + v)
 		}
@@ -77,7 +80,7 @@ export default {
 		}
 
 	}
-}
+})
 </script>
 
 <style lang="sass" scoped>

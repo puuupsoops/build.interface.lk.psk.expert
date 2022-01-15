@@ -35,7 +35,7 @@
 		<div class="content-wrap-elem">
 			<ProductOffersOrderCard 
 				:data="productOffers"
-				v-model="characteristicArray"
+				v-model="productItems"
 				@onClick="addToOrder()"
 			/>
 		</div>
@@ -101,7 +101,7 @@ import { OrderActions } from '@/store/order/actions'
 import { OrderMutations } from '@/store/order/mutations'
 import { ProductActions } from '@/store/product/actions'
 import { CompanyActions } from '@/store/company/actions'
-import { OrderStateAddPosition } from '@/store/order/types'
+import { OrderStatePosition, OrderStatePositionOffer } from '@/store/order/types'
 
 
 export default defineComponent({
@@ -122,44 +122,38 @@ export default defineComponent({
 	},
 	props: ['article'],
 	setup(props) {
-		const store = useStore(key);
-		const router = useRouter();
+		const store = useStore(key)
+		const router = useRouter()
 		const loader = computed<boolean>({
 			get: () => store.getters.getLoader,
 			set: (val: boolean) => store.commit(KeysMutations.SET_LOADER, val)
 		})
 		
-		const activeCompanyUid = ref('');
-		const activeProductId = ref('');
-		const error = ref(false);
-		const errorMsg = ref('');
-		const characteristicArray = ref({position: [], position_presail:[]});
+		const activeCompanyUid = ref('')
+		const activeProductId = ref('')
+		const error = ref(false)
+		const errorMsg = ref('')
+		const productItems = ref<OrderStatePositionOffer[]>([]);
 		const showModal = ref(false)
 
 		const addToOrder = () => {
-			let new_pos = { 
-					position: {
-						product: store.getters.getProduct, 
-						characteristics: characteristicArray.value.position
-					},
-					position_presail:{
-						product: store.getters.getProduct, 
-						characteristics: characteristicArray.value.position_presail
-					}
+			let new_pos = <OrderStatePosition>{ 
+					product: store.getters.getProduct, 
+					characteristics: productItems.value,
 				}
-			store.dispatch(OrderActions.ADD_POSITION, <OrderStateAddPosition>new_pos);
+			store.dispatch(OrderActions.ADD_POSITION, <OrderStatePosition>new_pos)
 		}
 		const addOrder = () => {
 			if (activeCompanyUid.value == '') {
 				error.value = true;
-				setTimeout(() => {error.value=false;}, 5000);
-				errorMsg.value = 'Для оформления заказа выберите контрагента';
+				setTimeout(() => {error.value=false;}, 5000)
+				errorMsg.value = 'Для оформления заказа выберите контрагента'
 			} else {
 				showModal.value=true;
-				store.commit(OrderMutations.ADD_ORDER_PARTNER_ID, activeCompanyUid.value);
+				store.commit(OrderMutations.ADD_ORDER_PARTNER_ID, activeCompanyUid.value)
 				setTimeout(() => {
-					store.dispatch(OrderActions.ADD_ORDER, store.getters.getOrderToAdd);
-				}, 3000);
+					store.dispatch(OrderActions.ADD_ORDER, store.getters.getOrderToAdd)
+				}, 3000)
 			}
 
 		}
@@ -177,7 +171,7 @@ export default defineComponent({
 				store.dispatch(ProductActions.SEARCH_PRODUCT, props.article)
 					.then(()=>{
 						if (store.getters.getProduct.ID)
-							activeProductId.value=store.getters.getProduct.ID;
+							activeProductId.value=store.getters.getProduct.ID
 						else
 							router.push({name: 'Order'});
 						})
@@ -186,10 +180,10 @@ export default defineComponent({
 		});
 
 		const loadProduct = () => {
-			loader.value = true;
+			loader.value = true
 			store.dispatch(ProductActions.GET_PRODUCT_BY_ID, activeProductId.value)
 				.then(()=>{
-					activeProductId.value=store.getters.getProduct.ID;
+					activeProductId.value=store.getters.getProduct.ID
 					})
 				.finally(() => {loader.value=false})
 		};
@@ -210,7 +204,7 @@ export default defineComponent({
 			addToOrder,
 			addOrder,
 			showModal,
-			characteristicArray,
+			productItems,
 			isOrder: computed(() => store.getters.isOrder),
 			order: computed(() => store.getters.getOrder),
 		}

@@ -29,7 +29,7 @@
 					</div>
 					<div 
 						:class="open.indexOf(key) !== -1 ? 'order-list-item active' : 'order-list-item'"
-						v-for="(item, key) in data.position"
+						v-for="(item, key) in <OrderStateOrder>data.position"
 						:key="key"
 					>
 						<div 
@@ -59,17 +59,17 @@
 								class="order-list-row"
 							>
 								<div class="order-list-elem"> </div>
-								<div class="order-list-elem">{{ characteristic.characteristic }}</div>
-								<div class="order-list-elem">{{ Number(characteristic.price).toLocaleString() }} ₽</div>
+								<div class="order-list-elem">{{ characteristic.CHARACTERISTIC }}</div>
+								<div class="order-list-elem">{{ Number(characteristic.PRICE).toLocaleString() }} ₽</div>
 								<div class="order-list-elem"> 
 									<AmountInput 
 										v-model="characteristic.count"
 										:min = "1"
-										:max = "characteristic.residue"
+										:max = "characteristic.RESIDUE"
 										@onInput="updOrder()"
 									/>
 								</div>
-								<div class="order-list-elem">{{ Number(characteristic.price * characteristic.count).toLocaleString() }} ₽</div>
+								<div class="order-list-elem">{{ Number(characteristic.PRICE * characteristic.count).toLocaleString() }} ₽</div>
 								
 								<div class="order-list-elem-delete">
 									<DeleteButton  @onClick="removeCharacteristic({position: true, id: characteristic.id})" />
@@ -128,16 +128,16 @@
 								class="order-list-row"
 							>
 								<div class="order-list-elem"> </div>
-								<div class="order-list-elem">{{ characteristic.characteristic }}</div>
-								<div class="order-list-elem">{{ Number(characteristic.price).toLocaleString() }} ₽</div>
+								<div class="order-list-elem">{{ characteristic.CHARACTERISTIC }}</div>
+								<div class="order-list-elem">{{ Number(characteristic.PRICE).toLocaleString() }} ₽</div>
 								<div class="order-list-elem"> 
 									<AmountInput 
 										v-model="characteristic.count"
-										:min = "characteristic.residue+1"
+										:min = "characteristic.RESIDUE+1"
 										@onInput="updOrder()"
 									/>
 								</div>
-								<div class="order-list-elem">{{ Number(characteristic.price * characteristic.count).toLocaleString() }} ₽</div>
+								<div class="order-list-elem">{{ Number(characteristic.PRICE * characteristic.count).toLocaleString() }} ₽</div>
 								
 								<div class="order-list-elem-delete">
 									<DeleteButton  @onClick="removeCharacteristic({position_presail: true, id: characteristic.id})" />
@@ -214,21 +214,22 @@
 		</div>
 </template>
 
-<script>
-import { ref, computed } from 'vue'
+<script lang="ts">
+import { ref, computed, defineComponent, PropType } from 'vue'
 import { useStore } from 'vuex'
 
 import AmountInput from '@/components/ui/AmountInput.vue'
 import DeleteButton from '@/components/ui/DeleteButton.vue'
 import SelectInput from '@/components/ui/SelectInput.vue'
-import { key } from '@/store';
+import { key } from '@/store'
 import { OrderMutations } from '@/store/order/mutations'
 import { OrderActions } from '@/store/order/actions'
+import { OrderStateOrder } from '@/store/order/types'
 
-export default {
+export default defineComponent({
 	props: {
 		data: {
-			type: Object,
+			type: Object as PropType<OrderStateOrder>,
 		},
 		companys:{
 			type: Array,
@@ -257,11 +258,11 @@ export default {
 		let updOrder = () => {
 			store.commit(OrderMutations.CALC_ORDER)
 		};
-		let removePosition = (data) => {
-			store.dispatch(OrderActions.REMOVE_POSITION, data)
+		let removePosition = (ID: number) => {
+			store.dispatch(OrderActions.REMOVE_POSITION, ID)
 		};
-		let removeCharacteristic = (data) => {
-			store.dispatch(OrderActions.REMOVE_CHARACTERISTIC, data)
+		let removeCharacteristic = (ID: number) => {
+			store.dispatch(OrderActions.REMOVE_CHARACTERISTIC, ID)
 		};
 		let onClick = () => {
 			if (props.modelValue == '') {
@@ -281,6 +282,6 @@ export default {
 			error,
 		}
 	},
-}
+})
 </script>
 
