@@ -3,7 +3,7 @@ import { RootState } from "@/store"
 import { ProductState } from "./types"
 
 export const getters: GetterTree<ProductState, RootState> = {
-	isProduct: state => state.product.ID !== '',
+	isProduct: state => state.product.ID !== 0,
 	getProductSearchResult: state => state.search_product_result,
 	getProductOffers: state => state.product_offers.length != 0 ? state.product_offers : 
 											[{

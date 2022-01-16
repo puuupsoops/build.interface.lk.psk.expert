@@ -9,7 +9,7 @@ export interface ProductState {
 	product_protect: Protect[]
 }
 export const DEFAULT_PRODUCT = {
-	ID:              '',
+	ID:              0,
 	UID:             '',
 	NAME:            '',
 	ARTICLE:         '',

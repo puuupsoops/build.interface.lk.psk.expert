@@ -12,7 +12,7 @@
 				</div>
 				<div class="table-wrap">
 					<div 
-						:class="'table-row' + (offer.count > 0 ? ' active': '') +(offer.count > offer.RESIDUE ? ' presail': '')"
+						:class="'table-row' + (offer.count > 0 ? ' active': '') +(offer.count > offer.RESIDUE && offer.count != 0 ? ' presail': '')"
 						v-for="offer in characteristicArray"
 						:key="offer.ID"
 					>
@@ -84,7 +84,7 @@ export default defineComponent({
 		const characteristicArray = ref<OrderStateAddPositionItem[]> ([]);
 
 		const count = computed(() => characteristicArray.value.filter(x => x.count > 0 ).length)
-		const countPresail = computed(() => characteristicArray.value.filter(x => x.count > x.RESIDUE).length)
+		const countPresail = computed(() => characteristicArray.value.filter(x => x.count > x.RESIDUE && x.count != 0).length)
 
 		const onCheck = (offer: OrderStateAddPositionItem) => {
 			if (offer.check) {

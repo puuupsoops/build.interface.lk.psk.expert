@@ -1,4 +1,12 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-01-16 19:26+0700
+
+    #45
+    
+    1. Перенес кнопки со страницы заказа на модальное окно
+    2. Исправил баг с удалением позиций из заказа 
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-01-15 10:07+0700
 
     #45

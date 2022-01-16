@@ -60,7 +60,7 @@ export default defineComponent({
 		watch( ()=>props.modelValue, (new_val, old_val) => {
 			
 			if (isNaN(new_val)) emit('update:modelValue', old_val)
-			
+
 			if (String(props.modelValue) == '') 
 				emit('update:modelValue', 0)
 			if (props.max !== undefined && Number(new_val) > props.max )

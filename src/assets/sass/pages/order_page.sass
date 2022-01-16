@@ -343,21 +343,23 @@
 			&-wrap
 				+flex
 				margin: 0 0 0 auto
+				padding-right: 20px
+				padding-top: 20px
+				padding-bottom: 10px
 
 			&-item
 				+flex
 				margin:
 					left: 10px
 				padding: 5px
-				width: 60px
-				height: 50px
-				background-color: #1F2227
+				width: 40px
+				height: 40px
+				background-color: #292c32
 				background-size: auto
 				background-position: center center
 				background-repeat: no-repeat
 				border-radius: 6px
 				cursor: pointer
-				+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.2))
 				+prefix(transition, $default-transition)
 
 				&-img
@@ -369,7 +371,7 @@
 
 				&:hover
 					background-color: #292C32
-
+					+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.2))
 					.order-list-buttons-item-img
 						path:not(.stroke),
 						rect:not(.notfill)
@@ -524,7 +526,7 @@
 		width: auto
 		margin: 10px
 		min-height: 200px
-		max-height: 00px
+		max-height: 300px
 		height: 100%
 			
 	&-header
@@ -556,10 +558,7 @@
 		font-size: 14pt
 		width: 100%
 		text-align: center
-		padding: 
-			top: 20px
-			left: 20px
-			right: 20px
+		padding: 20px
 		overflow: auto
 		height: 100%
 		flex: 1 1 auto

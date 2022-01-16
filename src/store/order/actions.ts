@@ -10,7 +10,9 @@ export enum OrderActions {
 	CREATE_ORDER = "CREATE_ORDER_ACTION",
 	ADD_POSITION = "ADD_POSITION_ACTION",
 	REMOVE_POSITION = "REMOVE_POSITION_ACTION",
+	REMOVE_POSITION_PRESAIL = "REMOVE_POSITION_PRESAIL_ACTION",
 	REMOVE_CHARACTERISTIC = "REMOVE_CHARACTERISTIC_ACTION",
+	REMOVE_CHARACTERISTIC_PRESAIL = "REMOVE_CHARACTERISTIC_PRESAIL_ACTION",
 	ADD_ORDER = "ADD_ORDER_ACTION",
 }
 
@@ -26,12 +28,20 @@ export const actions: ActionTree<OrderState, RootState> =  {
 		commit(OrderMutations.CALC_PRESAIL);
 		commit(OrderMutations.CALC_ORDER);
 	},
-	[OrderActions.REMOVE_POSITION] ({ commit }, data) {
+	[OrderActions.REMOVE_POSITION] ({ commit }, data: number) {
 		commit(OrderMutations.REMOVE_POSITION, data);
 		commit(OrderMutations.CALC_ORDER);
 	},
+	[OrderActions.REMOVE_POSITION_PRESAIL] ({ commit }, data: number) {
+		commit(OrderMutations.REMOVE_POSITION_PRESAIL, data);
+		commit(OrderMutations.CALC_ORDER);
+	},
 
-	[OrderActions.REMOVE_CHARACTERISTIC] ({ commit }, data) {
+	[OrderActions.REMOVE_CHARACTERISTIC_PRESAIL] ({ commit }, data: OrderStatePosition) {
+		commit(OrderMutations.REMOVE_CHARACTERISTIC_PRESAIL, data);
+		commit(OrderMutations.CALC_ORDER);
+	},
+	[OrderActions.REMOVE_CHARACTERISTIC] ({ commit }, data: OrderStatePosition) {
 		commit(OrderMutations.REMOVE_CHARACTERISTIC, data);
 		commit(OrderMutations.CALC_ORDER);
 	},

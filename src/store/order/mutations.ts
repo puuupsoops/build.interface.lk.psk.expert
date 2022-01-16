@@ -7,7 +7,9 @@ export enum OrderMutations {
 	CREATE_ORDER = "CREATE_ORDER",
 	ADD_POSITION = "ADD_POSITION",
 	REMOVE_POSITION = "REMOVE_POSITION",
+	REMOVE_POSITION_PRESAIL = "REMOVE_POSITION_PRESAIL",
 	REMOVE_CHARACTERISTIC = "REMOVE_CHARACTERISTIC",
+	REMOVE_CHARACTERISTIC_PRESAIL = "REMOVE_CHARACTERISTIC_PRESAIL",
 	CALC_ORDER = "CALC_ORDER",
 	CALC_PRESAIL = "CALC_PRESAIL",
 	ADD_ORDER = "ADD_ORDER",
@@ -71,29 +73,27 @@ export const mutations: MutationTree<OrderState> = {
 			})
 		})
 	},
-	[OrderMutations.REMOVE_POSITION] (state, data): void{
-		if (data.position)
-			state.order.position=state.order.position.filter(x=> Number(x.product.ID) !== Number(data.id));
-		if (data.position_presail)
-			state.order.position_presail=state.order.position_presail.filter(x=> Number(x.product.ID) !== Number(data.id));
+	[OrderMutations.REMOVE_POSITION] (state, ID: number): void{
+		state.order.position=state.order.position.filter(x=> x.product.ID !== ID);
 	},
-	[OrderMutations.REMOVE_CHARACTERISTIC] (state, data): void{
-		if (data.position)
-		{
-			state.order.position.forEach(pos => {
-				pos.characteristics = pos.characteristics.filter(x=> Number(x.ID) !== Number(data.id))
-			});
-			state.order.position = state.order.position.filter(x=> x.characteristics.length > 0)
-		}
-		if (data.position_presail)
-		{
-			state.order.position_presail.forEach(pos => {
-				pos.characteristics = pos.characteristics.filter(x=> Number(x.ID) !== Number(data.id))
-			});
-			state.order.position_presail = state.order.position_presail.filter(x=> x.characteristics.length > 0)
-		}
+	[OrderMutations.REMOVE_POSITION_PRESAIL] (state, ID: number): void{
+		state.order.position_presail=state.order.position_presail.filter(x=> x.product.ID !== ID);
+	},
+	[OrderMutations.REMOVE_CHARACTERISTIC] (state, data: OrderStatePosition): void{
+		state.order.position.forEach(pos => {
+			if (data.product.ID == pos.product.ID)
+				pos.characteristics = pos.characteristics.filter(x=> x.ID !== data.characteristics[0].ID)
+		});
+	},
+	[OrderMutations.REMOVE_CHARACTERISTIC_PRESAIL] (state, data: OrderStatePosition): void{
+		state.order.position_presail.forEach(pos => {
+			if (data.product.ID == pos.product.ID)
+				pos.characteristics = pos.characteristics.filter(x=> x.ID !== data.characteristics[0].ID)
+		});
 	},
 	[OrderMutations.CALC_ORDER] (state): void{
+		state.order.position = state.order.position.filter(x=> x.characteristics.length > 0)
+		state.order.position_presail = state.order.position_presail.filter(x=> x.characteristics.length > 0)
 		let total = 0;
 		let total_count = 0;
 		let total_valume = 0;
@@ -139,16 +139,18 @@ export const mutations: MutationTree<OrderState> = {
 		state.new_order = data;
 	},
 	[OrderMutations.CLEAN_ADD_ORDER] (state){
-		state.new_order = DefaultNewOrder;
+		state.new_order = Object.assign({}, DefaultNewOrder);
 	},
 	[OrderMutations.SET_ORDER_ERROR] (state, data: string|null): void{
 		state.error = data
 	}, 
-	[OrderMutations.CLEAN_ORDER] (state): void{
+	[OrderMutations.CLEAN_ORDER_ERROR] (state): void{
 		state.error = null;
 	},
 	[OrderMutations.CLEAN_ORDER] (state): void{
-		state.order = DefaultOrder
+		state.order = Object.assign({}, DefaultOrder)
+		state.order.position = []
+		state.order.position_presail = []
 	},
 	[OrderMutations.ADD_ORDER_PARTNER_ID] (state, data: string): void{
 		state.partner_id = data;

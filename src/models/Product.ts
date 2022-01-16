@@ -33,7 +33,7 @@ export interface Storage {
 }
 
 export interface Product {
-    ID:              string;
+    ID:              number;
     UID:             string;
     NAME:            string;
     ARTICLE:         string;
