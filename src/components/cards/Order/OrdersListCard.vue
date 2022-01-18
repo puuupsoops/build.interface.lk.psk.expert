@@ -1,7 +1,6 @@
 <template>
 <div class="orders-list-wrap">
 	<div class="orders-list ">
-{{period}}
 			<div class="orders-list-row orders-list-heading">
 				<div class="orders-list-elem">№</div>
 				<div class="orders-list-elem">Наименование</div>
