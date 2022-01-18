@@ -14,7 +14,7 @@
 				v-for="i in data"
 				:key="i.id"
 				:class="i.id == modelValue ? 'select-input-item active' : 'select-input-item'"
-				@click="$emit('update:modelValue', i.id); $emit('onInput')"
+				@click="$emit('update:modelValue', i.id); $emit('onInput');input_active = !input_active"
 			>
 				{{i.name}}
 			</p>
@@ -24,21 +24,24 @@
 	
 </template>
 
-<script>
-import { ref, computed } from 'vue'
+<script lang="ts">
+import { ref, computed, defineComponent, PropType } from 'vue'
 import { onClickOutside } from '@vueuse/core'
+import { SelectInputData } from '@/models/Components'
 
-export default {
+
+export default defineComponent({
 	props: {
 		data: {
-			type: Array
+			type: Array as PropType<SelectInputData[]>,
+            require: true
 		},
 		error: {
 			type: Boolean,
 			default: false,
 		},
 		modelValue: {
-			type: String,
+			type: [String, Number],
 			default: '',
 		}
 	},
@@ -47,7 +50,7 @@ export default {
 		const input_active = ref(false)
 		const target = ref(null)
 		const active_name = computed(() => {
-			let obj = props.data.find(x => x.id == props.modelValue);
+			let obj = props.data?.find(x => x.id == props.modelValue);
 			if (obj)
 				return obj.name
 			else
@@ -71,5 +74,5 @@ export default {
 			target
 		}
 	}
-}
+})
 </script>

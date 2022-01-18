@@ -59,6 +59,11 @@
 			</div>
 			<div class="order-list-buttons-wrap" v-if="isAddNewOrder">
 				<div class="order-list-buttons-item later">
+					<router-link
+						tag="a"
+						to="/shipments/request"
+						title="Заявка на транспорт"
+					>
 					<svg class="order-list-buttons-item-img" width="32" height="21" viewBox="0 0 32 21" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<rect class="fill" x="2.06573" y="4.13147" width="10.3286" height="2.06571" rx="1.03286" fill="#A5A7A9"></rect>
 							<rect class="fill" y="7.74646" width="10.3286" height="2.06571" rx="1.03286" fill="#A5A7A9"></rect>
@@ -76,6 +81,7 @@
 							<circle class="stroke" cx="10.6824" cy="17.4406" r="2.21652" stroke="#A5A7A9" stroke-width="2"></circle>
 							<circle class="stroke" cx="23.8737" cy="17.4406" r="2.21652" stroke="#A5A7A9" stroke-width="2"></circle>
 						</svg>
+						</router-link>
 				</div>
 				<div class="order-list-buttons-item mail">
 					<svg class="order-list-buttons-item-img" width="41" height="20" viewBox="0 0 41 20" fill="none" xmlns="http://www.w3.org/2000/svg">

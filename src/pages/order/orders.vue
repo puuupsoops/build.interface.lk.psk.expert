@@ -15,8 +15,8 @@
 			<div class="orders-heading-item">
 				<div class="orders-heading-text">Контрагент:</div>
 				<SelectInput 
-					:data="companyBarTopData"
-					v-model="activeCompanyUid"
+					:data="filterCompanyData"
+					v-model="filterCompanyUid"
 				/>
 			</div>
 			<div class="orders-heading-item">
@@ -28,7 +28,8 @@
 			<div class="orders-heading-item" data-select2-id="147">
 				<div class="orders-heading-text">Период:</div>
 					<SelectInput 
-						:data="period"
+						:data="filterPeriodData"
+                        v-model="filterPeriod"
 					/>
 
 			</div>
@@ -59,6 +60,9 @@
 	/>
 	<OrdersListCard
 		:data="ordersList"
+        :loading="loading"
+        :contrAgent="filterCompanyUid"
+        :period="filterPeriodData[filterPeriod].name"
 	/>
 		
 </div>
@@ -77,7 +81,8 @@ import { useStore } from 'vuex'
 import { ref, computed, onMounted, defineComponent } from 'vue'
 import { key } from '@/store'
 import { CompanyActions } from '@/store/company/actions'
-import { OrdersMutations } from '@/store/orders/mutations'
+//import { OrdersMutations } from '@/store/orders/mutations'
+import { OrdersActions } from '@/store/orders/actions'
 
 export default defineComponent({
 	components:{
@@ -91,14 +96,14 @@ export default defineComponent({
 	},
 	setup(){
 		const store = useStore(key);
-		const activeCompanyUid = ref('');
-		const search = ref({left: 1, right: 0});
+		const activeCompanyUid = ref('')
+        const filterCompanyUid =  ref('')
+        const filterPeriod = ref(0)
+        const loading = ref(true)
+		const search = ref({left: 1, right: 0})
 		const dogovor = ref([
-			{id: 1, name:'По умолчанию № 1'},
-			{id: 2, name:'По умолчанию № 2'},
-			{id: 3, name:'По умолчанию № 3'},
-			{id: 4, name:'По умолчанию № 4'},
-		]);
+			{id: 0, name:'Все'},
+		])
 		const header = [
 			{id: 1, name: 'Наименование'},
 			{id: 2, name: 'Контрагент'},
@@ -106,21 +111,11 @@ export default defineComponent({
 			{id: 4, name: 'Дата создания'},
 			{id: 5, name: 'Статус'},
 		];
-		const period = computed(() => {
-			let res = [];
-			let d = new Date();
-
-			for (var i = 0; i < 15; i++){
-				let s = new Date(d.getFullYear(), d.getMonth()-i, 1).toLocaleString().substr(0,10) +' - ';
-				s = s + (new Date(d.getFullYear(), d.getMonth()-i+1, 0)).toLocaleString().substr(0,10);
-				res.push({id: i+1, name: s})
-			}
-			return res;
-		});
-
 	
 		onMounted(() => {
-			store.commit(OrdersMutations.SET_ORDERS);
+			//store.commit(OrdersMutations.SET_ORDERS);
+
+            store.dispatch(OrdersActions.GET_ORDERS).finally(()=>{loading.value = false})
 			if (!store.getters.isCompanysLoad)
 			{
 				store.dispatch(CompanyActions.GET_COMPANYS)
@@ -132,13 +127,18 @@ export default defineComponent({
 		});
 
 		return{
-			companyBarTopData: computed(() => store.getters.getCompanysList),
-			ordersList: computed(() => store.getters.getOrders),
+            loading,
+            companyBarTopData: computed(() => store.getters.getCompanysList),
+			filterCompanyData: computed(() => store.getters.getCompanyFromOrders),
+            filterCompanyUid,
+            filterPeriodData: computed(() => store.getters.getOrdersDataPeriodArray),
+            filterPeriod,
+
+            ordersList: computed(() => store.getters.getOrders),
 			activeCompanyUid,
 			dogovor,
 			header,
 			search,
-			period,
 		}
 	}
 })
