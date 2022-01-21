@@ -1,3 +1,4 @@
+import { ProductArticles } from "@/models/Product";
 import { MutationTree } from "vuex";
 import { ProductState, DEFAULT_PRODUCT } from "./types";
 
@@ -7,6 +8,7 @@ export enum ProductMutations {
 	SET_SEARCH_PRODUCT_CLEAR = "SET_SEARCH_PRODUCT_CLEAR",
 	SET_PRODUCT_RESULT = "SET_PRODUCT_RESULT",
 	SET_PRODUCT_CLEAR = "SET_PRODUCT_CLEAR",
+	SET_PRODUCT_ARTICLS = "SET_PRODUCT_ARTICLS",
 }
 
 export const mutations: MutationTree<ProductState> = {
@@ -31,13 +33,16 @@ export const mutations: MutationTree<ProductState> = {
 		state.product_images = data.IMAGES;
 		state.product_offers = data.OFFERS;
 		state.product_protect = data.PROTECT;
-		
 	},
 	[ProductMutations.SET_PRODUCT_CLEAR](state){
 		state.product = DEFAULT_PRODUCT;
 		state.product_images = [];
 		state.product_offers = [];
 		state.product_protect = [];
-	}
+	},
+	[ProductMutations.SET_PRODUCT_ARTICLS](state, data: ProductArticles[]){
+		state.product_articls = data;
+	},
+
 
 }

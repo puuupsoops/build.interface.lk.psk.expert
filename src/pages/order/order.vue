@@ -13,13 +13,15 @@
 	<router-link tag="a" to="/catalog" class="order-info-link">каталоге</router-link> 
 	или воспользуйтесь 
 	<router-link tag="a" to="/product" class="order-info-link">поиском</router-link>.
-
 </div>
+
 <div v-else>
+		<ProductSearchInput v-model="productSearch"/>
 		<ProductHeaderCard
 			:title="String(product.NAME)"
 			:price="String(product.PRICE)"
 			:status="String(product.STATUS)"
+			@ShowSearch="productSearch=!productSearch"
 		/>
 
 	<div class="content-wrap content-product-wrap">
@@ -84,6 +86,7 @@ import CompanyBarTop from '@/components/cards/Company/CompanyBarTop.vue'
 import TopNav from '@/components/nav/TopNav.vue'
 import ProductHeaderCard from '@/components/cards/Product/ProductHeaderCard.vue'
 import ProductSearchResultCard from '@/components/cards/Product/ProductSearchResultCard.vue'
+import ProductSearchInput from '@/components/cards/Product/ProductSearchInput.vue'
 import ProductOffersOrderCard from '@/components/cards/Product/ProductOffersOrderCard.vue'
 import ProductPropertiesCard from '@/components/cards/Product/ProductPropertiesCard.vue'
 import ProductSliderSmallCard from '@/components/cards/Product/ProductSliderSmallCard.vue'
@@ -94,7 +97,7 @@ import SnackBar from '@/components/ui/SnackBar.vue'
 
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { ref, computed, onMounted, defineComponent } from 'vue'
+import { ref, computed, onMounted, defineComponent, watch } from 'vue'
 import { key } from '@/store'
 import { KeysMutations } from '@/store/keys/mutations'
 import { OrderActions } from '@/store/order/actions'
@@ -112,6 +115,7 @@ export default defineComponent({
 		TopNav,
 		ProductHeaderCard,
 		ProductSearchResultCard,
+		ProductSearchInput,
 		ProductOffersOrderCard,
 		ProductPropertiesCard,
 		ProductSliderSmallCard,
@@ -133,8 +137,9 @@ export default defineComponent({
 		const activeProductId = ref('')
 		const error = ref(false)
 		const errorMsg = ref('')
-		const productItems = ref<OrderStatePositionOffer[]>([]);
 		const showModal = ref(false)
+		const productSearch = ref(false)
+		const productItems = ref<OrderStatePositionOffer[]>([]);
 
 		const addToOrder = () => {
 			let new_pos = <OrderStatePosition>{ 
@@ -157,6 +162,20 @@ export default defineComponent({
 			}
 
 		}
+		watch( ()=>props.article, (new_val) => {
+			// if get parametr aticle is changed then reload product
+			if (new_val !=='' && new_val !== undefined) {
+				loader.value = true;
+				store.dispatch(ProductActions.SEARCH_PRODUCT, props.article)
+					.then(()=>{
+						if (store.getters.getProduct.ID)
+							activeProductId.value=store.getters.getProduct.ID
+						else
+							router.push({name: 'Order'});
+						})
+					.finally(() => {loader.value=false})
+			}
+		});
 
 		onMounted(() => {
 			if (!store.getters.isCompanysLoad)
@@ -189,24 +208,28 @@ export default defineComponent({
 		};
 
 		return {
+			//data
 			error,
 			errorMsg,
-			companyBarTopData: computed(() => store.getters.getCompanysList),
 			activeCompanyUid,
-			isProduct: computed(() => store.getters.isProduct),
 			activeProductId,
-			loadProduct,
+			showModal,
+			productItems,
+			productSearch,
+			//computed
+			isProduct: computed(() => store.getters.isProduct),
+			companyBarTopData: computed(() => store.getters.getCompanysList),
 			productOffers: computed(() => store.getters.getProductOffers),
 			product: computed(() => store.getters.getProduct),
 			productFound: computed(() => store.getters.getProductFound),
 			productImages: computed(() => store.getters.getProductImages),
 			productProtect: computed(() => store.getters.getProductProtect),
-			addToOrder,
-			addOrder,
-			showModal,
-			productItems,
 			isOrder: computed(() => store.getters.isOrder),
 			order: computed(() => store.getters.getOrder),
+			//method
+			addToOrder,
+			addOrder,
+			loadProduct,
 		}
 	}
 })

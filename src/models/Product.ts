@@ -33,7 +33,7 @@ export interface Storage {
 }
 
 export interface Product {
-    ID:              number;
+    ID:              string;
     UID:             string;
     NAME:            string;
     ARTICLE:         string;
@@ -55,3 +55,10 @@ export interface Protect {
     XML_ID: string;
     IMAGE:  string;
 }
+
+
+export interface ProductArticles {
+    article: string;
+    name: string;
+}
+

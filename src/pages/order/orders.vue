@@ -78,7 +78,7 @@ import OrdersSearchCard from '@/components/cards/Order/OrdersSearchCard.vue'
 import OrdersListCard from '@/components/cards/Order/OrdersListCard.vue'
 
 import { useStore } from 'vuex'
-import { ref, computed, onMounted, defineComponent } from 'vue'
+import { ref, computed, defineComponent, onMounted } from 'vue'
 import { key } from '@/store'
 import { CompanyActions } from '@/store/company/actions'
 //import { OrdersMutations } from '@/store/orders/mutations'

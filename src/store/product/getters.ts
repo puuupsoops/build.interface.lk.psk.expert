@@ -3,7 +3,7 @@ import { RootState } from "@/store"
 import { ProductState } from "./types"
 
 export const getters: GetterTree<ProductState, RootState> = {
-	isProduct: state => state.product.ID !== 0,
+	isProduct: state => state.product.ID !== '',
 	getProductSearchResult: state => state.search_product_result,
 	getProductOffers: state => state.product_offers.length != 0 ? state.product_offers : 
 											[{
@@ -26,4 +26,5 @@ export const getters: GetterTree<ProductState, RootState> = {
 		product_images: state.product_images,
 		product_protect: state.product_protect,
 	}),
+	getProductArticles: state => state.product_articls,
 }

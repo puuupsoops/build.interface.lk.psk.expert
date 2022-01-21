@@ -6,5 +6,6 @@ export const state: ProductState = {
 	product_found: [],
 	product: DEFAULT_PRODUCT,
 	product_images: [],
-	product_protect: []	
+	product_protect: [],
+	product_articls: []
 }

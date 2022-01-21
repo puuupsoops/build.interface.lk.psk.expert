@@ -1,4 +1,14 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-01-18
+
+    #0.1.49
+    
+    1. Добавлен компонент ProductSearchInput - текстовое поле для поиска продукта по наименованию или артикулу.
+    2. Небольшие правки дизайна
+ 
+
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-01-18 19:07+0700
 
     #0.1.48

@@ -25,6 +25,7 @@
 			:title="String(product.NAME)"
 			:price="String(product.PRICE)"
 			:status="String(product.STATUS)"
+			@ShowSearch="clearSearch()"
 			v-if="isLoad"/>
 		<div class="content-wrap content-product-wrap" v-if="isLoad">
 			<div class="content-wrap-elem">

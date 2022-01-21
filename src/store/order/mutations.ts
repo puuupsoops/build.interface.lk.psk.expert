@@ -74,10 +74,10 @@ export const mutations: MutationTree<OrderState> = {
 		})
 	},
 	[OrderMutations.REMOVE_POSITION] (state, ID: number): void{
-		state.order.position=state.order.position.filter(x=> x.product.ID !== ID);
+		state.order.position=state.order.position.filter(x=> x.product.ID !== String(ID));
 	},
 	[OrderMutations.REMOVE_POSITION_PRESAIL] (state, ID: number): void{
-		state.order.position_presail=state.order.position_presail.filter(x=> x.product.ID !== ID);
+		state.order.position_presail=state.order.position_presail.filter(x=> x.product.ID !== String(ID));
 	},
 	[OrderMutations.REMOVE_CHARACTERISTIC] (state, data: OrderStatePosition): void{
 		state.order.position.forEach(pos => {
