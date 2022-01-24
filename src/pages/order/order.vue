@@ -31,6 +31,7 @@
 					:cardType="'order'"
 					v-model="activeProductId" 
 					@onClick="loadProduct()"
+					@ShowSearch="productSearch=!productSearch"
 					/>
 
 		</div>

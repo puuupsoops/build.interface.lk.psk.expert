@@ -1,4 +1,13 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-01-24
+
+    #0.1.50
+    
+    1. На компонент ProductSearchResultCard со списком сопутсвующих артикулов добавлена кнопка поиска продуктаю
+    2. Небольшие правки дизайна
+ 
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-01-18
 
     #0.1.49
