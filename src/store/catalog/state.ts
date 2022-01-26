@@ -7,5 +7,6 @@ export const state: CatalogState = {
         count:    0,
         total:    0,
         page:     0,
-    }
+    },
+    pageCount: 0,
 }

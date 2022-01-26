@@ -6,7 +6,7 @@ import { CatalogMenu, CatalogMenuItem, CatalogMenuItemSub } from "@/models/Catal
 export const getters: GetterTree<CatalogState, RootState> = {
 	isCatalogMenuLoad: state => Object.keys(state.menu).length !== 0,
 	getCatalogMenu: state => state.menu,
-	isCatalogLoad: state => Object.keys(state.catalog).length !== 0,
+	isCatalogLoad: state => state.catalog.count !== 0,
 	getMenuCategoryName: state => (id: string) => {
 
 		for (const i in Object.values(state.menu)) {
@@ -17,7 +17,7 @@ export const getters: GetterTree<CatalogState, RootState> = {
 	},
 
 	getCatalog: state => state.catalog,
-	getPageCount: state => Math.floor(state.catalog.total/state.catalog.count),
+	getPageCount: state => state.pageCount,
 
 
 }

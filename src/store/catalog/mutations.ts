@@ -15,6 +15,7 @@ export const mutations: MutationTree<CatalogState> = {
 	},
 	[CatalogMutations.SET_CATALOG](state, data: Catalog){
 		state.catalog = data
+		state.pageCount = Math.ceil(data.total/25)
 	},
 	[CatalogMutations.CLEAR_CATALOG](state){
 		state.catalog = {

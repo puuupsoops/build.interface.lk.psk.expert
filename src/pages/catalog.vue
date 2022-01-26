@@ -22,7 +22,7 @@
 		<div :class="'catalog-body' + (showMenu ? ' menu-open' : '')">
 			
 			<CatalogPagination
-				v-if="isLoad"
+				v-if="isLoad || loaderCatalog"
 				:currentPage="currentPage"
 				:maxPage="catalogPageCount"
 				@prev="changePage(-1)"

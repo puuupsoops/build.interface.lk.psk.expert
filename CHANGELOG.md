@@ -1,12 +1,18 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-01-26
+
+    #0.1.51
+    
+    1. #BagFix: отображение компонента CatalogPagination при не загруженном каталоге.
+ 
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-01-24
 
     #0.1.50
     
-    1. На компонент ProductSearchResultCard со списком сопутсвующих артикулов добавлена кнопка поиска продуктаю
+    1. На компонент ProductSearchResultCard со списком сопутсвующих артикулов добавлена кнопка поиска продукта.
     2. Небольшие правки дизайна
  
-
 Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-01-18
 
