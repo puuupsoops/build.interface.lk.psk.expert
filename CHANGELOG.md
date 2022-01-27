@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-01-27
+
+    #0.1.52
+    
+    1. Добавлен компонент ProductSliderFullscreen. При клике на картинку в любом слайдере продукта открывается изображение в большом размере.
+ 
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-01-26
 
     #0.1.51

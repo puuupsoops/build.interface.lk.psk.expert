@@ -12,7 +12,9 @@
 				class='product-slider-horisont-slide'
 				:key="slide.id"
 			>
-				<img v-if="slide.src" :src="slide.src"  />
+				<img v-if="slide.src" :src="slide.src" 
+					@click="fullscreen=true"
+				/>
 			</div>
 		</transition-group>
 
@@ -26,17 +28,22 @@
 		
 		<div class="product-slider-link">Сертификаты</div>
 	</div>
-	
+	<ProductSliderFullscreen
+		v-model="fullscreen"
+		:data="data"
+	> </ProductSliderFullscreen>
 </div>
 </template>
 
 <script lang="ts">
 
 import { key } from '@/store'
-import { KeysMutations } from '@/store/keys/mutations';
+import { KeysMutations } from '@/store/keys/mutations'
+import ProductSliderFullscreen from '@/components/cards/Product/ProductSliderFullscreen.vue'
 import { ref, onUpdated, computed, defineComponent } from 'vue'
 import { useStore } from 'vuex'
 import { Sliders } from '@/models/Components'
+
 
 export default defineComponent({
 	props:{
@@ -45,6 +52,9 @@ export default defineComponent({
 		},
 	},
 	emits: ['toOrder'],
+	components:{
+		ProductSliderFullscreen
+	},
 	setup(props){
 		let slides = ref<Sliders[]>([])
 		let store = useStore(key)
@@ -52,6 +62,9 @@ export default defineComponent({
 			get: () => store.getters.getLoader,
 			set: (val: boolean) => store.commit(KeysMutations.SET_LOADER, val)
 		})
+		
+		const fullscreen = ref(false)
+		
 		props.data?.forEach( (v, i) => slides.value.push(<Sliders>{id: i, src:v}))
 		// if (slides.value.length % 2 == 0){
 		// 			slides.value.push({id: slides.value.length, src:props.data[0]})
@@ -78,6 +91,7 @@ export default defineComponent({
 		return {
 			loader,
 			slides,
+			fullscreen,
 			next,
 			previous,
 			

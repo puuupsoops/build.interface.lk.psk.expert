@@ -25,7 +25,7 @@
 			:title="String(product.NAME)"
 			:price="String(product.PRICE)"
 			:status="String(product.STATUS)"
-			@ShowSearch="clearSearch()"
+			@ShowSearch="newSearch()"
 			v-if="isLoad"/>
 		<div class="content-wrap content-product-wrap" v-if="isLoad">
 			<div class="content-wrap-elem">
@@ -156,16 +156,22 @@ export default defineComponent({
 		};
 
 		const doSearch = () => {
-			clearSearch();
-			loader.value = true;
-			store.dispatch(ProductActions.SEARCH_PRODUCT, search_str.value)
-				.then(()=>{
-					isLoad.value=true;
-					activeProductId.value=store.getters.getProduct.ID;
-					})
-				.finally(() => {loader.value=false})
+			if (search_str.value.trim() !=='') {
+				clearSearch();
+				loader.value = true;
+				store.dispatch(ProductActions.SEARCH_PRODUCT, search_str.value)
+					.then(()=>{
+						isLoad.value=true;
+						activeProductId.value=store.getters.getProduct.ID;
+						})
+					.finally(() => {loader.value=false})
+			}
 		}
-
+		const newSearch = () => {
+			clearSearch()
+			search_str.value = ''
+			router.push('/product')
+		}
 		return {
 			companyBarTopData: computed(() => store.getters.getCompanysList),
 			resultSearch: computed(() => store.getters.getProductSearchResult),
@@ -182,6 +188,7 @@ export default defineComponent({
 			clearSearch,
 			loadProduct,
 			toOrder,
+			newSearch
 		}
 	},
 })
