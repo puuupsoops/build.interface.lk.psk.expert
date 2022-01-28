@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-01-28
+
+    #0.1.53
+    
+    1. На страницу /orders добавлены ссылки на скачивание и просмотр счетов сформированных по результатам сформированного заказа.
+ 
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-01-27
 
     #0.1.52

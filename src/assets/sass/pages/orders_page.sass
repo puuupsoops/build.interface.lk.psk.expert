@@ -1,338 +1,354 @@
 .orders
-    &-heading   
-        +flex
-        position: relative
-        margin:
-            top: 30px
+	&-heading   
+		+flex
+		position: relative
+		margin:
+			top: 30px
 
-        &-elem
-            +flex
-            +align-items(center)
+		&-elem
+			+flex
+			+align-items(center)
 
-            &:nth-child(1)
-                width: 84.45%
-                
+			&:nth-child(1)
+				width: 84.45%
+				
 
-            &:nth-child(2)
-                margin: 0 0 0 auto
-                width: 15.55%
+			&:nth-child(2)
+				margin: 0 0 0 auto
+				width: 15.55%
 
-        &-item
-            +flex
-            padding:
-                right: 50px
-            width: 33.33%
-            +align-items(center)
+		&-item
+			+flex
+			padding:
+				right: 50px
+			width: 33.33%
+			+align-items(center)
 
-            &:nth-child(3)
-                padding:
-                    right: 30px
-        
-        &-text
-            margin:
-                right: 10px
-        
-        &-clean
-            width: 21px
-            height: 21px
-            background-image: url(~@/assets/img/icon/cross.svg)
-            background-size: cover
-            background-position: center center
-            background-repeat: no-repeat
-            cursor: pointer
-        
-        &-search
-            +flex
-            margin:
-                top: 30px
-                left: -105px
-                right: -15px
-            padding: 30px 0
-                left: 105px
-                right: 15px
-            background-color: #1F2227
-            +box-shadow(0px 0px 10px rgba(0, 0, 0, 0.2))
-            +align-items(center)
+			&:nth-child(3)
+				padding:
+					right: 30px
+		
+		&-text
+			margin:
+				right: 10px
+		
+		&-clean
+			width: 21px
+			height: 21px
+			background-image: url(~@/assets/img/icon/cross.svg)
+			background-size: cover
+			background-position: center center
+			background-repeat: no-repeat
+			cursor: pointer
+		
+		&-search
+			+flex
+			margin:
+				top: 30px
+				left: -105px
+				right: -15px
+			padding: 30px 0
+				left: 105px
+				right: 15px
+			background-color: #1F2227
+			+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.2))
+			+align-items(center)
 
-            &-elem
-                +flex
-                +align-items(center)
+			&-elem
+				+flex
+				+align-items(center)
 
-                &:nth-child(1)
-                    width: 85%
-                
-                &:nth-child(2)
-                    padding:
-                        left: 30px
-                    width: 15%
+				&:nth-child(1)
+					width: 85%
+				
+				&:nth-child(2)
+					padding:
+						left: 30px
+					width: 15%
 
-                .product-search-text
-                    width: 8%
+				.product-search-text
+					width: 8%
 
-            &-select
-                &-wrap
-                    +flex
-                    width: 100%
-                    max-width: 91%
+			&-select
+				&-wrap
+					+flex
+					width: 100%
+					max-width: 91%
 
-                &-elem
-                    &:nth-child(1)
-                        width: 27.77%
+				&-elem
+					&:nth-child(1)
+						width: 27.77%
 
-                        .select2-container 
-                            .select2-selection--single
-                                border:
-                                    top-right-radius: 0px
-                                    bottom-right-radius: 0px
-                                    right: 1px solid #1F2227
+						.select2-container 
+							.select2-selection--single
+								border:
+									top-right-radius: 0px
+									bottom-right-radius: 0px
+									right: 1px solid #1F2227
 
-                    &:nth-child(2)
-                        width: 72.23%
+					&:nth-child(2)
+						width: 72.23%
 
-                        .select2-container 
-                            .select2-selection--single
-                                border:
-                                    top-left-radius: 0px
-                                    bottom-left-radius: 0px
+						.select2-container 
+							.select2-selection--single
+								border:
+									top-left-radius: 0px
+									bottom-left-radius: 0px
 
-            &-btn
-                margin: 0 0 0 auto
-                max-width: 245px
-        
-    &-list
-        width: 100%
-        margin: 0px
-        padding: 0px
-        border-radius: 6px
-        background-color: $bg-default-color
-        +box-shadow(0px 0px 10px rgba(0, 0, 0, 0.2))
-        
-            
-        &-row
-            +flex
-            position: relative
-            &.orders-list-heading
-                cursor: default
-                text-transform: uppercase
-            
-        &-main-row
-            background-color: #292C32
-            +prefix(transition, $default-transition)
-            cursor: pointer
+			&-btn
+				margin: 0 0 0 auto
+				max-width: 245px
+		
+	&-list
+		width: 100%
+		margin: 0px
+		padding: 0px
+		border-radius: 6px
+		background-color: $bg-default-color
+		+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.2))
+		
+			
+		&-row
+			+flex
+			position: relative
+			&.orders-list-heading
+				cursor: default
+				text-transform: uppercase
+			
+		&-main-row
+			background-color: #292C32
+			+prefix(transition, $default-transition)
+			cursor: pointer
 
-            &:hover
-                color: $accent-color
+			&:hover
+				color: $accent-color
 
-        &-elem
-            position: relative
-            padding: 16px 10px 14px 10px
-            font-size: 14px
-            line-height: 20px
-            //color: $font-light-color
-            +prefix(transition, $default-transition)
-            
+		&-elem
+			position: relative
+			padding: 16px 10px 14px 10px
+			font-size: 14px
+			line-height: 20px
+			//color: $font-light-color
+			+prefix(transition, $default-transition)
+			
 
-            &:nth-child(1)
-                text-align: center
-                padding:
-                    left: 15px
-                    right: 15px
-                height: 100%
-                width: 5.5%
+			&:nth-child(1)
+				text-align: center
+				padding:
+					left: 15px
+					right: 15px
+				height: 100%
+				width: 5.5%
 
-            &:nth-child(2)
-                width: 100%	
-            &:nth-child(3)
-                width: 100%
-            &:nth-child(4)
-                width: 10%
-                text-align: center
-            &:nth-child(5)
-                width: 100%
-                text-align: center
-            &:nth-child(6)
-                text-align: center
-                width: 20%
-            &:nth-child(7)
-                width: 20%
-                text-align: center
-            &:nth-child(8)
-                width: 20%
-                
+			&:nth-child(2)
+				width: 100%	
+			&:nth-child(3)
+				width: 100%
+			&:nth-child(4)
+				width: 10%
+				text-align: center
+			&:nth-child(5)
+				width: 100%
+				text-align: center
+			&:nth-child(6)
+				text-align: center
+				width: 20%
+			&:nth-child(7)
+				width: 20%
+				text-align: center
+			&:nth-child(8)
+				width: 20%
+				
 
-            &.error
-                color: #FF5449
-            &.active
-                color: $active-color
-                font-weight: bold
+			&.error
+				color: #FF5449
+			&.active
+				color: $active-color
+				font-weight: bold
 
 
-        &-wrap
-            margin:
-                top: 30px
-        
-        &-table
-            overflow-y: auto
-                
-            .table-row
-                position: relative
-                margin:
-                    top: 5px
-                background-color: #292C32
-                border: 0
-                
-                &.table-heading
-                    margin:
-                        top: 0
-                
-                &:hover
-                    .orders-list-more
-                        color: $accent-color
-        
-        &-item
-            margin:
-                bottom: 5px
-            
-            &.active
-                .table-arrow
-                    +prefix(transform, rotate(-90deg))
-                
-                .orders-list-sublist
-                    .order-list-row
-                        background-color: transparent
+		&-wrap
+			margin:
+				top: 30px
+		
+		&-table
+			overflow-y: auto
+				
+			.table-row
+				position: relative
+				margin:
+					top: 5px
+				background-color: #292C32
+				border: 0
+				
+				&.table-heading
+					margin:
+						top: 0
+				
+				&:hover
+					.orders-list-more
+						color: $accent-color
+		
+		&-item
+			margin:
+				bottom: 5px
+			
+			&.active
+				.table-arrow
+					+prefix(transform, rotate(-90deg))
+				
+				.orders-list-sublist
+					.order-list-row
+						background-color: transparent
 
-            &:last-child
-                margin: 0
+			&:last-child
+				margin: 0
 
-        
-        &-more
-            font-size: 14px
-            line-height: 20px
-            color: $white
-            border: 0
-            border-bottom: 1px dotted $white
-            background-color: transparent
-            +prefix(transition, $default-transition)
-            cursor:  pointer
+		
+		&-more
+			font-size: 14px
+			line-height: 20px
+			color: $white
+			border: 0
+			border-bottom: 1px dotted $white
+			background-color: transparent
+			+prefix(transition, $default-transition)
+			cursor:  pointer
 
-            &:hover
-                color: $accent-color
+			&:hover
+				color: $accent-color
 
-            &-dropdown 
-                //display: none
-                visibility: hidden
-                position: absolute
-                padding: 25px 30px
-                top: 50px
-                right: 5px
-                background-color: #292C32
-                border:
-                    bottom-left-radius: 6px
-                +box-shadow(0px 0px 20px rgba(0, 0, 0, 0.8))
-                +flex
-                +flex-flow(column)
-                z-index: 5
+			&-dropdown 
+				//display: none
+				visibility: hidden
+				position: absolute
+				padding: 25px 30px
+				top: 50px
+				right: 5px
+				background-color: #292C32
+				border:
+					bottom-left-radius: 6px
+				+box-shadow(0px 0px 20px rgba(0, 0, 0, 0.8))
+				+flex
+				+flex-flow(column)
+				z-index: 5
 
-                &.active
-                    visibility: visible
-                    
+				&.active
+					visibility: visible
+					
 
-                &-link
-                    padding: 5px 0
-                    font-size: 14px
-                    line-height: 20px
-                    color: $white
-                    
-                    white-space: nowrap
+				&-link
+					padding: 5px 0
+					font-size: 14px
+					line-height: 20px
+					color: $white
+					
+					white-space: nowrap
 
-                    &:hover
-                        color: $accent-color
+					&:hover
+						color: $accent-color
 
-        &-info
-            overflow: hidden
-            max-height: 0
-            +prefix(transition,  $default-transition)
-            
-            &.active 
-                padding:
-                    top: 10px
-                    bottom: 10px
-                display: block
-                max-height: 1000px
-                +prefix(transition,  max-height $default-transition)
+		&-info
+			overflow: hidden
+			max-height: 0
+			+prefix(transition,  $default-transition)
+			
+			&.active 
+				padding:
+					top: 10px
+					bottom: 10px
+				display: block
+				max-height: 1000px
+				+prefix(transition,  max-height $default-transition)
 
-            &-row
-                +flex
-                padding: 20px 30px
-                +align-items(center)
-                border:
-                    bottom: 1px solid #292C32
-                
-                &:last-child
-                    border: 0
-            
-            &-elem
-                &:nth-child(1)
-                    margin:
-                        right: 3.59%
-                    width: 4.01%
-                
-                &:nth-child(2)
-                    margin:
-                        right: 13.41%
-                    width: 35.03%
-                
-                &:nth-child(3)
-                    margin:
-                        right: 15.07%
-                    width: 19.77%
-                
-                &:nth-child(4)
-                    width: 7.78%
+			&-row
+				+flex
+				padding: 20px 30px
+				+align-items(center)
+				border:
+					bottom: 1px solid #292C32
+				
+				&:last-child
+					border: 0
+			
+			&-elem
+				&:nth-child(1)
+					margin:
+						right: 3.59%
+					width: 4.01%
+				
+				&:nth-child(2)
+					margin:
+						right: 13.41%
+					width: 35.03%
+				
+				&:nth-child(3)
+					margin:
+						right: 15.07%
+					width: 19.77%
+				
+				&:nth-child(4)
+					width: 7.78%
 
-            &-about
-                margin:
-                    bottom: 10px
-                font-size: 14px
-                line-height: 20px
-                
-                &:last-child
-                    margin: 0
+			&-about
+				margin:
+					bottom: 10px
+				font-size: 14px
+				line-height: 20px
+				
+				&:last-child
+					margin: 0
 
-            &-doc-wrap
-                +flex
-                +flex-wrap(wrap)
+			&-doc-wrap
+				+flex
+				+flex-wrap(wrap)
 
-            &-doc
-                margin: 5px 15px
-                width: 32px
-                height: 40px
-                background-size: 100% auto
-                background-position: center center
-                background-repeat: no-repeat
-                +prefix(transition, $default-transition)
+			&-doc
+				margin: 5px 15px
+				width: 32px
+				height: 40px
+				background-size: 100% auto
+				background-position: center center
+				background-repeat: no-repeat
+				+prefix(transition, $default-transition)
 
-                &.sc
-                    background-image: url(~@/assets/img/icon/doc-sc.svg)
-                
-                &.upd
-                    background-image: url(~@/assets/img/icon/doc-upd.svg)
-                
-                &.sf
-                    background-image: url(~@/assets/img/icon/doc-sf.svg)
-                
-                &.kor
-                    background-image: url(~@/assets/img/icon/doc-kor.svg)
-                
-                &:hover
-                    opacity: $default-opacity
-        
-            &-link
-                display: block
-                font-size: 14px
-                line-height: 20px
-                color: $white
-                +prefix(transition, $default-transition)
+				&.sc
+					background-image: url(~@/assets/img/icon/doc-sc.svg)
+				
+				&.upd
+					background-image: url(~@/assets/img/icon/doc-upd.svg)
+				
+				&.sf
+					background-image: url(~@/assets/img/icon/doc-sf.svg)
+				
+				&.kor
+					background-image: url(~@/assets/img/icon/doc-kor.svg)
+				
+				&:hover
+					opacity: $default-opacity
+		
+			&-link
+				display: block
+				font-size: 14px
+				line-height: 20px
+				color: $white
+				+prefix(transition, $default-transition)
 
-                &:hover
-                    color: $accent-color
+				&:hover
+					color: $accent-color
+
+			&-download
+				+flex
+				font-size: 14px
+				line-height: 20px
+				color: $white
+				cursor: pointer
+				+prefix(transition, $default-transition)
+
+				&:hover
+					color: $accent-color
+
+				& span
+					border-bottom: 1px dotted
+				
+				

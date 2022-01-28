@@ -14,6 +14,8 @@ export enum OrderActions {
 	REMOVE_CHARACTERISTIC = "REMOVE_CHARACTERISTIC_ACTION",
 	REMOVE_CHARACTERISTIC_PRESAIL = "REMOVE_CHARACTERISTIC_PRESAIL_ACTION",
 	ADD_ORDER = "ADD_ORDER_ACTION",
+	GET_BILL_FILE = "GET_BILL_FILE",
+	GET_BILL_FILE_SAVE = "GET_BILL_FILE_SAVE",
 }
 
 export const actions: ActionTree<OrderState, RootState> =  {
@@ -52,6 +54,31 @@ export const actions: ActionTree<OrderState, RootState> =  {
 				commit(OrderMutations.ADD_ORDER, response.data.response)
 			})
 			.catch(error => {
+				if (error.response.status == 400) {
+					commit(OrderMutations.CLEAN_ORDER_ERROR, error.response.data.error.message)
+				}
+			})
+	},
+
+	async [OrderActions.GET_BILL_FILE_SAVE] ({ commit }, UUID: string) {
+		await axios.get(`/order/print?id=${UUID}&name=Счет`, 
+			{
+				responseType: 'blob',
+				transformRequest: (data, headers) => {
+					delete headers.common['Authorization']
+					return data
+				}
+			})
+			.then(response => {
+				const url = window.URL.createObjectURL(new Blob([response.data]));
+				const link = document.createElement('a');
+				link.href = url;
+				link.setAttribute('download', 'file.pdf');
+				document.body.appendChild(link);
+				link.click();
+			})
+			.catch(error => {
+				console.log(error)
 				if (error.response.status == 400) {
 					commit(OrderMutations.CLEAN_ORDER_ERROR, error.response.data.error.message)
 				}
