@@ -1,6 +1,6 @@
 <template>
 
-<div class="company-head-item documents">
+<div :class="'company-head-item documents' + (disabled ? ' disable' : '')">
 	<div class="content-elem">
 		<div class="company-head-item-title">Документы</div>
 			<div class="company-head-list-content" >
@@ -28,6 +28,10 @@ export default {
 	props:{
 		data: {
 			type: Array
+		},
+		disabled:{
+			type: Boolean,
+			default: false
 		}
 	},
 	setup(){

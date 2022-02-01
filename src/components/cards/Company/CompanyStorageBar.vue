@@ -1,17 +1,24 @@
 
 <template>
 			<div  v-if="modelValue!==null" class="company-head-wrap">
+				
 				<CompanyStorageCard 
 					v-for="(storage, id) in data" 
 					:key="id"
 					:data="storage"
 					:active="id===modelValue"
+					:showDoc="showDoc"
 					@onClick="$emit('update:modelValue', id)"
+					@onShowDoc="showDoc=!showDoc"
 				></CompanyStorageCard>
-				<CompanyStorgeDoc :data="data[modelValue] ? data[modelValue].documents : null"></CompanyStorgeDoc>
+				<CompanyStorgeDoc
+					:disabled="!showDoc"
+					:data="data[modelValue] ? data[modelValue].documents : null"
+					>
+				</CompanyStorgeDoc>
 			</div>
 			<div v-else class="company-head-wrap">
-				<CompanyStorageCard></CompanyStorageCard>
+				<CompanyStorageCard :disabled="!showDoc"></CompanyStorageCard>
 				<CompanyStorgeDoc></CompanyStorgeDoc>
 			</div>
 </template>
@@ -21,6 +28,7 @@
 
 import CompanyStorageCard from '@/components/cards/Company/CompanyStorageCard.vue';
 import CompanyStorgeDoc from '@/components/cards/Company/CompanyStorgeDoc.vue';
+import { ref } from 'vue-demi';
 
 export default {
 	props:{
@@ -38,6 +46,11 @@ export default {
 		CompanyStorgeDoc
 	},
 	setup(){
+		const showDoc = ref(false)
+
+		return {
+			showDoc
+		}
 	}
 }
 </script>

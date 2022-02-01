@@ -26,10 +26,21 @@
 			min-width: 300px
 			max-width: 400px
 			scroll-snap-align: start
-
-			&:last-child
-				margin: 0
+			cursor: pointer
 			
+			
+			
+			&:last-child
+				overflow: hidden
+				text-overflow: ellipsis
+				white-space: nowrap
+				margin: 0
+				+prefix(transition, $default-transition)
+				&.disable
+					max-width: 0px
+					min-width: 0px
+					height: 0px
+
 			.company-card-sale
 				top: 15px
 				right: -5px
@@ -743,6 +754,24 @@
 				font-weight: 700
 				color: $white
 
+		&-showdoc
+			position: absolute
+			right: -10px
+			top: 60px
+			// +prefix(transform, translateY(-50%))
+			padding: 8px 26px 8px 20px
+			cursor: pointer
+			+prefix(transition, $default-transition)
+			&:hover
+				+prefix(transform, translateY(-3px))
+				path
+					fill: $accent-color
+			
+			&.active
+				// +prefix(transform, translateX(-20px))
+				path
+					fill: $accent-color
+					
 		&-more
 			position: absolute
 			top: 50%

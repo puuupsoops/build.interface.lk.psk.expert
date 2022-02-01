@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-02-01
+
+    #0.1.54
+    
+    1. На карту компаний CompanyStorageCard добавлен переключатель для вкл/вкл отображения карты Документов CompanyStorageCard.
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-01-28
 
     #0.1.53
