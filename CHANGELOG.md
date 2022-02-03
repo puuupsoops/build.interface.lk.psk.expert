@@ -1,5 +1,12 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
-Date:   2022-02-01
+Date:   2022-02-03
+
+    #0.1.55
+    
+    1. На странице с заказами, счета выводятся из массива checks.
+    
+Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-02-02
 
     #0.1.54
     

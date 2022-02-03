@@ -55,50 +55,51 @@
 					</div>
 
 					<div :class="'orders-list-info'   + ( key == active ? ' active': '' )"  >
-						<div class="orders-list-info-row">
-							<div class="orders-list-info-elem">ЭС</div>
-							<div class="orders-list-info-elem"> 
-								<div class="orders-list-info-about">
-									<div
-										class="orders-list-info-download"
-										title="Сохранить счет"
-										@click="downloadBill(item.id)"
-									>
-										<span> Счёт № {{item.n}} от {{item.date.substring(0,10)}} </span>
-										<preloader-local
-											v-if="loading_bill.includes(item.id)"
-											small
-										/>
+						<div v-if="Array.isArray(item.checks)">
+							<div
+								class="orders-list-info-row"
+								v-for="(check, key1) in item.checks"
+								:key="key1"
+							> 
+								<div class="orders-list-info-elem">{{getStorageName(item.partner_guid, check.organization_id)}}</div>
+								<div class="orders-list-info-elem"> 
+									<div class="orders-list-info-about">
+										<div
+											class="orders-list-info-download"
+											title="Сохранить счет"
+											@click="downloadBill(check.guid)"
+										>
+											<span> Счёт № {{check.id}} от {{item.date.substring(0,10)}} </span>
+											<preloader-local
+												v-if="loading_bill.includes(item.guid)"
+												small
+											/>
+										</div>
+										
 									</div>
-									
 								</div>
+								<div class="orders-list-info-elem orders-list-info-doc-wrap">
+									<a 
+										class="orders-list-info-doc sc" 
+										:href="`http://89.111.136.61/api/order/print?id=${check.guid}&name=Счет`"
+										target="_blank"
+										title="Открыть счет">
+										</a>
+									<!-- <a class="orders-list-info-doc upd" href=""></a>
+									<a class="orders-list-info-doc sf" href=""></a>
+									<a class="orders-list-info-doc kor" href=""></a> -->
+								</div>
+								<div class="orders-list-info-elem">
+									<a class="orders-list-info-link" href="">Сертификаты</a>
+									<a class="orders-list-info-link" href="">Скачать все</a></div>
 							</div>
-							<div class="orders-list-info-elem orders-list-info-doc-wrap">
-								<a 
-									class="orders-list-info-doc sc" 
-									:href="`http://89.111.136.61/api/order/print?id=${item.id}&name=Счет`"
-									target="_blank"
-									title="Открыть счет">
-									</a>
-								<!-- <a class="orders-list-info-doc upd" href=""></a>
-								<a class="orders-list-info-doc sf" href=""></a>
-								<a class="orders-list-info-doc kor" href=""></a> -->
-							</div>
-							<div class="orders-list-info-elem">
-								<a class="orders-list-info-link" href="">Сертификаты</a>
-								<a class="orders-list-info-link" href="">Скачать все</a></div>
 						</div>
-						<!-- <div class="orders-list-info-row">
-							<div class="orders-list-info-elem">ФРО</div>
-							<div class="orders-list-info-elem"> 
-							<div class="orders-list-info-about">Счёт № 12 от 02.02.2020</div>
-							<div class="orders-list-info-about">Реализация № 243 от 10.02.2020 + корректировка № 201 от 11.02.2020</div>
-							<div class="orders-list-info-about">Счёт Фактура № 243 от 10.02.2020</div>
-							</div>
-							<div class="orders-list-info-elem orders-list-info-doc-wrap">
-								<a class="orders-list-info-doc sc" href=""></a><a class="orders-list-info-doc upd" href=""></a><a class="orders-list-info-doc sf" href=""></a></div>
-							<div class="orders-list-info-elem"><a class="orders-list-info-link" href="">Сертификаты</a><a class="orders-list-info-link" href="">Скачать все</a></div>
-						</div> -->
+						<div
+							v-else
+							class="orders-list-info-row"
+							>
+							Счет отсутвует
+						</div>
 					</div>
 				</div>
 				</div>
@@ -117,7 +118,7 @@ import PreloaderLocal from '@/components/PreloaderLocal.vue'
 import { useStore } from 'vuex'
 import { key } from '@/store'
 import { OrderActions } from '@/store/order/actions'
-
+import { Storage } from '@/models/Partner'
 
 export default defineComponent({
 	props: {
@@ -160,12 +161,18 @@ export default defineComponent({
 			}
 		}
 		
-		const downloadBill = (uuid: string)=>{
+		const downloadBill = (uuid: string): void=>{
 			loading_bill.value.push(uuid)
 			store.dispatch(OrderActions.GET_BILL_FILE_SAVE, uuid)
 				.finally( () => { loading_bill.value = loading_bill.value.filter(item => item !== uuid)})
 		}
-		
+
+		const getStorageName = (partner_guid: string, organization_id: string): string=>{
+			const storages = <Storage[]>store.getters.getCompanyStoragesData(partner_guid)
+			const storage = storages.find(x  => x.guid == organization_id)
+			return storage ? storage.name.replace(/(^|\s)\S/g, s => s.toUpperCase()).replace(/(ООО)|(")|(\s)|([а-я])/g, '') : 'Склад'
+		}
+
 		return {
 			//data
 			target,
@@ -175,6 +182,7 @@ export default defineComponent({
 			//methods
 			checkPeriod,
 			downloadBill,
+			getStorageName,
 		}
 	},
 })
