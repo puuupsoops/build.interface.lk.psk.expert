@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-02-07
+
+    #0.1.56
+    
+    1. На компонент TopNav добавлены кнопки быстрого перехода на нужные страницы.
+    
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-02-03
 
     #0.1.55

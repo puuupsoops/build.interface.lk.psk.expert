@@ -6,7 +6,7 @@
 		<PersonalBar></PersonalBar>
 		
 	</div>
-	<top-nav></top-nav>
+	<top-nav catalog></top-nav>
 
 	<div class="product-search" v-if="article===''|| article===undefined">
 	
