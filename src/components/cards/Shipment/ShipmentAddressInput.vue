@@ -18,7 +18,7 @@
 			:class="'product-search-input-options' + (search_str == '' || articles.length == 0 ? ' default': '')"
 		>
 			<!-- <PreloaderLocal v-if="loading"></PreloaderLocal> -->
-			<span v-if="search_str == ''">Чтобы добавить в заказ новый продукт - начните ввод для поиска продукта</span>
+			<span v-if="search_str == ''">Чтобы добавить новый адрес - начните ввод</span>
 			<div v-else>
 			
 				<p
@@ -41,27 +41,30 @@
 	</div>
 </div>
 </template>
+
 <script lang="ts">
 import PreloaderLocal from '@/components/PreloaderLocal.vue'
-import { key } from '@/store';
-import { ProductActions } from '@/store/product/actions';
-import { ProductMutations } from '@/store/product/mutations';
-import { computed, defineComponent, ref, watch, nextTick} from 'vue'
-import { onClickOutside } from '@vueuse/core'
+
+import { key } from '@/store'
 import { useStore } from 'vuex';
 
 
+import { computed, defineComponent, nextTick, ref, watch } from 'vue'
+import { onClickOutside } from '@vueuse/core';
 
 export default defineComponent({
+	name: 'ShipmentAddressInput',
 	props:{
 		modelValue: {
 			type: Boolean,
 			required: true,
 		}
 	},
+	
 	components:{
 		PreloaderLocal
 	},
+
 	setup(props, { emit }) {
 		const store = useStore(key)
 		const search_str = ref('')
@@ -75,14 +78,11 @@ export default defineComponent({
 			loading.value=true;
 			debounce.value = setTimeout(() => {
 					
-					store.dispatch(ProductActions.SEARCH_PRODUCT_ARTICLE, search_str.value)
-							.then(()=>{ setTimeout( ()=> {loading.value=false}, 500)})
-							//.finally(() => {loading.value=false})
 				}, 500)
 		}
 		const close = () => {
 			search_str.value = ''
-			store.commit(ProductMutations.SET_PRODUCT_ARTICLS, [])
+			
 			emit('update:modelValue', false)
 		}
 		onClickOutside(target, () => {close()})
@@ -103,11 +103,7 @@ export default defineComponent({
 			doSearch,
 			close,
 		}
+
 	},
 })
 </script>
-
-<style lang="sass" scoped>
-
-</style>
-

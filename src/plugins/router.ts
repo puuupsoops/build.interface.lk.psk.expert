@@ -2,6 +2,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 //import { useStore } from 'vuex';
 import { store } from '@/store'
+import { AuthActions } from '@/store/auth/actions';
 
 const routes = [
 	{
@@ -73,6 +74,14 @@ const routes = [
 				auth: true,
 			}
 	},
+	{
+		path: '/shipments/address', 
+		component: () => import('@/pages/shipment/address.vue'),
+		name: 'ShipmentAdresss',
+		meta:{
+				auth: true,
+			}
+		},
 
 	{
 		path: '/404',
@@ -123,12 +132,20 @@ const routes = [
 	// 		}
 	// },
 	{
+		path: '/logout',
+		component: () => import('@/pages/login.vue'),
+		meta:{
+				auth: true,
+			}
+	},
+	{
 		path: '/:pathMatch(.*)*',
 		redirect: '/404',
 		meta:{
 				auth: true,
 			}
 	},
+	
 	{
 		path: '/login', 
 		component: () => import('@/pages/login.vue'),
@@ -149,6 +166,9 @@ router.beforeEach((to, from, next) => {
 	}
 	if (to.matched.some(m => m.meta.auth) && !store.getters.isAuthenticated) {
 		next({ name: 'Login',  });
+	}
+	if (to.path === '/logout' && store.getters.isAuthenticated)  {
+		store.dispatch(AuthActions.LOGOUT)
 	}
 	else {
 		next();

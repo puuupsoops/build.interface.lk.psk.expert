@@ -69,7 +69,7 @@
 											title="Сохранить счет"
 											@click="downloadBill(check.guid)"
 										>
-											<span> Счёт № {{check.id}} от {{item.date.substring(0,10)}} </span>
+											<span> Счёт № {{check.n}} от {{item.date.substring(0,10)}} </span>
 											<preloader-local
 												v-if="loading_bill.includes(item.guid)"
 												small
@@ -84,10 +84,25 @@
 										:href="`http://89.111.136.61/api/order/print?id=${check.guid}&name=Счет`"
 										target="_blank"
 										title="Открыть счет">
-										</a>
-									<!-- <a class="orders-list-info-doc upd" href=""></a>
-									<a class="orders-list-info-doc sf" href=""></a>
-									<a class="orders-list-info-doc kor" href=""></a> -->
+									</a>
+									<a 
+										class="orders-list-info-doc upd"
+										:href="`http://89.111.136.61/api/order/print?id=${check.guid}&name=УПД`"
+										target="_blank"
+										title="Универсальный передаточный документ">
+									</a>
+									<a 
+										class="orders-list-info-doc sf" 
+										:href="`http://89.111.136.61/api/order/print?id=${check.guid}&name=СФ`"
+										target="_blank"
+										title="Счёт-фактура">
+									</a>
+									<a 
+										class="orders-list-info-doc kor"
+										:href="`http://89.111.136.61/api/order/print?id=${check.guid}&name=УКД`"
+										target="_blank"
+										title="Универсальный корректировочный документ">
+									</a>
 								</div>
 								<div class="orders-list-info-elem">
 									<a class="orders-list-info-link" href="">Сертификаты</a>

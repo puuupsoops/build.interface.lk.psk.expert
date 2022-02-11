@@ -26,10 +26,12 @@
 							alt=""
 							/>
 					</div>
+					
 					<div 
+						v-if="item.children"
 						:class="'sidebar-nav-text' + (modelValue==id ? ' active' : '') + (item.lock ? ' lock' : '')"
 					>
-						{{ item.title }} 
+						<span >{{ item.title }} </span>
 						<span
 							v-if="item.lock"
 							class="tooltip"
@@ -39,6 +41,21 @@
 						</span>
 
 					</div>
+					<router-link
+								v-else
+								tag="a"
+								:to="item.lock ? '#' : item.link" 
+								:class="'sidebar-nav-text' + (item.lock ? ' lock':'')" 
+							>
+							{{ item.title }}
+						<span
+							v-if="item.lock"
+							class="tooltip"
+						>
+							<img src="@/assets/img/icon/lock.svg"/>
+							<span class="tooltiptext">Раздел находится в разработке</span>
+						</span>
+						</router-link>
 			
 			
 			
@@ -67,6 +84,15 @@
 						</li>
 					</ul>
 				</div>
+				<div v-else>
+					<router-link
+								tag="a"
+								:to="item.link" 
+								:class="'sidebar-nav-dropdown-list' + (item.lock ? ' lock':'')" 
+								active-class="sidebar-nav-dropdown-link active"
+							>
+					</router-link>
+				</div>
 			</li>
 		</ul>
 		<div class="sidebar-logo">
@@ -85,6 +111,7 @@ import { computed, defineComponent } from 'vue'
 import { useStore } from 'vuex'
 import { KeysMutations } from '@/store/keys/mutations'
 import { CompanyActions } from '@/store/company/actions'
+import { AuthActions } from '@/store/auth/actions'
 
 export default defineComponent({
 	props: {
@@ -115,7 +142,7 @@ export default defineComponent({
 				]},
 				{title: 'Логистика', link: '/settlements', lock: false, children: [
 					{title: 'Заявка на отгрузку', link: '/shipments/request', lock: false},
-					{title: 'Адреса Доставки', link: '/shipments/adress', lock: true},
+					{title: 'Адреса Доставки', link: '/shipments/address', lock: false},
 				]},
 				{title: 'Сертификаты', link: null, lock: true, children: [
 					{title: 'Разрешительная', link: '/permissive', lock: true},
@@ -142,6 +169,7 @@ export default defineComponent({
 				{title: 'Novelty', link: '/Novelty', lock: true, children: null },
 				{title: 'Контакты', link: '/contacts', lock: true, children: null},
 				{title: 'Help', link: '/help', lock: true, children: null},
+				{title: 'Выход', link: '/logout', lock: false, children: null},
 			]
 			let arr = [];
 			if (!store.getters.isCompanysLoad) {
@@ -163,7 +191,8 @@ export default defineComponent({
 		});
 		return {
 			menu,
-			isDebug
+			isDebug,
+			logout: ()=>store.dispatch(AuthActions.LOGOUT),
 		}
 	}
 })

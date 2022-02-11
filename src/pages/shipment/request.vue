@@ -8,7 +8,13 @@
 	<top-nav></top-nav>
 
 		<div class="shipment-heading">
-			<div class="shipment-heading-elem"> <a class="shipment-heading-back-btn" href=""></a>
+			<div class="shipment-heading-elem"> 
+				<router-link
+						tag="a" 
+						:to="'/shipments'"
+						class="shipment-heading-back-btn"
+					></router-link>
+				
 				<div class="shipment-heading-info">
 					<div class="shipment-title"><span>Заявка на отгрузку № 145 от 04.05.2020 по Заказу № 145 от 04.05.2020</span></div>
 					<div class="shipment-heading-select"><span>Основание:</span>
