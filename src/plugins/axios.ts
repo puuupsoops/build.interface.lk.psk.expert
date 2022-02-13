@@ -37,3 +37,14 @@ instanse.interceptors.response.use(
 
 
 export default instanse;
+
+
+export const axios_dadata = axios.create({
+	baseURL: process.env.VUE_APP_DADATA_LOCATION,
+	headers: {
+		"Content-type": "application/json",
+		"Accept": "application/json",
+		"Authorization": "Token " + process.env.VUE_APP_DADATA_TOKEN
+	},
+	withCredentials: false
+});

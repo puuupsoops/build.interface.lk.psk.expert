@@ -1,4 +1,12 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-02-13
+
+    #0.1.58
+    
+    1. Для компонента ShipmentAddressInput добавил ajax поиск с подсказками с dadata.ru
+    2. Адреса можно удалять
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-02-11
 
     #0.1.57

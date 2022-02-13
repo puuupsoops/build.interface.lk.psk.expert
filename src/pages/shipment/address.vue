@@ -43,8 +43,11 @@
 						<div class="shipment-address-list-elem">Адрес</div>
 					</div>
 					<div class="shipment-address-list-row">
+						{{newAddr}}
 						<shipment-address-input 
 							v-model= "addAddr"
+							:value="newAddr"
+							@save="save()"
 						></shipment-address-input>
 						
 					</div>
@@ -86,11 +89,13 @@
 						<div
 							v-if="delAddr && item.id == currentAddr"
 							class="shipment-address-list-row-info"
-							>
-							<div>Удалить адрес?</div>
-							<div>
-								<a href="#">Да</a>
-								<a >Нет</a></div>
+						>
+							<div v-if="!delPreloader">Удалить адрес?</div>
+							<div v-if="!delPreloader">
+								<a href="#" @click="del(currentAddr)">Да</a>
+								<a href="#" @click="delAddr=0">Нет</a>
+							</div>
+							<preloader-local v-else></preloader-local>
 						</div>
 					</div>
 				</div>
@@ -111,10 +116,11 @@ import Notification from '@/components/cards/Notification.vue'
 import CompanyBarTop from '@/components/cards/Company/CompanyBarTop.vue'
 import ShipmentAddressInput from '@/components/cards/Shipment/ShipmentAddressInput.vue'
 import TopNav from '@/components/nav/TopNav.vue'
-//import SelectInput from '@/components/ui/SelectInput.vue'
+import PreloaderLocal from '@/components/PreloaderLocal.vue'
 
 
-import { defineComponent, computed, ref, onMounted, nextTick } from 'vue'
+
+import { defineComponent, computed, ref, onMounted } from 'vue'
 import { key } from '@/store'
 import { useStore } from 'vuex'
 import { CompanyActions } from '@/store/company/actions'
@@ -128,7 +134,7 @@ export default defineComponent({
 		Notification,
 		CompanyBarTop,
 		ShipmentAddressInput,
-		//SelectInput,
+		PreloaderLocal,
 	},
 	setup() {
 		const store = useStore(key);
@@ -144,7 +150,20 @@ export default defineComponent({
 		const currentAddr = ref(1)
 		const addAddr = ref(false)
 		const delAddr = ref(false)
-		
+		const delPreloader = ref(false)
+		const newAddr = ref('')
+
+		const del = (id: number) => {
+			delPreloader.value = true
+			setTimeout( () => {
+					address.value = address.value.filter(x => x.id!=id)
+					delAddr.value = false
+					delPreloader.value = false
+			}, 1000)
+		}
+		const save = () => {
+			address.value.push({id: 0, name: newAddr.value})
+		}
 		onMounted(() => {
 			if (!store.getters.isCompanysLoad)
 			{
@@ -152,18 +171,7 @@ export default defineComponent({
 			}
 			
 		});
-		nextTick(() => {
-			// Установить скрипты для использования яндекс карты
-			// let scriptYandexMap = document.createElement('script');
-			// scriptYandexMap.setAttribute('src', 'https://api-maps.yandex.ru/2.1/?lang=ru_RU');
-			// document.head.appendChild(scriptYandexMap);
-			
-			// // Инициализировать яндекс карту
-			// scriptYandexMap.addEventListener('load', () => {
-			// 	setTimeout( ()=>{ console.log(document) }, 5000)
-			// })
-		
-		})
+	
 		
 			
 		return {
@@ -172,8 +180,13 @@ export default defineComponent({
 			currentAddr,
 			addAddr,
 			delAddr,
-			
+			delPreloader,
+			newAddr,
+
 			companyBarTopData: computed(() => store.getters.getCompanysList),
+
+			del,
+			save,
 		}
 	},
 })
