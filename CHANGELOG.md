@@ -1,4 +1,12 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-02-14
+
+    #0.1.59
+    
+    1. На компонент ShipmentAddressInput добавлены функции сохранения и выбора адресов клавишами вверх.вниз.
+    2. Адреса можно редактировать
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-02-13
 
     #0.1.58

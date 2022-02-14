@@ -7,7 +7,7 @@
 				type="text"
 				placeholder="Поиск"
 				autocomplete="off"
-				@keyup="doSearch()"
+				@keyup="doSearch($event)"
 				v-model="search_str"
 				ref="searchInput"
 			>
@@ -16,7 +16,7 @@
 				class="product-search-save" 
 				title="Сохранить" 
 				v-if="search_str.length>10"
-				@click="$emit('save'); ('update:value', search_str ); close()"
+				@click="('update:value', search_str ); $emit('save', search_str);close();"
 			>
 
 				<svg width="16" height="16" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -47,8 +47,9 @@
 				<p
 					v-for="item, key in addressPrompt"
 					:key="key"
-					:class="'product-search-input-options-item' + (loading ? ' loading': '')"
-				>
+					:class="'product-search-input-options-item' + (loading ? ' loading': '') 
+																+ (key==active_item ? ' active':'')"
+				> 
 					<router-link
 						tag="a"
 						@click="search_str=item.value+' '; searchInput.focus();"
@@ -75,6 +76,7 @@ import { useStore } from 'vuex';
 import { computed, defineComponent, nextTick, ref, watch } from 'vue'
 import { onClickOutside } from '@vueuse/core';
 import { ShipmentsActions } from '@/store/shipments/actions';
+import { ShipmentsMutations } from '@/store/shipments/mutations';
 
 export default defineComponent({
 	name: 'ShipmentAddressInput',
@@ -100,15 +102,29 @@ export default defineComponent({
 		const debounce = ref<number|undefined>(undefined)
 		const target = ref(null)
 		const searchInput = ref<any>(null)
+		const active_item = ref(-1)
 		
-		const doSearch = () => {
-			clearTimeout(debounce.value)
-			loading.value=true;
-			debounce.value = setTimeout(() => {
-					store.dispatch(ShipmentsActions.ADDRESS_PROMPT, search_str.value)
-							.then(()=>{ setTimeout( ()=> {loading.value=false}, 500)})
-							//.finally(() => {loading.value=false})
-				}, 500)
+		const doSearch = (e:any) => {
+			if ([13, 16, 17, 18, 27, 37, 38, 39, 40].includes(e.keyCode)){
+				if (e.keyCode == 40 && active_item.value < store.getters.getAddressPrompt.length-1 ) {
+					active_item.value=active_item.value+1
+					search_str.value = store.getters.getAddressPrompt[active_item.value].value+' '
+				}
+				if (e.keyCode == 38 && active_item.value !=- 1) {
+					active_item.value=active_item.value-1
+					search_str.value = store.getters.getAddressPrompt[active_item.value].value + ' '
+				}
+				if (e.keyCode == 27) close()
+			} else {
+				active_item.value = -1
+				clearTimeout(debounce.value)
+				loading.value=true;
+				debounce.value = setTimeout(() => {
+						store.dispatch(ShipmentsActions.ADDRESS_PROMPT, search_str.value)
+								.then(()=>{ setTimeout( ()=> {loading.value=false}, 100)})
+								//.finally(() => {loading.value=false})
+					}, 500)
+			}
 		}
 		const close = () => {
 			search_str.value = ''
@@ -118,6 +134,7 @@ export default defineComponent({
 		
 		watch( ()=>props.modelValue, () => {
 			search_str.value= props.value
+			store.commit(ShipmentsMutations.CLEAR_ADDRESS_PROMPT)
 			nextTick(() => {
 				searchInput.value.focus();
 			});
@@ -129,7 +146,10 @@ export default defineComponent({
 			loading,
 			target,
 			searchInput,
+			active_item,
+			
 			addressPrompt: computed(()=>store.getters.getAddressPrompt),
+			
 			doSearch,
 			close,
 		}

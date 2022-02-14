@@ -22,7 +22,7 @@
 			<div class="content-heading-btn">
 					<div
 						class="shipment-form-map-btn" 
-						@click="addAddr=true"
+						@click="editAddrName=-1; editAddrName= ''; addAddr=true;"
 					> 
 						<svg class="shipment-form-map-btn-img" width="19" height="25" viewBox="0 0 19 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<path d="M9.49968 25C8.95397 25 8.4653 24.717 8.19255 24.2429C8.18967 24.238 8.18688 24.2329 8.1841 24.2279L1.98479 12.8809C0.505001 10.1724 0.547432 6.95749 2.09831 4.28113C3.61555 1.66277 6.31047 0.0631103 9.30725 0.00197754C9.43527 -0.00065918 9.56398 -0.00065918 9.69191 0.00197754C12.6887 0.0631103 15.3837 1.66277 16.9009 4.28113C18.4518 6.95749 18.4943 10.1723 17.0145 12.8809L10.8152 24.2279C10.8124 24.2329 10.8096 24.238 10.8067 24.2429C10.534 24.717 10.0454 25 9.49968 25ZM9.49963 1.56252C9.44597 1.56252 9.39245 1.56306 9.33903 1.56414C6.89279 1.61404 4.69133 2.92258 3.45017 5.06453C2.17541 7.26448 2.14016 9.90642 3.35593 12.1317L9.49963 23.3768L15.6433 12.1318C16.8591 9.90642 16.8238 7.26448 15.549 5.06453C14.3078 2.92263 12.1064 1.61404 9.66013 1.56414C9.60685 1.56306 9.55329 1.56252 9.49963 1.56252Z" fill="#8D8D8D"></path>
@@ -43,11 +43,10 @@
 						<div class="shipment-address-list-elem">Адрес</div>
 					</div>
 					<div class="shipment-address-list-row">
-						{{newAddr}}
 						<shipment-address-input 
 							v-model= "addAddr"
-							:value="newAddr"
-							@save="save()"
+							:value="editAddrName"
+							@save="save"
 						></shipment-address-input>
 						
 					</div>
@@ -57,15 +56,17 @@
 						:key="key"
 						>
 						<div
-							:class="'shipment-address-list-row ' + ( item.id == currentAddr ? ' active': '' )"
-							@click="currentAddr = item.id;  "
+							:class="'shipment-address-list-row ' + ( key == currentAddr ? ' active': '' )"
+							@click="currentAddr = key;  "
 						>
-							<div class="shipment-address-list-elem">{{item.id}}</div>
+							<div class="shipment-address-list-elem">{{key+1}}</div>
 							<div class="shipment-address-list-elem">{{item.name}}</div>
 							<div class="shipment-address-list-elem actions" 
-								v-if="item.id == currentAddr"
+								v-if="key == currentAddr"
 							>
-								<div>
+								<div
+									@click="editAddrId=key; editAddrName=item.name; addAddr=true"
+								>
 									<svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 0 24 24" width="30px" fill="#8D8D8D">
 										<path d="M0 0h24v24H0V0z" fill="none"/>
 										<path d="M14.06 9.02l.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"/>
@@ -73,7 +74,7 @@
 								</div>
 							</div>
 							<div :class="'shipment-address-list-elem actions' + (delAddr? ' active':'')" 
-								v-if="item.id == currentAddr"
+								v-if="key == currentAddr"
 							>
 								<div
 									@click="delAddr=!delAddr"
@@ -87,7 +88,7 @@
 							</div>
 						</div>
 						<div
-							v-if="delAddr && item.id == currentAddr"
+							v-if="delAddr && key == currentAddr"
 							class="shipment-address-list-row-info"
 						>
 							<div v-if="!delPreloader">Удалить адрес?</div>
@@ -97,6 +98,10 @@
 							</div>
 							<preloader-local v-else></preloader-local>
 						</div>
+					</div>
+					<div v-if="address.length == 0" class="shipment-address-list-row">
+						<div class="shipment-address-list-elem"></div>
+						<div class="shipment-address-list-elem">Адреса доставки отсутсвуют</div>
 					</div>
 				</div>
 			</div>
@@ -141,17 +146,14 @@ export default defineComponent({
 		const activeCompanyUid = ref('');
 		const address = ref([
 				{id: 1, name:'Россия г. Москва ул. Ангарская вл. 8, стр. 15 д.'},
-				{id: 2, name:'Россия г. Москва ул. Ангарская вл. 9, д.'},
-				{id: 3, name:'Россия г. Москва ул. Ангарская вл. 10, стр. 16 д.'},
-				{id: 4, name:'Россия г. Москва ул. Ангарская вл. 23, стр. 45 д.'},
-				{id: 5, name:'Россия г. Москва ул. Ангарская вл. 44, стр. 5 д.'},
-				{id: 6, name:'Россия г. Москва ул. Ангарская вл. 67, стр. 145 д.'},
+		
 			])
 		const currentAddr = ref(1)
 		const addAddr = ref(false)
 		const delAddr = ref(false)
 		const delPreloader = ref(false)
-		const newAddr = ref('')
+		const editAddrId = ref(-1)
+		const editAddrName = ref('')
 
 		const del = (id: number) => {
 			delPreloader.value = true
@@ -161,8 +163,13 @@ export default defineComponent({
 					delPreloader.value = false
 			}, 1000)
 		}
-		const save = () => {
-			address.value.push({id: 0, name: newAddr.value})
+		const save = (e: string) => {
+			if (editAddrId.value !=-1 ) {
+				address.value[editAddrId.value].name = e
+				editAddrId.value = -1
+			}
+			else
+				address.value.push({id: 0, name: e})
 		}
 		onMounted(() => {
 			if (!store.getters.isCompanysLoad)
@@ -181,8 +188,9 @@ export default defineComponent({
 			addAddr,
 			delAddr,
 			delPreloader,
-			newAddr,
-
+			editAddrId,
+			editAddrName,
+			
 			companyBarTopData: computed(() => store.getters.getCompanysList),
 
 			del,
