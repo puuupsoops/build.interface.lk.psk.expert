@@ -1,4 +1,12 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-02-17
+
+    #0.1.60
+    
+    1. На страницу с заказами добавлена обработка статусов документов
+
+    
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-02-14
 
     #0.1.59

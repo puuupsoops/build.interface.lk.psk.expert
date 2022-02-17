@@ -23,7 +23,7 @@
 					v-if="checkPeriod(item.date)"
 				>
 					<div class="orders-list-row orders-list-main-row"
-						@click="key === active ? active = null : active = key"
+						@click="key === active ? active = -1 : active = key"
 					>
 
 						<div class="orders-list-elem">
@@ -38,7 +38,7 @@
 						<div class="orders-list-elem" > 
 							<button
 								class="orders-list-more"
-								@click.stop="key == active_more ? active_more = null : active_more = key"
+								@click.stop="key == active_more ? active_more = -1 : active_more = key"
 							>Подробно</button>
 							<div
 								ref="target"
@@ -55,12 +55,13 @@
 					</div>
 
 					<div :class="'orders-list-info'   + ( key == active ? ' active': '' )"  >
+						
 						<div v-if="Array.isArray(item.checks)">
 							<div
 								class="orders-list-info-row"
 								v-for="(check, key1) in item.checks"
 								:key="key1"
-							> 
+							>
 								<div class="orders-list-info-elem">{{getStorageName(item.partner_guid, check.organization_id)}}</div>
 								<div class="orders-list-info-elem"> 
 									<div class="orders-list-info-about">
@@ -78,26 +79,33 @@
 										
 									</div>
 								</div>
-								<div class="orders-list-info-elem orders-list-info-doc-wrap">
-									<a 
+								<div class="orders-list-info-elem orders-list-info-doc-wrap"  v-if="!check.doc_status">
+									<PreloaderLocal small></PreloaderLocal>
+								</div>
+								<div class="orders-list-info-elem orders-list-info-doc-wrap" v-else>
+									<a
+										v-if="check.doc_status?.StatusSchet"
 										class="orders-list-info-doc sc" 
 										:href="`http://89.111.136.61/api/order/print?id=${check.guid}&name=Счет`"
 										target="_blank"
 										title="Открыть счет">
 									</a>
 									<a 
+										v-if="check.doc_status?.StatusUPD"
 										class="orders-list-info-doc upd"
 										:href="`http://89.111.136.61/api/order/print?id=${check.guid}&name=УПД`"
 										target="_blank"
 										title="Универсальный передаточный документ">
 									</a>
 									<a 
+										v-if="check.doc_status?.StatusSF"
 										class="orders-list-info-doc sf" 
 										:href="`http://89.111.136.61/api/order/print?id=${check.guid}&name=СФ`"
 										target="_blank"
 										title="Счёт-фактура">
 									</a>
 									<a 
+										v-if="check.doc_status?.StatusUPK"
 										class="orders-list-info-doc kor"
 										:href="`http://89.111.136.61/api/order/print?id=${check.guid}&name=УКД`"
 										target="_blank"
@@ -126,7 +134,7 @@
 </template>
 
 <script lang="ts">
-import { ref, PropType, defineComponent } from 'vue'
+import { ref, PropType, defineComponent, watch } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { Orders } from '@/models/Orders'
 import PreloaderLocal from '@/components/PreloaderLocal.vue'
@@ -134,6 +142,7 @@ import { useStore } from 'vuex'
 import { key } from '@/store'
 import { OrderActions } from '@/store/order/actions'
 import { Storage } from '@/models/Partner'
+import { OrdersActions } from '@/store/orders/actions'
 
 export default defineComponent({
 	props: {
@@ -156,14 +165,25 @@ export default defineComponent({
 	},
 	setup(props) {
 		const store = useStore(key)
-		const active = ref(null)
-		const active_more = ref(null)
+		const active = ref(-1)
+		const active_more = ref(-1)
 		const target = ref(null)
 		const loading_bill = ref<string[]>([])
+
 		
 		onClickOutside(target, () => {
-			active_more.value = null
+			active_more.value = -1
 		});
+		
+		watch( active, ()=>{
+			if (active.value!=-1 && props.data) {
+				let promise_arr = 
+					props.data[active.value].checks?.map(x=> {if (!x.doc_status) return store.dispatch(OrdersActions.GET_ORDERS_DOCSTATUS, x.guid)})
+				if (promise_arr){
+					Promise.all(promise_arr).finally(()=>{})
+				}
+			}
+		})
 		
 		const checkPeriod = (date: string) => {
 			if (props.period == 'Все') {
@@ -194,6 +214,7 @@ export default defineComponent({
 			active,
 			active_more,
 			loading_bill,
+			
 			//methods
 			checkPeriod,
 			downloadBill,
