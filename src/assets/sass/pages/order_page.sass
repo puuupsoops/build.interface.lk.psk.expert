@@ -500,7 +500,11 @@
 		background: #292c32
 		border-radius: 2px
 		+box-shadow(0px 0px 30px rgba(0, 0, 0, 1))
-
+		&.draft
+			width: 90%
+			left: 5%
+			top: 10%
+			height: 80%
 		&.shake
 			animation: shake 0.3s cubic-bezier(.36,.07,.19,.97) both
 			transform: translate3d(0, 0, 0)
@@ -528,7 +532,10 @@
 		min-height: 200px
 		max-height: 300px
 		height: 100%
-			
+		&.draft
+			height: 90%
+			max-height: 1000px
+
 	&-header
 		+flex
 		+justify-content(space-between)

@@ -179,7 +179,16 @@ a
 				rect,
 				circle
 					+prefix(transition, $default-transition)
+			
+			&.active
+				color: $accent-color
 
+				.content-heading-btn-img
+					.fill
+						fill: $accent-color
+					.stroke
+						stroke: $accent-color
+			
 			&:hover
 				color: $accent-color
 

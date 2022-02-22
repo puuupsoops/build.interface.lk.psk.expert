@@ -31,6 +31,8 @@ export const getters: GetterTree<OrderState, RootState> = {
 					quantity: c.count,
 				})),
 			})),
-	})
-
+	}),
+	getOrderDraftCount: state => state.order_drafts.length,
+	getOrderDraft: state => state.order_drafts,
+	isOrderInDraft: state => state.order_drafts.findIndex(x => x.id==state.order.id)!==-1,
 }

@@ -18,6 +18,8 @@ export enum OrderMutations {
 	CLEAN_ORDER_ERROR = "CLEAN_ORDER_ERROR",
 	CLEAN_ORDER = "CLEAN_ORDER",
 	ADD_ORDER_PARTNER_ID = "ADD_ORDER_PARTNER_ID",
+	ADD_ORDER_TO_DRAFT = "ADD_ORDER_TO_DRAFT",
+	DEL_ORDER_FROM_DRAFT = "DEL_ORDER_FROM_DRAFT",
 }
 
 export const mutations: MutationTree<OrderState> = {
@@ -46,7 +48,10 @@ export const mutations: MutationTree<OrderState> = {
 	},
 	[OrderMutations.CALC_PRESAIL] (state): void { // Если в массиве с позициями количество больше чем остаток - переместить разницу в массив position_presail
 		state.order.position.forEach(pos => {
-			pos.characteristics.forEach(char => {
+			pos.characteristics.forEach((char, index, object) => {
+				if (char.RESIDUE == 0) {
+					object.splice(index, 1);
+				}
 				if (char.count > char.RESIDUE) {
 					const presail_count = char.count - char.RESIDUE
 					char.count = char.RESIDUE
@@ -154,6 +159,14 @@ export const mutations: MutationTree<OrderState> = {
 	},
 	[OrderMutations.ADD_ORDER_PARTNER_ID] (state, data: string): void{
 		state.partner_id = data;
-	}
+	},
+	[OrderMutations.ADD_ORDER_TO_DRAFT] (state): void{
+		state.order_drafts.push(state.order)
+		localStorage.setItem('orders_drafts', JSON.stringify(state.order_drafts));
+	},
+	[OrderMutations.DEL_ORDER_FROM_DRAFT] (state, id: number): void{
+		state.order_drafts = state.order_drafts.filter(x=>x.id!=id)
+		localStorage.setItem('orders_drafts', JSON.stringify(state.order_drafts));
+	},
 
 }

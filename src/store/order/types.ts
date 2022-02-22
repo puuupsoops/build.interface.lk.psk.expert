@@ -5,6 +5,7 @@ import { Offer, Product } from "@/models/Product";
 export interface OrderState {
 	order: OrderStateOrder;
 	new_order: NewOrder;
+	order_drafts: OrderStateOrder[];
 	error: string|null;
 	partner_id: string;
 }
@@ -49,4 +50,5 @@ export const DefaultNewOrder = {
 	id: 0,
 	message: '',
 }
-
+const order_drafts_saved = localStorage.getItem('orders_drafts')
+export const OrderDraftsSaved = <OrderStateOrder[]>JSON.parse(order_drafts_saved ? order_drafts_saved : '[]' ) 

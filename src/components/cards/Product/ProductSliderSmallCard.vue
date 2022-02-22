@@ -22,12 +22,8 @@
 
 	</div>
 		
+	<ProductInfoCard :data="product" :protect="productProtect"></ProductInfoCard>
 	
-	<div class="product-slider-buttons">
-		<div class="product-slider-link">Детали</div>
-		
-		<div class="product-slider-link">Сертификаты</div>
-	</div>
 	<ProductSliderFullscreen
 		v-model="fullscreen"
 		:data="data"
@@ -40,6 +36,7 @@
 import { key } from '@/store'
 import { KeysMutations } from '@/store/keys/mutations'
 import ProductSliderFullscreen from '@/components/cards/Product/ProductSliderFullscreen.vue'
+import ProductInfoCard from '@/components/cards/Product/ProductInfoCard.vue'
 import { ref, onUpdated, computed, defineComponent } from 'vue'
 import { useStore } from 'vuex'
 import { Sliders } from '@/models/Components'
@@ -53,7 +50,8 @@ export default defineComponent({
 	},
 	emits: ['toOrder'],
 	components:{
-		ProductSliderFullscreen
+		ProductSliderFullscreen,
+		ProductInfoCard,
 	},
 	setup(props){
 		let slides = ref<Sliders[]>([])
@@ -92,6 +90,10 @@ export default defineComponent({
 			loader,
 			slides,
 			fullscreen,
+
+			product: computed(() => store.getters.getProduct),
+			productProtect: computed(() => store.getters.getProductProtect),
+
 			next,
 			previous,
 			

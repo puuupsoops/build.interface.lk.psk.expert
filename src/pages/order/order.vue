@@ -6,7 +6,11 @@
 		<PersonalBar></PersonalBar>
 		
 	</div>
-	<top-nav></top-nav>
+	<top-nav 
+		toDraft
+		:draft="getOrderDraftCount"
+		@onClick="showDraft=true"
+	></top-nav>
 
 <div v-if="!isProduct" class="order-info">
 	Для оформления заказа выберите товар в 
@@ -64,19 +68,19 @@
 			/>
 		</div>
 		<div class="content-wrap-elem"> 
-			<ProductPropertiesCard
-				:protect="productProtect"
-			/>
-			<div class="order-product-prev">
+			
+			
 				<ProductSliderSmallCard 
 					:data="productImages"
 				/>
-			</div>
+			
 		</div>
 	</div>
 	<OrderModal v-model="showModal"/>
+	
 	<SnackBar v-model="error" :message="errorMsg"></SnackBar>
 </div>
+<OrderDraftModal v-model="showDraft"/>
 </div>
 </template>
 
@@ -89,11 +93,11 @@ import ProductHeaderCard from '@/components/cards/Product/ProductHeaderCard.vue'
 import ProductSearchResultCard from '@/components/cards/Product/ProductSearchResultCard.vue'
 import ProductSearchInput from '@/components/cards/Product/ProductSearchInput.vue'
 import ProductOffersOrderCard from '@/components/cards/Product/ProductOffersOrderCard.vue'
-import ProductPropertiesCard from '@/components/cards/Product/ProductPropertiesCard.vue'
 import ProductSliderSmallCard from '@/components/cards/Product/ProductSliderSmallCard.vue'
 import OrderHeaderCard from '@/components/cards/Order/OrderHeaderCard.vue'
 import OrderCard from '@/components/cards/Order/OrderCard.vue'
 import OrderModal from '@/components/cards/Order/OrderModal.vue'
+import OrderDraftModal from '@/components/cards/Order/OrderDraftModal.vue'
 import SnackBar from '@/components/ui/SnackBar.vue'
 
 import { useStore } from 'vuex'
@@ -118,12 +122,12 @@ export default defineComponent({
 		ProductSearchResultCard,
 		ProductSearchInput,
 		ProductOffersOrderCard,
-		ProductPropertiesCard,
 		ProductSliderSmallCard,
 		OrderHeaderCard,
 		OrderCard,
 		OrderModal,
 		SnackBar,
+		OrderDraftModal,
 	},
 	props: ['article'],
 	setup(props) {
@@ -139,6 +143,7 @@ export default defineComponent({
 		const error = ref(false)
 		const errorMsg = ref('')
 		const showModal = ref(false)
+		const showDraft = ref(false)
 		const productSearch = ref(false)
 		const productItems = ref<OrderStatePositionOffer[]>([]);
 
@@ -163,6 +168,8 @@ export default defineComponent({
 			}
 
 		}
+		
+
 		watch( ()=>props.article, (new_val) => {
 			// if get parametr aticle is changed then reload product
 			if (new_val !=='' && new_val !== undefined) {
@@ -215,6 +222,7 @@ export default defineComponent({
 			activeCompanyUid,
 			activeProductId,
 			showModal,
+			showDraft,
 			productItems,
 			productSearch,
 			//computed
@@ -227,10 +235,12 @@ export default defineComponent({
 			productProtect: computed(() => store.getters.getProductProtect),
 			isOrder: computed(() => store.getters.isOrder),
 			order: computed(() => store.getters.getOrder),
+			getOrderDraftCount: computed(() => store.getters.getOrderDraftCount),
 			//method
 			addToOrder,
 			addOrder,
 			loadProduct,
+			
 		}
 	}
 })

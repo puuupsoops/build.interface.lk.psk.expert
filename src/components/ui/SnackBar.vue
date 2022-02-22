@@ -3,7 +3,7 @@
 		
 <transition appear name="slide-fade">
 	<div class="notification" v-if="modelValue">
-		<div class="notification-card">  
+		<div :class="'notification-card' + (notification ? ' notification':'')">  
 			<div class="notification-text">
 					<span v-html="message"></span>
 			</div>
@@ -29,7 +29,11 @@ export default {
 			timeout: {
 				default: 10000,
 				type: Number,
-			}
+			},
+			notification: {
+				type: Boolean,
+				default: false
+			},
 		},
 		emits: ['update:modelValue'],
 		setup(props, { emit }){				

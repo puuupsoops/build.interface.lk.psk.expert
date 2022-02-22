@@ -29,6 +29,8 @@ import { keys } from './keys/index'
 export interface RootState {}
 export const key: InjectionKey<Store<RootState>> = Symbol()
 
+
+
 export const store = createStore<RootState>({
 	state: {},
 	modules:{
