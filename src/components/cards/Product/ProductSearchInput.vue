@@ -34,7 +34,8 @@
 						<div class="article">{{item.article}}</div> <div class="name">{{item.name}}</div>
 					</router-link>
 				</p>
-				<span v-if="articles.length == 0">Не найдено</span>
+				<span v-if="loading && articles.length == 0"> Поиск...</span>
+				<span v-if="!loading && articles.length == 0">Не найдено</span>
 			</div>
 		</div>
 
@@ -74,7 +75,7 @@ export default defineComponent({
 			clearTimeout(debounce.value)
 			loading.value=true;
 			debounce.value = setTimeout(() => {
-					
+					if (search_str.value.length >=2)
 					store.dispatch(ProductActions.SEARCH_PRODUCT_ARTICLE, search_str.value)
 							.then(()=>{ setTimeout( ()=> {loading.value=false}, 500)})
 							//.finally(() => {loading.value=false})

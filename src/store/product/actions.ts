@@ -4,7 +4,7 @@ import { RootState } from "@/store"
 import { ProductState } from "./types"
 import { AuthMutations } from '../auth/mutations'
 import { ProductMutations } from './mutations'
-import { ProductArticles } from '@/models/Product'
+import { ProductArticles, Found } from '@/models/Product'
 
 
 export enum ProductActions {
@@ -15,6 +15,7 @@ export enum ProductActions {
 
 export const actions: ActionTree<ProductState, RootState> =  {
 	async [ProductActions.SEARCH_PRODUCT] ({commit}, data: string) {
+		commit(ProductMutations.SET_PROFUCT_FOUND_ERR_STR, '')
 		await axios.get(`/product/search?QUERY=${data}&OPTION=2`, {transformRequest: (data, headers) => {
 			delete headers.common['Authorization'];
 			return data;
@@ -23,11 +24,16 @@ export const actions: ActionTree<ProductState, RootState> =  {
 				commit(ProductMutations.SET_SEARCH_PRODUCT_RESULT, response.data)
 			})
 			.catch( error => {
-				commit(AuthMutations.SET_ERROR, 'Request SEARCH_PRODUCT error:<br>'+error)
+				if (error.response && error.response.status =="404") {
+					commit(ProductMutations.SET_PROFUCT_FOUND_ERR_STR, error.response)
+				} 
+				else
+					commit(AuthMutations.SET_ERROR, 'Request SEARCH_PRODUCT error:<br>'+error)
 			})
 
 	},
 	async [ProductActions.GET_PRODUCT_BY_ID] ({commit}, data: string) {
+		commit(ProductMutations.SET_PROFUCT_FOUND_ERR_STR, '')
 		await axios.get(`/product/search?QUERY=${data}&OPTION=9`, {transformRequest: (data, headers) => {
 			delete headers.common['Authorization'];
 			return data;
@@ -36,58 +42,31 @@ export const actions: ActionTree<ProductState, RootState> =  {
 				commit(ProductMutations.SET_PRODUCT_RESULT, response.data)
 			})
 			.catch( error => {
-				commit(AuthMutations.SET_ERROR, 'Request GET_PRODUCT_BY_ID error:<br>'+error)
+				if (error.response && error.response.status =="404") {
+					commit(ProductMutations.SET_PROFUCT_FOUND_ERR_STR, error.response)
+				} 
+				else
+					commit(AuthMutations.SET_ERROR, 'Request GET_PRODUCT_BY_ID error:<br>'+error)
 			})
 	},
 	async [ProductActions.SEARCH_PRODUCT_ARTICLE] ({commit}, data: string) {
-		// await axios.get(`/product/search?QUERY=${data}&OPTION=9`, {transformRequest: (data, headers) => {
-		// 	delete headers.common['Authorization'];
-		// 	return data;
-		// 	}})
-		// 	.then(response => {
-		// 		commit(ProductMutations.SET_PRODUCT_RESULT, response.data)
-		// 	})
-		// 	.catch( error => {
-		// 		commit(AuthMutations.SET_ERROR, 'Request GET_PRODUCT_BY_ID error:<br>'+error)
-		// 	})
-		const articles = <ProductArticles[]> [
-			{
-				article: 'КОС619',
-				name: 'Костюм "Умелец 1" серый/черный'
-			},
-			{
-				article: 'БРЮ652',
-				name: 'Брюки "Форест" хаки/черный'
-			},
-			{
-				article: 'КУР690',
-				name: 'Куртка "Велар" бежевый/черный'
-			},
-			{
-				article: 'КУР695',
-				name: 'Куртка "Азур" синий/черный'
-			},
-			{
-				article: 'БРЮ723',
-				name: 'Брюки-джоггеры "Аксель" Кмф хаки'
-			},
-			{
-				article: 'КУР752',
-				name: 'Куртка "Смарт" т.синий'
-			},
-			{
-				article: 'ПОЛ695',
-				name: 'Полукомбинезон "Азур" синий/черный'
-			},
-			{
-				article: 'КУР722',
-				name: 'Куртка-толстовка "Аксель" Кмф хаки/черный'
-			},
-			{
-				article: 'КУР724',
-				name: 'Куртка-ветровка "Аксель" Кмф хаки/черный'
-			},
-		]
-		commit(ProductMutations.SET_PRODUCT_ARTICLS, articles.filter(x=> x.article.toUpperCase().indexOf(data.toUpperCase())!=-1 || x.name.toUpperCase().indexOf(data.toUpperCase())!=-1))
+		commit(ProductMutations.SET_PROFUCT_FOUND_ERR_STR, '')
+		await axios.get(`/product/search?QUERY=${data}&OPTION=2`, {transformRequest: (data, headers) => {
+			delete headers.common['Authorization'];
+			return data;
+			}})
+			.then(response => {
+				const found =  <Found[]>response.data.FOUND 
+				commit(ProductMutations.SET_PRODUCT_ARTICLS, found.filter(x=> x.ARTICLE.toUpperCase().indexOf(data.toUpperCase())!=-1 || x.NAME.toUpperCase().indexOf(data.toUpperCase())!=-1))
+				//commit(ProductMutations.SET_PRODUCT_RESULT, )
+			})
+			.catch( error => {
+				if (error.response && error.response.status =="404") {
+					commit(ProductMutations.SET_PRODUCT_ARTICLS, [])
+					commit(ProductMutations.SET_PROFUCT_FOUND_ERR_STR, error.response.data.error.message)
+				} else
+					commit(AuthMutations.SET_ERROR, 'Request GET_PRODUCT_BY_ID error:<br>'+error)
+			})
+	
 	}
 }

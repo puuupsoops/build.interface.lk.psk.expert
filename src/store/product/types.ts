@@ -8,6 +8,7 @@ export interface ProductState {
 	product_images: string[],
 	product_protect: Protect[],
 	product_articls: ProductArticles[],
+	product_found_err_str: string,
 }
 export const DEFAULT_PRODUCT = {
 	ID:              '',

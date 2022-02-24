@@ -20,7 +20,7 @@
 
 	</div>
 
-	<div v-if="productFound">  
+	<div v-if="productFound.length>0">  
 		<ProductHeaderCard
 			:title="String(product.NAME)"
 			:price="String(product.PRICE)"

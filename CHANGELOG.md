@@ -1,6 +1,14 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-02-24
 
+    #0.1.63
+    
+    1. Добавлен обработчик Не найдено для запросов к каталогу
+    2. В компоненте ProductSearchInput сделана привязка поисков артиклов в каталоге
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-02-24
+
     #0.1.62
     
     1. Добвлен рабочий функционал черновиков
