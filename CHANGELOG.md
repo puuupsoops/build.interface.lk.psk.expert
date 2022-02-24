@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-02-24
+
+    #0.1.62
+    
+    1. Добвлен рабочий функционал черновиков
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-02-17
 
     #0.1.61

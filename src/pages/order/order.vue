@@ -47,17 +47,18 @@
 			/>
 		</div>
 	</div>
+	</div>
 	<OrderHeaderCard 
 		v-if="isOrder"
 		:data="order"
 	/>
 	<div class="content-heading-wrap proudct-heading-wrap" v-else>
-		<div class="content-heading-wrap-elem">
+		<div class="content-heading-wrap-elem" v-if="isProduct">
 			<div class="order-info">Добавьте позиции к заказу и тогда он будет сформирован</div>
 		</div>
 		
 	</div>
-	<div class="content-wrap content-order-wrap">
+	<div :class="isProduct ? 'content-wrap content-order-wrap' : ''">
 		<div class="content-wrap-elem">
 			<OrderCard 
 				v-if="isOrder"
@@ -67,9 +68,7 @@
 				@onClick="addOrder"
 			/>
 		</div>
-		<div class="content-wrap-elem"> 
-			
-			
+		<div class="content-wrap-elem" v-if="isProduct"> 
 				<ProductSliderSmallCard 
 					:data="productImages"
 				/>
@@ -79,7 +78,7 @@
 	<OrderModal v-model="showModal"/>
 	
 	<SnackBar v-model="error" :message="errorMsg"></SnackBar>
-</div>
+
 <OrderDraftModal v-model="showDraft"/>
 </div>
 </template>

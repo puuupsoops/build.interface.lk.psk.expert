@@ -130,6 +130,7 @@ export default defineComponent({
 		const menu = [
 			{title: 'Поиск товара', link: '/product', lock: false},
 			{title: 'Заказы', link: '/orders', lock: false},
+			{title: 'Новый заказ', link: '/order', lock: false},
 			{title: 'Отгрузки', link: '/shipments', lock: false},
 			{title: 'Претензии', link: '/claims', lock: false},
 			//{title: 'Претензия', link: '/claim', lock: false},

@@ -260,13 +260,19 @@
 				display: block
 				max-height: 1000px
 				+prefix(transition,  max-height $default-transition)
-
+				&.draft
+					padding:
+						top: 0px
+						bottom: 0px
 			&-row
 				+flex
 				padding: 20px 30px
 				+align-items(center)
 				border:
 					bottom: 1px solid #292C32
+				
+				&.draft
+					background-color: $bg-color
 				
 				&:last-child
 					border: 0

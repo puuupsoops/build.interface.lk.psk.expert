@@ -183,6 +183,7 @@
 
 			&:hover
 				color: $accent-color
+			
 
 		&-bottom
 			overflow-y: auto
@@ -253,6 +254,7 @@
 				+justify-content(space-around)
 				border:
 					top: 1px solid #292C32
+			
 
 		&-elem
 			position: relative
@@ -535,7 +537,7 @@
 		&.draft
 			height: 90%
 			max-height: 1000px
-
+			margin: 0px
 	&-header
 		+flex
 		+justify-content(space-between)
@@ -569,7 +571,8 @@
 		overflow: auto
 		height: 100%
 		flex: 1 1 auto
-
+		&.draft
+			background-color: $bg-color
 		.loading
 			font-size: 20pt
 			& span:nth-child(2)

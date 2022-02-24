@@ -1,6 +1,6 @@
 import { NewOrder } from "@/models/Order";
 import { MutationTree } from "vuex";
-import { DefaultNewOrder, DefaultOrder, OrderState, OrderStatePosition, OrderStatePositionOffer } from "./types";
+import { DefaultNewOrder, DefaultOrder, OrderState, OrderStateOrder, OrderStatePosition, OrderStatePositionOffer } from "./types";
 
 
 export enum OrderMutations {
@@ -20,6 +20,8 @@ export enum OrderMutations {
 	ADD_ORDER_PARTNER_ID = "ADD_ORDER_PARTNER_ID",
 	ADD_ORDER_TO_DRAFT = "ADD_ORDER_TO_DRAFT",
 	DEL_ORDER_FROM_DRAFT = "DEL_ORDER_FROM_DRAFT",
+	DEL_ALL_DRAFT = "DEL_ALL_DRAFT",
+	USE_DRAFT = "USE_DRAFT",
 }
 
 export const mutations: MutationTree<OrderState> = {
@@ -168,5 +170,15 @@ export const mutations: MutationTree<OrderState> = {
 		state.order_drafts = state.order_drafts.filter(x=>x.id!=id)
 		localStorage.setItem('orders_drafts', JSON.stringify(state.order_drafts));
 	},
-
+	[OrderMutations.DEL_ALL_DRAFT] (state): void{
+		state.order_drafts = []
+		localStorage.setItem('orders_drafts', JSON.stringify(state.order_drafts));
+	},
+	[OrderMutations.USE_DRAFT] (state, id: number): void{
+		const draft = JSON.stringify(state.order_drafts.find(x=>x.id==id))
+		if (draft) {
+			state.order = <OrderStateOrder>JSON.parse(draft ) 
+			state.order.id = (new Date()).getTime()
+		}
+	},
 }
