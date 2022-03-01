@@ -107,7 +107,7 @@
 			</div>
 			<iframe 
 				class="shipment-address-map"
-				src="https://yandex.ru/map-widget/v1/?um=constructor%3A215aa76ce0c1bf4f7b91136adfdeb973d398ac1754efa95eb44e60ec1bbabd43&amp;source=constructor" 
+				src="https://yandex.ru/map-widget/v1/?ll=37.617586%2C55.755080&mode=whatshere&whatshere%5Bpoint%5D=37.617586%2C55.755080&z=17" 
 				width="800" 
 				height="600" frameborder="0"></iframe>
 		</div>
@@ -129,6 +129,7 @@ import { defineComponent, computed, ref, onMounted } from 'vue'
 import { key } from '@/store'
 import { useStore } from 'vuex'
 import { CompanyActions } from '@/store/company/actions'
+//import { ShipmentsActions } from '@/store/shipments/actions'
 
 
 export default defineComponent({
@@ -158,7 +159,7 @@ export default defineComponent({
 		const delAddr = ref(false)
 		const delPreloader = ref(false)
 		const editAddrId = ref(-1)
-		const editAddrName = ref('')
+		const editAddrName = ref(null)
 
 		const del = (id: number) => {
 			delPreloader.value = true
@@ -177,6 +178,7 @@ export default defineComponent({
 				address.value.push({id: 0, name: e})
 		}
 		onMounted(() => {
+			//store.dispatch(ShipmentsActions.GET_DELIVERY_ADDRESS)
 			if (!store.getters.isCompanysLoad)
 			{
 				store.dispatch(CompanyActions.GET_COMPANYS)

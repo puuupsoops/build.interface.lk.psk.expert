@@ -11,18 +11,16 @@ export enum OrdersMutations {
 
 export const mutations: MutationTree<OrdersState> = {
 
-    [OrdersMutations.SET_ORDERS](state, data: Orders[]){
-        state.orders = data
-    },
-    [OrdersMutations.SET_ORDERS_DOCSTATUS](state, data: OrdersDocStatus){
-
-        state.orders.forEach( order => {
-            if (Array.isArray(order.checks) )
-                order.checks.forEach(check => {
-                    if (check.guid == data.id) check.doc_status = data
-                })
-        })
-        
-    }
-
+	[OrdersMutations.SET_ORDERS](state, data: Orders[]){
+		state.orders = data
+	},
+	[OrdersMutations.SET_ORDERS_DOCSTATUS](state, data: OrdersDocStatus){
+		state.orders.forEach( order => {
+			if (Array.isArray(order.checks) )
+				order.checks.forEach(check => {
+					if (check.guid == data.id) check.doc_status = data
+				})
+		})
+	},
+	
 }

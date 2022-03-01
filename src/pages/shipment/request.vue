@@ -16,14 +16,15 @@
 					></router-link>
 				
 				<div class="shipment-heading-info">
-					<div class="shipment-title"><span>Заявка на отгрузку № 145 от 04.05.2020 по Заказу № 145 от 04.05.2020</span></div>
-					<div class="shipment-heading-select"><span>Основание:</span>
+					<div v-if="order" class="shipment-title"><span>Новая заявка на отгрузку по Заказу № {{order}} от {{orders.find(x => x.n == order)?.date.substring(0,10)}}</span></div>
+					<div v-else class="shipment-title"><span>Отсутвуют заказы</span></div>
+					<div class="shipment-heading-select"><span>Основание: &nbsp;</span>
 						<div class="base-select-wrap">
-							<select class="base-select" style="width: 100%">
-								<option value="0" selected="">Заказ № 123 от 02.02.20202</option>
-								<option value="1">Заказ № 124 от 02.02.20202</option>
-								<option value="2">Заказ № 125 от 02.02.20202</option>
-								<option value="3">Заказ № 126 от 02.02.20202</option>
+							<select class="base-select" style="width: 100%" v-model="order">
+								<option v-for="(order, key) in orders"
+									:key="key"
+									:value="order.n"
+								>{{order.name}}</option>
 							</select>
 						</div>
 					</div>
@@ -34,11 +35,11 @@
 					</div>
 				</div>
 			</div>
-			<div class="shipment-heading-elem"> 
+			<!-- <div class="shipment-heading-elem"> 
 				<div class="shipment-product"><span>Название:</span>
 					<input class="shipment-product-input" type="text" value="Кремень">
 				</div>
-			</div>
+			</div> -->
 		</div>
 		<div class="nav-tab"><span>Вид отгрузки:</span>
 		<div class="nav-tab-wrap">
@@ -69,7 +70,8 @@
 			</transition>
 
 		</div>
-	</div>
+	<preloader v-if="loading"></preloader>
+</div>
 </template>
 
 
@@ -78,6 +80,7 @@ import PersonalBar from '@/components/cards/PersonalBar.vue'
 import Notification from '@/components/cards/Notification.vue'
 import CompanyBarTop from '@/components/cards/Company/CompanyBarTop.vue'
 import TopNav from '@/components/nav/TopNav.vue'
+import Preloader from '@/components/Preloader.vue'
 
 import ShipmentPickupCard from '@/components/cards/Shipment/ShipmentPickupCard.vue'
 import ShipmentDeliveryCard from '@/components/cards/Shipment/ShipmentDeliveryCard.vue'
@@ -87,6 +90,9 @@ import { useStore } from 'vuex'
 import { ref,computed, onMounted, defineComponent } from 'vue'
 import { key } from '@/store'
 import { CompanyActions } from '@/store/company/actions'
+import { OrdersActions } from '@/store/orders/actions'
+import { ShipmentsConst } from '@/store/shipments/types'
+import { ShipmentsMutations } from '@/store/shipments/mutations'
 
 export default defineComponent({
 	components: {
@@ -94,27 +100,54 @@ export default defineComponent({
 		Notification,
 		CompanyBarTop,
 		TopNav,
+		Preloader,
 		ShipmentPickupCard,
 		ShipmentDeliveryCard,
 		ShipmentTransportCard
 	},
+	
 	setup(){
-		const store = useStore(key);
-		const activeCompanyUid = ref('');
-
+		const store = useStore(key)
+		const activeCompanyUid = ref('')
+		const loading = ref(false)
+		
 		const activeCard = ref('ShipmentPickupCard')
-
+		
+		const order = computed({
+			get: () => {
+				const id = store.getters.getCurrentOrderId
+				if (id != null && id != ShipmentsConst.DEFAULT_ORDER_ID) 
+					return id
+				else {
+					console.log(store.getters.getOrders[0])
+					if (store.getters.getOrders[0] != undefined) {
+							store.commit(ShipmentsMutations.SET_CURRENT_ORDER, store.getters.getOrders[0].n)
+							return store.getters.getOrders[0].n
+						} else {
+						store.commit(ShipmentsMutations.SET_CURRENT_ORDER, ShipmentsConst.DEFAULT_ORDER_ID)
+						return null
+					}
+				}
+			},
+			set: (val) => {store.commit(ShipmentsMutations.SET_CURRENT_ORDER,val)}
+		})
 		onMounted(() => {
-			if (!store.getters.isCompanysLoad)
-			{
-				store.dispatch(CompanyActions.GET_COMPANYS)
-			}
 			
+			if (!store.getters.isCompanysLoad) store.dispatch(CompanyActions.GET_COMPANYS)
+			if (!store.getters.isOrders) {
+				loading.value = true
+				store.dispatch(OrdersActions.GET_ORDERS).then(()=>{ loading.value = false})
+			}
 		});
+		
 		return {
-			companyBarTopData: computed(() => store.getters.getCompanysList),
+			loading,
 			activeCompanyUid,
-			activeCard
+			activeCard,
+			order,
+			//computed
+			companyBarTopData: computed(() => store.getters.getCompanysList),
+			orders: computed(() => store.getters.getOrders),
 		}
 	}
 })

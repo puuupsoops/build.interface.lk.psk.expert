@@ -1,7 +1,6 @@
 <template>
 <div :class="'product-search fullwidth' + (modelValue ? '': ' none')" ref="target">
 	<div class="product-search-input-container">
-	
 		<div class="product-search-input options" >
 			<input 
 				type="text"
@@ -16,9 +15,8 @@
 				class="product-search-save" 
 				title="Сохранить" 
 				v-if="search_str.length>10"
-				@click="('update:value', search_str ); $emit('save', search_str);close();"
+				@click="save();"
 			>
-
 				<svg width="16" height="16" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M1 3.5C1 2.39543 1.89543 1.5 3 1.5H16C19.866 1.5 23 4.63401 23 8.5V21.5C23 22.6046 22.1046 23.5 21 23.5H3C1.89543 23.5 1 22.6046 1 21.5V3.5Z" stroke="#A5A7A9" stroke-width="2"/>
 					<rect x="4" y="13.5" width="2" height="10" rx="1" fill="#A5A7A9"/>
@@ -52,7 +50,7 @@
 				> 
 					<router-link
 						tag="a"
-						@click="search_str=item.value+' '; searchInput.focus();"
+						@click="search_str=item.value+' '; active_elem =  Object.assign({},item) ;searchInput.focus();"
 						to="#"
 					>
 						<div class="name">{{item.value}}</div>
@@ -78,6 +76,8 @@ import { onClickOutside } from '@vueuse/core';
 import { ShipmentsActions } from '@/store/shipments/actions';
 import { ShipmentsMutations } from '@/store/shipments/mutations';
 
+
+
 export default defineComponent({
 	name: 'ShipmentAddressInput',
 	props:{
@@ -86,8 +86,8 @@ export default defineComponent({
 			required: true,
 		},
 		value: {
-			type: String,
-			default: ''
+			type: Number,
+			required: false,
 		}
 	},
 	emits:['update:modelValue', 'update:value', 'save'],
@@ -103,15 +103,18 @@ export default defineComponent({
 		const target = ref(null)
 		const searchInput = ref<any>(null)
 		const active_item = ref(-1)
+		const active_elem = <any>ref(null)
 		
 		const doSearch = (e:any) => {
 			if ([13, 16, 17, 18, 27, 37, 38, 39, 40].includes(e.keyCode)){
 				if (e.keyCode == 40 && active_item.value < store.getters.getAddressPrompt.length-1 ) {
 					active_item.value=active_item.value+1
+					active_elem.value = Object.assign({}, store.getters.getAddressPrompt[active_item.value])
 					search_str.value = store.getters.getAddressPrompt[active_item.value].value+' '
 				}
 				if (e.keyCode == 38 && active_item.value !=- 1) {
 					active_item.value=active_item.value-1
+					active_elem.value = Object.assign({}, store.getters.getAddressPrompt[active_item.value])
 					search_str.value = store.getters.getAddressPrompt[active_item.value].value + ' '
 				}
 				if (e.keyCode == 27) close()
@@ -133,25 +136,40 @@ export default defineComponent({
 		onClickOutside(target, () => {close()})
 		
 		watch( ()=>props.modelValue, () => {
-			search_str.value= props.value
+			//search_str.value= props.value
 			store.commit(ShipmentsMutations.CLEAR_ADDRESS_PROMPT)
 			nextTick(() => {
 				searchInput.value.focus();
 			});
 			
 			})
-
+		const save = ()=>{
+			console.log(active_elem.value)
+			const res = {
+					label:  <string>active_elem.value.value ? <string>active_elem.value.value : '',
+					latitude: <string>active_elem.value.data.geo_lat ? <string>active_elem.value.data.geo_lat : '',
+					logitude: <string>active_elem.value.data.geo_lon ? <string>active_elem.value.data.geo_lon : '',
+				}
+			store.dispatch(ShipmentsActions.ADD_DELIVERY_ADDRESS, res)
+			
+			
+			//emit('update:modelValue', false)
+			// emit('update:modelValue', false);
+			//close();
+		}
 		return {
 			search_str,
 			loading,
 			target,
 			searchInput,
 			active_item,
+			active_elem,
 			
 			addressPrompt: computed(()=>store.getters.getAddressPrompt),
 			
 			doSearch,
 			close,
+			save,
 		}
 
 	},

@@ -1,6 +1,6 @@
 <template>
 <div class="orders-list-wrap">
-	<div class="orders-list ">
+	<div class="orders-list " ref="target">
 			<div class="orders-list-row orders-list-heading">
 				<div class="orders-list-elem">№</div>
 				<div class="orders-list-elem">Наименование</div>
@@ -23,7 +23,7 @@
 					v-if="checkPeriod(item.date)"
 				>
 					<div class="orders-list-row orders-list-main-row"
-						@click="key === active ? active = -1 : active = key"
+						@click="key === active ? active = -1 : active = key; active_more =  -1"
 					>
 
 						<div class="orders-list-elem">
@@ -38,23 +38,32 @@
 						<div class="orders-list-elem" > 
 							<button
 								class="orders-list-more"
-								@click.stop="key == active_more ? active_more = -1 : active_more = key"
+								@click.stop="active_more = key"
 							>Подробно</button>
 							<div
-								ref="target"
+								
 								:class="'orders-list-more-dropdown' +  ( key == active_more ? ' active': '' )"
 							>
-								<a class="orders-list-more-dropdown-link" href="">Повторить</a>
-								<a class="orders-list-more-dropdown-link" href="">Детали заказа</a>
-								<a class="orders-list-more-dropdown-link" href="">Скачать документы</a>
-								<a class="orders-list-more-dropdown-link" href="">Скачать сертификаты</a>
-								<a class="orders-list-more-dropdown-link" href="">Печать документов</a>
-								<a class="orders-list-more-dropdown-link" href="">Печать сертификатов</a>
+								<a class="orders-list-more-dropdown-link" href="#">Повторить</a>
+								<a class="orders-list-more-dropdown-link" href="#" @click="detailOrderId = item.n; showDetail=true" >Детали заказа</a>
+								<a class="orders-list-more-dropdown-link" href="#">Скачать документы</a>
+								<a class="orders-list-more-dropdown-link" href="#">Скачать сертификаты</a>
+								<a class="orders-list-more-dropdown-link" href="#">Печать документов</a>
+								<a class="orders-list-more-dropdown-link" href="#">Печать сертификатов</a>
+								<router-link 
+									class="orders-list-more-dropdown-link" 
+									tag="a"
+									:to="'/shipments/request'"
+									@click="setOrderId(item.n)"
+								>
+										<span>Заявка на транспорт</span>
+								</router-link>
+								
 							</div>
 						</div>
 					</div>
 
-					<div :class="'orders-list-info'   + ( key == active ? ' active': '' )"  >
+					<div :class="'orders-list-info'   + ( key == active ? ' active': '' )" @click="active_more =  -1" >
 						
 						<div v-if="Array.isArray(item.checks)">
 							<div
@@ -130,19 +139,24 @@
 		
 	</div>
 	<PreloaderLocal v-if="loading" style="width: 100%"></PreloaderLocal>
+	<OrderDetailModal v-model="showDetail" :orderId="detailOrderId"></OrderDetailModal>
 </div>
 </template>
 
 <script lang="ts">
+import PreloaderLocal from '@/components/PreloaderLocal.vue'
+import OrderDetailModal from '@/components/cards/Order/OrderDetailModal.vue'
+
+
 import { ref, PropType, defineComponent, watch } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { Orders } from '@/models/Orders'
-import PreloaderLocal from '@/components/PreloaderLocal.vue'
 import { useStore } from 'vuex'
 import { key } from '@/store'
 import { OrderActions } from '@/store/order/actions'
 import { Storage } from '@/models/Partner'
 import { OrdersActions } from '@/store/orders/actions'
+import { ShipmentsMutations } from '@/store/shipments/mutations'
 
 export default defineComponent({
 	props: {
@@ -154,22 +168,24 @@ export default defineComponent({
 		},
 		period: {
 			type: String
-		},        
+		},
 		loading:{
 			type: Boolean,
 			default: false
 		}
 	},
 	components: {
-		PreloaderLocal
+		PreloaderLocal,
+		OrderDetailModal,
 	},
 	setup(props) {
 		const store = useStore(key)
 		const active = ref(-1)
 		const active_more = ref(-1)
 		const target = ref(null)
+		const showDetail = ref(false)
 		const loading_bill = ref<string[]>([])
-
+		const detailOrderId = ref(-1)
 		
 		onClickOutside(target, () => {
 			active_more.value = -1
@@ -207,6 +223,10 @@ export default defineComponent({
 			const storage = storages.find(x  => x.guid == organization_id)
 			return storage ? storage.name.replace(/(^|\s)\S/g, s => s.toUpperCase()).replace(/(ООО)|(")|(\s)|([а-я])/g, '') : 'Склад'
 		}
+		
+		const setOrderId = (id: number) => {
+			store.commit(ShipmentsMutations.SET_CURRENT_ORDER, id)
+		}
 
 		return {
 			//data
@@ -214,11 +234,14 @@ export default defineComponent({
 			active,
 			active_more,
 			loading_bill,
+			showDetail,
+			detailOrderId,
 			
 			//methods
 			checkPeriod,
 			downloadBill,
 			getStorageName,
+			setOrderId,
 		}
 	},
 })

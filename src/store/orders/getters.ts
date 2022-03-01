@@ -3,7 +3,8 @@ import { RootState } from "@/store"
 import { OrdersState } from "./types"
 
 export const getters: GetterTree<OrdersState, RootState> = {
-	isOrders: state => state.orders.length == 0,
+	isOrders: state => state.orders.length != 0,
+	getOrdersByID: state => (id: number) => state.orders.find(x => x.n == id),
 	getOrders: state => state.orders,
     getCompanyFromOrders: state => {
         const unique = <Object[]>[...new Set(state.orders.map(item => item.partner_guid))]
