@@ -53,6 +53,15 @@
 								<router-link 
 									class="orders-list-more-dropdown-link" 
 									tag="a"
+									:to="'/claims/request'"
+									@click="setOrderId(item.n)"
+								>
+										<span>Оформить претензию</span>
+								</router-link>
+								
+								<router-link 
+									class="orders-list-more-dropdown-link" 
+									tag="a"
 									:to="'/shipments/request'"
 									@click="setOrderId(item.n)"
 								>

@@ -77,12 +77,35 @@ const routes = [
 	{
 		path: '/shipments/address', 
 		component: () => import('@/pages/shipment/address.vue'),
-		name: 'ShipmentAdresss',
+		name: 'ShipmentsAdresss',
 		meta:{
 				auth: true,
 			}
-		},
-
+	},
+	{
+		path: '/claims', 
+		component: () => import('@/pages/claim/claims.vue'),
+		name: 'Claims',
+		meta:{
+				auth: true,
+			}
+	},
+	{
+		path: '/claims/request', 
+		component: () => import('@/pages/claim/request.vue'),
+		name: 'ClaimsRequest',
+		meta:{
+				auth: true,
+			}
+	},
+	{
+		path: '/claims/success', 
+		component: () => import('@/pages/claim/success.vue'),
+		name: 'ClaimsSuccess',
+		meta:{
+				auth: true,
+			}
+	},
 	{
 		path: '/404',
 		component: () => import('@/pages/404.vue'),
@@ -103,30 +126,6 @@ const routes = [
 	// 	path: '/personal',
 	// 	component: () => import('@/pages/tmp_personal'),
 	// 	name: 'Personal',
-	// 	meta:{
-	// 			auth: true,
-	// 		}
-	// },
-	// {
-	// 	path: '/claims',
-	// 	component: () => import('@/pages/claim/tmp_claim_main'),
-	// 	name: 'ClaimMain',
-	// 	meta:{
-	// 			auth: true,
-	// 		}
-	// },
-	// {
-	// 	path: '/claim',
-	// 	component: () => import('@/pages/claim/tmp_claim'),
-	// 	name: 'Claim',
-	// 	meta:{
-	// 			auth: true,
-	// 		}
-	// },
-	// {
-	// 	path: '/claim_success',
-	// 	component: () => import('@/pages/claim/tmp_claim_success'),
-	// 	name: 'ClaimSuccess',
 	// 	meta:{
 	// 			auth: true,
 	// 		}

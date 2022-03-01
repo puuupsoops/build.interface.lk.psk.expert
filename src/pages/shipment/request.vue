@@ -119,7 +119,6 @@ export default defineComponent({
 				if (id != null && id != ShipmentsConst.DEFAULT_ORDER_ID) 
 					return id
 				else {
-					console.log(store.getters.getOrders[0])
 					if (store.getters.getOrders[0] != undefined) {
 							store.commit(ShipmentsMutations.SET_CURRENT_ORDER, store.getters.getOrders[0].n)
 							return store.getters.getOrders[0].n

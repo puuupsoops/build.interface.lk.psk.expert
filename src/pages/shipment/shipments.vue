@@ -105,7 +105,7 @@ export default defineComponent({
 		});
 
 	
-			onMounted(() => {
+		onMounted(() => {
 			store.commit(ShipmentsMutations.SET_SHIPMENT);
 			if (!store.getters.isCompanysLoad)
 			{
@@ -114,7 +114,7 @@ export default defineComponent({
 						activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
 					})
 			}
-			
+		
 		});
 
 		return{
