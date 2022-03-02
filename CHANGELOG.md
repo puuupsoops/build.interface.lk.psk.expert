@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-03-02
+
+    #0.1.66
+    
+    1. Изменен компонент OrderSearchCard - теперь он фильтрует таблицу с заказами согласно полям
+    
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-03-01
 
     #0.1.65

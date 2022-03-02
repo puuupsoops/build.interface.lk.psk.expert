@@ -7,3 +7,8 @@ export interface SelectInputData{
 	id: number|string;
 	name: string;
 }
+
+export interface SearchData{
+	id: number|string;
+	search: string;
+}

@@ -9,7 +9,7 @@
 		
 	</div>
 	<top-nav newOrder></top-nav>
-
+	
 	<div class="orders-heading">
 			<div class="orders-heading-elem">
 			<div class="orders-heading-item">
@@ -33,7 +33,7 @@
 					/>
 
 			</div>
-			<div class="orders-heading-clean"></div>
+			<div class="orders-heading-clean" title="Убрать фильтры" @click="filterCompanyUid='';filterPeriod=0"></div>
 			</div>
 			<div class="orders-heading-elem">
 			
@@ -41,7 +41,7 @@
 	</div>
 
 	<OrdersSearchCard
-		:data="{left:header, right:dogovor}"
+		:data="searchColumn"
 		v-model="search"
 	/>
 	<OrdersListCard
@@ -49,6 +49,7 @@
         :loading="loading"
         :contrAgent="filterCompanyUid"
         :period="filterPeriodData[filterPeriod].name"
+        :search="search"
 	/>
 		
 </div>
@@ -69,6 +70,7 @@ import { key } from '@/store'
 import { CompanyActions } from '@/store/company/actions'
 //import { OrdersMutations } from '@/store/orders/mutations'
 import { OrdersActions } from '@/store/orders/actions'
+import { SearchData } from '@/models/Components'
 
 export default defineComponent({
 	components:{
@@ -86,11 +88,9 @@ export default defineComponent({
         const filterCompanyUid =  ref('')
         const filterPeriod = ref(0)
         const loading = ref(true)
-		const search = ref({left: 1, right: 0})
-		const dogovor = ref([
-			{id: 0, name:'Все'},
-		])
-		const header = [
+		const search = ref<SearchData|null>(null)
+		const dogovor = [{id: 1, name: '---'}]
+		const searchColumn = [
 			{id: 1, name: 'Наименование'},
 			{id: 2, name: 'Контрагент'},
 			{id: 3, name: 'Номер'},
@@ -120,10 +120,10 @@ export default defineComponent({
             filterPeriodData: computed(() => store.getters.getOrdersDataPeriodArray),
             filterPeriod,
 
-            ordersList: computed(() => store.getters.getOrders),
+            ordersList: computed(() => store.getters.getOrdersFiltred(search.value) ),
 			activeCompanyUid,
 			dogovor,
-			header,
+			searchColumn,
 			search,
 		}
 	}

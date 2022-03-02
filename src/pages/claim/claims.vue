@@ -31,7 +31,7 @@
 			</div>
 		</div>
 		<OrdersSearchCard
-			:data="{left:header, right:dogovor}"
+			:data="header"
 			v-model="search"
 		/>
 		<ShipmentsListCard

@@ -3,11 +3,11 @@
 	<div class="orders-list " ref="target">
 			<div class="orders-list-row orders-list-heading">
 				<div class="orders-list-elem">№</div>
-				<div class="orders-list-elem">Наименование</div>
-				<div :class="'orders-list-elem' + (contrAgent !='' ? ' active':'')">Контрагент</div>
-				<div class="orders-list-elem">Номер</div>
-				<div :class="'orders-list-elem' + (period != 'Все' ? ' active':'')">Дата создания</div>
-				<div class="orders-list-elem">Статус</div>
+				<div :class="'orders-list-elem' + (search && search.id == 1 ? ' active': '')">Наименование</div>
+				<div :class="'orders-list-elem' + (search && search.id == 2 ? ' active': '') + (contrAgent !='' ? ' active':'')">Контрагент</div>
+				<div :class="'orders-list-elem' + (search && search.id == 3 ? ' active': '')">Номер</div>
+				<div :class="'orders-list-elem' + (search && search.id == 4 ? ' active': '') + (period != 'Все' ? ' active':'')">Дата создания</div>
+				<div :class="'orders-list-elem' + (search && search.id == 5 ? ' active': '')">Статус</div>
 				<div class="orders-list-elem">Инфо</div>
 			</div>
 			
@@ -166,6 +166,7 @@ import { OrderActions } from '@/store/order/actions'
 import { Storage } from '@/models/Partner'
 import { OrdersActions } from '@/store/orders/actions'
 import { ShipmentsMutations } from '@/store/shipments/mutations'
+import { SearchData } from '@/models/Components'
 
 export default defineComponent({
 	props: {
@@ -181,6 +182,9 @@ export default defineComponent({
 		loading:{
 			type: Boolean,
 			default: false
+		},
+		search: {
+			type: Object as PropType<SearchData>
 		}
 	},
 	components: {
