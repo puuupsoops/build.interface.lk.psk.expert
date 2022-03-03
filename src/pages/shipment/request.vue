@@ -20,6 +20,7 @@
 					<div v-else class="shipment-title"><span>Отсутвуют заказы</span></div>
 					<div class="shipment-heading-select"><span>Основание: &nbsp;</span>
 						<div class="base-select-wrap">
+							<preloader-local v-if="loading"></preloader-local>
 							<select class="base-select" style="width: 100%" v-model="order">
 								<option v-for="(order, key) in orders"
 									:key="key"
@@ -65,12 +66,12 @@
 		</div>
 		<div class="shipment-form shipment-form-pickup">
 			<transition name="show" mode="out-in">
-				<component :is="activeCard"/>
+				<component :is="activeCard" :order="'№ ' + order + ' от ' + orders.find(x => x.n == order)?.date.substring(0,10) "/>
 				
 			</transition>
 
 		</div>
-	<preloader v-if="loading"></preloader>
+	
 </div>
 </template>
 
@@ -80,7 +81,7 @@ import PersonalBar from '@/components/cards/PersonalBar.vue'
 import Notification from '@/components/cards/Notification.vue'
 import CompanyBarTop from '@/components/cards/Company/CompanyBarTop.vue'
 import TopNav from '@/components/nav/TopNav.vue'
-import Preloader from '@/components/Preloader.vue'
+import PreloaderLocal from '@/components/PreloaderLocal.vue'
 
 import ShipmentPickupCard from '@/components/cards/Shipment/ShipmentPickupCard.vue'
 import ShipmentDeliveryCard from '@/components/cards/Shipment/ShipmentDeliveryCard.vue'
@@ -100,7 +101,7 @@ export default defineComponent({
 		Notification,
 		CompanyBarTop,
 		TopNav,
-		Preloader,
+		PreloaderLocal,
 		ShipmentPickupCard,
 		ShipmentDeliveryCard,
 		ShipmentTransportCard

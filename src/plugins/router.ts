@@ -75,6 +75,14 @@ const routes = [
 			}
 	},
 	{
+		path: '/shipments/request/success', 
+		component: () => import('@/pages/shipment/success.vue'),
+		name: 'ShipmentsRequestSuccess',
+		meta:{
+				auth: true,
+			}
+	},
+	{
 		path: '/shipments/address', 
 		component: () => import('@/pages/shipment/address.vue'),
 		name: 'ShipmentsAdresss',

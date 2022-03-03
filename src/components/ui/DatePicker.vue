@@ -2,7 +2,7 @@
 <div class="ui-datepicker-date" ref="target" >
 	<div >
 		<input
-			:class="active ? ' active' : ''"
+			:class="(active ? 'active' : '') + (error ? ' error': '')"
 			type="text" placeholder="Выберите дату"
 			name="date" 
 			autocomplete="off" 
@@ -76,18 +76,22 @@
 </div>
 </template>
 
-<script>
-import { computed, ref } from 'vue'
+<script lang="ts">
+import { computed, defineComponent, ref } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 
-export default {
+export default defineComponent({
 	props:{
 		modelValue: {
-			type: Date,
+			type: String,
 			default: null,
 		},
+		error: {
+			type: Boolean,
+			default: false,
+		},
 	},
-	emits: ['update:modelValue'],
+	emits: ['update:modelValue', 'onInput'],
 	setup(props, { emit }) {
 		const delta = ref(0);
 		const target = ref(null);
@@ -118,7 +122,7 @@ export default {
 				let day = dt.getDate()
 				let select = false;
 				if (props.modelValue) 
-					select = dt.getTime()  === props.modelValue.getTime()
+					select = dt.getTime()  === new Date(props.modelValue).getTime()
 				
 				el.push({
 					day,
@@ -137,9 +141,11 @@ export default {
 			return {year, month: {month, month_int}, dateArr}
 		})
 
-		const select_date = (year, month, day) => {
+		const select_date = (year: number, month: number, day: number) => {
 			let dt= new Date(year, month, day);
-			emit('update:modelValue', dt);
+			//emit('update:modelValue', dt.toISOString().substr(8,2)+'.'+dt.toISOString().substr(5,2)+'.'+ dt.toISOString().substr(0,4));
+			emit('update:modelValue', dt.toISOString().substr(0,10));
+			emit('onInput');
 			active.value = false;
 		}
 
@@ -152,6 +158,6 @@ export default {
 			delta
 		}
 	}
-}
+})
 
 </script>

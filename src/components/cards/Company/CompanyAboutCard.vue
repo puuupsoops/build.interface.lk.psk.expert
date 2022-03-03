@@ -4,13 +4,17 @@
 			<div class="company-head-about-info">
 				<div class="company-head-about-title">{{data.name}}</div>
 				<div class="company-head-about-wrap">
-					<a class="company-head-about-add" href="#">
+					<router-link 
+						class="company-head-about-add" 
+						tag="a"
+						:to="'/order'"
+					>
 						<img
 							class="company-head-about-add-img"
 							src="@/assets/img/icon/doc-add.svg"
 							alt=""
 						/>Добавить заказ
-					</a>
+					</router-link >
 					<div class="company-head-about-text">
 						<span class="company-head-about-text-top">Город</span
 						><span class="company-head-about-text-bottom">{{data.city}}</span>
@@ -54,9 +58,14 @@
 				</div>
 			</div>
 			<div class="company-head-about-btn-wrap">
-				<a class="company-head-about-btn" href="#" 
-						>Договора</a
-				><a class="company-head-about-btn"  href="#" 
+				<router-link 
+						class="company-head-about-btn" 
+						tag="a"
+						:to="'/agreements'"
+					>
+					Договоры
+				</router-link>
+				<a class="company-head-about-btn"  href="#" 
 						>Редактировать</a>
 			</div>
 		</div>

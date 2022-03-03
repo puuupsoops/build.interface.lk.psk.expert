@@ -165,7 +165,7 @@
 		&-input-wrap
 			+flex
 			width: 100%
-			max-width: 675px
+			//max-width: 675px
 			+align-items(center)
 
 		&-input,
@@ -180,7 +180,7 @@
 		
 		&-input
 			padding: 13px 19px
-			max-width: 675px
+			//max-width: 675px
 			font-size: 16px
 			font-weight: 400
 			line-height: 24px
@@ -242,13 +242,15 @@
 
 			&.shipment-form-accept-btn
 				border-color: #9E6CFD
-
+				&.active
+					background-color: #9E6CFD
 				&:hover
 					background-color: rgba(158, 108, 253, .2)
 			
 			&.shipment-form-urgently-btn
 				border-color: #FF4444
-
+				&.active
+					background-color: #FF4444
 				&:hover
 					background-color: rgba(255, 68, 68, .2)
 		

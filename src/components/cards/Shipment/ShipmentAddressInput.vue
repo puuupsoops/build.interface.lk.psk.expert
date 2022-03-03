@@ -150,12 +150,11 @@ export default defineComponent({
 					latitude: <string>active_elem.value.data.geo_lat ? <string>active_elem.value.data.geo_lat : '',
 					logitude: <string>active_elem.value.data.geo_lon ? <string>active_elem.value.data.geo_lon : '',
 				}
-			store.dispatch(ShipmentsActions.ADD_DELIVERY_ADDRESS, res)
+			store.dispatch(ShipmentsActions.ADD_SHIPMENTS_ADDRESS, res)
 			
 			
-			//emit('update:modelValue', false)
-			// emit('update:modelValue', false);
-			//close();
+			emit('update:modelValue', false)
+			close();
 		}
 		return {
 			search_str,

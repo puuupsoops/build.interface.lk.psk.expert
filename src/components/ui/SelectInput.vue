@@ -8,12 +8,12 @@
 			{{ active_name}}
 		</button>
 		<div 
-			:class="input_active ? 'select-input-options active' : 'select-input-options'"
+			:class="'select-input-options' + (input_active ? ' active' : '')"
 		>
 			<p 
 				v-for="i in data"
 				:key="i.id"
-				:class="i.id == modelValue ? 'select-input-item active' : 'select-input-item'"
+				:class="'select-input-item' + (i.id == modelValue ? ' active' : '')"
 				@click="$emit('update:modelValue', i.id); $emit('onInput');input_active = !input_active"
 			>
 				{{i.name}}
@@ -28,7 +28,6 @@
 import { ref, computed, defineComponent, PropType } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { SelectInputData } from '@/models/Components'
-
 
 export default defineComponent({
 	props: {
@@ -45,7 +44,7 @@ export default defineComponent({
 			default: '',
 		}
 	},
-	emits: ['update:modelValue','onInput'],
+	emits: ['update:modelValue', 'onInput'],
 	setup(props){
 		const input_active = ref(false)
 		const target = ref(null)

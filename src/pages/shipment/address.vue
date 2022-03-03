@@ -6,31 +6,16 @@
 			<Notification></Notification>
 			<PersonalBar></PersonalBar>
 		</div>
-		<top-nav>
+		<top-nav address @onClick="editAddrName=-1; editAddrName= ''; addAddr=true;">
 		</top-nav>
 		<div class="shipment-heading">
 			<div class="shipment-heading-elem"> 
-				<!-- <router-link
-						tag="a" 
-						:to="'/shipments'"
-						class="shipment-heading-back-btn"
-					></router-link> -->
+				
 				<div class="shipment-heading-info">
 					<div class="shipment-title"><span>Адреса доставки</span></div>
 				</div>
 			</div>
-			<div class="content-heading-btn">
-					<div
-						class="shipment-form-map-btn" 
-						@click="editAddrName=-1; editAddrName= ''; addAddr=true;"
-					> 
-						<svg class="shipment-form-map-btn-img" width="19" height="25" viewBox="0 0 19 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-								<path d="M9.49968 25C8.95397 25 8.4653 24.717 8.19255 24.2429C8.18967 24.238 8.18688 24.2329 8.1841 24.2279L1.98479 12.8809C0.505001 10.1724 0.547432 6.95749 2.09831 4.28113C3.61555 1.66277 6.31047 0.0631103 9.30725 0.00197754C9.43527 -0.00065918 9.56398 -0.00065918 9.69191 0.00197754C12.6887 0.0631103 15.3837 1.66277 16.9009 4.28113C18.4518 6.95749 18.4943 10.1723 17.0145 12.8809L10.8152 24.2279C10.8124 24.2329 10.8096 24.238 10.8067 24.2429C10.534 24.717 10.0454 25 9.49968 25ZM9.49963 1.56252C9.44597 1.56252 9.39245 1.56306 9.33903 1.56414C6.89279 1.61404 4.69133 2.92258 3.45017 5.06453C2.17541 7.26448 2.14016 9.90642 3.35593 12.1317L9.49963 23.3768L15.6433 12.1318C16.8591 9.90642 16.8238 7.26448 15.549 5.06453C14.3078 2.92263 12.1064 1.61404 9.66013 1.56414C9.60685 1.56306 9.55329 1.56252 9.49963 1.56252Z" fill="#8D8D8D"></path>
-								<path d="M9.5 11.3281C7.56147 11.3281 5.98438 9.75103 5.98438 7.8125C5.98438 5.87397 7.56147 4.29688 9.5 4.29688C11.4385 4.29688 13.0156 5.87397 13.0156 7.8125C13.0156 9.75103 11.4386 11.3281 9.5 11.3281ZM9.5 5.85938C8.42305 5.85938 7.54688 6.73555 7.54688 7.8125C7.54688 8.88945 8.42305 9.76563 9.5 9.76563C10.577 9.76563 11.4531 8.88945 11.4531 7.8125C11.4531 6.73555 10.577 5.85938 9.5 5.85938Z" fill="#8D8D8D"></path>
-						</svg>
-						<span >Добавить <br>новый адрес</span>
-					</div>
-			</div>
+			
 
 		</div>
 			
@@ -46,21 +31,27 @@
 						<shipment-address-input 
 							v-model= "addAddr"
 							:value="editAddrName"
-							@save="save"
+							
 						></shipment-address-input>
 						
 					</div>
-					
+					<div
+						v-if="loading"
+						class="shipment-address-list-row"
+					>
+						<preloader-local class="shipment-address-list-row-info"></preloader-local>
+					</div>
 					<div 
+						v-else
 						v-for="(item, key) in address"
 						:key="key"
 						>
 						<div
-							:class="'shipment-address-list-row ' + ( key == currentAddr ? ' active': '' )"
-							@click="currentAddr = key;  "
+							:class="'shipment-address-list-row ' + ( item.index == currentAddr ? ' active': '' )"
+							@click="currentAddr = item.index;  "
 						>
 							<div class="shipment-address-list-elem">{{key+1}}</div>
-							<div class="shipment-address-list-elem">{{item.name}}</div>
+							<div class="shipment-address-list-elem">{{item.label}}</div>
 							<div class="shipment-address-list-elem actions" 
 								v-if="key == currentAddr"
 							>
@@ -88,7 +79,7 @@
 							</div>
 						</div>
 						<div
-							v-if="delAddr && key == currentAddr"
+							v-if="delAddr && item.index == currentAddr"
 							class="shipment-address-list-row-info"
 						>
 							<div v-if="!delPreloader">Удалить адрес?</div>
@@ -99,15 +90,17 @@
 							<preloader-local v-else></preloader-local>
 						</div>
 					</div>
+					
 					<div v-if="address.length == 0" class="shipment-address-list-row">
 						<div class="shipment-address-list-elem"></div>
 						<div class="shipment-address-list-elem">Адреса доставки отсутсвуют</div>
 					</div>
 				</div>
 			</div>
-			<iframe 
+		
+			<iframe v-if="address.length != 0"
 				class="shipment-address-map"
-				src="https://yandex.ru/map-widget/v1/?ll=37.617586%2C55.755080&mode=whatshere&whatshere%5Bpoint%5D=37.617586%2C55.755080&z=17" 
+				:src="'https://yandex.ru/map-widget/v1/?mode=whatshere&whatshere%5Bpoint%5D=' + latlon.lon + '%2C'+ latlon.lat + '&z=15'" 
 				width="800" 
 				height="600" frameborder="0"></iframe>
 		</div>
@@ -129,8 +122,8 @@ import { defineComponent, computed, ref, onMounted } from 'vue'
 import { key } from '@/store'
 import { useStore } from 'vuex'
 import { CompanyActions } from '@/store/company/actions'
-//import { ShipmentsActions } from '@/store/shipments/actions'
-
+import { ShipmentsActions } from '@/store/shipments/actions'
+import { ShipmentsAddress } from "@/models/Shupments"
 
 export default defineComponent({
 	name: 'ShipmentAdresss',
@@ -145,40 +138,39 @@ export default defineComponent({
 	setup() {
 		const store = useStore(key);
 		const activeCompanyUid = ref('');
-		const address = ref([
-				{id: 1, name:'Россия г. Москва ул. Ангарская вл. 8, стр. 15 д.'},
-				{id: 2, name:'Россия г. Москва ул. Ангарская вл. 9, д.'},
-				{id: 3, name:'Россия г. Москва ул. Ангарская вл. 10, стр. 16 д.'},
-				{id: 4, name:'Россия г. Москва ул. Ангарская вл. 23, стр. 45 д.'},
-				{id: 5, name:'Россия г. Москва ул. Ангарская вл. 44, стр. 5 д.'},
-				{id: 6, name:'Россия г. Москва ул. Ангарская вл. 67, стр. 145 д.'},
 		
-			])
-		const currentAddr = ref(1)
+		const currentAddr = ref(0)
 		const addAddr = ref(false)
 		const delAddr = ref(false)
 		const delPreloader = ref(false)
 		const editAddrId = ref(-1)
 		const editAddrName = ref(null)
-
-		const del = (id: number) => {
-			delPreloader.value = true
-			setTimeout( () => {
-					address.value = address.value.filter(x => x.id!=id)
-					delAddr.value = false
-					delPreloader.value = false
-			}, 1000)
-		}
-		const save = (e: string) => {
-			if (editAddrId.value !=-1 ) {
-				address.value[editAddrId.value].name = e
-				editAddrId.value = -1
+		const loading = ref(false)
+		const latlon = computed(() => {
+			let def= {lat: '55.760077', lon: '37.617677'}
+			const f = store.getters.getShipmentsAddress.find( (x: ShipmentsAddress) => x.index == currentAddr.value)
+			if (f) {
+				def.lat = f.latitude
+				def.lon = f.longitude
 			}
-			else
-				address.value.push({id: 0, name: e})
+			return def
+		})
+		const del = (index: number) => {
+			delPreloader.value = true
+			store.dispatch(ShipmentsActions.DEL_SHIPMENTS_ADDRESS, index)
+				.then(()=>{
+					delPreloader.value = false
+					delAddr.value = false
+				})
 		}
+		
 		onMounted(() => {
-			//store.dispatch(ShipmentsActions.GET_DELIVERY_ADDRESS)
+			loading.value=true
+			store.dispatch(ShipmentsActions.GET_SHIPMENTS_ADDRESS)
+				.then(()=>{
+					setTimeout(()=>{loading.value=false}, 1000)
+				})
+			
 			if (!store.getters.isCompanysLoad)
 			{
 				store.dispatch(CompanyActions.GET_COMPANYS)
@@ -189,7 +181,6 @@ export default defineComponent({
 		
 			
 		return {
-			address,
 			activeCompanyUid,
 			currentAddr,
 			addAddr,
@@ -197,11 +188,13 @@ export default defineComponent({
 			delPreloader,
 			editAddrId,
 			editAddrName,
+			loading,
 			
 			companyBarTopData: computed(() => store.getters.getCompanysList),
-
+			address: computed(() => store.getters.getShipmentsAddress),
+			latlon,
+			
 			del,
-			save,
 		}
 	},
 })
