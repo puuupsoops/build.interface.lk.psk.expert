@@ -55,26 +55,26 @@ export const actions: ActionTree<ShipmentsState, RootState> =  {
 			}
 		])
 	},
-	async [ShipmentsActions.ADD_SHIPMENTS_ADDRESS] ({ state }, data) {
-		// await axios.post('/user/delivery/add', data)
-		// 	.then(response => {
-		// 		console.log(response)
-		// 	})
-		// 	.catch(error => {
-		// 			commit(AuthMutations.SET_ERROR, 'Request GET_DELIVERY_ADDRESS error:<br>'+error)
-		// 	})
-		state.address.push(data)
+	async [ShipmentsActions.ADD_SHIPMENTS_ADDRESS] ({ commit }, data) {
+		await axios.post('/user/delivery/add', data)
+			.then(response => {
+				console.log(response)
+			})
+			.catch(error => {
+					commit(AuthMutations.SET_ERROR, 'Request GET_DELIVERY_ADDRESS error:<br>'+error)
+			})
+		//state.address.push(data)
 	},
-	async [ShipmentsActions.DEL_SHIPMENTS_ADDRESS] ({ state }, data) {
-		state.address = state.address.filter(x => x.index!=data)
-		// await axios.post('/user/delivery/delete', {index:data})
-		// 	.then(response => {
-		// 		console.log(response)
-		// 	})
-		// 	.catch(error => {
-		// 		state.address = state.address.filter(x => x.index!=data)
-		//		commit(AuthMutations.SET_ERROR, 'Request GET_DELIVERY_ADDRESS error:<br>'+error)
-		//	})
+	async [ShipmentsActions.DEL_SHIPMENTS_ADDRESS] ({ commit }, data) {
+		//state.address = state.address.filter(x => x.index!=data)
+		await axios.post('/user/delivery/delete', {index:data})
+			.then(response => {
+				console.log(response)
+			})
+			.catch(error => {
+				
+				commit(AuthMutations.SET_ERROR, 'Request GET_DELIVERY_ADDRESS error:<br>'+error)
+			})
 		
 	},
 }

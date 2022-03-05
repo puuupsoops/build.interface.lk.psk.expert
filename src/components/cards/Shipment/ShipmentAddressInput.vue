@@ -151,7 +151,8 @@ export default defineComponent({
 					logitude: <string>active_elem.value.data.geo_lon ? <string>active_elem.value.data.geo_lon : '',
 				}
 			store.dispatch(ShipmentsActions.ADD_SHIPMENTS_ADDRESS, res)
-			
+			loading.value=true;
+			store.dispatch(ShipmentsActions.GET_SHIPMENTS_ADDRESS)
 			
 			emit('update:modelValue', false)
 			close();

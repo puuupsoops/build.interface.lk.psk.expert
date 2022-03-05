@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-03-05
+
+    #0.1.68
+    
+    1. BagFix в список заказов добавлена проверка на наличие массива счетов
+    
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-03-03
 
     #0.1.67

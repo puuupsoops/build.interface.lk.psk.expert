@@ -10,7 +10,7 @@
 				<div :class="'orders-list-elem' + (search && search.id == 5 ? ' active': '')">Статус</div>
 				<div class="orders-list-elem">Инфо</div>
 			</div>
-			
+		
 			<div 
 				v-for="(item, key) in data"
 				:key="key"
@@ -205,9 +205,9 @@ export default defineComponent({
 		});
 		
 		watch( active, ()=>{
-			if (active.value!=-1 && props.data) {
-				let promise_arr = 
-					props.data[active.value].checks?.map(x=> {if (!x.doc_status) return store.dispatch(OrdersActions.GET_ORDERS_DOCSTATUS, x.guid)})
+			//console.log(active)
+			if (active.value!=-1 && props.data && Array.isArray(props.data[active.value].checks)) {
+				let promise_arr = props.data[active.value].checks?.map(x=> {if (!x.doc_status) return store.dispatch(OrdersActions.GET_ORDERS_DOCSTATUS, x.guid)})
 				if (promise_arr){
 					Promise.all(promise_arr).finally(()=>{})
 				}
