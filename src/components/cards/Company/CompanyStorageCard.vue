@@ -49,19 +49,31 @@
 
 		<div class="company-head-sale sale">
 			<div class="sale-title">До скидки 0 %</div>
-			<div class="sale-progressbar-wrap">
+			<div class="sale-progressbar-wrap tooltip">
 				<div class="sale-progressbar">
-					<div class="sale-progressbar-line">
-						<div class="sale-progressbar-val"><span class="sale-progressbar-val-money">(0)</span>
-						<span class="sale-progressbar-val-percent">0%</span></div>
+					<div class="sale-progressbar-line" :style="'width: '+ (progressInPercent < 3 ? 3 : progressInPercent) +'%'">
+						<div class="sale-progressbar-val"><span class="sale-progressbar-val-money">({{data.spent.toLocaleString().replace(',','.')}})</span>
+						<span class="sale-progressbar-val-percent">{{progressInPercent.toFixed(2)}}%</span></div>
+						
 					</div>
 				</div>
 				<div class="sale-progressbar-money">
-					<div class="sale-progressbar-min">0</div>
-					<div class="sale-progressbar-max">120 000</div>
+					<div class="sale-progressbar-min">{{discount.progressMoneyMin.toLocaleString()}}</div>
+					<div class="sale-progressbar-max">{{discount.progressMoneyMax.toLocaleString()}}</div>
 				</div>
+				<span class="tooltiptext" style="top: 50px; left: 10px;">
+					<table>
+						<tr><th>Сумма заказа,руб</th><th>Скидка,%</th></tr>
+						<tr><td>От 3 до 5 млн.</td><td>12.5</td></tr>
+						<tr><td>От 5 до 8 млн.</td><td>13.5</td></tr>
+						<tr><td>От 8 до 15 млн.</td><td>14.4</td></tr>
+						<tr><td>Более 15 млн.</td><td>16.3</td></tr>
+					</table>
+				</span>
 			</div>
+			
 		</div>
+		
 	</div>
 </div>
 
@@ -120,12 +132,23 @@
 
 </template>
 
-<script>
+<script lang="ts">
+import { computed, defineComponent } from "vue"
 
-export default {
+interface DiscountList {
+
+				progressMoneyMin: number;	// минимальный прого потраченных средств
+				progressMoneyMax: number;	// максимальный порог потраченных средств
+				discount: number;				// процент скидки
+				next: number;					// следующая скидка
+		
+}
+
+export default defineComponent({
 		props:{
 				data:{
-					type: Object
+					type: Object,
+					required: true,
 				},
 				active:{
 					type: Boolean 
@@ -137,20 +160,20 @@ export default {
 		},
 		emits: ['onClick', 'onShowDoc'],
 
-		setup(){
+		setup(props){
 
-			let getDay = function (number){
+			let getDay = function (number: number){
 				let dayMeterings = [ 'дней', 'день', 'дня' ]
 
-				let lastDigits = parseInt(number) % 100;
-				lastDigits = parseInt(lastDigits) >= 20 ? lastDigits % 10 : lastDigits;
+				let lastDigits = number % 100;
+				lastDigits = lastDigits >= 20 ? lastDigits % 10 : lastDigits;
 				
 				let metering = 0;
 
 // В зависимости от значения единичного разряда пишем правильное слово.
-				if ( parseInt(lastDigits) === 0 || parseInt(lastDigits) >= 5 && parseInt(lastDigits) <= 20 ) {
+				if ( lastDigits === 0 || lastDigits >= 5 && lastDigits <= 20 ) {
 					metering = 0;
-				} else if ( parseInt(lastDigits) == 1 ) 
+				} else if ( lastDigits == 1 ) 
 				{
 					metering = 1
 				} else {
@@ -158,12 +181,60 @@ export default {
 				}
 				return dayMeterings[metering]
 			}
+			const discountList = <DiscountList[]> [
+			{
+				progressMoneyMin: 0,	// минимальный прого потраченных средств
+				progressMoneyMax: 3000000,	// максимальный порог потраченных средств
+				discount: 0,				// процент скидки
+				next: 12.5					// следующая скидка
+			
+			},
+			{
+				progressMoneyMin: 3000000,	// минимальный прого потраченных средств
+				progressMoneyMax: 5000000,	// максимальный порог потраченных средств
+				discount: 12.5,				// процент скидки
+				next: 13.5					// следующая скидка
+			},
+			{
+				progressMoneyMin: 5000000,	// минимальный прого потраченных средств
+				progressMoneyMax: 8000000,	// максимальный порог потраченных средств
+				discount: 13.5,				// процент скидки
+				next: 14.4					// следующая скидка
+			},
+			{
+				progressMoneyMin: 8000000,	// минимальный прого потраченных средств
+				progressMoneyMax: 15000000,	// максимальный порог потраченных средств
+				discount: 14.4,				// процент скидки
+				next: 16.3					// следующая скидка
+			},
+			{
+				progressMoneyMin: 15000000,	// минимальный прого потраченных средств
+				progressMoneyMax: Infinity,	// максимальный порог потраченных средств
+				discount: 16.3,				// процент скидки
+				next: 0					// следующая скидка
+			}
+		]
+	let discount = computed<DiscountList>(() => {
+			
+			let d = discountList.filter(v =>  props.data.spent >= v.progressMoneyMin 
+													&&  props.data.spent < v.progressMoneyMax);
+			return d.length > 0 ? d[0] : discountList[0];
+		})
+	
+		let progressInPercent =  computed(() => {
+			if (discount.value.progressMoneyMax != Infinity)
+				return (props.data.spent/discount.value.progressMoneyMax) * 100// прогресс в процентах
+			else return 100
+		})
 
 			return {
-				getDay
+				getDay,
+				discount,
+				progressInPercent,
+				ostatok: computed(() => ((discount.value.progressMoneyMax - props.data.spent))),
 			}
 		}
-};
+});
 </script>
 
 <style>

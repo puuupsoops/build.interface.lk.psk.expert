@@ -2,7 +2,7 @@
 
 <div :class="'company-head-item documents' + (disabled ? ' disable' : '')">
 	<div class="content-elem">
-		<div class="company-head-item-title">Документы</div>
+		<div class="company-head-item-title" style="height: 3em">Документы</div>
 			<div class="company-head-list-content" >
 				<ul class="company-head-list" v-if="data">
 					<li class="company-head-list-elem"

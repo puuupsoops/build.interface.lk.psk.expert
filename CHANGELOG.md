@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-03-10
+
+    #0.1.69
+    
+    1. На CompanyStorageCard добавлена шкала индивидуальных скидок.
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-03-05
 
     #0.1.68
