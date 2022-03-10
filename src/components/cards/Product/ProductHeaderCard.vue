@@ -4,12 +4,19 @@
 		<div class="content-heading-wrap-elem">
 		<div class="product-info-header" title="Выбрать другой продукт"><span v-html="title"></span></div>
 		</div>
-		<div class="content-heading-wrap-elem">
-			<div class="content-heading-price"> 
-			<div class="content-heading-price-text">Ваша цена: </div>
-			<div class="content-heading-price-value">{{ Number(price ? price : 0 ).toLocaleString() }} ₽</div>
+		<div class="content-heading-wrap-elem tooltip"  >
+			<div class="content-heading-price" v-if="discount"> 
+				<div class="content-heading-price-text">Ваша цена: </div>
+				<div class="content-heading-price-value" v-if="discount">{{ Number(price ? price-(price/100)*discount : 0 ).toLocaleString() }} ₽</div>
+				<div class="content-heading-price-value" v-else> ? ₽</div>
+				<div class="tooltiptext" style="	transform: translate3d(-10px, -30px, 0) ">
+					<div class="content-heading-info-elem" v-if="discount"> скидка: {{discount}}%</div>
+					<div class="content-heading-info-elem" v-else> выберите организацию</div>	
+				</div>
+			
 		</div>
-				<div class="content-heading-wrap-elem">
+		
+		<div class="content-heading-wrap-elem">
 			<div class="content-heading-price"> 
 			<div class="content-heading-price-text">Оптовая цена: </div>
 			<div class="content-heading-price-value">{{ Number(price ? price : 0 ).toLocaleString() }} ₽</div>
@@ -38,6 +45,9 @@ export default {
 		},
 		status: {
 			type: String
+		},
+		discount:{
+			type: Number
 		}
 	},
 	emits: ['ShowSearch']

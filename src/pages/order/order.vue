@@ -24,6 +24,7 @@
 		<ProductHeaderCard
 			:title="String(product.NAME)"
 			:price="String(product.PRICE)"
+			:discount="discount"
 			:status="String(product.STATUS)"
 			@ShowSearch="productSearch=!productSearch"
 		/>
@@ -187,7 +188,9 @@ export default defineComponent({
 		onMounted(() => {
 			if (!store.getters.isCompanysLoad)
 			{
-				store.dispatch(CompanyActions.GET_COMPANYS)
+				store.dispatch(CompanyActions.GET_COMPANYS).finally(() => { setTimeout(()=>{
+								activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
+							},500);})
 			}
 			activeProductId.value=store.getters.getProduct.ID;
 
@@ -213,6 +216,7 @@ export default defineComponent({
 					})
 				.finally(() => {loader.value=false})
 		};
+		const discount = computed(() => store.getters.getCompanyDiscount(activeCompanyUid.value, store.getters.getProductOffersORGGUID))
 
 		return {
 			//data
@@ -235,6 +239,7 @@ export default defineComponent({
 			isOrder: computed(() => store.getters.isOrder),
 			order: computed(() => store.getters.getOrder),
 			getOrderDraftCount: computed(() => store.getters.getOrderDraftCount),
+			discount,
 			//method
 			addToOrder,
 			addOrder,

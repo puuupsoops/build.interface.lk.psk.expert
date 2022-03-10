@@ -33,12 +33,13 @@
 		
 	
 	<div class="product-slider-buttons">
-		<div class="product-slider-link">Сертификаты</div>
+		<!-- <div class="product-slider-link">Сертификаты</div> -->
 		<div
 			class="product-slider-link"
+			style="width: 100%"
 			@click="$emit('toOrder', $event.target.click)"
 		>Заказать</div>
-		<div class="product-slider-link">Добавить в КП</div>
+		<!-- <div class="product-slider-link">Добавить в КП</div> -->
 	</div>
 	
 	<ProductSliderFullscreen

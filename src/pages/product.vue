@@ -27,6 +27,8 @@
 			:status="String(product.STATUS)"
 			@ShowSearch="newSearch()"
 			v-if="isLoad"/>
+			{{uid}} <br>
+			{{s}}
 		<div class="content-wrap content-product-wrap" v-if="isLoad">
 			<div class="content-wrap-elem">
 
@@ -180,6 +182,8 @@ export default defineComponent({
 			productFound: computed(() => store.getters.getProductFound),
 			productImages: computed(() => store.getters.getProductImages),
 			productProtect: computed(() => store.getters.getProductProtect),
+			s: computed(() => store.getters.getCompanyDiscount(activeCompanyUid.value, store.getters.getProductOffersORGGUID)),
+			uid: computed(() => store.getters.getProductOffersORGGUID),
 			isLoad,
 			activeCompanyUid,
 			activeProductId,

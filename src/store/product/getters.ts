@@ -27,4 +27,8 @@ export const getters: GetterTree<ProductState, RootState> = {
 		product_protect: state.product_protect,
 	}),
 	getProductArticles: state => state.product_articls,
+	getProductOffersORGGUID: state => {
+							const arr = state.product_offers.length != 0 ? state.product_offers.map(x=>x.ORGGUID) : [null]
+							return [...new Set(arr)][0]
+	},
 }

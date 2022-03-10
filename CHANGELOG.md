@@ -1,6 +1,14 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-03-10
 
+    #0.1.70
+    
+    1. На ProductSliderCard оставлена только одна кнопка Заказать
+    2. Добавлен поиск скидки по массиву с характеристиками и на ProductHeaderCard скидка применяется.
+    
+Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-03-10
+
     #0.1.69
     
     1. На CompanyStorageCard добавлена шкала индивидуальных скидок.
