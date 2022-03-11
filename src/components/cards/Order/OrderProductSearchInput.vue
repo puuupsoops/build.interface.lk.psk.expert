@@ -1,22 +1,20 @@
 <template>
-<div :class="'product-search '" ref="target">
+<div :class="'product-search fullwidth' + (modelValue ? '': ' none')" ref="target">
 	<div class="product-search-input-container">
 	
-		<div :class="'product-search-input' + (show_options ? ' options':'')" >
+		<div class="product-search-input options" >
 			<input 
 				type="text"
 				placeholder="Поиск"
 				autocomplete="off"
 				@keyup="doSearch()"
-				@keyup.enter="done(search_str)"
 				v-model="search_str"
-				@click="show_options=true"
+				ref="searchInput"
 			>
 			<PreloaderLocal small v-if="loading"></PreloaderLocal>
 			<div class="product-search-clear" @click="close()"></div>
 		</div>
 		<div 
-			v-if="show_options"
 			:class="'product-search-input-options' + (search_str == '' || articles.length == 0 ? ' default': '')"
 		>
 			<!-- <PreloaderLocal v-if="loading"></PreloaderLocal> -->
@@ -28,23 +26,20 @@
 					:key="key"
 					:class="'product-search-input-options-item' + (loading ? ' loading': '')"
 				>
-					<a
-						
-						@click="done(item.article); search_str=item.name"
-						
+					<router-link
+						tag="a"
+						@click="close()"
+						:to="'/order/' + item.article"
 					>
 						<div class="article">{{item.article}}</div> <div class="name">{{item.name}}</div>
-					</a>
+					</router-link>
 				</p>
 				<span v-if="loading && articles.length == 0"> Поиск...</span>
-				<span v-if="!loading && articles.length == 0"> Не найдено</span>
+				<span v-if="!loading && articles.length == 0">Не найдено</span>
 			</div>
 		</div>
 
 	</div>
-	<button class="product-search-btn gradient-btn" @click="doSearch()">
-			<div>Поиск</div>
-	</button>
 </div>
 </template>
 <script lang="ts">
@@ -52,7 +47,7 @@ import PreloaderLocal from '@/components/PreloaderLocal.vue'
 import { key } from '@/store';
 import { ProductActions } from '@/store/product/actions';
 import { ProductMutations } from '@/store/product/mutations';
-import { computed, defineComponent, ref} from 'vue'
+import { computed, defineComponent, ref, watch, nextTick} from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { useStore } from 'vuex';
 
@@ -61,11 +56,10 @@ import { useStore } from 'vuex';
 export default defineComponent({
 	props:{
 		modelValue: {
-			type: String,
+			type: Boolean,
 			required: true,
 		}
 	},
-	emits: ['update:modelValue', 'search'],
 	components:{
 		PreloaderLocal
 	},
@@ -75,13 +69,10 @@ export default defineComponent({
 		const loading = ref(false)
 		const debounce = ref<number|undefined>(undefined)
 		const target = ref(null)
-		const show_options = ref(false)
-
+		const searchInput = ref<any>(null)
 		
 		const doSearch = () => {
 			clearTimeout(debounce.value)
-			show_options.value = true
-			emit('update:modelValue', search_str.value)
 			loading.value=true;
 			debounce.value = setTimeout(() => {
 					if (search_str.value.length >=2)
@@ -92,28 +83,26 @@ export default defineComponent({
 		}
 		const close = () => {
 			search_str.value = ''
-			show_options.value = false
 			store.commit(ProductMutations.SET_PRODUCT_ARTICLS, [])
-			emit('update:modelValue', '')
+			emit('update:modelValue', false)
 		}
+		onClickOutside(target, () => {close()})
 		
-		const done = (str: string) => {
-			show_options.value = false
-			emit('update:modelValue', str)			
-			emit('search')
-		}
-		
-		onClickOutside(target, () => {show_options.value = false})
-	
+		watch( ()=>props.modelValue, () => {
+			nextTick(() => {
+				searchInput.value.focus();
+			});
+			
+			})
+
 		return {
 			search_str,
 			loading,
 			target,
-			show_options,
+			searchInput,
 			articles: computed(()=>store.getters.getProductArticles),
 			doSearch,
 			close,
-			done,
 		}
 	},
 })

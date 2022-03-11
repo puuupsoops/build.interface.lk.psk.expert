@@ -30,8 +30,8 @@
 
 		<div class="company-head-info">
 			<div class="company-head-info-row">
-				<div v-if="data.debt>0" class="company-head-info-elem l highlight">Долг: {{data.debt_str}} ₽</div>
-				<div v-else class="company-head-info-elem l highlight">Баланс: {{data.balance}} ₽</div>
+				<div v-if="data.debt>0" class="company-head-info-elem l highlight">Долг: {{data.debt_str.toLocaleString().replace(',','.')}} ₽</div>
+				<div v-else class="company-head-info-elem l highlight">Баланс: {{data.balance.toLocaleString().replace(',','.')}} ₽</div>
 			</div>
 			<div class="company-head-info-row">
 				<div class="company-head-info-elem l">

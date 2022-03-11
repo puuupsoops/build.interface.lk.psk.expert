@@ -8,27 +8,20 @@
 	</div>
 	<top-nav catalog></top-nav>
 
-	<div class="product-search" v-if="article===''|| article===undefined">
-	
-		<div class="product-search-input" >
-			<input type="text" placeholder="Поиск" autocomplete="off" @keyup.enter="doSearch()" v-model="search_str">
-			<div class="product-search-clear" @click="clearSearch();search_str = '';"></div>
-		</div>
-		<button class="product-search-btn gradient-btn" @click="doSearch()">
-			<div>Поиск</div>
-		</button><section></section>
+	<ProductSearchInput v-model="search_str" @search="doSearch()"></ProductSearchInput>
+		
 
-	</div>
 
 	<div v-if="productFound.length>0">  
 		<ProductHeaderCard
 			:title="String(product.NAME)"
 			:price="String(product.PRICE)"
 			:status="String(product.STATUS)"
+			:discount="discount"
 			@ShowSearch="newSearch()"
 			v-if="isLoad"/>
-			{{uid}} <br>
-			{{s}}
+		<br>
+			
 		<div class="content-wrap content-product-wrap" v-if="isLoad">
 			<div class="content-wrap-elem">
 
@@ -69,6 +62,7 @@ import ProductAddInfoCard from '@/components/cards/Product/ProductAddInfoCard.vu
 import ProductSliderCard from '@/components/cards/Product/ProductSliderCard.vue'
 import ProductParcelCard from '@/components/cards/Product/ProductParcelCard.vue'
 import ProductInfoCard from '@/components/cards/Product/ProductInfoCard.vue'
+import ProductSearchInput from '@/components/cards/Product/ProductSearchInput.vue'
 import TopNav from '@/components/nav/TopNav.vue'
 
 import { useStore } from 'vuex'
@@ -92,6 +86,7 @@ export default defineComponent({
 		ProductSliderCard,
 		ProductParcelCard,
 		ProductInfoCard,
+		ProductSearchInput,
 		TopNav
 	},
 	props: ['article'],
@@ -107,7 +102,7 @@ export default defineComponent({
 		const search_str = ref('')
 		const isLoad = ref(false);
 		const activeProductId = ref('');
-		
+		const productSearch = ref(true);
 
 		const toOrder = () => {
 			router.push({name: 'Order'});
@@ -142,6 +137,8 @@ export default defineComponent({
 					.finally(() => {loader.value=false})
 			}
 		});
+		
+		const discount = computed(() => store.getters.getCompanyDiscount(activeCompanyUid.value, store.getters.getProductOffersORGGUID))
 
 		const loadProduct = () => {
 			loader.value = true;
@@ -182,8 +179,8 @@ export default defineComponent({
 			productFound: computed(() => store.getters.getProductFound),
 			productImages: computed(() => store.getters.getProductImages),
 			productProtect: computed(() => store.getters.getProductProtect),
-			s: computed(() => store.getters.getCompanyDiscount(activeCompanyUid.value, store.getters.getProductOffersORGGUID)),
-			uid: computed(() => store.getters.getProductOffersORGGUID),
+			discount,
+			productSearch,
 			isLoad,
 			activeCompanyUid,
 			activeProductId,

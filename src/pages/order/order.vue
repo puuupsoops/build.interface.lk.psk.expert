@@ -20,7 +20,7 @@
 </div>
 
 <div v-else>
-		<ProductSearchInput v-model="productSearch"/>
+		<OrderProductSearchInput v-model="productSearch"/>
 		<ProductHeaderCard
 			:title="String(product.NAME)"
 			:price="String(product.PRICE)"
@@ -91,7 +91,7 @@ import CompanyBarTop from '@/components/cards/Company/CompanyBarTop.vue'
 import TopNav from '@/components/nav/TopNav.vue'
 import ProductHeaderCard from '@/components/cards/Product/ProductHeaderCard.vue'
 import ProductSearchResultCard from '@/components/cards/Product/ProductSearchResultCard.vue'
-import ProductSearchInput from '@/components/cards/Product/ProductSearchInput.vue'
+import OrderProductSearchInput from '@/components/cards/Order/OrderProductSearchInput.vue'
 import ProductOffersOrderCard from '@/components/cards/Product/ProductOffersOrderCard.vue'
 import ProductSliderSmallCard from '@/components/cards/Product/ProductSliderSmallCard.vue'
 import OrderHeaderCard from '@/components/cards/Order/OrderHeaderCard.vue'
@@ -120,7 +120,7 @@ export default defineComponent({
 		TopNav,
 		ProductHeaderCard,
 		ProductSearchResultCard,
-		ProductSearchInput,
+		OrderProductSearchInput,
 		ProductOffersOrderCard,
 		ProductSliderSmallCard,
 		OrderHeaderCard,

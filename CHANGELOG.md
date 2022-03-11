@@ -1,11 +1,21 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-03-11
+
+    #0.1.71
+    
+    1. На страницу с поиском товара добавлен ProductSearchInput с ajax-поиском товаров и показе ссылок в выпадающем меню 
+
+
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-03-10
 
     #0.1.70
     
     1. На ProductSliderCard оставлена только одна кнопка Заказать
     2. Добавлен поиск скидки по массиву с характеристиками и на ProductHeaderCard скидка применяется.
-    
+
+
 Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-03-10
 
