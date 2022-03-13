@@ -1,10 +1,17 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-03-13
+
+    #0.1.72
+    
+    1. Добавлена логика в страницу создания претензии
+
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-03-11
 
     #0.1.71
     
     1. На страницу с поиском товара добавлен ProductSearchInput с ajax-поиском товаров и показе ссылок в выпадающем меню 
-
 
 
 Author: Vadim Zaboturin <vadimzab@gmail.com>

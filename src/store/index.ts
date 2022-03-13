@@ -9,6 +9,7 @@ import { catalog } from './catalog/index'
 import { order } from './order/index'
 import { orders } from './orders/index'
 import { shipments } from './shipments/index'
+import { claims } from './claims/index'
 import { keys } from './keys/index'
 
 
@@ -43,6 +44,7 @@ export const store = createStore<RootState>({
 		order,
 		orders,
 		shipments,
+		claims,
 		keys
 	}
 })

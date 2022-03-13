@@ -62,3 +62,7 @@ export interface ProductArticles {
     name: string;
 }
 
+export interface ProductCharacteristic {
+    productUID:           string;
+    characteristicGUID:   string;
+}

@@ -272,35 +272,38 @@
 		margin:
 			top: 20px
 		+justify-content(flex-end)
-
+		
 		&-elem
 			margin: 0 15px
-			width: 32px
-			height: 40px
-			background-size: 100% auto
-			background-position: center center
-			background-repeat: no-repeat
-			+prefix(transition, $default-transition)
-
+			+flex
+			+justify-content(flex-end)
+			+align-items(center)
 			&:last-child
 				margin:
 					right: 0
 
-			&.sc
-				background-image: url(~@/assets/img/icon/doc-sc.svg)
-			
-			&.upd
-				background-image: url(~@/assets/img/icon/doc-upd.svg)
-			
-			&.sf
-				background-image: url(~@/assets/img/icon/doc-sf.svg)
-			
-			&.kor
-				background-image: url(~@/assets/img/icon/doc-kor.svg)
-			
-			&:hover
-				opacity: $default-opacity
-	
+			&-file
+				cursor: pointer
+				width: 32px
+				height: 40px
+				background-image: url(~@/assets/img/icon/doc.svg)
+				background-size: 100% auto
+				background-position: center center
+				background-repeat: no-repeat
+				+prefix(transition, $default-transition)
+
+				&:hover
+					opacity: $default-opacity
+					background-image: url(~@/assets/img/icon/delete_big.svg)
+			&-name
+				padding:0 5px
+				color: $font-light-color
+				max-width:120px
+				white-space: nowrap
+				overflow: hidden
+				text-overflow: ellipsis
+				
+				
 	&-bottom
 		+flex
 		margin:
@@ -314,6 +317,7 @@
 	&-add-basis
 		display: inline-block
 		position: relative
+		cursor: pointer
 		padding:
 			left: 30px
 		font-size: 21px
@@ -343,3 +347,29 @@
 	&-submit
 		margin: 0 0 0 auto
 		max-width: 290px
+		
+	&-header
+		+flex
+		+flex-direction(row-reverse)
+		margin-top: 25px
+		margin-left: -105px
+		margin-right: -15px
+		padding: 10px 15px
+		padding-left: 105px
+		background-color: #1F2227
+		
+		&-close
+			width:100%
+			margin-left: 30px
+			margin-right: 30px
+			min-width: 16px
+			max-width: 16px
+			height: 16px
+			background-image: url(/img/cross.262cb193.svg)
+			background-size: 100% auto
+			background-position: center center
+			background-repeat: no-repeat
+			cursor: pointer
+
+		
+		
