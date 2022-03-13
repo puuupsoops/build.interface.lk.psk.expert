@@ -10,7 +10,7 @@ export interface Claim {
     case:          number; //Причина притензии. [0 - другое, 1 - недосдача, 2 - пересорт , 3 - качество ]
     products:      ProductCharacteristic[];
     message:       string;
-    files:         number;
+    files:         any[];
 }
 
 

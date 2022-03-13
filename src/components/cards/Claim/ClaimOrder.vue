@@ -1,12 +1,12 @@
 <template>
 
 	<div class="order-list content-elem">
-		
-			<div class="order-list-bottom scroll-elem" v-if="data">
+	
+			<div class="order-list-bottom scroll-elem" v-if="val">
 				
 				<div class="order-list-bottom-wrap" > 
 					
-					<div class="order-list-row order-list-heading" v-if="data.position.length>0">
+					<div class="order-list-row order-list-heading" v-if="val.position.length>0">
 						<div class="order-list-elem">№</div>
 						<div class="order-list-elem">Наименование</div>
 						<div class="order-list-elem">Цена</div>
@@ -17,7 +17,7 @@
 					</div>
 					<div 
 						:class="open.indexOf(key) !== -1 ? 'order-list-item active' : 'order-list-item'"
-						v-for="(item, key) in data.position"
+						v-for="(item, key) in val.position"
 						:key="key"
 					>
 						<div 
@@ -47,18 +47,6 @@
 								class="order-list-row"
 							> 
 								<div class="order-list-elem"> 
-									
-									<CheckButton 
-										v-if="selectedVal.findIndex(x => x.productUID==item.product.UID && x.characteristicGUID==characteristic.GUID)==-1"
-										@onClick="add(item.product.UID, characteristic.GUID)"
-										f
-									></CheckButton> 
-								
-									<CheckButton
-										v-else
-										@onClick="del(item.product.UID, characteristic.GUID)" 
-										t
-									></CheckButton> 
 								
 								</div>
 								<div class="order-list-elem">{{ characteristic.CHARACTERISTIC }}</div>
@@ -67,9 +55,9 @@
 									<span>{{characteristic.count}}</span>
 								</div>
 								<div class="order-list-elem">{{ Number(characteristic.PRICE * characteristic.count).toLocaleString() }} ₽</div>
-								
-								<div class="order-list-elem-delete">
-									
+						
+								<div class="order-list-elem">
+									<amount-input :max="characteristic.count" v-model="characteristic.select" @onInput="upd"></amount-input>
 								</div>
 							</div>
 							
@@ -86,8 +74,9 @@
 </template>
 
 <script lang="ts">
-import CheckButton from '@/components/ui/CheckButton.vue'
-import { ref, defineComponent, PropType } from 'vue'
+
+import AmountInput from '@/components/ui/AmountInput.vue'
+import { ref, defineComponent, PropType, onMounted } from 'vue'
 
 import { OrderStateOrder } from '@/store/order/types'
 import { ProductCharacteristic } from '@/models/Product';
@@ -108,29 +97,45 @@ export default defineComponent({
 	},
 	emits:['update:modelValue'],
 	components:{
-		CheckButton
+		AmountInput
 	},
 	setup(props, {emit}) {
 		const open = ref([]);
 		const open_presail = ref({});
 		const selectedVal = ref<ProductCharacteristic[]>([])
+
+		const val= ref()
+
+		onMounted(()=>{
+			val.value = Object.assign({}, props.data)
+			val.value.position.forEach((x : any) => {
+				x.characteristics.forEach((c :any ) => c.select=0)
+			})
+		})
 		
-		const add = (productUID: string, characteristicGUID: string) =>{
-			selectedVal.value.push({productUID, characteristicGUID})
+		const upd = () =>{
+			selectedVal.value = []
+			val.value.position.forEach((x : any) => {
+				x.characteristics.forEach((c :any ) => {
+					console.log(x)
+					if (c.select > 0) selectedVal.value.push({
+																productUID: <string>x.product.UID,
+																characteristicGUID: <string>c.CHARACTERISTIC, 
+																count: <number>c.select
+																})
+				})
+			})
 			emit('update:modelValue', selectedVal.value)
 		}
 		
-		const del = (productUID: string, characteristicGUID: string) =>{
-			selectedVal.value = selectedVal.value.filter(x=> x.characteristicGUID != characteristicGUID)
-			emit('update:modelValue', selectedVal.value)
-		}
+		
 		return {
 			open,
 			open_presail,
+			val,
 			selectedVal,
 			
-			add,
-			del,
+			upd,
 		}
 	},
 })

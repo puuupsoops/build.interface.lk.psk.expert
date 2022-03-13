@@ -6,7 +6,7 @@
 					<div class="claim-success">
 					<div class="claim-success-wrap">
 						<div class="claim-succes-img"><img src="@/../public/upload/icon/success.svg" alt=""></div>
-						<div class="claim-success-text">Спасибо, пртензия  № 145 принята к рассмотрению.</div>
+						<div class="claim-success-text">Спасибо, пртензия <span v-for="i, key in id" :key="key">№{{i}}{{key!=id.length-1 ? ', ':''}}</span> принята к рассмотрению.</div>
 						<div class="order-list-buttons-wrap">
 							<div class="order-list-buttons-item later">
 								<svg class="order-list-buttons-item-img" width="31" height="32" viewBox="0 0 31 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -73,7 +73,9 @@
 <script>
 
 import TopNav from "@/components/nav/TopNav";
-import { defineComponent } from "vue";
+import { key } from "@/store";
+import { computed, defineComponent } from "vue";
+import { useStore } from "vuex";
 
 
 
@@ -83,10 +85,11 @@ export default defineComponent({
 		TopNav,
 	},
 	setup() {
+		const store = useStore(key)
 		
 
 		return {
-		
+			id: computed(() => store.getters.getClaimSuccess)
 		}
 	},
 })

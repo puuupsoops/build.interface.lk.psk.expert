@@ -1,13 +1,13 @@
 <template>
 	<div>
-			<div v-if="!first" class="claim-header">
+			<div v-if="cardId!=0" class="claim-header">
 				<div class="claim-header-close" @click="$emit('close')"></div>
 			</div>
 			<div class="shipment-heading claim-heading">
 				
 				<div class="shipment-heading-elem">
 					<router-link
-						v-if="first"
+						v-if="cardId ==0"
 						tag="a" 
 						:to="'/claims'"
 						class="shipment-heading-back-btn"
@@ -86,11 +86,12 @@
 					<div class="claim-info-textarea-wrap">
 						<textarea class="claim-info-textarea" name="" v-model="data.message"></textarea>
 						<div class="claim-info-add-file">
+							
 							<input class="claim-info-add-file-input"
 								
-								@change="handleFileUpload( $event )" type="file" id="claim-add-file">
-							<label class="claim-info-add-file-label"  for="claim-add-file">
-								<span class="claim-info-add-file-val">{{ data.files ? 1 : 0}}</span></label>
+								@change="handleFileUpload( $event , cardId)" type="file" :id="'claim-add-file'+cardId">
+							<label class="claim-info-add-file-label"  :for="'claim-add-file'+cardId">
+								<span class="claim-info-add-file-val">{{ data.files.length}}</span></label>
 						</div>
 					</div>
 				</div>
@@ -98,12 +99,12 @@
 				<div class="claim-doc">
 					<div
 						class="claim-doc-elem"
-						v-if="data.files"
-
+						v-for="file, key in data.files"
+						:key="key"
 					>
-						<div class="claim-doc-elem-file" ></div>
+						<div class="claim-doc-elem-file" @click="delFile(key)"></div>
 						<div class="claim-doc-elem-name">
-							{{data.files.name}}
+							{{file.name}}
 						</div>
 					</div>
 					<!-- <a class="claim-doc-elem sc" href=""></a>
@@ -143,15 +144,17 @@ export default defineComponent({
 		modelValue:{
 			type: Object as PropType<Claim>
 		},
-		first:{
-			type: Boolean,
-			default: true
-		},
 		
+	
+		cardId:{
+			type: Number,
+			required: true
+		}
 	},
-	emits:['update:modelValue', 'close'],
+	emits:['update:modelValue', 'update:files','close'],
 	setup(props, { emit }) {
 		const store = useStore(key)
+		
 
 		const data = ref<Claim>({
 			title: '',
@@ -161,7 +164,7 @@ export default defineComponent({
 			case: 1, //Причина притензии. [0 - другое, 1 - недосдача, 2 - пересорт , 3 - качество ]
 			products: <ProductCharacteristic[]>[],
 			message: '',
-			files: 0
+			files: []
 		})
 		const oderVal = ref(null)
 		
@@ -330,8 +333,12 @@ export default defineComponent({
 		
 		
 		
-		const handleFileUpload = ( event: any  ) =>{
-			data.value.files=event.target.files[0];
+		const handleFileUpload = ( event: any) =>{
+			data.value.files.push(event.target.files[0]);
+			emit('update:modelValue', data.value)
+		}
+		const delFile = (id:number) => {
+			data.value.files.splice(id, 1)
 		}
 
 		
@@ -347,6 +354,8 @@ export default defineComponent({
 			
 			//methods
 			handleFileUpload,
+			delFile,
+
 		}
 	},
 })

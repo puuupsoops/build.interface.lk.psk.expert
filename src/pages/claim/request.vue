@@ -11,7 +11,12 @@
 		v-for="claim, key in calimArr"
 		:key="key"
 	>
-		<ClaimCard v-model="calimArr[key]" :first="key==0" @close="del(key)"></ClaimCard>
+
+		<ClaimCard 
+			v-model="calimArr[key]"
+			:cardId="key"
+			@close="del(key)"
+		></ClaimCard>
 	</div>
 	
 	<div class="claim-bottom">
@@ -46,6 +51,7 @@ import { Claim }  from "@/models/Claim"
 import { OrdersActions } from "@/store/orders/actions"
 import { ClaimActions } from "@/store/claims/actions"
 import { useRouter } from 'vue-router'
+import { ClaimMutations } from "@/store/claims/mutations"
 
 
 
@@ -68,7 +74,7 @@ export default defineComponent({
 			case: 1, //Причина притензии. [0 - другое, 1 - недосдача, 2 - пересорт , 3 - качество ]
 			products: [],
 			message: '',
-			files: 0
+			files: []
 		})
 		const calimArr = ref<Claim[]>([])
 		calimArr.value.push(Object.assign({}, calimDefault.value))
@@ -79,6 +85,7 @@ export default defineComponent({
 				loading.value = true
 				store.dispatch(OrdersActions.GET_ORDERS).then(()=>{ loading.value = false})
 			}
+			store.commit(ClaimMutations.SET_CLEAR_SUCCESS)
 		})
 		
 		const add = () => {
@@ -93,8 +100,8 @@ export default defineComponent({
 			loading.value = true
 			await calimArr.value.forEach((claim: Claim) =>{
 				let formData = new FormData();
+				claim.files.forEach((x:any, index:number) => {formData.append('files['+index+']',x)})
 				
-				formData.append('files', claim.files)
 				formData.append('title', claim.title)
 				formData.append('partner_name', claim.partner_name)
 				formData.append('partner_guid', claim.partner_guid)
@@ -111,7 +118,6 @@ export default defineComponent({
 	return {
 		calimArr,
 		loading,
-		
 		
 		//methods
 		add,

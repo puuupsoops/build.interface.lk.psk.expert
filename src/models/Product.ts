@@ -65,4 +65,5 @@ export interface ProductArticles {
 export interface ProductCharacteristic {
     productUID:           string;
     characteristicGUID:   string;
+    count:                number;
 }

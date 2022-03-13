@@ -2,6 +2,8 @@ import axios from '@/plugins/axios'
 import { ActionTree } from "vuex"
 import { RootState } from "@/store"
 import { ClaimState } from "./types"
+import { AuthMutations } from '../auth/mutations'
+import { ClaimMutations } from './mutations'
 
 
 export enum ClaimActions {
@@ -17,11 +19,11 @@ export const actions: ActionTree<ClaimState, RootState> =  {
 					'Content-Type': 'multipart/form-data'
 				}
 			}
-			).then(function(){
-				console.log('SUCCESS!!');
+			).then(response=> {
+				commit(ClaimMutations.SET_SUCCESS, response.data.response.id)
 			})
-			.catch(function(){
-				console.log('FAILURE!!');
+			.catch(error => {
+				commit(AuthMutations.SET_ERROR, 'Request ADD_CLAIMS error:<br>'+error)
 			});
 		}
 }
