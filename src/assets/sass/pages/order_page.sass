@@ -493,7 +493,7 @@
 		position: absolute
 		left: calc(50% - 250px)
 		top: calc(50% - 150px)
-		
+		z-index: 120
 		width: auto
 		margin: 10px
 		width: 500px
@@ -507,6 +507,12 @@
 			left: 5%
 			top: 10%
 			height: 80%
+		&.map
+			width: 800px
+			left: calc(50% - 400px)
+			top: calc(50% - 400px)
+			top: 20%
+			
 		&.shake
 			animation: shake 0.3s cubic-bezier(.36,.07,.19,.97) both
 			transform: translate3d(0, 0, 0)
@@ -534,7 +540,12 @@
 		min-height: 200px
 		max-height: 300px
 		height: 100%
+		z-index: 120
 		&.draft
+			height: 90%
+			max-height: 1000px
+			margin: 0px
+		&.map
 			height: 90%
 			max-height: 1000px
 			margin: 0px
@@ -546,6 +557,7 @@
 		border-bottom: 1px solid #eceeef
 		height: 60px
 		width: 100%
+		z-index: 120
 
 		&-title
 			margin-top: 0
@@ -573,6 +585,8 @@
 		flex: 1 1 auto
 		&.draft
 			background-color: $bg-color
+		&.map
+			padding: 0px
 		.loading
 			font-size: 20pt
 			& span:nth-child(2)

@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-03-14
+
+    #0.1.74
+    
+    1. На странице создания заявки на открузку Самовывоз добавлена карта и статический адрес.
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-03-13
 
     #0.1.73
