@@ -1,4 +1,12 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-03-15
+
+    #0.1.75
+    
+    1. На страницу с заказами добавил фильтр в заголовок таблицы. Пока только для НАИМЕНОВАНИЕ
+    
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-03-14
 
     #0.1.74

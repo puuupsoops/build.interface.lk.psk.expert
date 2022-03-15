@@ -1,0 +1,45 @@
+
+.modal-input
+	
+	&-wrap
+		+flex
+		+align-items(center)
+		position: absolute
+		visibility: hidden
+		top: calc(-2em)
+		z-index: 120
+		
+		background: #292c32
+		border-radius: 2px
+		+box-shadow(0px 0px 30px rgba(0, 0, 0, 1))
+		width: 0px
+	
+		&.show
+			visibility: visible
+			width: 250px
+			+prefix(transition, $default-transition)
+			
+	&-text
+		padding: 0
+		width: 100%
+		color: $font-light-color
+		background-color: #292C32
+		border: 0
+		border-radius: 6px
+		
+		&.show
+			padding: 12px 10px 12px 15px
+			
+		&:focus
+			color: $white
+			
+	&-clear
+		width: 100%
+		min-width: 16px
+		max-width: 16px
+		height: 16px
+		background-image: url('~@/assets/img/icon/cross.svg')
+		background-size: 100% auto
+		background-position: center center
+		background-repeat: no-repeat
+		cursor: pointer

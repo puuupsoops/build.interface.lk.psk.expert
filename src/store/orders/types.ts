@@ -12,3 +12,5 @@ export const DefaultDocStatus: OrdersDocStatus = {
     StatusSF:    false,
     StatusUPK:   false,
 }
+
+export const OrdersSatusCode =  ['Создан.', 'В ожидании.', 'Подтвержден.', 'Передан на склад.', 'Собран.', 'Отгружен.']

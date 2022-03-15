@@ -3,7 +3,23 @@
 	<div class="orders-list " ref="target">
 			<div class="orders-list-row orders-list-heading">
 				<div class="orders-list-elem">№</div>
-				<div :class="'orders-list-elem' + (search && search.id == 1 ? ' active': '')">Наименование</div>
+				<div :class="'orders-list-elem' + (search && search.id == 1 ? ' active': '') + (filter[1].value != '' ? ' active': '')">
+					<modal-input v-model="filter[1].value" v-model:show="filter[1].show"></modal-input>
+					<div>Наименование</div>
+					<div 
+						:class="'orders-list-elem-filter' +(filter[1].show || filter[1].value != '' ? ' active': '')"
+						title="Фильтр"
+						@click="filter[1].show=true"
+					>
+						
+						<svg 
+							xmlns="http://www.w3.org/2000/svg" 
+							enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="none">
+							<g><path d="M0,0h24 M24,24H0" fill="none"/><path class="fill" fill="#ffffff" d="M7,6h10l-5.01,6.3L7,6z M4.25,5.61C6.27,8.2,10,13,10,13v6c0,0.55,0.45,1,1,1h2c0.55,0,1-0.45,1-1v-6 c0,0,3.72-4.8,5.74-7.39C20.25,4.95,19.78,4,18.95,4H5.04C4.21,4,3.74,4.95,4.25,5.61z"/><path d="M0,0h24v24H0V0z" fill="none"/>
+						</g></svg>
+					</div>
+					
+				</div>
 				<div :class="'orders-list-elem' + (search && search.id == 2 ? ' active': '') + (contrAgent !='' ? ' active':'')">Контрагент</div>
 				<div :class="'orders-list-elem' + (search && search.id == 3 ? ' active': '')">Номер</div>
 				<div :class="'orders-list-elem' + (search && search.id == 4 ? ' active': '') + (period != 'Все' ? ' active':'')">Дата создания</div>
@@ -20,7 +36,7 @@
 					v-if="contrAgent =='' || item.partner_guid == contrAgent"
 				>
 				<div
-					v-if="checkPeriod(item.date)"
+					v-if="checkPeriod(item.date) && filtred(item)"
 				>
 					<div class="orders-list-row orders-list-main-row"
 						@click="key === active ? active = -1 : active = key; active_more =  -1"
@@ -34,7 +50,7 @@
 						<div class="orders-list-elem">{{ item.partner_name }}</div>
 						<div class="orders-list-elem">{{ item.n }}</div>
 						<div class="orders-list-elem">{{ item.date }}</div>
-						<div class="orders-list-elem">{{ item.status }}</div>
+						<div class="orders-list-elem"></div>
 						<div class="orders-list-elem" > 
 							<button
 								class="orders-list-more"
@@ -130,6 +146,10 @@
 										title="Универсальный корректировочный документ">
 									</a>
 								</div>
+								<div class="orders-list-info-elem"> 
+									{{OrdersSatusCode[check.status]}}
+								</div>
+							
 								<div class="orders-list-info-elem">
 									<a class="orders-list-info-link" href="">Сертификаты</a>
 									<a class="orders-list-info-link" href="">Скачать все</a></div>
@@ -155,7 +175,7 @@
 <script lang="ts">
 import PreloaderLocal from '@/components/PreloaderLocal.vue'
 import OrderDetailModal from '@/components/cards/Order/OrderDetailModal.vue'
-
+import ModalInput from '@/components/ui/ModalInput.vue'
 
 import { ref, PropType, defineComponent, watch } from 'vue'
 import { onClickOutside } from '@vueuse/core'
@@ -165,6 +185,7 @@ import { key } from '@/store'
 import { OrderActions } from '@/store/order/actions'
 import { Storage } from '@/models/Partner'
 import { OrdersActions } from '@/store/orders/actions'
+import { OrdersSatusCode } from '@/store/orders/types'
 import { ShipmentsMutations } from '@/store/shipments/mutations'
 import { SearchData } from '@/models/Components'
 
@@ -190,6 +211,7 @@ export default defineComponent({
 	components: {
 		PreloaderLocal,
 		OrderDetailModal,
+		ModalInput,
 	},
 	setup(props) {
 		const store = useStore(key)
@@ -199,6 +221,14 @@ export default defineComponent({
 		const showDetail = ref(false)
 		const loading_bill = ref<string[]>([])
 		const detailOrderId = ref(-1)
+		const filter = ref([
+			{name: 'id', value: '', show: false},
+			{name: 'name', value: '', show: false},
+			{name: 'id', value: '', show: false},
+			{name: 'id', value: '', show: false},
+			{name: 'id', value: '', show: false},
+			{name: 'id', value: '', show: false},
+		])
 		
 		onClickOutside(target, () => {
 			active_more.value = -1
@@ -240,6 +270,14 @@ export default defineComponent({
 		const setOrderId = (id: number) => {
 			store.commit(ShipmentsMutations.SET_CURRENT_ORDER, id)
 		}
+		
+		const filtred = ( item: Orders) => {
+			let show = false
+			if (filter.value[1].value !=''){
+				if (item.name.indexOf(filter.value[1].value)!=-1) show=true
+			} else show = true
+			return  show
+		}
 
 		return {
 			//data
@@ -249,12 +287,14 @@ export default defineComponent({
 			loading_bill,
 			showDetail,
 			detailOrderId,
-			
+			OrdersSatusCode,
+			filter,
 			//methods
 			checkPeriod,
 			downloadBill,
 			getStorageName,
 			setOrderId,
+			filtred,
 		}
 	},
 })
