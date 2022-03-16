@@ -28,7 +28,7 @@
 
 import CompanyStorageCard from '@/components/cards/Company/CompanyStorageCard.vue';
 import CompanyStorgeDoc from '@/components/cards/Company/CompanyStorgeDoc.vue';
-import { ref } from 'vue-demi';
+import { ref } from 'vue';
 
 export default {
 	props:{

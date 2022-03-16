@@ -1,4 +1,12 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-03-16
+
+    #0.1.76
+    
+    1. На страницу с заказами добавлен фильтр по статусу заказа
+
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-03-15
 
     #0.1.75

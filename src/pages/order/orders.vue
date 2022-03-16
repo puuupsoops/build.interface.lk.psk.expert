@@ -20,20 +20,21 @@
 				/>
 			</div>
 			<div class="orders-heading-item">
-				<div class="orders-heading-text">Договор:</div>
+				<div class="orders-heading-text">Статус:</div>
 				<SelectInput 
-					:data="dogovor"
+					:data="OrdersSatusCode"
+					v-model="filterStatus"
 				/>
 			</div>
 			<div class="orders-heading-item" data-select2-id="147">
 				<div class="orders-heading-text">Период:</div>
 					<SelectInput 
 						:data="filterPeriodData"
-                        v-model="filterPeriod"
+						v-model="filterPeriod"
 					/>
 
 			</div>
-			<div class="orders-heading-clean" title="Убрать фильтры" @click="filterCompanyUid='';filterPeriod=0"></div>
+			<div class="orders-heading-clean" title="Убрать фильтры" @click="filterCompanyUid='';filterPeriod=0;filterStatus=0"></div>
 			</div>
 			<div class="orders-heading-elem">
 			
@@ -46,10 +47,11 @@
 	/>
 	<OrdersListCard
 		:data="ordersList"
-        :loading="loading"
-        :contrAgent="filterCompanyUid"
-        :period="filterPeriodData[filterPeriod].name"
-        :search="search"
+		:loading="loading"
+		:contrAgent="filterCompanyUid"
+		:period="filterPeriodData[filterPeriod].name"
+		:status="OrdersSatusCode[filterStatus].name"
+		:search="search"
 	/>
 		
 </div>
@@ -68,7 +70,7 @@ import { useStore } from 'vuex'
 import { ref, computed, defineComponent, onMounted } from 'vue'
 import { key } from '@/store'
 import { CompanyActions } from '@/store/company/actions'
-//import { OrdersMutations } from '@/store/orders/mutations'
+import { OrdersSatusCode } from '@/store/orders/types'
 import { OrdersActions } from '@/store/orders/actions'
 import { SearchData } from '@/models/Components'
 
@@ -85,11 +87,12 @@ export default defineComponent({
 	setup(){
 		const store = useStore(key);
 		const activeCompanyUid = ref('')
-        const filterCompanyUid =  ref('')
-        const filterPeriod = ref(0)
-        const loading = ref(true)
+		const filterCompanyUid =  ref('')
+		const filterPeriod = ref(0)
+		const filterStatus = ref(0)
+		const loading = ref(true)
 		const search = ref<SearchData|null>(null)
-		const dogovor = [{id: 1, name: '---'}]
+	
 		const searchColumn = [
 			{id: 1, name: 'Наименование'},
 			{id: 2, name: 'Контрагент'},
@@ -101,7 +104,7 @@ export default defineComponent({
 		onMounted(() => {
 			//store.commit(OrdersMutations.SET_ORDERS);
 
-            store.dispatch(OrdersActions.GET_ORDERS).finally(()=>{loading.value = false})
+			store.dispatch(OrdersActions.GET_ORDERS).finally(()=>{loading.value = false})
 			if (!store.getters.isCompanysLoad)
 			{
 				store.dispatch(CompanyActions.GET_COMPANYS)
@@ -113,16 +116,16 @@ export default defineComponent({
 		});
 
 		return{
-            loading,
-            companyBarTopData: computed(() => store.getters.getCompanysList),
+			loading,
+			companyBarTopData: computed(() => store.getters.getCompanysList),
 			filterCompanyData: computed(() => store.getters.getCompanyFromOrders),
-            filterCompanyUid,
-            filterPeriodData: computed(() => store.getters.getOrdersDataPeriodArray),
-            filterPeriod,
-
-            ordersList: computed(() => store.getters.getOrdersFiltred(search.value) ),
+			filterCompanyUid,
+			filterPeriodData: computed(() => store.getters.getOrdersDataPeriodArray),
+			filterPeriod,
+			OrdersSatusCode,
+			filterStatus,
+			ordersList: computed(() => store.getters.getOrdersFiltred(search.value) ),
 			activeCompanyUid,
-			dogovor,
 			searchColumn,
 			search,
 		}

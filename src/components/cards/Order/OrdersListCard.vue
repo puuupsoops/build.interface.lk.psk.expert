@@ -1,5 +1,11 @@
 <template>
 <div class="orders-list-wrap">
+	<div
+			v-if="data_filtred.length != data.length"
+			class="orders-heading-info"
+		>
+				Показано {{data_filtred.length}} из {{data.length}}
+	</div>
 	<div class="orders-list " ref="target">
 			<div class="orders-list-row orders-list-heading">
 				<div class="orders-list-elem">№</div>
@@ -11,10 +17,7 @@
 						title="Фильтр"
 						@click="filter[1].show=true"
 					>
-						
-						<svg 
-							xmlns="http://www.w3.org/2000/svg" 
-							enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="none">
+						<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="none">
 							<g><path d="M0,0h24 M24,24H0" fill="none"/><path class="fill" fill="#ffffff" d="M7,6h10l-5.01,6.3L7,6z M4.25,5.61C6.27,8.2,10,13,10,13v6c0,0.55,0.45,1,1,1h2c0.55,0,1-0.45,1-1v-6 c0,0,3.72-4.8,5.74-7.39C20.25,4.95,19.78,4,18.95,4H5.04C4.21,4,3.74,4.95,4.25,5.61z"/><path d="M0,0h24v24H0V0z" fill="none"/>
 						</g></svg>
 					</div>
@@ -23,21 +26,18 @@
 				<div :class="'orders-list-elem' + (search && search.id == 2 ? ' active': '') + (contrAgent !='' ? ' active':'')">Контрагент</div>
 				<div :class="'orders-list-elem' + (search && search.id == 3 ? ' active': '')">Номер</div>
 				<div :class="'orders-list-elem' + (search && search.id == 4 ? ' active': '') + (period != 'Все' ? ' active':'')">Дата создания</div>
-				<div :class="'orders-list-elem' + (search && search.id == 5 ? ' active': '')">Статус</div>
+				<div :class="'orders-list-elem' + (search && search.id == 5 ? ' active': '') + (status != 'Все' ? ' active':'')">Статус</div>
 				<div class="orders-list-elem">Инфо</div>
 			</div>
-		
+
 			<div 
-				v-for="(item, key) in data"
+				v-for="(item, key) in data_filtred"
 				:key="key"
 				:class="'orders-list-item' + ( key == active ? ' active': '' )"
 				>
-				<div
-					v-if="contrAgent =='' || item.partner_guid == contrAgent"
-				>
-				<div
-					v-if="checkPeriod(item.date) && filtred(item)"
-				>
+				<!-- <div v-if=">
+				<div v-if="checkStatus(item)">
+				<div v-if="checkPeriod(item.date) && filtred(item)"> -->
 					<div class="orders-list-row orders-list-main-row"
 						@click="key === active ? active = -1 : active = key; active_more =  -1"
 					>
@@ -147,7 +147,7 @@
 									</a>
 								</div>
 								<div class="orders-list-info-elem"> 
-									{{OrdersSatusCode[check.status]}}
+									{{ OrdersSatusCode[check.status+1] ? OrdersSatusCode[check.status+1].name : ''}}
 								</div>
 							
 								<div class="orders-list-info-elem">
@@ -162,8 +162,10 @@
 							Счет отсутвует
 						</div>
 					</div>
+					
+				<!-- </div>
 				</div>
-				</div>
+				</div> -->
 			</div>
 		
 	</div>
@@ -177,7 +179,7 @@ import PreloaderLocal from '@/components/PreloaderLocal.vue'
 import OrderDetailModal from '@/components/cards/Order/OrderDetailModal.vue'
 import ModalInput from '@/components/ui/ModalInput.vue'
 
-import { ref, PropType, defineComponent, watch } from 'vue'
+import { ref, PropType, defineComponent, watch, computed } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { Orders } from '@/models/Orders'
 import { useStore } from 'vuex'
@@ -192,12 +194,16 @@ import { SearchData } from '@/models/Components'
 export default defineComponent({
 	props: {
 		data: {
-			type: Array as PropType<Orders[]>
+			type: Array as PropType<Orders[]>,
+			required: true
 		},
 		contrAgent: {
 			type: String
 		},
 		period: {
+			type: String
+		},
+		status: {
 			type: String
 		},
 		loading:{
@@ -244,6 +250,24 @@ export default defineComponent({
 			}
 		})
 		
+		const data_filtred = computed( () => {
+			//фильтр по контрагенту
+			let data = props.data.filter(x => props.contrAgent =='' || x.partner_guid == props.contrAgent)
+			
+			//фильтр по периоду
+			data = data.filter(x => checkPeriod(x.date))
+			
+			//фильтр по статусу
+			data = data.filter(x => checkStatus(x))
+			
+			if (filter.value[1].value !=''){
+				data = data.filter(x => x.name.indexOf(filter.value[1].value)!=-1)
+			}
+			
+			return data
+		})
+		
+		
 		const checkPeriod = (date: string) => {
 			if (props.period == 'Все') {
 				return true
@@ -253,6 +277,20 @@ export default defineComponent({
 				const month = start?.substring(3,5)
 				return year == date.substring(6,10) && month == date.substring(3,5)
 			}
+		}
+		
+		const checkStatus = (item: Orders) => {
+			
+			if (props.status == 'Все'){
+				return true
+			} else {
+				if (Array.isArray(item.checks)){
+					return item.checks.findIndex( x => OrdersSatusCode[parseInt(x.status+1)] ? props.status == OrdersSatusCode[parseInt(x.status+1)].name : false) !=-1
+				}
+				else 
+					return false
+			}
+	
 		}
 		
 		const downloadBill = (uuid: string): void=>{
@@ -289,14 +327,17 @@ export default defineComponent({
 			detailOrderId,
 			OrdersSatusCode,
 			filter,
+			//computed
+			data_filtred,
 			//methods
-			checkPeriod,
+			
+			checkStatus,
 			downloadBill,
 			getStorageName,
 			setOrderId,
 			filtred,
+			
 		}
 	},
 })
 </script>
->
