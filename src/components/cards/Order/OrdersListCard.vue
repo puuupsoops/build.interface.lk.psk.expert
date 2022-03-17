@@ -188,8 +188,9 @@ import { OrderActions } from '@/store/order/actions'
 import { Storage } from '@/models/Partner'
 import { OrdersActions } from '@/store/orders/actions'
 import { OrdersSatusCode } from '@/store/orders/types'
-import { ShipmentsMutations } from '@/store/shipments/mutations'
+
 import { SearchData } from '@/models/Components'
+import { KeysMutations } from '@/store/keys/mutations'
 
 export default defineComponent({
 	props: {
@@ -306,7 +307,7 @@ export default defineComponent({
 		}
 		
 		const setOrderId = (id: number) => {
-			store.commit(ShipmentsMutations.SET_CURRENT_ORDER, id)
+			store.commit(KeysMutations.SET_CURRENT_ORDER, id)
 		}
 		
 		const filtred = ( item: Orders) => {

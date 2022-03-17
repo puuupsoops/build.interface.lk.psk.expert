@@ -1,15 +1,12 @@
-import { Orders } from "@/models/Orders";
-import { ShipmentsAddress } from "@/models/Shupments";
+import { Shipments, ShipmentsAddress } from "@/models/Shupments";
 
 
 export interface ShipmentsState {
-    orders: Orders[];
     address_prompt: any[];
-    order_id: number;
     address: ShipmentsAddress[];
+    shipments: Shipments[];
+    shipments_success: number;
+
 }
 
-export enum ShipmentsConst {
-	DEFAULT_ORDER_ID = -1,
-}
 

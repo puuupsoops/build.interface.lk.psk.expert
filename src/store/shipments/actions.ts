@@ -12,6 +12,8 @@ export enum ShipmentsActions {
 	GET_SHIPMENTS_ADDRESS = "GET_SHIPMENTS_ADDRESS",
 	ADD_SHIPMENTS_ADDRESS = "ADD_SHIPMEN_ADDRESS",
 	DEL_SHIPMENTS_ADDRESS = "DEL_SHIPMENTS_ADDRESS",
+	ADD_SHIPMENTS = "ADD_SHIPMEN",
+	GET_SHIPMENTS = "GET_SHIPMENTS",
 }
 
 export const actions: ActionTree<ShipmentsState, RootState> =  {
@@ -27,13 +29,13 @@ export const actions: ActionTree<ShipmentsState, RootState> =  {
 			})
 	},
 	async [ShipmentsActions.GET_SHIPMENTS_ADDRESS] ({ commit }) {
-		// await axios.get('/user/delivery')
-		// 	.then(response => {
-		// 		console.log(response)
-		// 	})
-		// 	.catch(error => {
-		// 			commit(AuthMutations.SET_ERROR, 'Request GET_DELIVERY_ADDRESS error:<br>'+error)
-		// 	})
+		await axios.get('/user/delivery')
+			// .then(response => {
+			// 	console.log(response)
+			// })
+			// .catch(error => {
+			// 		commit(AuthMutations.SET_ERROR, 'Request GET_DELIVERY_ADDRESS error:<br>'+error)
+			// })
 		commit(ShipmentsMutations.SET_SHIPMENTS_ADDRESS, [
 			{
 				index:      0,
@@ -77,4 +79,29 @@ export const actions: ActionTree<ShipmentsState, RootState> =  {
 			})
 		
 	},
+	async [ShipmentsActions.ADD_SHIPMENTS] ({commit}, data) {
+		axios.post( '/user/shipments/add',
+				data,
+				{
+					headers: {
+					'Content-Type': 'multipart/form-data'
+				}
+			}
+			).then(response=> {
+				commit(ShipmentsMutations.SET_SHIPMENTS_SUCCESS, response.data.response.id)
+			})
+			.catch(error => {
+				commit(AuthMutations.SET_ERROR, 'Request ADD_CLAIMS error:<br>'+error)
+			});
+		},
+	async [ShipmentsActions.GET_SHIPMENTS] ({ commit }) {
+		await axios.get('/user/shipments')
+			.then(response => {
+				commit(ShipmentsMutations.SET_SHIPMENTS, response.data.response)
+			})
+			.catch(error => {
+					commit(AuthMutations.SET_ERROR, 'Request GET_DELIVERY_ADDRESS error:<br>'+error)
+			})
+		},
+	
 }

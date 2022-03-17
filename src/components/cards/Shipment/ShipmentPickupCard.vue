@@ -7,7 +7,7 @@
 				<div class="shipment-form-elem-title">
 					
 					<span>Адрес Самовывоза</span>
-					<span class="shipment-form-elem-title-time">с 9.00 до 20.00 (пн-сб), вс- вых.</span>
+					<span class="shipment-form-elem-title-time">с 8.00 до 18.00 (пн-пт) сб,вс-вых.</span>
 				</div>
 				<div class="shipment-form-row">
 					<div class="shipment-form-input-wrap shipment-datalist" id="shipment-datalist">
@@ -107,36 +107,43 @@
 					</div>
 				</div>
 			</div>
-			<div class="shipment-form-doc shipment-form-wrap">
-				<div class="shipment-form-doc-wrap">
-					<label class="shipment-form-doc-label" for="shipment_file">прикрепить доверенность</label>
-					<input class="shipment-form-doc-input" type="file" id="shipment_file" wfd-invisible="true">
-					<div class="shipment-form-doc-file" wfd-invisible="true">
-						<div class="shipment-form-doc-file-name"> </div>
-						<div class="shipment-form-doc-file-delete"></div>
-					</div>
-				</div><a class="shipment-form-doc-btn" href=""><img src="style/img/icon/doc-file.svg" alt=""></a>
+			
+			<div class="shipment-form-add-file">
+				
+				<input class="shipment-form-add-file-input"
+					@change="handleFileUpload( $event )" type="file" id="shipment-form-add-file-pickup">
+				<label class="shipment-form-add-file-label"  for="shipment-form-add-file-pickup">
+					<span class="shipment-form-add-file-val">{{ data.files.length}}</span>
+				</label>
+				<label class="shipment-form-add-file-label-text"  for="shipment-form-add-file-pickup">прикрепить доверенность</label>
 			</div>
+			
+			<div class="claim-doc">
+				<div
+					class="claim-doc-elem"
+					v-for="file, key in data.files"
+					:key="key"
+				>
+					<div class="claim-doc-elem-file" @click="delFile(key)"></div>
+					<div class="claim-doc-elem-name">
+						{{file.name}}
+					</div>
+				</div>
+				
+			</div>
+
+			
+			
 		</div>
 		<div class="shipment-form-elem">
 			<div class="shipment-form-item">
 				<div class="shipment-form-elem-title"><span>Представление</span></div>
-				<div class="shipment-form-info shipment-form-info-text">
-					<p>Заказ: {{order}}</p>
-					<p v-if="data.date">Желаемая дата отгрузки: {{data.date }}</p>
-					<p>Количество едениц: 120</p>
-					<p>Общий вес: 25 кг</p>
-					<p>Общий объем: 23 м3 </p>
-					<p >Адрес самовывоза: {{data.address}}</p>
-					<p v-if="data.accept">Подтвердить: да</p>
-					<p>Комментрий: {{ data.comment.trim() == '' ? 'Нет' : data.comment}}</p>
-					<p>Данные: {{ data.fio }}</p>
-					<p>Документ: {{ data.doc }} Серия {{ data.serial }} №{{data.num}}</p>
-					<p>Выдан {{data.when}} {{data.who}}</p>
-					<p v-if="data.car !== ''">Машина: {{data.car}} {{data.gosnum}}</p>
-					<p v-if="data.quick">Срочно: да</p>
-					<p>Довереность: есть</p>
-					<p>Схема проезда: есть</p>
+				<div class="shipment-form-info shipment-form-info-text" >
+					<p
+						v-for="(p, k) in view_message"
+						:key="k"					
+					> {{p}}</p>
+					
 				</div>
 				<div class="shipment-form-notion">
 					Подтверждение заявки- запроса не несет за собой обязательство исполнения, 
@@ -179,38 +186,45 @@
 
 
 <script lang="ts">
-//import SelectInput from '@/components/ui/SelectInput.vue'
+
 import DatePicker from '@/components/ui/DatePicker.vue'
 import DeleteButton from '@/components/ui/DeleteButton.vue'
-//import PreloaderLocal from '@/components/PreloaderLocal.vue'
 
-import { computed, defineComponent, onMounted, ref }from 'vue'
+
+import { computed, defineComponent, PropType, ref }from 'vue'
 import { key } from '@/store'
 import { useStore } from 'vuex'
-import { SelectInputData } from '@/models/Components'
-import { ShipmentsAddress } from '@/models/Shupments'
+
 import { ShipmentsActions } from '@/store/shipments/actions'
 import { useRouter } from 'vue-router'
+import { Partner } from '@/models/Partner'
+import { Orders } from '@/models/Orders'
 
 
 
 export default defineComponent({
 		components: {
-			//SelectInput,
 			DatePicker,
 			DeleteButton,
-			//PreloaderLocal
 		},
 		props:{
-			order: String,
+			order:{
+				type: Object as PropType<Orders>,
+				//required: true
+			},
+			partner_guid:{
+				type: String,
+				required: true
+			},
 		},
-		setup() {
+		setup(props) {
 			const store = useStore(key)
 			const router = useRouter()
 			const loading = ref(false)
 			const showMap = ref(false)
+			
 			const data = ref({
-						date: null,
+						date: '',
 						dateError: false,
 						address: 'Россия, 141580, Московская область, Солнечногорский район, сельское поселение Лунёвское, в районе деревни Дубровки, ул. Аэропортовская, строение 6, корпус 1.',
 						addressError: false,
@@ -225,52 +239,85 @@ export default defineComponent({
 						gosnum: '',
 						quick: false,
 						accept: false,
+						files: <any>[],
 				});
-			const addressList = computed<SelectInputData>(() => {
-				return <SelectInputData>store.getters.getShipmentsAddress.map((x: ShipmentsAddress) => {
-					return {
-							id: x.index,
-							name: x.label
-						}
+			
+			
+			const company = computed(() => { 
+				let c = store.getters.getCompanys.find( (x: Partner) =>x.uid == props.partner_guid)
+				return c ? c.name : ''
 				})
+			const view_message = computed(()=>{
+				let res = <String[]>[]
+				res.push( 'Заказ: ' + (props.order ? props.order.name: ''))
+				res.push( 'Контрагент: ' + company.value)
+				if (data.value.date != '') res.push( 'Желаемая дата отгрузки: ' +data.value.date)
+				res.push( 'Адрес самовывоза: ' + data.value.address)
+				if (data.value.accept) res.push( 'Подтвердить: да')
+				res.push( 'Комментрий: '+ ( data.value.comment.trim() == '' ? 'Нет' : data.value.comment))
+				res.push( 'Данные: ' + data.value.fio )
+				res.push( `Документ: ${data.value.doc} Серия ${data.value.serial} №${data.value.num}`)
+				res.push( `Выдан ${data.value.when} ${data.value.who}`)
+				if (data.value.car !== '') res.push( `Машина: ${data.value.car} ${data.value.gosnum}`)
+				return res
 			})
 			
 			const send = ()=>{
+
 				let ok = true
-				if (data.value.date == null) {
+				if (data.value.date == '') {
 					data.value.dateError = true
 					ok = false
 					setTimeout(()=>{data.value.dateError = false}, 3000)
 				}
-				// if (data.value.address == -1) {
-				// 	data.value.addressError = true
-				// 	ok = false
-				// 	setTimeout(()=>{data.value.addressError = false}, 3000)
-				// }
 				if (ok) {
+					loading.value = true
 					
-					router.push({name: 'ShipmentsRequestSuccess'})
+					let formData = new FormData();
+					
+					data.value.files.forEach((x:any, index:number) => {formData.append('files['+index+']',x)})
+					
+					formData.append('title', 'Заказ ' + (props.order? props.order?.name : ''))
+					formData.append('partner_name', company.value)
+					formData.append('partner_guid',  props.partner_guid)
+					formData.append('id', String(props.order ? props.order.n: ''))
+					formData.append('case', '0')
+					formData.append('message', JSON.stringify(view_message.value))
+					formData.append('amount', '')
+					formData.append('weight', '')
+					formData.append('volume', '')
+					formData.append('carriers', '')
+					formData.append('date', String((new Date(data.value.date ? data.value.date : '')).getTime()))
+					formData.append('address', data.value.address)
+					formData.append('comment', data.value.comment)
+					formData.append('extra', '')
+					store.dispatch(ShipmentsActions.ADD_SHIPMENTS, formData).then(() => {
+						router.push({name: 'ShipmentsRequestSuccess'})
+						loading.value = false
+					})
+					
 				}
-				
 			}
-			onMounted(()=>{ 
-				if (store.getters.getShipmentsAddress.length == 0){
-					loading.value=true
-					store.dispatch(ShipmentsActions.GET_SHIPMENTS_ADDRESS)
-						.then(()=>{
-							setTimeout(()=>{loading.value=false}, 1000)
-						})
-				}
-			})
+			const handleFileUpload = ( event: any) =>{
+				data.value.files.push(event.target.files[0]);
+			}
+			const delFile = (id:number) => {
+				data.value.files.splice(id, 1)
+			}
 			
 			return {
 				data, 
 				loading,
 				showMap,
+				view_message,
+				
 				//computed
-				addressList,
+				company,
 				//methods
+				handleFileUpload,
+				delFile,
 				send,
+				
 			}
 		}
 })

@@ -10,7 +10,10 @@
 		</top-nav>
 		<div class="shipment-heading">
 			<div class="shipment-heading-elem"> 
-				
+				<div
+						@click="back"	
+						class="shipment-heading-back-btn"
+					></div>
 				<div class="shipment-heading-info">
 					<div class="shipment-title"><span>Адреса доставки</span></div>
 				</div>
@@ -28,11 +31,10 @@
 						<div class="shipment-address-list-elem">Адрес</div>
 					</div>
 					<div class="shipment-address-list-row">
-						<shipment-address-input 
+						<ShipmentAddressInputAdd
 							v-model= "addAddr"
 							:value="editAddrName"
-							
-						></shipment-address-input>
+						/>
 						
 					</div>
 					<div
@@ -112,7 +114,7 @@
 import PersonalBar from '@/components/cards/PersonalBar.vue'
 import Notification from '@/components/cards/Notification.vue'
 import CompanyBarTop from '@/components/cards/Company/CompanyBarTop.vue'
-import ShipmentAddressInput from '@/components/cards/Shipment/ShipmentAddressInput.vue'
+import ShipmentAddressInputAdd from '@/components/cards/Shipment/ShipmentAddressInputAdd.vue'
 import TopNav from '@/components/nav/TopNav.vue'
 import PreloaderLocal from '@/components/PreloaderLocal.vue'
 
@@ -124,6 +126,7 @@ import { useStore } from 'vuex'
 import { CompanyActions } from '@/store/company/actions'
 import { ShipmentsActions } from '@/store/shipments/actions'
 import { ShipmentsAddress } from "@/models/Shupments"
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
 	name: 'ShipmentAdresss',
@@ -132,13 +135,13 @@ export default defineComponent({
 		PersonalBar,
 		Notification,
 		CompanyBarTop,
-		ShipmentAddressInput,
+		ShipmentAddressInputAdd,
 		PreloaderLocal,
 	},
 	setup() {
 		const store = useStore(key);
 		const activeCompanyUid = ref('');
-		
+		const router = useRouter()
 		const currentAddr = ref(0)
 		const addAddr = ref(false)
 		const delAddr = ref(false)
@@ -178,7 +181,9 @@ export default defineComponent({
 			
 		});
 	
-		
+		const back = () => {
+			router.go(-1)
+		}
 			
 		return {
 			activeCompanyUid,
@@ -193,7 +198,7 @@ export default defineComponent({
 			companyBarTopData: computed(() => store.getters.getCompanysList),
 			address: computed(() => store.getters.getShipmentsAddress),
 			latlon,
-			
+			back,
 			del,
 		}
 	},

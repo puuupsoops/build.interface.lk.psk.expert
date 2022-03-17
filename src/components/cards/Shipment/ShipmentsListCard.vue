@@ -2,7 +2,6 @@
 <div class="orders-list-wrap">
 	<div class="orders-list ">
 		
-		
 			<div class="orders-list-row orders-list-heading">
 				<div class="orders-list-elem">№</div>
 				<div class="orders-list-elem">Наименование</div>
@@ -81,22 +80,24 @@
 </div>
 </template>
 
-<script>
-import { ref } from 'vue';
+<script lang="ts">
+import { defineComponent, PropType, ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
-export default {
+import { Shipments } from '@/models/Shupments';
+export default defineComponent({
 	props: {
 		data: {
-			type: Object
+			type: Object as PropType<Shipments>
 		},
 	},
 	setup() {
-		const active = ref(null);
-		const active_more = ref(null);
-		const target = ref(null);
+		const active = ref(null)
+		const active_more = ref(null)
+		const target = ref(null)
 		onClickOutside(target, () => {
-			active_more.value = null;
-		});
+			active_more.value = null
+		})
+		
 		return {
 			target,
 			active,
@@ -104,6 +105,5 @@ export default {
 	
 		}
 	},
-}
+})
 </script>
->

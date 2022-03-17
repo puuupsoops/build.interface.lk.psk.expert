@@ -86,10 +86,8 @@
 					<div class="claim-info-textarea-wrap">
 						<textarea class="claim-info-textarea" name="" v-model="data.message"></textarea>
 						<div class="claim-info-add-file">
-							
 							<input class="claim-info-add-file-input"
-								
-								@change="handleFileUpload( $event , cardId)" type="file" :id="'claim-add-file'+cardId">
+								@change="handleFileUpload( $event )" type="file" :id="'claim-add-file'+cardId">
 							<label class="claim-info-add-file-label"  :for="'claim-add-file'+cardId">
 								<span class="claim-info-add-file-val">{{ data.files.length}}</span></label>
 						</div>
@@ -126,14 +124,15 @@ import SelectInput from '@/components/ui/SelectInput.vue'
 import ClaimOrder from '@/components/cards/Claim/ClaimOrder.vue'
 
 import { key } from '@/store'
-import { ShipmentsMutations } from '@/store/shipments/mutations'
-import { ShipmentsConst } from '@/store/shipments/types'
+
 import { computed, defineComponent, PropType, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { ProductCharacteristic } from '@/models/Product'
 import { Claim } from "@/models/Claim"
 
 import { Orders } from '@/models/Orders'
+import { KeysConst } from '@/store/keys/types'
+import { KeysMutations } from '@/store/keys/mutations'
 
 export default defineComponent({
 	components: {
@@ -311,14 +310,14 @@ export default defineComponent({
 			get: () => {
 				if (oderVal.value == null) {
 					const id = store.getters.getCurrentOrderId
-					if (id != null && id != ShipmentsConst.DEFAULT_ORDER_ID) 
+					if (id != null && id != KeysConst.DEFAULT_ORDER_ID) 
 						return id
 					else 
 						if (store.getters.getOrders[0] != undefined) {
-							store.commit(ShipmentsMutations.SET_CURRENT_ORDER, store.getters.getOrders[0].n)
+							store.commit(KeysMutations.SET_CURRENT_ORDER, store.getters.getOrders[0].n)
 							return store.getters.getOrders[0].n
 						} else {
-							store.commit(ShipmentsMutations.SET_CURRENT_ORDER, ShipmentsConst.DEFAULT_ORDER_ID)
+							store.commit(KeysMutations.SET_CURRENT_ORDER, KeysConst.DEFAULT_ORDER_ID)
 						return null
 					}
 				} else return oderVal.value
@@ -326,7 +325,7 @@ export default defineComponent({
 			},
 			set: (val) => {
 				oderVal.value = val
-				store.commit(ShipmentsMutations.SET_CURRENT_ORDER,ShipmentsConst.DEFAULT_ORDER_ID)
+				store.commit(KeysMutations.SET_CURRENT_ORDER, KeysConst.DEFAULT_ORDER_ID)
 				data.value.partner_guid=store.getters.getOrders.find( (x: Orders) => x.n == val).partner_guid
 				}
 		})
