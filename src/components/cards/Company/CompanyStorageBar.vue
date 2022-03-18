@@ -1,11 +1,12 @@
 
 <template>
+	
 			<div  v-if="modelValue!==null" class="company-head-wrap">
 				
 				<CompanyStorageCard 
 					v-for="(storage, id) in data" 
 					:key="id"
-					:data="storage"
+					:data="storage ? storage : null"
 					:active="id===modelValue"
 					:showDoc="showDoc"
 					@onClick="$emit('update:modelValue', id)"

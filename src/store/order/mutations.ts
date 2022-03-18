@@ -2,7 +2,6 @@ import { NewOrder } from "@/models/Order";
 import { MutationTree } from "vuex";
 import { DefaultNewOrder, DefaultOrder, OrderState, OrderStateOrder, OrderStatePosition, OrderStatePositionOffer } from "./types";
 
-
 export enum OrderMutations {
 	CREATE_ORDER = "CREATE_ORDER",
 	ADD_POSITION = "ADD_POSITION",

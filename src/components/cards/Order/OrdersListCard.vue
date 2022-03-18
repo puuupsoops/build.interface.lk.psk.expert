@@ -167,7 +167,14 @@
 				</div>
 				</div> -->
 			</div>
-		
+		<div
+				class="orders-list-row orders-list-main-row"
+				v-if="data.length == 0"
+			>
+				<div class="order-info">
+					Заказов не найдено. Создайте <router-link tag="a" class="order-info-link" :to="'/order'">новый заказ</router-link> и он появится в списке.
+				</div>
+			</div>
 	</div>
 	<PreloaderLocal v-if="loading" style="width: 100%"></PreloaderLocal>
 	<OrderDetailModal v-model="showDetail" :orderId="detailOrderId"></OrderDetailModal>

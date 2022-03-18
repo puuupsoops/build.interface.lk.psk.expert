@@ -34,9 +34,9 @@
 			:data="header"
 			v-model="search"
 		/>
-		<ShipmentsListCard
+		<!-- <ShipmentsListCard
 			:data="shipmentsList"
-		/>
+		/> -->
 		
 	</div>
 </template>
@@ -46,7 +46,7 @@ import PersonalBar from "@/components/cards/PersonalBar"
 import Notification from "@/components/cards/Notification"
 import CompanyBarTop from "@/components/cards/Company/CompanyBarTop"
 import TopNav from "@/components/nav/TopNav"
-import ShipmentsListCard from '@/components/cards/Shipment/ShipmentsListCard.vue'
+//import ShipmentsListCard from '@/components/cards/Shipment/ShipmentsListCard.vue'
 import OrdersSearchCard from '@/components/cards/Order/OrdersSearchCard.vue'
 
 import SelectInput from '@/components/ui/SelectInput'
@@ -63,7 +63,7 @@ export default defineComponent({
 		TopNav,
 		SelectInput,
 		OrdersSearchCard,
-		ShipmentsListCard,
+		//ShipmentsListCard,
 	},
 	setup() {
 		const store = useStore(key)

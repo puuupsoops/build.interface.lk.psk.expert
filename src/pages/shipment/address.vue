@@ -125,7 +125,7 @@ import { key } from '@/store'
 import { useStore } from 'vuex'
 import { CompanyActions } from '@/store/company/actions'
 import { ShipmentsActions } from '@/store/shipments/actions'
-import { ShipmentsAddress } from "@/models/Shupments"
+import { ShipmentsAddress } from "@/models/Shipments"
 import { useRouter } from 'vue-router'
 
 export default defineComponent({

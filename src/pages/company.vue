@@ -56,10 +56,10 @@ export default defineComponent({
 		const router = useRouter();
 		let isLoad = ref(false);
 		let activeCompanyUid = ref(props.id);
-		let activeStorageUid = ref<number|null>(0);
+		let activeStorageUid = ref<number|null>(null);
 		let docDate = ref('');
 		let aboutCompanyData = computed(() => store.getters.getCompanyData(activeCompanyUid.value));
-		let companyStoragesData = computed(() => store.getters.getCompanyStoragesData(activeCompanyUid.value));
+		let companyStoragesData = computed(() =>  store.getters.getCompanyStoragesData(activeCompanyUid.value));
 		let companyBarTopData = computed(() => store.getters.getCompanysList);
 		let totalSpent = computed(() => store.getters.getCompanySpent(activeCompanyUid.value));
 		

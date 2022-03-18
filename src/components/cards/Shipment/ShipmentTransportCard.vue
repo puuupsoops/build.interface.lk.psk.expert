@@ -84,8 +84,8 @@
 								ожидайте ответ по стоимости, после чего вы сможете подтвердить доставку 
 								и стоимость!
 							</div>
-							<div class="shipment-form-submit gradient-btn">
-								<div class="gradient-btn-text" @click="send">Подтвердить</div>
+							<div class="shipment-form-submit gradient-btn"  @click="send()">
+								<div class="gradient-btn-text">Подтвердить</div>
 							</div>
 						</div>
 					</div>
@@ -145,7 +145,7 @@ export default defineComponent({
 			
 			const view_message = computed(()=>{
 				let res = <String[]>[]
-				res.push( 'Заказ: ' + (props.order ? props.order.name: ''))
+				res.push( (props.order ? props.order.name: ''))
 				res.push( 'Контрагент: ' + company.value)
 				if (data.value.date != '') res.push( 'Желаемая дата отгрузки: ' + data.value.date)
 				if (data.value.quick) res.push( 'Срочно: да')
@@ -182,7 +182,7 @@ export default defineComponent({
 					if (data.value.o) extra.push(2)
 					
 					formData.append('files','')
-					formData.append('title', 'Заказ ' + (props.order? props.order?.name : ''))
+					formData.append('title', props.order? props.order?.name : '')
 					formData.append('partner_name', company.value)
 					formData.append('partner_guid',  props.partner_guid)
 					formData.append('id', String(props.order ? props.order.n: ''))

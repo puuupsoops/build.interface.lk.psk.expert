@@ -163,7 +163,12 @@ export default defineComponent({
 				showModal.value=true;
 				store.commit(OrderMutations.ADD_ORDER_PARTNER_ID, activeCompanyUid.value)
 				setTimeout(() => {
-					store.dispatch(OrderActions.ADD_ORDER, store.getters.getOrderToAdd)
+					store.dispatch(OrderActions.ADD_ORDER, store.getters.getOrderToAdd).catch(()=>{
+						showModal.value=false
+						error.value = true
+						setTimeout(() => {error.value=false;}, 5000)
+						errorMsg.value = 'Ошибка создания заказа. Повторите позже.'
+					});
 				}, 3000)
 			}
 

@@ -82,8 +82,8 @@
 							</div>
 						</div>
 						<div class="shipment-form-elem">
-							<div class="shipment-form-submit gradient-btn">
-								<div class="gradient-btn-text"  @click="send()" >Подтвердить</div>
+							<div class="shipment-form-submit gradient-btn"  @click="send()">
+								<div class="gradient-btn-text" >Подтвердить</div>
 							</div>
 						</div>
 					</div>
@@ -105,7 +105,7 @@ import { useStore } from 'vuex'
 import { Orders } from '@/models/Orders'
 
 import { ref, PropType, defineComponent, computed, onMounted }from 'vue';
-import { ShipmentsAddress } from '@/models/Shupments'
+import { ShipmentsAddress } from '@/models/Shipments'
 import { Partner } from '@/models/Partner'
 import { ShipmentsActions } from '@/store/shipments/actions'
 import { useRouter } from 'vue-router'
@@ -160,7 +160,7 @@ export default defineComponent({
 		
 		const view_message = computed(()=>{
 			let res = <String[]>[]
-			res.push( 'Заказ: ' + (props.order ? props.order.name: ''))
+			res.push( (props.order ? props.order.name: ''))
 			res.push( 'Контрагент: ' + company.value)
 			if (data.value.date != '') res.push( 'Желаемая дата отгрузки: ' + data.value.date)
 			if (data.value.address!=-1) res.push( 'Адрес самовывоза: ' +  address.value)
@@ -199,7 +199,7 @@ export default defineComponent({
 					
 					formData.append('files','')
 					
-					formData.append('title', 'Заказ ' + (props.order? props.order?.name : ''))
+					formData.append('title', (props.order? props.order?.name : ''))
 					formData.append('partner_name', company.value)
 					formData.append('partner_guid',  props.partner_guid)
 					formData.append('id', String(props.order ? props.order.n: ''))

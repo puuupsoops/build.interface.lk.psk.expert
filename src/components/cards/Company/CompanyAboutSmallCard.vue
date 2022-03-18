@@ -1,9 +1,9 @@
 <template>
 	<router-link tag="a" class="company-card-item" :to="'/company/'+data.uid"> 
 		<div class="company-card-name">{{data.name.replace(/Общество с ограниченной ответственностью/, 'ООО').replace(/Акционерное общество/, 'АО')}}</div>
-		<div class="company-card-box orange">
+		<div class="company-card-box orange" >
 
-			<div v-if="data.storages[0]" class="company-card-row">
+			<div v-if="data.storages && data.storages[0]" class="company-card-row">
 				<div class="company-card-title">
 					{{data.storages[0].name.replace(/(^|\s)\S/g, s => s.toUpperCase()).replace(/(ООО)|(\")|(\s)|([а-я])/g, '')}}</div>
 				<div class="company-card-info">
@@ -26,7 +26,7 @@
 				</div>
 			</div>
 
-			<div v-if="data.storages[1]" class="company-card-row">
+			<div v-if="data.storages && data.storages[1]" class="company-card-row">
 				<div class="company-card-title">
 					{{data.storages[1].name.replace(/(^|\s)\S/g, s => s.toUpperCase()).replace(/(ООО)|(\")|(\s)|([а-я])/g, '')}}</div>
 				<div class="company-card-info">

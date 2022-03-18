@@ -1,6 +1,6 @@
 <template>
 	<div class="sidebar-menu">
-		<div style="margin: 0 0 0 170px; display: inline-flex;">
+		<!-- <div style="margin: 0 0 0 170px; display: inline-flex;">
 			Debug
 			<label class="sidebar-switch">
 				
@@ -8,7 +8,7 @@
 				<div></div>
 				
 			</label>
-		</div>
+		</div> -->
 		<div class="sidebar-heading">{{modelValue==-1 ? 'Мои компании': menu[modelValue].title}}</div>
 		<ul class="sidebar-nav">
 			<li

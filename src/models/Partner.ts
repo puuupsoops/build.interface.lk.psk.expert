@@ -20,7 +20,7 @@ export interface Partner {
     bik:           string;
     payment:       string;
     correspondent: string;
-    storages:      Storage[];
+    storages?:      Storage[];
 }
 
 export interface Storage {

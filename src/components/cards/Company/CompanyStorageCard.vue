@@ -136,19 +136,17 @@
 import { computed, defineComponent } from "vue"
 
 interface DiscountList {
-
 				progressMoneyMin: number;	// минимальный прого потраченных средств
 				progressMoneyMax: number;	// максимальный порог потраченных средств
 				discount: number;				// процент скидки
 				next: number;					// следующая скидка
-		
 }
 
 export default defineComponent({
 		props:{
 				data:{
 					type: Object,
-					required: true,
+					
 				},
 				active:{
 					type: Boolean 
@@ -215,25 +213,26 @@ export default defineComponent({
 			}
 		]
 	let discount = computed<DiscountList>(() => {
-			
-			let d = discountList.filter(v =>  props.data.spent >= v.progressMoneyMin 
-													&&  props.data.spent < v.progressMoneyMax);
-			return d.length > 0 ? d[0] : discountList[0];
+			if (props.data) {
+				const s = props.data.spent
+				let d = discountList.filter(v => s >= v.progressMoneyMin &&  s < v.progressMoneyMax)
+				return d.length > 0 ? d[0] : discountList[0]
+			} else return discountList[0]
 		})
 	
-		let progressInPercent =  computed(() => {
-			if (discount.value.progressMoneyMax != Infinity)
-				return (props.data.spent/discount.value.progressMoneyMax) * 100// прогресс в процентах
-			else return 100
-		})
+	let progressInPercent =  computed(() => {
+		if (discount.value.progressMoneyMax != Infinity)
+			return (props.data ? props.data.spent/discount.value.progressMoneyMax : 0) * 100// прогресс в процентах
+		else return 100
+	})
 
-			return {
-				getDay,
-				discount,
-				progressInPercent,
-				ostatok: computed(() => ((discount.value.progressMoneyMax - props.data.spent))),
-			}
+		return {
+			getDay,
+			discount,
+			progressInPercent,
+			ostatok: computed(() => (discount.value.progressMoneyMax - (props.data ? props.data.spent : 0))),
 		}
+	}
 });
 </script>
 

@@ -6,4 +6,5 @@ export const state: AuthState = {
 	token: '',
 	error: false,
 	error_msg: '',
+	login: ''
 }

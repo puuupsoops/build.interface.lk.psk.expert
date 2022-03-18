@@ -1,7 +1,6 @@
 import { NewOrder, Order, Position } from "@/models/Order";
 import { Offer, Product } from "@/models/Product";
 
-
 export interface OrderState {
 	order: OrderStateOrder;
 	new_order: NewOrder;

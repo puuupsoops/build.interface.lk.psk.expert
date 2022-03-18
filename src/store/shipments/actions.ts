@@ -100,6 +100,9 @@ export const actions: ActionTree<ShipmentsState, RootState> =  {
 				commit(ShipmentsMutations.SET_SHIPMENTS, response.data.response)
 			})
 			.catch(error => {
+				if (error.response && error.response.status =="404")
+					commit(ShipmentsMutations.SET_SHIPMENTS, [])
+				else
 					commit(AuthMutations.SET_ERROR, 'Request GET_DELIVERY_ADDRESS error:<br>'+error)
 			})
 		},

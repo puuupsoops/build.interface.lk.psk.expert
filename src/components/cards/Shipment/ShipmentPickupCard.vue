@@ -153,8 +153,8 @@
 			</div>
 		</div>
 	</div>
-	<div class="shipment-form-submit gradient-btn">
-		<div class="gradient-btn-text" @click="send()">Подтвердить</div>
+	<div class="shipment-form-submit gradient-btn" @click="send()">
+		<div class="gradient-btn-text">Подтвердить</div>
 	</div>
 	
 	<div 
@@ -249,7 +249,7 @@ export default defineComponent({
 				})
 			const view_message = computed(()=>{
 				let res = <String[]>[]
-				res.push( 'Заказ: ' + (props.order ? props.order.name: ''))
+				res.push( (props.order ? props.order.name: ''))
 				res.push( 'Контрагент: ' + company.value)
 				if (data.value.date != '') res.push( 'Желаемая дата отгрузки: ' +data.value.date)
 				res.push( 'Адрес самовывоза: ' + data.value.address)
@@ -277,7 +277,7 @@ export default defineComponent({
 					
 					data.value.files.forEach((x:any, index:number) => {formData.append('files['+index+']',x)})
 					
-					formData.append('title', 'Заказ ' + (props.order? props.order?.name : ''))
+					formData.append('title', props.order? props.order?.name : '')
 					formData.append('partner_name', company.value)
 					formData.append('partner_guid',  props.partner_guid)
 					formData.append('id', String(props.order ? props.order.n: ''))

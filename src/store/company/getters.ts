@@ -11,6 +11,15 @@ export const getters: GetterTree<CompanyState, RootState> = {
 			name: val.name.replace(/Общество с ограниченной ответственностью/, 'ООО')
 							.replace(/Акционерное общество/, 'АО')
 							.replace(/Индивидуальный Предприниматель/, 'ИП')})),
+		getCompanysListInput: state => {
+			const res = state.companys.map ( val => ({
+				id: val.uid,
+				name: val.name.replace(/Общество с ограниченной ответственностью/, 'ООО')
+								.replace(/Акционерное общество/, 'АО')
+								.replace(/Индивидуальный Предприниматель/, 'ИП')}))
+			res.unshift({id: '', name: "Все"})
+			return res
+		},
 		getCompanyData : state => (uid: string) => {
 			const company = state.companys.find(x => x.uid === uid)
 			return company ? ({
@@ -56,7 +65,7 @@ export const getters: GetterTree<CompanyState, RootState> = {
 		getCompanySpent: state => (uid: string) => {
 			if (uid){
 				const company = state.companys.find(x => x.uid === uid)
-				const res = company ? company.storages.reduce((prev,cur) => prev + cur.spent, 0) : 0;
+				const res = company && company.storages ? company.storages.reduce((prev,cur) => prev + cur.spent, 0) : 0;
 				return res
 			} else { return 0 }
 		},
@@ -66,7 +75,7 @@ export const getters: GetterTree<CompanyState, RootState> = {
 			
 				const company = state.companys.find(x => x.uid === uid)
 				
-				const res = company ? company.storages.find(x => x.guid === guid): null
+				const res = company && company.storages ? company.storages.find(x => x.guid === guid): null
 				return res?res.discount:null
 			} else { return 0 }
 		},

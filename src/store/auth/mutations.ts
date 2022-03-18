@@ -6,6 +6,7 @@ import router from '@/plugins/router';
 
 export enum AuthMutations {
 	SET_AUTH = "SET_AUTH",
+	SET_AUTH_LOGIN = "SET_AUTH_LOGIN",
 	SET_SAVE_AUTH = "SET_SAVE_AUTH",
 	LOGOUT = "LOGOUT",
 	SET_ERROR = "SET_ERROR",
@@ -18,6 +19,9 @@ export enum AuthMutations {
 export const mutations: MutationTree<AuthState> = {
 	[AuthMutations.SET_AUTH] (state, data) {
 		state.token = data;
+	},
+	[AuthMutations.SET_AUTH_LOGIN] (state, data) {
+		state.login = data;
 	},
 	[AuthMutations.SET_SAVE_AUTH] (state) {
 		if (state.token) {

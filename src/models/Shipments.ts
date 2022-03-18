@@ -1,3 +1,5 @@
+import { Orders } from "./Orders";
+
 export interface ShipmentsAddress {
     index?:      number;
     label:      string;
@@ -24,4 +26,5 @@ export interface Shipments {
     address:      string;
     comment:      string;
     extra:        string[] | boolean;
+    order:        Orders|undefined;
 }

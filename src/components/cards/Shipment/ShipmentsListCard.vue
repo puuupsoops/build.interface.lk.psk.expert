@@ -1,108 +1,337 @@
 <template>
 <div class="orders-list-wrap">
-	<div class="orders-list ">
-		
+	<div
+			v-if="data_filtred.length != data.length"
+			class="orders-heading-info"
+		>
+				Показано {{data_filtred.length}} из {{data.length}}
+	</div>
+	<div class="orders-list " ref="target">
 			<div class="orders-list-row orders-list-heading">
 				<div class="orders-list-elem">№</div>
-				<div class="orders-list-elem">Наименование</div>
-				<div class="orders-list-elem">Контрагент</div>
-				<div class="orders-list-elem">Желаемая дата</div>
-				<div class="orders-list-elem">Номер</div>
-				<div class="orders-list-elem">Дата отгрузки</div>
-				<div class="orders-list-elem">Статус</div>
+				<div :class="'orders-list-elem' + (search && search.id == 1 ? ' active': '') + (filter[1].value != '' ? ' active': '')">
+					<modal-input v-model="filter[1].value" v-model:show="filter[1].show"></modal-input>
+					<div>Наименование</div>
+					<div 
+						:class="'orders-list-elem-filter' +(filter[1].show || filter[1].value != '' ? ' active': '')"
+						title="Фильтр"
+						@click="filter[1].show=true"
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="none">
+							<g><path d="M0,0h24 M24,24H0" fill="none"/><path class="fill" fill="#ffffff" d="M7,6h10l-5.01,6.3L7,6z M4.25,5.61C6.27,8.2,10,13,10,13v6c0,0.55,0.45,1,1,1h2c0.55,0,1-0.45,1-1v-6 c0,0,3.72-4.8,5.74-7.39C20.25,4.95,19.78,4,18.95,4H5.04C4.21,4,3.74,4.95,4.25,5.61z"/><path d="M0,0h24v24H0V0z" fill="none"/>
+						</g></svg>
+					</div>
+					
+				</div>
+				<div :class="'orders-list-elem' + (search && search.id == 2 ? ' active': '') + (contrAgent !='' ? ' active':'')">Контрагент</div>
+				<div :class="'orders-list-elem'">Желаемая дата</div>
+				<div :class="'orders-list-elem' + (search && search.id == 3 ? ' active': '')">Номер</div>
+				<div :class="'orders-list-elem' + (search && search.id == 4 ? ' active': '') + (period != 'Все' ? ' active':'')">Дата отгрузки</div>
+				<div :class="'orders-list-elem' + (search && search.id == 5 ? ' active': '') + (status != 'Все' ? ' active':'')">Статус</div>
 				<div class="orders-list-elem">Инфо</div>
 			</div>
 
 			<div 
-				v-for="(item, key) in data"
+				v-for="(item, key) in data_filtred"
 				:key="key"
 				:class="'orders-list-item' + ( key == active ? ' active': '' )"
 				>
-				<div class="orders-list-row orders-list-main-row"
-					@click="key === active ? active = null : active = key"
-				>
-					<div class="orders-list-elem">
-						{{key+1}}
-						<div class="table-arrow"></div>
+				<!-- <div v-if=">
+				<div v-if="checkStatus(item)">
+				<div v-if="checkPeriod(item.date) && filtred(item)"> -->
+					<div class="orders-list-row orders-list-main-row"
+						@click="key === active ? active = -1 : active = key; active_more =  -1"
+					>
+
+						<div class="orders-list-elem">
+							{{key+1}}
+							<div class="table-arrow"></div>
+						</div>
+						<div class="orders-list-elem">{{ item.title }}</div>
+						<div class="orders-list-elem"><span v-html="item.partner_name"></span></div>
+						<div class="orders-list-elem">{{ item.date }}</div>
+						<div class="orders-list-elem">{{ item.bitrix_id }}</div>
+						<div class="orders-list-elem"></div>
+						<div class="orders-list-elem"></div>
+						<div class="orders-list-elem" > 
+							<button
+								class="orders-list-more"
+								@click.stop="active_more = key"
+							>Подробно</button>
+							<div
+								
+								:class="'orders-list-more-dropdown' +  ( key == active_more ? ' active': '' )"
+							>
+								<a class="orders-list-more-dropdown-link" href="#">Повторить</a>
+								<a class="orders-list-more-dropdown-link" href="#" @click="detailOrderId = item.order.n; showDetail=true" >Детали заказа</a>
+								<a class="orders-list-more-dropdown-link" href="#">Структура</a>
+								<a class="orders-list-more-dropdown-link" href="#">Скачать заявку</a>
+								
+							</div>
+						</div>
 					</div>
-					<div class="orders-list-elem">{{ item.name }}</div>
-					<div class="orders-list-elem">{{ item.partner }}</div>
-					<div class="orders-list-elem">{{ item.date }}</div>
-					<div class="orders-list-elem">{{ item.id }}</div>
-					<div class="orders-list-elem">{{ item.date_shipment }}</div>
-					<div :class="'orders-list-elem' +(item.state =='На рассмотрении' ? ' error' : '')">{{ item.state }}</div>
-					<div class="orders-list-elem" > 
-						<button
-							class="orders-list-more"
-							@click.stop="key == active_more ? active_more = null : active_more = key"
-						>Подробно</button>
+
+					<div :class="'orders-list-info'   + ( key == active ? ' active': '' )" @click="active_more =  -1" >
+						
+						<div v-if="item.order && Array.isArray(item.order.checks)">
+							<div
+								class="orders-list-info-row"
+								v-for="(check, key1) in item.order.checks"
+								:key="key1"
+							>
+								<div class="orders-list-info-elem">{{getStorageName(item.partner_guid, check.organization_id)}}</div>
+								<div class="orders-list-info-elem"> 
+									<div class="orders-list-info-about">
+										<div
+											class="orders-list-info-download"
+											title="Сохранить счет"
+											@click="downloadBill(check.guid)"
+										>
+											<span> Счёт № {{check.n}} от {{item.date.substring(0,10)}} </span>
+											<preloader-local
+												v-if="loading_bill.includes(item.guid)"
+												small
+											/>
+										</div>
+										
+									</div>
+								</div>
+								<div class="orders-list-info-elem orders-list-info-doc-wrap"  v-if="!check.doc_status">
+									<PreloaderLocal small></PreloaderLocal>
+								</div>
+								<div class="orders-list-info-elem orders-list-info-doc-wrap" v-else>
+									<a
+										v-if="check.doc_status?.StatusSchet"
+										class="orders-list-info-doc sc" 
+										:href="`http://89.111.136.61/api/order/print?id=${check.guid}&name=Счет`"
+										target="_blank"
+										title="Открыть счет">
+									</a>
+									<a 
+										v-if="check.doc_status?.StatusUPD"
+										class="orders-list-info-doc upd"
+										:href="`http://89.111.136.61/api/order/print?id=${check.guid}&name=УПД`"
+										target="_blank"
+										title="Универсальный передаточный документ">
+									</a>
+									<a 
+										v-if="check.doc_status?.StatusSF"
+										class="orders-list-info-doc sf" 
+										:href="`http://89.111.136.61/api/order/print?id=${check.guid}&name=СФ`"
+										target="_blank"
+										title="Счёт-фактура">
+									</a>
+									<a 
+										v-if="check.doc_status?.StatusUPK"
+										class="orders-list-info-doc kor"
+										:href="`http://89.111.136.61/api/order/print?id=${check.guid}&name=УКД`"
+										target="_blank"
+										title="Универсальный корректировочный документ">
+									</a>
+								</div>
+								<div class="orders-list-info-elem"> 
+								
+								</div>
+								<div class="orders-list-info-elem"> 
+									{{item.case}}
+								</div>
+							
+								<!-- <div class="orders-list-info-elem">
+									<a class="orders-list-info-link" href="">Сертификаты</a>
+									<a class="orders-list-info-link" href="">Скачать все</a>
+									</div> -->
+							</div> 
+						</div>
 						<div
-							ref="target"
-							:class="'orders-list-more-dropdown' +  ( key == active_more ? ' active': '' )"
-						>
-							<a class="orders-list-more-dropdown-link" href="">Повторить</a>
-							<a class="orders-list-more-dropdown-link" href="">Детали заказа</a>
-							<a class="orders-list-more-dropdown-link" href="">Скачать документы</a>
-							<a class="orders-list-more-dropdown-link" href="">Скачать сертификаты</a>
-							<a class="orders-list-more-dropdown-link" href="">Печать документов</a>
-							<a class="orders-list-more-dropdown-link" href="">Печать сертификатов</a>
+							v-else
+							class="orders-list-info-row"
+							>
+							Счет отсутвует
 						</div>
 					</div>
+					
+				<!-- </div>
 				</div>
-				<div :class="'orders-list-info'   + ( key == active ? ' active': '' )"  >
-					<div class="orders-list-info-row">
-						<div class="orders-list-info-elem">ЭС</div>
-						<div class="orders-list-info-elem"> 
-						<div class="orders-list-info-about">Счёт № 12 от 02.02.2020</div>
-						<div class="orders-list-info-about">Реализация № 243 от 10.02.2020 + корректировка № 201 от 11.02.2020</div>
-						<div class="orders-list-info-about">Счёт Фактура № 243 от 10.02.2020</div>
-						</div>
-						<div class="orders-list-info-elem orders-list-info-doc-wrap"><a class="orders-list-info-doc sc" href=""></a><a class="orders-list-info-doc upd" href=""></a><a class="orders-list-info-doc sf" href=""></a><a class="orders-list-info-doc kor" href=""></a></div>
-						<div class="orders-list-info-elem"><a class="orders-list-info-link" href="">Сертификаты</a><a class="orders-list-info-link" href="">Скачать все</a></div>
-					</div>
-					<div class="orders-list-info-row">
-						<div class="orders-list-info-elem">ФРО</div>
-						<div class="orders-list-info-elem"> 
-						<div class="orders-list-info-about">Счёт № 12 от 02.02.2020</div>
-						<div class="orders-list-info-about">Реализация № 243 от 10.02.2020 + корректировка № 201 от 11.02.2020</div>
-						<div class="orders-list-info-about">Счёт Фактура № 243 от 10.02.2020</div>
-						</div>
-						<div class="orders-list-info-elem orders-list-info-doc-wrap"><a class="orders-list-info-doc sc" href=""></a><a class="orders-list-info-doc upd" href=""></a><a class="orders-list-info-doc sf" href=""></a></div>
-						<div class="orders-list-info-elem"><a class="orders-list-info-link" href="">Сертификаты</a><a class="orders-list-info-link" href="">Скачать все</a></div>
-					</div>
+				</div> -->
+			</div>
+			<div
+				class="orders-list-row orders-list-main-row"
+				v-if="data.length == 0"
+			>
+				<div class="order-info">
+					Заявок не найдено. Создайте <router-link tag="a" class="order-info-link" :to="'/shipments/request'">новую заявку</router-link> и она появится в списке.
 				</div>
 			</div>
-
-
-			
-		
 	</div>
+	<PreloaderLocal v-if="loading" style="width: 100%"></PreloaderLocal>
+	<OrderDetailModal v-model="showDetail" :orderId="detailOrderId"></OrderDetailModal>
 </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from 'vue';
-import { onClickOutside } from '@vueuse/core';
-import { Shipments } from '@/models/Shupments';
+import PreloaderLocal from '@/components/PreloaderLocal.vue'
+import OrderDetailModal from '@/components/cards/Order/OrderDetailModal.vue'
+import ModalInput from '@/components/ui/ModalInput.vue'
+
+import { ref, PropType, defineComponent, watch, computed } from 'vue'
+import { onClickOutside } from '@vueuse/core'
+import { Shipments } from '@/models/Shipments'
+import { useStore } from 'vuex'
+import { key } from '@/store'
+import { OrderActions } from '@/store/order/actions'
+import { Storage } from '@/models/Partner'
+import { OrdersActions } from '@/store/orders/actions'
+import { OrdersSatusCode } from '@/store/orders/types'
+
+import { SearchData } from '@/models/Components'
+import { KeysMutations } from '@/store/keys/mutations'
+
 export default defineComponent({
 	props: {
 		data: {
-			type: Object as PropType<Shipments>
+			type: Array as PropType<Shipments[]>,
+			required: true
 		},
+		contrAgent: {
+			type: String
+		},
+		period: {
+			type: String
+		},
+		status: {
+			type: String
+		},
+		loading:{
+			type: Boolean,
+			default: false
+		},
+		search: {
+			type: Object as PropType<SearchData>
+		}
 	},
-	setup() {
-		const active = ref(null)
-		const active_more = ref(null)
+	components: {
+		PreloaderLocal,
+		OrderDetailModal,
+		ModalInput,
+	},
+	setup(props) {
+		const store = useStore(key)
+		const active = ref(-1)
+		const active_more = ref(-1)
 		const target = ref(null)
+		const showDetail = ref(false)
+		const loading_bill = ref<string[]>([])
+		const detailOrderId = ref(-1)
+		const filter = ref([
+			{name: 'id', value: '', show: false},
+			{name: 'name', value: '', show: false},
+			{name: 'id', value: '', show: false},
+			{name: 'id', value: '', show: false},
+			{name: 'id', value: '', show: false},
+			{name: 'id', value: '', show: false},
+		])
+		
 		onClickOutside(target, () => {
-			active_more.value = null
+			active_more.value = -1
+		});
+		
+		watch( active, ()=>{
+			//console.log(active)
+			if (active.value!=-1 && props.data && Array.isArray(props.data[active.value].order?.checks)) {
+				let promise_arr = props.data[active.value].order?.checks?.map(x=> {if (!x.doc_status) return store.dispatch(OrdersActions.GET_ORDERS_DOCSTATUS, x.guid)})
+				if (promise_arr){
+					Promise.all(promise_arr).finally(()=>{})
+				}
+			}
 		})
 		
+		const data_filtred = computed( () => {
+			//фильтр по контрагенту
+			let data = props.data.filter(x => props.contrAgent =='' || x.partner_guid == props.contrAgent)
+			
+			//фильтр по периоду
+			data = data.filter(x => checkPeriod(x.date))
+			
+			//фильтр по статусу
+			data = data.filter(x => checkStatus(x))
+			
+			if (filter.value[1].value !=''){
+				data = data.filter(x => x.title.indexOf(filter.value[1].value)!=-1)
+			}
+			
+			return data
+		})
+		
+		
+		const checkPeriod = (date: string) => {
+			if (props.period == 'Все') {
+				return true
+			} else {
+				const start = props.period?.split(' - ')[0]
+				const year = start?.substring(6,10)
+				const month = start?.substring(3,5)
+				return year == date.substring(6,10) && month == date.substring(3,5)
+			}
+		}
+		
+		const checkStatus = (item: Shipments) => {
+			
+			// if (props.status == 'Все'){
+			// 	return true
+			// } else {
+			// 	if (Array.isArray(item.checks)){
+			// 		return item.checks.findIndex( x => OrdersSatusCode[parseInt(x.status+1)] ? props.status == OrdersSatusCode[parseInt(x.status+1)].name : false) !=-1
+			// 	}
+			// 	else 
+			// 		return false
+			// }
+				return item
+		}
+		
+		const downloadBill = (uuid: string): void=>{
+			loading_bill.value.push(uuid)
+			store.dispatch(OrderActions.GET_BILL_FILE_SAVE, uuid)
+				.finally( () => { loading_bill.value = loading_bill.value.filter(item => item !== uuid)})
+		}
+
+		const getStorageName = (partner_guid: string, organization_id: string): string=>{
+			const storages = <Storage[]>store.getters.getCompanyStoragesData(partner_guid)
+			const storage = storages.find(x  => x.guid == organization_id)
+			return storage ? storage.name.replace(/(^|\s)\S/g, s => s.toUpperCase()).replace(/(ООО)|(")|(\s)|([а-я])/g, '') : 'Склад'
+		}
+		
+		const setOrderId = (id: number) => {
+			store.commit(KeysMutations.SET_CURRENT_ORDER, id)
+		}
+		
+		const filtred = ( item: Shipments) => {
+			let show = false
+			if (filter.value[1].value !=''){
+				if (item.title.indexOf(filter.value[1].value)!=-1) show=true
+			} else show = true
+			return  show
+		}
+
 		return {
+			//data
 			target,
 			active,
 			active_more,
-	
+			loading_bill,
+			showDetail,
+			detailOrderId,
+			OrdersSatusCode,
+			filter,
+			//computed
+			data_filtred,
+			//methods
+			
+			checkStatus,
+			downloadBill,
+			getStorageName,
+			setOrderId,
+			filtred,
+			
 		}
 	},
 })

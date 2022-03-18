@@ -120,6 +120,7 @@ export default defineComponent({
 				store.dispatch(AuthActions.LOGIN, authData.value)
 						.then(() => {
 							if (saved.value) store.commit(AuthMutations.SET_SAVE_AUTH)
+							store.commit(AuthMutations.SET_AUTH_LOGIN,authData.value.login)
 							Promise.all([
 								store.dispatch(CompanyActions.GET_COMPANYS),
 								store.dispatch(CompanyActions.GET_MANAGER)
