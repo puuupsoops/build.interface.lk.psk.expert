@@ -46,7 +46,7 @@
 		v-model="search"
 	/>
 	<OrdersListCard
-		:data="ordersList"
+	
 		:loading="loading"
 		:contrAgent="filterCompanyUid"
 		:period="filterPeriodData[filterPeriod].name"
@@ -124,7 +124,7 @@ export default defineComponent({
 			filterPeriod,
 			OrdersSatusCode,
 			filterStatus,
-			ordersList: computed(() => store.getters.getOrdersFiltred(search.value) ),
+			
 			activeCompanyUid,
 			searchColumn,
 			search,

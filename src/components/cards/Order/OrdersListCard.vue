@@ -1,10 +1,10 @@
 <template>
 <div class="orders-list-wrap">
 	<div
-			v-if="data_filtred.length != data.length"
+			v-if="data_filtred.length != orders_list.length"
 			class="orders-heading-info"
 		>
-				Показано {{data_filtred.length}} из {{data.length}}
+				Показано {{data_filtred.length}} из {{orders_list.length}}
 	</div>
 	<div class="orders-list " ref="target">
 			<div class="orders-list-row orders-list-heading">
@@ -17,9 +17,9 @@
 						title="Фильтр"
 						@click="filter[1].show=true"
 					>
-						<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="none">
-							<g><path d="M0,0h24 M24,24H0" fill="none"/><path class="fill" fill="#ffffff" d="M7,6h10l-5.01,6.3L7,6z M4.25,5.61C6.27,8.2,10,13,10,13v6c0,0.55,0.45,1,1,1h2c0.55,0,1-0.45,1-1v-6 c0,0,3.72-4.8,5.74-7.39C20.25,4.95,19.78,4,18.95,4H5.04C4.21,4,3.74,4.95,4.25,5.61z"/><path d="M0,0h24v24H0V0z" fill="none"/>
-						</g></svg>
+						<svg width="13" height="9" viewBox="0 0 13 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path class="fill" d="M7.00726 8.11117L12.7923 2.32601C12.9262 2.1922 13 2.01359 13 1.82313C13 1.63268 12.9262 1.45406 12.7923 1.32026L12.3664 0.894224C12.0888 0.616998 11.6378 0.616998 11.3606 0.894224L6.5027 5.75217L1.63936 0.888833C1.50545 0.755029 1.32694 0.681152 1.13659 0.681152C0.946033 0.681152 0.767522 0.755029 0.633507 0.888833L0.207681 1.31487C0.0737714 1.44878 -4.1357e-08 1.62729 -4.9682e-08 1.81774C-5.8007e-08 2.0082 0.0737714 2.18681 0.207681 2.32062L5.99802 8.11117C6.13236 8.24529 6.31171 8.31896 6.50238 8.31854C6.69378 8.31896 6.87303 8.24529 7.00726 8.11117Z" fill="#A5A7A9"/>
+						</svg>
 					</div>
 					
 				</div>
@@ -50,7 +50,7 @@
 						<div class="orders-list-elem">{{ item.partner_name }}</div>
 						<div class="orders-list-elem">{{ item.n }}</div>
 						<div class="orders-list-elem">{{ item.date }}</div>
-						<div class="orders-list-elem"></div>
+						<div class="orders-list-elem"> </div>
 						<div class="orders-list-elem" > 
 							<button
 								class="orders-list-more"
@@ -64,8 +64,6 @@
 								<a class="orders-list-more-dropdown-link" href="#" @click="detailOrderId = item.n; showDetail=true" >Детали заказа</a>
 								<a class="orders-list-more-dropdown-link" href="#">Скачать документы</a>
 								<a class="orders-list-more-dropdown-link" href="#">Скачать сертификаты</a>
-								<a class="orders-list-more-dropdown-link" href="#">Печать документов</a>
-								<a class="orders-list-more-dropdown-link" href="#">Печать сертификатов</a>
 								<router-link 
 									class="orders-list-more-dropdown-link" 
 									tag="a"
@@ -90,18 +88,18 @@
 
 					<div :class="'orders-list-info'   + ( key == active ? ' active': '' )" @click="active_more =  -1" >
 						
-						<div v-if="Array.isArray(item.checks)">
+						<div v-if="Array.isArray(item.checks) && item.checks.length>0">
 							<div
 								class="orders-list-info-row"
 								v-for="(check, key1) in item.checks"
 								:key="key1"
 							>
 								<div class="orders-list-info-elem">{{getStorageName(item.partner_guid, check.organization_id)}}</div>
-								<div class="orders-list-info-elem"> 
-									<div class="orders-list-info-about">
+								<div class="orders-list-info-elem"  > 
+									<div class="orders-list-info-about tooltip" v-if="check.status >= 2">
 										<div
-											class="orders-list-info-download"
-											title="Сохранить счет"
+											class="orders-list-info-download "
+											
 											@click="downloadBill(check.guid)"
 										>
 											<span> Счёт № {{check.n}} от {{item.date.substring(0,10)}} </span>
@@ -110,20 +108,31 @@
 												small
 											/>
 										</div>
-										
+										<span class="tooltiptext">Сохранить счет</span>
+									</div>
+									<div class="orders-list-info-about tooltip" v-else>
+										<div
+											class="orders-list-info-download disable"
+										>
+											Счёт № {{check.n}} от {{item.date.substring(0,10)}} 
+										</div>
+										<span class="tooltiptext">Сохранить счет можно только <br> после подтверждения заказа</span>
 									</div>
 								</div>
+								
 								<div class="orders-list-info-elem orders-list-info-doc-wrap"  v-if="!check.doc_status">
 									<PreloaderLocal small></PreloaderLocal>
 								</div>
 								<div class="orders-list-info-elem orders-list-info-doc-wrap" v-else>
+									
 									<a
-										v-if="check.doc_status?.StatusSchet"
+										v-if="check.doc_status?.StatusSchet  && check.status >= 2"
 										class="orders-list-info-doc sc" 
 										:href="`http://89.111.136.61/api/order/print?id=${check.guid}&name=Счет`"
 										target="_blank"
 										title="Открыть счет">
 									</a>
+																		
 									<a 
 										v-if="check.doc_status?.StatusUPD"
 										class="orders-list-info-doc upd"
@@ -149,17 +158,27 @@
 								<div class="orders-list-info-elem"> 
 									{{ OrdersSatusCode[check.status+1] ? OrdersSatusCode[check.status+1].name : ''}}
 								</div>
-							
-								<div class="orders-list-info-elem">
+								<div class="orders-list-info-elem"> 
+									
+								</div>
+								<!-- <div class="orders-list-info-elem">
 									<a class="orders-list-info-link" href="">Сертификаты</a>
-									<a class="orders-list-info-link" href="">Скачать все</a></div>
+									<a class="orders-list-info-link" href="">Скачать все</a></div> -->
 							</div>
 						</div>
 						<div
 							v-else
 							class="orders-list-info-row"
 							>
-							Счет отсутвует
+							<div class="orders-list-info-elem"></div>
+							<div class="orders-list-info-elem">
+								Счет отсутвует
+							</div>
+							<div class="orders-list-info-elem"></div>
+							
+							<div class="orders-list-info-elem"></div>
+							<div class="orders-list-info-elem"></div>
+							<div class="orders-list-info-elem"></div>
 						</div>
 					</div>
 					
@@ -169,7 +188,7 @@
 			</div>
 		<div
 				class="orders-list-row orders-list-main-row"
-				v-if="data.length == 0"
+				v-if="orders_list.length == 0"
 			>
 				<div class="order-info">
 					Заказов не найдено. Создайте <router-link tag="a" class="order-info-link" :to="'/order'">новый заказ</router-link> и он появится в списке.
@@ -188,7 +207,7 @@ import ModalInput from '@/components/ui/ModalInput.vue'
 
 import { ref, PropType, defineComponent, watch, computed } from 'vue'
 import { onClickOutside } from '@vueuse/core'
-import { Orders } from '@/models/Orders'
+import { Check, Orders } from '@/models/Orders'
 import { useStore } from 'vuex'
 import { key } from '@/store'
 import { OrderActions } from '@/store/order/actions'
@@ -201,10 +220,7 @@ import { KeysMutations } from '@/store/keys/mutations'
 
 export default defineComponent({
 	props: {
-		data: {
-			type: Array as PropType<Orders[]>,
-			required: true
-		},
+		
 		contrAgent: {
 			type: String
 		},
@@ -248,28 +264,35 @@ export default defineComponent({
 			active_more.value = -1
 		});
 		
+		let orders_list = computed<Orders[]>(()=> store.getters.getOrders)
+		
 		watch( active, ()=>{
 			//console.log(active)
-			if (active.value!=-1 && props.data && Array.isArray(props.data[active.value].checks)) {
-				let promise_arr = props.data[active.value].checks?.map(x=> {if (!x.doc_status) return store.dispatch(OrdersActions.GET_ORDERS_DOCSTATUS, x.guid)})
+			if (active.value!=-1 && data_filtred.value && Array.isArray(data_filtred.value[active.value].checks)) {
+				let promise_arr = data_filtred.value [active.value].checks?.map((x: Check ) => {
+												if (!x.doc_status) return store.dispatch(OrdersActions.GET_ORDERS_DOCSTATUS, x.guid)
+											})
 				if (promise_arr){
 					Promise.all(promise_arr).finally(()=>{})
 				}
 			}
 		})
-		
+		watch( () => props.status, ()=>{
+			active.value=-1
+		})
 		const data_filtred = computed( () => {
 			//фильтр по контрагенту
-			let data = props.data.filter(x => props.contrAgent =='' || x.partner_guid == props.contrAgent)
+			
+			let data = orders_list.value.filter((x: Orders) => props.contrAgent =='' || x.partner_guid == props.contrAgent)
 			
 			//фильтр по периоду
-			data = data.filter(x => checkPeriod(x.date))
+			data = data.filter((x: Orders) => checkPeriod(x.date))
 			
 			//фильтр по статусу
-			data = data.filter(x => checkStatus(x))
+			data = data.filter((x: Orders) => checkStatus(x))
 			
 			if (filter.value[1].value !=''){
-				data = data.filter(x => x.name.indexOf(filter.value[1].value)!=-1)
+				data = data.filter((x: Orders) => x.name.indexOf(filter.value[1].value)!=-1)
 			}
 			
 			return data
@@ -337,6 +360,7 @@ export default defineComponent({
 			filter,
 			//computed
 			data_filtred,
+			orders_list,
 			//methods
 			
 			checkStatus,
