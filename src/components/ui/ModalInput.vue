@@ -10,7 +10,7 @@
 			>
 			
 		</div>
-		<div class="product-search-clear" @click="$emit('update:modelValue','')"></div>
+		<div class="product-search-clear" @click="modelValue =='' ? $emit('update:show', false) : $emit('update:modelValue','')"></div>
 	</div>
 	
 </template>

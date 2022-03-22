@@ -92,14 +92,13 @@ export default defineComponent({
 		const filterCompanyUid = ref('');
 		const filterPeriod = ref(0)
 		const filterStatus = ref(0)
-		const search = ref<SearchData|null>(null)
+		const search = ref<SearchData|null>({id: 1, search: ''})
 	
 		const searchColumn = [
 			{id: 1, name: 'Наименование'},
-			{id: 2, name: 'Контрагент'},
-			{id: 3, name: 'Номер'},
-			{id: 4, name: 'Дата создания'},
-			{id: 5, name: 'Статус'},
+			{id: 2, name: 'Желаемая дата'},
+			{id: 3, name: 'Номер заказа'},
+			
 		];
 	
 		onMounted(() => {

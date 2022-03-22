@@ -1,7 +1,7 @@
 <template>
 <div class="orders-list-wrap">
 	<div
-			v-if="data_filtred.length != orders_list.length"
+			:style=" data_filtred.length != orders_list.length ? 'visibility: visible': 'visibility: hidden'"
 			class="orders-heading-info"
 		>
 				Показано {{data_filtred.length}} из {{orders_list.length}}
@@ -9,7 +9,7 @@
 	<div class="orders-list " ref="target">
 			<div class="orders-list-row orders-list-heading">
 				<div class="orders-list-elem">№</div>
-				<div :class="'orders-list-elem' + (search && search.id == 1 ? ' active': '') + (filter[1].value != '' ? ' active': '')">
+				<div :class="'orders-list-elem' + (search.search !='' && search.id == 1 ? ' active': '') + (filter[1].value != '' ? ' active': '')">
 					<modal-input v-model="filter[1].value" v-model:show="filter[1].show"></modal-input>
 					<div>Наименование</div>
 					<div 
@@ -23,10 +23,10 @@
 					</div>
 					
 				</div>
-				<div :class="'orders-list-elem' + (search && search.id == 2 ? ' active': '') + (contrAgent !='' ? ' active':'')">Контрагент</div>
-				<div :class="'orders-list-elem' + (search && search.id == 3 ? ' active': '')">Номер</div>
-				<div :class="'orders-list-elem' + (search && search.id == 4 ? ' active': '') + (period != 'Все' ? ' active':'')">Дата создания</div>
-				<div :class="'orders-list-elem' + (search && search.id == 5 ? ' active': '') + (status != 'Все' ? ' active':'')">Статус</div>
+				<div :class="'orders-list-elem' + (contrAgent !='' ? ' active':'')">Контрагент</div>
+				<div :class="'orders-list-elem' + (search.search !='' && search.id == 2 ? ' active': '')">Номер</div>
+				<div :class="'orders-list-elem' + (search.search !='' && search.id == 3 ? ' active': '') + (period != 'Все' ? ' active':'')">Дата создания</div>
+				<div :class="'orders-list-elem' + (status != 'Все' ? ' active':'')">Статус</div>
 				<div class="orders-list-elem">Инфо</div>
 			</div>
 
@@ -235,7 +235,8 @@ export default defineComponent({
 			default: false
 		},
 		search: {
-			type: Object as PropType<SearchData>
+			type: Object as PropType<SearchData>,
+			required: true
 		}
 	},
 	components: {
@@ -277,9 +278,20 @@ export default defineComponent({
 				}
 			}
 		})
+		
 		watch( () => props.status, ()=>{
 			active.value=-1
 		})
+		watch( () => props.contrAgent, ()=>{
+			active.value=-1
+		})
+		watch( () => props.search, ()=>{
+			active.value=-1
+		})
+		watch( () => props.period, ()=>{
+			active.value=-1
+		})
+		
 		const data_filtred = computed( () => {
 			//фильтр по контрагенту
 			
@@ -291,6 +303,9 @@ export default defineComponent({
 			//фильтр по статусу
 			data = data.filter((x: Orders) => checkStatus(x))
 			
+			//фильтр по поиску по полю
+			data = data.filter((x: Orders) => search(x))
+			
 			if (filter.value[1].value !=''){
 				data = data.filter((x: Orders) => x.name.indexOf(filter.value[1].value)!=-1)
 			}
@@ -298,6 +313,24 @@ export default defineComponent({
 			return data
 		})
 		
+		const search = (item: Orders) => {
+			if (props.search.search == '') return true
+			switch (props.search.id){
+				case 1: 
+					return item.name.toUpperCase().indexOf(props.search.search.toUpperCase()) != -1
+				case 2: 
+					return String(item.n).toUpperCase().indexOf(props.search.search.toUpperCase()) != -1
+				case 3: 
+					return item.date.toUpperCase().indexOf(props.search.search.toUpperCase()) != -1
+				default:
+					return true
+			}
+			// {id: 1, name: 'Наименование'},
+			// {id: 2, name: 'Контрагент'},
+			// {id: 3, name: 'Номер'},
+			// {id: 4, name: 'Дата создания'},
+			
+		}
 		
 		const checkPeriod = (date: string) => {
 			if (props.period == 'Все') {

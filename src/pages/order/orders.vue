@@ -3,7 +3,7 @@
 	<div class="top-line product-page">
 		<CompanyBarTop 
 			:data="companyBarTopData" 
-			v-model="activeCompanyUid"/>
+			v-model="filterCompanyUid"/>
 		<Notification/>
 		<PersonalBar/>
 		
@@ -45,6 +45,7 @@
 		:data="searchColumn"
 		v-model="search"
 	/>
+
 	<OrdersListCard
 	
 		:loading="loading"
@@ -86,19 +87,17 @@ export default defineComponent({
 	},
 	setup(){
 		const store = useStore(key);
-		const activeCompanyUid = ref('')
 		const filterCompanyUid =  ref('')
 		const filterPeriod = ref(0)
 		const filterStatus = ref(0)
 		const loading = ref(true)
-		const search = ref<SearchData|null>(null)
+		const search = ref<SearchData|null>({id: 1, search: ''})
 	
 		const searchColumn = [
 			{id: 1, name: 'Наименование'},
-			{id: 2, name: 'Контрагент'},
-			{id: 3, name: 'Номер'},
-			{id: 4, name: 'Дата создания'},
-			{id: 5, name: 'Статус'},
+			{id: 2, name: 'Номер'},
+			{id: 3, name: 'Дата создания'},
+			
 		];
 	
 		onMounted(() => {
@@ -109,7 +108,7 @@ export default defineComponent({
 			{
 				store.dispatch(CompanyActions.GET_COMPANYS)
 					.then(() =>{
-						activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
+					//	activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
 					})
 			}
 			
@@ -125,7 +124,6 @@ export default defineComponent({
 			OrdersSatusCode,
 			filterStatus,
 			
-			activeCompanyUid,
 			searchColumn,
 			search,
 		}

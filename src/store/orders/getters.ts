@@ -7,24 +7,7 @@ export const getters: GetterTree<OrdersState, RootState> = {
 	isOrders: state => state.orders.length != 0,
 	getOrdersByID: state => (id: number) => state.orders.find(x => x.n == id),
 	getOrders: state => state.orders,
-	getOrdersFiltred: state => (filter: SearchData|null ) => {
-		if (filter) {
-			switch (filter.id) {
-				case 1:
-					return state.orders.filter(x=>x.name.indexOf(filter.search) !=-1)
-				case 2:
-					return state.orders.filter(x=>x.partner_name.indexOf(filter.search) !=-1)
-				case 3:
-					return state.orders.filter(x=>x.n == parseInt(filter.search))
-				case 4:
-					return state.orders.filter(x=>x.date.indexOf(filter.search) !=-1)
-				case 5:
-					return state.orders.filter(x=>x.status.indexOf(filter.search) !=-1)
-		}
-		} else {
-			return state.orders
-		}
-	},
+	
 	getCompanyFromOrders: state => {
 		const unique = <Object[]>[...new Set(state.orders.map(item => item.partner_guid))]
 		const res = unique.map(id => ({id, name:  state.orders.find(x => x.partner_guid ==id)?.partner_name}))

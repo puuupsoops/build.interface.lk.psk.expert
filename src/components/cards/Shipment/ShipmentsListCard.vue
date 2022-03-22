@@ -1,7 +1,7 @@
 <template>
 <div class="orders-list-wrap">
 	<div
-			v-if="data_filtred.length != data.length"
+			:style=" data_filtred.length != data.length ? 'visibility: visible': 'visibility: hidden'"
 			class="orders-heading-info"
 		>
 				Показано {{data_filtred.length}} из {{data.length}}
@@ -9,7 +9,7 @@
 	<div class="orders-list " ref="target">
 			<div class="orders-list-row orders-list-heading">
 				<div class="orders-list-elem">№</div>
-				<div :class="'orders-list-elem' + (search && search.id == 1 ? ' active': '') + (filter[1].value != '' ? ' active': '')">
+				<div :class="'orders-list-elem' + (search.search !='' && search.id == 1 ? ' active': '') + (filter[1].value != '' ? ' active': '')">
 					<modal-input v-model="filter[1].value" v-model:show="filter[1].show"></modal-input>
 					<div>Наименование</div>
 					<div 
@@ -23,11 +23,11 @@
 					</div>
 					
 				</div>
-				<div :class="'orders-list-elem' + (search && search.id == 2 ? ' active': '') + (contrAgent !='' ? ' active':'')">Контрагент</div>
-				<div :class="'orders-list-elem'">Желаемая дата</div>
-				<div :class="'orders-list-elem' + (search && search.id == 3 ? ' active': '')" style="justify-content: space-around">Номер заказа</div>
-				<div :class="'orders-list-elem' + (search && search.id == 4 ? ' active': '') + (period != 'Все' ? ' active':'')">Дата отгрузки</div>
-				<div :class="'orders-list-elem' + (search && search.id == 5 ? ' active': '') + (status != 'Все' ? ' active':'')">Статус</div>
+				<div :class="'orders-list-elem' + (contrAgent !='' ? ' active':'')">Контрагент</div>
+				<div :class="'orders-list-elem' + (search.search !='' && search.id == 2 ? ' active': '')">Желаемая дата</div>
+				<div :class="'orders-list-elem' + (search.search !='' && search.id == 3 ? ' active': '')" style="justify-content: space-around">Номер заказа</div>
+				<div :class="'orders-list-elem' + (period != 'Все' ? ' active':'')">Дата отгрузки</div>
+				<div :class="'orders-list-elem' + (status != 'Все' ? ' active':'')">Статус</div>
 				<div class="orders-list-elem">Инфо</div>
 			</div>
 
@@ -213,6 +213,7 @@ import { OrdersSatusCode } from '@/store/orders/types'
 import { SearchData } from '@/models/Components'
 import { KeysMutations } from '@/store/keys/mutations'
 
+
 export default defineComponent({
 	props: {
 		data: {
@@ -233,7 +234,8 @@ export default defineComponent({
 			default: false
 		},
 		search: {
-			type: Object as PropType<SearchData>
+			type: Object as PropType<SearchData>,
+			required: true
 		}
 	},
 	components: {
@@ -271,24 +273,54 @@ export default defineComponent({
 				}
 			}
 		})
+		watch( () => props.status, ()=>{
+			active.value=-1
+		})
+		watch( () => props.contrAgent, ()=>{
+			active.value=-1
+		})
+		watch( () => props.search, ()=>{
+			active.value=-1
+		})
+		watch( () => props.period, ()=>{
+			active.value=-1
+		})
 		
 		const data_filtred = computed( () => {
 			//фильтр по контрагенту
-			let data = props.data.filter(x => props.contrAgent =='' || x.partner_guid == props.contrAgent)
+			
+			let data =  props.data.filter((x: Shipments) => props.contrAgent =='' || x.partner_guid == props.contrAgent)
 			
 			//фильтр по периоду
-			data = data.filter(x => checkPeriod(x.date))
+			data = data.filter((x: Shipments) => checkPeriod(x.date))
 			
 			//фильтр по статусу
-			data = data.filter(x => checkStatus(x))
+			data = data.filter((x: Shipments) => checkStatus(x))
+			
+			//фильтр по поиску по полю
+			data = data.filter((x: Shipments) => search(x))
 			
 			if (filter.value[1].value !=''){
-				data = data.filter(x => x.title.indexOf(filter.value[1].value)!=-1)
+				data = data.filter((x: Shipments) => `Заявка № ${x.bitrix_id} от ${x.date_create.substring(0, 10)}`.indexOf(filter.value[1].value)!=-1)
 			}
 			
-			return data
+			return data	
 		})
 		
+		const search = (item: Shipments) => {
+			if (props.search.search == '') return true
+			switch (props.search.id){
+				case 1: 
+					return `Заявка № ${item.bitrix_id} от ${item.date_create.substring(0, 10)}`.toUpperCase().indexOf(props.search.search.toUpperCase()) != -1
+				case 2: 
+					return item.date.toUpperCase().indexOf(props.search.search.toUpperCase()) != -1
+				case 3: 
+					return item.order ? String(item.order.n).toUpperCase().indexOf(props.search.search.toUpperCase()) != -1 : false
+				default:
+					return true
+			}
+			
+		}
 		
 		const checkPeriod = (date: string) => {
 			if (props.period == 'Все') {

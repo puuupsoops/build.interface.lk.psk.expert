@@ -33,7 +33,10 @@
 
 				/>
 				<div class="content-elem-desc">
-					<ProductOffersCard :data="productOffers"/>
+					<ProductOffersCard 
+						:data="productOffers"
+						:discount="discount"
+					/>
 				</div>
 				<ProductAddInfoCard></ProductAddInfoCard>
 		

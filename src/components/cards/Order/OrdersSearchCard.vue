@@ -29,7 +29,7 @@
 					
 				</div>
 			</div>
-			<div class="product-search-clear" @click="$emit('update:modelValue', null); search_str=''; leftInput=0"></div>
+			<div class="product-search-clear" @click="$emit('update:modelValue', {id: 1, search: ''} ); search_str=''; leftInput=1"></div>
 		</div>
 		<div class="orders-heading-search-elem">
 			<div class="orders-heading-search-btn gradient-btn">
@@ -62,13 +62,13 @@ export default defineComponent({
 	},
 	emits: ['update:modelValue'],
 	setup(props, {emit}){
-		const leftInput = ref(0);
+		const leftInput = ref(1);
 		const searchInput = ref<any>(null)
 		const search_str = ref('');
 		watch( ()=>leftInput.value, () => {
 			nextTick(() => { searchInput.value.focus() });
 			search_str.value = ''
-			emit('update:modelValue', null)
+			emit('update:modelValue', {id: leftInput.value, search: ''})
 		})
 		const doSearch = ()=> {
 			emit('update:modelValue', {id: leftInput, search: search_str.value})
