@@ -6,6 +6,7 @@
 		>
 				Показано {{data_filtred.length}} из {{orders_list.length}}
 	</div>
+
 	<div class="orders-list " ref="target">
 			<div class="orders-list-row orders-list-heading">
 				<div class="orders-list-elem">№</div>
@@ -21,11 +22,46 @@
 							<path class="fill" d="M7.00726 8.11117L12.7923 2.32601C12.9262 2.1922 13 2.01359 13 1.82313C13 1.63268 12.9262 1.45406 12.7923 1.32026L12.3664 0.894224C12.0888 0.616998 11.6378 0.616998 11.3606 0.894224L6.5027 5.75217L1.63936 0.888833C1.50545 0.755029 1.32694 0.681152 1.13659 0.681152C0.946033 0.681152 0.767522 0.755029 0.633507 0.888833L0.207681 1.31487C0.0737714 1.44878 -4.1357e-08 1.62729 -4.9682e-08 1.81774C-5.8007e-08 2.0082 0.0737714 2.18681 0.207681 2.32062L5.99802 8.11117C6.13236 8.24529 6.31171 8.31896 6.50238 8.31854C6.69378 8.31896 6.87303 8.24529 7.00726 8.11117Z" fill="#A5A7A9"/>
 						</svg>
 					</div>
-					
+					<div 
+						v-if="filter[1].value != ''"
+						class="orders-list-elem-filter active"
+						title="Очистить фильтр"
+						@click="filter[1].value='';active = -1"
+					>
+						<svg width="12" height="12" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<rect class="fill" x="0.250031" y="2.07935" width="2.25351" height="22.5351" rx="1.12676" transform="rotate(-45 0.250031 2.07935)" fill="#A5A7A9"/>
+						<rect class="fill" width="2.25351" height="22.5351" rx="1.12676" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 17.5282 2.07935)" fill="#A5A7A9"/>
+						</svg>
+
+					</div>
 				</div>
 				<div :class="'orders-list-elem' + (contrAgent !='' ? ' active':'')">Контрагент</div>
 				<div :class="'orders-list-elem' + (search.search !='' && search.id == 2 ? ' active': '')">Номер</div>
-				<div :class="'orders-list-elem' + (search.search !='' && search.id == 3 ? ' active': '') + (period != 'Все' ? ' active':'')">Дата создания</div>
+				<div :class="'orders-list-elem' + (search.search !='' && search.id == 3 ? ' active': '') + (period != 'Все' ? ' active':'')+ (filter[2].value != '' ? ' active': '')">
+					<modal-date-picker v-model="filter[2].value" v-model:show="filter[2].show"></modal-date-picker>
+					<div>Дата создания</div>
+					<div 
+						:class="'orders-list-elem-filter' +(filter[2].show || filter[2].value != '' ? ' active': '')"
+						title="Фильтр"
+						@click="filter[2].show=true"
+					>
+						<svg width="13" height="9" viewBox="0 0 13 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path class="fill" d="M7.00726 8.11117L12.7923 2.32601C12.9262 2.1922 13 2.01359 13 1.82313C13 1.63268 12.9262 1.45406 12.7923 1.32026L12.3664 0.894224C12.0888 0.616998 11.6378 0.616998 11.3606 0.894224L6.5027 5.75217L1.63936 0.888833C1.50545 0.755029 1.32694 0.681152 1.13659 0.681152C0.946033 0.681152 0.767522 0.755029 0.633507 0.888833L0.207681 1.31487C0.0737714 1.44878 -4.1357e-08 1.62729 -4.9682e-08 1.81774C-5.8007e-08 2.0082 0.0737714 2.18681 0.207681 2.32062L5.99802 8.11117C6.13236 8.24529 6.31171 8.31896 6.50238 8.31854C6.69378 8.31896 6.87303 8.24529 7.00726 8.11117Z" fill="#A5A7A9"/>
+						</svg>
+					</div>
+					<div 
+						v-if="filter[2].value != ''"
+						class="orders-list-elem-filter active"
+						title="Очистить фильтр"
+						@click="filter[2].value='';active = -1"
+					>
+						<svg width="12" height="12" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<rect class="fill" x="0.250031" y="2.07935" width="2.25351" height="22.5351" rx="1.12676" transform="rotate(-45 0.250031 2.07935)" fill="#A5A7A9"/>
+						<rect class="fill" width="2.25351" height="22.5351" rx="1.12676" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 17.5282 2.07935)" fill="#A5A7A9"/>
+						</svg>
+
+					</div>
+				</div>
 				<div :class="'orders-list-elem' + (status != 'Все' ? ' active':'')">Статус</div>
 				<div class="orders-list-elem">Инфо</div>
 			</div>
@@ -204,6 +240,7 @@
 import PreloaderLocal from '@/components/PreloaderLocal.vue'
 import OrderDetailModal from '@/components/cards/Order/OrderDetailModal.vue'
 import ModalInput from '@/components/ui/ModalInput.vue'
+import ModalDatePicker from '@/components/ui/ModalDatePicker.vue'
 
 import { ref, PropType, defineComponent, watch, computed } from 'vue'
 import { onClickOutside } from '@vueuse/core'
@@ -243,6 +280,7 @@ export default defineComponent({
 		PreloaderLocal,
 		OrderDetailModal,
 		ModalInput,
+		ModalDatePicker,
 	},
 	setup(props) {
 		const store = useStore(key)
@@ -255,10 +293,7 @@ export default defineComponent({
 		const filter = ref([
 			{name: 'id', value: '', show: false},
 			{name: 'name', value: '', show: false},
-			{name: 'id', value: '', show: false},
-			{name: 'id', value: '', show: false},
-			{name: 'id', value: '', show: false},
-			{name: 'id', value: '', show: false},
+			{name: 'date', value: '', show: false},
 		])
 		
 		onClickOutside(target, () => {
@@ -308,6 +343,9 @@ export default defineComponent({
 			
 			if (filter.value[1].value !=''){
 				data = data.filter((x: Orders) => x.name.indexOf(filter.value[1].value)!=-1)
+			}
+			if (filter.value[2].value !=''){
+				data = data.filter((x: Orders) => x.date.indexOf(filter.value[2].value)!=-1)
 			}
 			
 			return data
