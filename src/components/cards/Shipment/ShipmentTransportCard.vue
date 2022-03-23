@@ -129,7 +129,7 @@ export default defineComponent({
 							carriers: 2,
 							date: '',
 							dateError: false,
-							address: '',
+							address: 'ПЭК',
 							addressError: false,
 							
 							comment: '',

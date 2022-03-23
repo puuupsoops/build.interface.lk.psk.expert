@@ -1,4 +1,17 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-03-23
+
+    #0.1.82
+    1. BagFix создание заявки на отгрузку ТК
+    
+Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-03-22
+
+    #0.1.81
+    1. На странице список заказов добавил календарь в фильтр заголовка ДАТА СОЗДАНИЯ
+    
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-03-22
 
     #0.1.80
