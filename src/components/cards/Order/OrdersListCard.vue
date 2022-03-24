@@ -224,7 +224,7 @@
 			</div>
 		<div
 				class="orders-list-row orders-list-main-row"
-				v-if="orders_list.length == 0"
+				v-if="orders_list.length == 0 && !loading"
 			>
 				<div class="order-info">
 					Заказов не найдено. Создайте <router-link tag="a" class="order-info-link" :to="'/order'">новый заказ</router-link> и он появится в списке.
@@ -392,7 +392,6 @@ export default defineComponent({
 				else 
 					return false
 			}
-	
 		}
 		
 		const downloadBill = (uuid: string): void=>{

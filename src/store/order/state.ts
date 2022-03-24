@@ -5,6 +5,7 @@ export const state: OrderState = {
 	new_order: DefaultNewOrder,
 	error: null,
 	partner_id: '',
-	order_drafts: OrderDraftsSaved
+	order_drafts: OrderDraftsSaved,
+	order_detail: Object.assign({}, DefaultOrder),
 }
 

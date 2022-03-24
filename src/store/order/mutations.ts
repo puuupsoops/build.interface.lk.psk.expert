@@ -21,6 +21,7 @@ export enum OrderMutations {
 	DEL_ORDER_FROM_DRAFT = "DEL_ORDER_FROM_DRAFT",
 	DEL_ALL_DRAFT = "DEL_ALL_DRAFT",
 	USE_DRAFT = "USE_DRAFT",
+	ADD_ORDER_DETAIL = "ADD_ORDER_DETAIL",
 }
 
 export const mutations: MutationTree<OrderState> = {
@@ -180,4 +181,63 @@ export const mutations: MutationTree<OrderState> = {
 			state.order.id = (new Date()).getTime()
 		}
 	},
+	[OrderMutations.ADD_ORDER_DETAIL] (state, data: any): void{
+		if (data.position != null || data.position_presail != null) {
+			state.order_detail.id = data.id
+			state.order_detail.count = data.count
+			state.order_detail.partner_id = data.partner_id
+			state.order_detail.total = data.total
+			
+			if (data.position)
+				state.order_detail.position = data.position.map( (x: any ) => {
+					let total_price = 0
+					let total_count = 0
+					x.characteristics.forEach( (c: any) => {
+						total_price = total_price + c.price * Number(c.quantity);
+						total_count = total_count + Number(c.quantity);
+					});
+					
+					
+					return {
+						product:{ NAME: x.name, PRICE: 0},
+						count: total_count, 
+						total: total_price,
+						guid: x.guid,
+						characteristics: x.characteristics.map((c: any) => {
+							return {
+								CHARACTERISTIC: c.title,
+								PRICE: c.price,
+								count: c.quantity,
+							}
+						})
+					}
+				})
+				
+			if (data.position_presail)
+				state.order_detail.position_presail = data.position_presail.map( (x: any ) => {
+					let total_price = 0
+					let total_count = 0
+					x.characteristics.forEach( (c: any) => {
+						total_price = total_price + c.price * Number(c.quantity);
+						total_count = total_count + Number(c.quantity);
+					});
+					
+					
+					return {
+						product:{ NAME: x.name, PRICE: 0},
+						count: total_count, 
+						total: total_price,
+						guid: x.guid,
+						characteristics: x.characteristics.map((c: any) => {
+							return {
+								CHARACTERISTIC: c.title,
+								PRICE: c.price,
+								count: c.quantity,
+							}
+						})
+					}
+				})
+		}
+	},
+
 }

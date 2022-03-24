@@ -1,4 +1,10 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-03-24
+
+    #0.1.83
+    1. На странице список заказов в модальном окне Детали заказа появилась таблица с черновиком заказа.
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-03-23
 
     #0.1.82

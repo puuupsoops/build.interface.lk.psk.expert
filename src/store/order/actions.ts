@@ -4,6 +4,7 @@ import { RootState } from "@/store"
 import { OrderState, OrderStatePosition } from "./types"
 import { OrderMutations } from './mutations'
 import { Order } from '@/models/Order'
+import { AuthMutations } from '../auth/mutations'
 
 
 export enum OrderActions {
@@ -16,6 +17,7 @@ export enum OrderActions {
 	ADD_ORDER = "ADD_ORDER_ACTION",
 	GET_BILL_FILE = "GET_BILL_FILE",
 	GET_BILL_FILE_SAVE = "GET_BILL_FILE_SAVE",
+	GET_ORDER_DETAIL = "GET_ORDER_DETAIL",
 }
 
 export const actions: ActionTree<OrderState, RootState> =  {
@@ -85,4 +87,14 @@ export const actions: ActionTree<OrderState, RootState> =  {
 				}
 			})
 	},
+	
+	async [OrderActions.GET_ORDER_DETAIL] ({ commit }, n: number){
+		await axios.get(`/user/order/${n}`)
+			.then(response => {
+				commit(OrderMutations.ADD_ORDER_DETAIL, response.data.response)
+			})
+			.catch( error => {
+				commit(AuthMutations.SET_ERROR, 'Request GET_ORDER_DETAIL error:<br>'+error)
+			})
+	}
 }

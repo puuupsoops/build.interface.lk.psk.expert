@@ -7,6 +7,7 @@ export interface OrderState {
 	order_drafts: OrderStateOrder[];
 	error: string|null;
 	partner_id: string;
+	order_detail: OrderStateOrder;
 }
 
 export interface OrderStateOrder {

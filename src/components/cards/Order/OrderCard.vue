@@ -38,7 +38,7 @@
 					<div class="order-list-row order-list-heading" v-if="data.position.length>0">
 						<div class="order-list-elem">№</div>
 						<div class="order-list-elem">Наименование</div>
-						<div class="order-list-elem">Цена</div>
+						<div class="order-list-elem">{{ open.length != 0 ? 'Цена':'' }}</div>
 						<div class="order-list-elem">Кол-во</div>
 						<div class="order-list-elem">Стоимость</div>
 						<div class="order-list-elem"></div>
@@ -59,7 +59,7 @@
 						</div>
 
 						<div class="order-list-elem"><span v-html = "item.product.NAME"></span></div>
-						<div class="order-list-elem">{{ Number(item.product.PRICE).toLocaleString() }} ₽</div>
+						<div class="order-list-elem"></div>
 						<div class="order-list-elem">{{ item.count }}</div>
 						<div class="order-list-elem">{{ Number(item.total).toLocaleString() }} ₽</div>
 
@@ -107,7 +107,7 @@
 					<div class="order-list-row order-list-heading">
 						<div class="order-list-elem">№</div>
 						<div class="order-list-elem">Наименование</div>
-						<div class="order-list-elem">Цена</div>
+						<div class="order-list-elem">{{ open_presail.length != 0 ? 'Цена':'' }}</div>
 						<div class="order-list-elem">Кол-во</div>
 						<div class="order-list-elem">Стоимость</div>
 						<div class="order-list-elem"></div>
@@ -128,7 +128,7 @@
 						</div>
 
 						<div class="order-list-elem"><span v-html = "item.product.NAME"></span></div>
-						<div class="order-list-elem">{{ Number(item.product.PRICE).toLocaleString() }} ₽</div>
+						<div class="order-list-elem"></div>
 						<div class="order-list-elem">{{ item.count }}</div>
 						<div class="order-list-elem">{{ Number(item.total).toLocaleString() }} ₽</div>
 
