@@ -38,6 +38,7 @@ export interface Product {
     NAME:            string;
     ARTICLE:         string;
     PRICE:           number;
+    PRICE_OPT:       number;
     WEIGHT:          number;
     VALUME:          number;
     DETAIL_TEXT:     string;

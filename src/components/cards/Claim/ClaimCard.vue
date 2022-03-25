@@ -73,10 +73,19 @@
 
 			<div class="claim-info">
 				<div class="claim-info-elem">
-					<div class="claim-info-title">Перечень товаров {{ data.products.length != 0 ? '['+data.products.length+']':''}}</div>
+					<div class="claim-info-title">Перечень товаров {{ order_detail.position.length != 0 ? '['+order_detail.position.length+']':''}}</div>
 					<div class="content-elem">
 						<div class="order-list-bottom scroll-elem">
-							<ClaimOrder :data="orderData" v-model="data.products"></ClaimOrder>
+							
+							<div v-if="loading" style="display: flex; justify-content: center">
+								<PreloaderLocal ></PreloaderLocal>
+							</div>
+							
+							<ClaimOrder
+								
+								:data="order_detail"
+								v-model="data.products"
+							></ClaimOrder>
 						</div>
 					</div>
 				</div>
@@ -121,7 +130,9 @@
 <script lang="ts">
 
 import SelectInput from '@/components/ui/SelectInput.vue'
+import PreloaderLocal from '@/components/PreloaderLocal.vue'
 import ClaimOrder from '@/components/cards/Claim/ClaimOrder.vue'
+
 
 import { key } from '@/store'
 
@@ -133,11 +144,13 @@ import { Claim } from "@/models/Claim"
 import { Orders } from '@/models/Orders'
 import { KeysConst } from '@/store/keys/types'
 import { KeysMutations } from '@/store/keys/mutations'
+import { OrderActions } from '@/store/order/actions'
 
 export default defineComponent({
 	components: {
 		SelectInput,
-		ClaimOrder
+		ClaimOrder,
+		PreloaderLocal,
 	},
 	props:{
 		modelValue:{
@@ -154,7 +167,6 @@ export default defineComponent({
 	setup(props, { emit }) {
 		const store = useStore(key)
 		
-
 		const data = ref<Claim>({
 			title: '',
 			partner_name: '',
@@ -165,127 +177,9 @@ export default defineComponent({
 			message: '',
 			files: []
 		})
-		const oderVal = ref(null)
+		const orderVal = ref(null)
+		const loading = ref(false)
 		
-		const orderData = {
-  "id": 1646138008997,
-  "total": 1890440,
-  "count": 2,
-  "partner_id": "",
-  "position": [
-    {
-      "product": {
-        "ID": "12782",
-        "UID": "215e5a6e-7ffa-11e9-8167-005056bf1558",
-        "NAME": "Костюм &quot;Умелец 1&quot; бежевый/черный",
-        "ARTICLE": "КОС619",
-        "PRICE": 2554,
-        "WEIGHT": 0.86,
-        "VALUME": 0.003,
-        "DETAIL_TEXT": "Костюм - куртка и брюки для защиты от общих производственных загрязнений.\n<br>\n<br>Куртка\n<br> •\tСилуэт: прямой\n<br> •\tЗастежка: супатная на пуговицы и кнопки\n<br> •\tВоротник: отложной\n<br> •\tКарманы: нагрудные накладные с клапанами на кнопках, левый с карманом и отделениями для канцелярии; нижние боковые с наклонным входом; в верхней части левого рукава карман с молнией\n<br> •\tЭлементы комфорта:\n<br>- анатомические вытачки в локтях для свободы движения\n<br>- регулирование ширины пояса при помощи пат с кнопками, ширины манжет рукавов при помощи кнопок\n<br>\n<br>Брюки\n<br> •\tЗастежка: молния, пуговица\n<br> •\tКарманы: верхние боковые; задний накладной с петлей-держателем для инструментов; удлиненный; накладной боковой с клапаном на кнопке и отделениями для канцелярии\n<br> •\tЭлементы комфорта:\n<br>- анатомические вытачки в коленях для свободы движения\n<br>- эластичная тесьма в боковых швах пояса\n<br>- шлевки для ремня\n<br>- темный низ\n",
-        "STATUS": "-",
-        
-      },
-      "characteristics": [
-        {
-          "ID": 19917,
-          "CHARACTERISTIC": "р. 48-50, рост 182-188",
-          "count": 430,
-          "PRICE": 1348,
-          "RESIDUE": 430,
-          "GUID": "1b562c49-9ccf-11e9-816e-005056bf1558",
-          "ORGGUID": "b5e91d86-a58a-11e5-96ed-0025907c0298"
-        },
-        {
-          "ID": 19918,
-          "CHARACTERISTIC": "р. 52-54, рост 170-176",
-          "count": 450,
-          "PRICE": 1348,
-          "RESIDUE": 820,
-          "GUID": "696e9882-9ccf-11e9-816e-005056bf1558",
-          "ORGGUID": "b5e91d86-a58a-11e5-96ed-0025907c0298"
-        }
-      ],
-      "total": 1186240,
-      "count": 880
-    },
-    {
-      "product": {
-        "ID": "12784",
-        "UID": "cd453e56-7ffa-11e9-8167-005056bf1558",
-        "NAME": "Костюм &quot;Умелец 1&quot; серый/черный",
-        "ARTICLE": "КОС619",
-        "PRICE": 2554,
-        "WEIGHT": 0.86,
-        "VALUME": 0.003,
-        "DETAIL_TEXT": "Костюм - куртка и брюки для защиты от общих производственных загрязнений.\n<br>\n<br>Куртка\n<br> •\tСилуэт: прямой\n<br> •\tЗастежка: супатная на пуговицы и кнопки\n<br> •\tВоротник: отложной\n<br> •\tКарманы: нагрудные накладные с клапанами на кнопках, левый с карманом и отделениями для канцелярии; нижние боковые с наклонным входом; в верхней части левого рукава карман с молнией\n<br> •\tЭлементы комфорта:\n<br>- анатомические вытачки в локтях для свободы движения\n<br>- регулирование ширины пояса при помощи пат с кнопками, ширины манжет рукавов при помощи кнопок\n<br>\n<br>Брюки\n<br> •\tЗастежка: молния, пуговица\n<br> •\tКарманы: верхние боковые; задний накладной с петлей-держателем для инструментов; удлиненный; накладной боковой с клапаном на кнопке и отделениями для канцелярии\n<br> •\tЭлементы комфорта:\n<br>- анатомические вытачки в коленях для свободы движения\n<br>- эластичная тесьма в боковых швах пояса\n<br>- шлевки для ремня\n<br>- темный низ\n",
-        "STATUS": "-",
-        "CHARACTERISTICS": [
-          {
-            "NAME": "Цвет",
-            "VALUE": "Серый/Чёрный"
-          },
-          {
-            "NAME": "Стандарт",
-            "VALUE": "ГОСТ 12.4.280-2014, ТР ТС 019/2011"
-          },
-          {
-            "NAME": "Материал",
-            "VALUE": "210 г/м², 70%ПЭ+30%ХБ, ВО, Галактика"
-          },
-          {
-            "NAME": "Минпромторг",
-            "VALUE": "Есть"
-          },
-          {
-            "NAME": "Размер",
-            "VALUE": "с 44-46 по 68-70"
-          },
-          {
-            "NAME": "Бренд",
-            "VALUE": ""
-          },
-          {
-            "NAME": "Рост",
-            "VALUE": "170-176,182-188,194-200"
-          },
-          {
-            "NAME": "Упаковка",
-            "VALUE": "20"
-          }
-        ]
-      },
-      "characteristics": [
-        {
-          "ID": 22411,
-          "CHARACTERISTIC": "р. 48-50, рост 194-200",
-          "count": 20,
-          "PRICE": 1510,
-          "RESIDUE": 20,
-          "GUID": "2f548374-9cc8-11e9-816e-005056bf1558",
-          "ORGGUID": "b5e91d86-a58a-11e5-96ed-0025907c0298"
-        },
-        {
-          "ID": 19930,
-          "CHARACTERISTIC": "р. 52-54, рост 170-176",
-          "count": 500,
-          "PRICE": 1348,
-          "RESIDUE": 608,
-          "GUID": "42707fc5-9cc8-11e9-816e-005056bf1558",
-          "ORGGUID": "b5e91d86-a58a-11e5-96ed-0025907c0298"
-        }
-      ],
-      "total": 704200,
-      "count": 520
-    }
-  ],
-  "position_presail": [
-  
-  ],
-  "total_count": 1400,
-  "total_valume": 1.56,
-  "total_weight": 447.2
-}
 		
 		
 		const companyUID = computed({
@@ -298,6 +192,44 @@ export default defineComponent({
 			set: (val:string)=>{data.value.partner_guid = val}
 		})
 		
+		
+		const order = computed({
+			get: () => {
+				if (orderVal.value == null) {
+					const id = store.getters.getCurrentOrderId
+					if (id != null && id != KeysConst.DEFAULT_ORDER_ID) {
+						
+						return id
+					}
+					else 
+						if (store.getters.getOrders[0] != undefined) {
+							store.commit(KeysMutations.SET_CURRENT_ORDER, store.getters.getOrders[0].n)
+							
+							return store.getters.getOrders[0].n
+						} else {
+							store.commit(KeysMutations.SET_CURRENT_ORDER, KeysConst.DEFAULT_ORDER_ID)
+						return null
+					}
+				} else {
+					
+					return orderVal.value
+				}
+				
+			},
+			set: (val) => {
+				orderVal.value = val
+				loading.value=true
+				store.commit(KeysMutations.SET_CURRENT_ORDER, KeysConst.DEFAULT_ORDER_ID)
+				store.dispatch(OrderActions.GET_ORDER_DETAIL, val).finally(()=>{loading.value=false})
+				data.value.partner_guid=store.getters.getOrders.find( (x: Orders) => x.n == val).partner_guid
+				}
+		})
+		
+		
+		const order_detail = computed(() => {
+			return store.getters.getOrderDetail
+		})
+
 		watch( data.value, ()=>{
 			data.value.partner_guid=companyUID.value
 			data.value.partner_name=store.getters.getCompanyData(data.value.partner_guid).name
@@ -305,32 +237,6 @@ export default defineComponent({
 			//console. log(data.value)
 			emit('update:modelValue', data.value)
 		})
-		
-		const order = computed({
-			get: () => {
-				if (oderVal.value == null) {
-					const id = store.getters.getCurrentOrderId
-					if (id != null && id != KeysConst.DEFAULT_ORDER_ID) 
-						return id
-					else 
-						if (store.getters.getOrders[0] != undefined) {
-							store.commit(KeysMutations.SET_CURRENT_ORDER, store.getters.getOrders[0].n)
-							return store.getters.getOrders[0].n
-						} else {
-							store.commit(KeysMutations.SET_CURRENT_ORDER, KeysConst.DEFAULT_ORDER_ID)
-						return null
-					}
-				} else return oderVal.value
-				
-			},
-			set: (val) => {
-				oderVal.value = val
-				store.commit(KeysMutations.SET_CURRENT_ORDER, KeysConst.DEFAULT_ORDER_ID)
-				data.value.partner_guid=store.getters.getOrders.find( (x: Orders) => x.n == val).partner_guid
-				}
-		})
-		
-		
 		
 		const handleFileUpload = ( event: any) =>{
 			data.value.files.push(event.target.files[0]);
@@ -344,13 +250,13 @@ export default defineComponent({
 		return {
 			//data
 			data,
-			orderData,
+			loading,
 			//computed
 			order,
 			companyUID,
 			orders: computed(() => store.getters.getOrders),
 			companys: computed(() => store.getters.getCompanysList),
-			
+			order_detail,
 			//methods
 			handleFileUpload,
 			delFile,

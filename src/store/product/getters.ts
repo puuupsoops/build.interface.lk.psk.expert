@@ -10,7 +10,7 @@ export const getters: GetterTree<ProductState, RootState> = {
 												ID: 0,
 												CHARACTERISTIC:'Только предзаказ',
 												RESIDUE: 0,
-												PRICE: state.product.PRICE,
+												PRICE: state.product.PRICE_OPT,
 												PPDATA: '',
 												GUID: null,
 												ORGGUID: null,

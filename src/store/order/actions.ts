@@ -89,9 +89,12 @@ export const actions: ActionTree<OrderState, RootState> =  {
 	},
 	
 	async [OrderActions.GET_ORDER_DETAIL] ({ commit }, n: number){
+		commit(OrderMutations.CLEAN_ORDER_DETAIL)
 		await axios.get(`/user/order/${n}`)
 			.then(response => {
-				commit(OrderMutations.ADD_ORDER_DETAIL, response.data.response)
+				const dt = response.data.response
+				dt.id = n
+				commit(OrderMutations.ADD_ORDER_DETAIL, dt)
 			})
 			.catch( error => {
 				commit(AuthMutations.SET_ERROR, 'Request GET_ORDER_DETAIL error:<br>'+error)

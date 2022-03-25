@@ -139,7 +139,7 @@ export default defineComponent({
 			});
 			
 			})
-		
+	
 		return {
 			search_str,
 			loading,

@@ -16,6 +16,7 @@ export const DEFAULT_PRODUCT = {
 	NAME:            '',
 	ARTICLE:         '',
 	PRICE:           0,
+	PRICE_OPT:       0,
 	WEIGHT:          0,
 	VALUME:          0,
 	DETAIL_TEXT:     '',

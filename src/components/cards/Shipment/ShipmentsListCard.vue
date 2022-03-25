@@ -183,7 +183,7 @@
 			</div>
 			<div
 				class="orders-list-row orders-list-main-row"
-				v-if="data.length == 0"
+				v-if="data.length == 0 && !loading"
 			>
 				<div class="order-info">
 					Заявок не найдено. Создайте <router-link tag="a" class="order-info-link" :to="'/shipments/request'">новую заявку</router-link> и она появится в списке.

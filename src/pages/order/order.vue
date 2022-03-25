@@ -23,7 +23,7 @@
 		<OrderProductSearchInput v-model="productSearch"/>
 		<ProductHeaderCard
 			:title="String(product.NAME)"
-			:price="String(product.PRICE)"
+			:price="String(product.PRICE_OPT)"
 			:discount="discount"
 			:status="String(product.STATUS)"
 			@ShowSearch="productSearch=!productSearch"

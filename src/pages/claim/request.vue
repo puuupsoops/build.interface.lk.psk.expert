@@ -52,6 +52,7 @@ import { OrdersActions } from "@/store/orders/actions"
 import { ClaimActions } from "@/store/claims/actions"
 import { useRouter } from 'vue-router'
 import { ClaimMutations } from "@/store/claims/mutations"
+import { OrderActions } from "@/store/order/actions"
 
 
 
@@ -83,7 +84,10 @@ export default defineComponent({
 			if (!store.getters.isCompanysLoad) store.dispatch(CompanyActions.GET_COMPANYS)
 			if (!store.getters.isOrders) {
 				loading.value = true
-				store.dispatch(OrdersActions.GET_ORDERS).then(()=>{ loading.value = false})
+				store.dispatch(OrdersActions.GET_ORDERS).then(()=>{ 
+					store.dispatch(OrderActions.GET_ORDER_DETAIL, store.getters.getOrders[0].n).then(()=>{
+						loading.value = false})
+				})
 			}
 			store.commit(ClaimMutations.SET_CLEAR_SUCCESS)
 		})

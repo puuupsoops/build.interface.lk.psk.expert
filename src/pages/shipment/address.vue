@@ -6,7 +6,7 @@
 			<Notification></Notification>
 			<PersonalBar></PersonalBar>
 		</div>
-		<top-nav address @onClick="editAddrName=-1; editAddrName= ''; addAddr=true;">
+		<top-nav address @onClick="editAddrName=-1; addrName= ''; showAddr=true;">
 		</top-nav>
 		<div class="shipment-heading">
 			<div class="shipment-heading-elem"> 
@@ -32,8 +32,10 @@
 					</div>
 					<div class="shipment-address-list-row">
 						<ShipmentAddressInputAdd
-							v-model= "addAddr"
-							:value="editAddrName"
+							v-model= "addrName"
+							v-model:show = "showAddr"
+							v-model:edit = "editAddrId"
+							
 						/>
 						
 					</div>
@@ -58,7 +60,7 @@
 								v-if="key == currentAddr"
 							>
 								<div
-									@click="editAddrId=key; editAddrName=item.name; addAddr=true"
+									@click="editAddrId=item.index; addrName=item.label; showAddr=true"
 								>
 									<svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 0 24 24" width="30px" fill="#8D8D8D">
 										<path d="M0 0h24v24H0V0z" fill="none"/>
@@ -143,11 +145,11 @@ export default defineComponent({
 		const activeCompanyUid = ref('');
 		const router = useRouter()
 		const currentAddr = ref(0)
-		const addAddr = ref(false)
+		const addrName = ref('')
 		const delAddr = ref(false)
 		const delPreloader = ref(false)
 		const editAddrId = ref(-1)
-		const editAddrName = ref(null)
+		const showAddr = ref(false)
 		const loading = ref(false)
 		const latlon = computed(() => {
 			let def= {lat: '55.760077', lon: '37.617677'}
@@ -188,11 +190,11 @@ export default defineComponent({
 		return {
 			activeCompanyUid,
 			currentAddr,
-			addAddr,
+			addrName,
 			delAddr,
 			delPreloader,
 			editAddrId,
-			editAddrName,
+			showAddr,
 			loading,
 			
 			companyBarTopData: computed(() => store.getters.getCompanysList),

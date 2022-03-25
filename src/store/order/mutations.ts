@@ -22,6 +22,7 @@ export enum OrderMutations {
 	DEL_ALL_DRAFT = "DEL_ALL_DRAFT",
 	USE_DRAFT = "USE_DRAFT",
 	ADD_ORDER_DETAIL = "ADD_ORDER_DETAIL",
+	CLEAN_ORDER_DETAIL = "CLEAN_ORDER_DETAIL",
 }
 
 export const mutations: MutationTree<OrderState> = {
@@ -181,7 +182,7 @@ export const mutations: MutationTree<OrderState> = {
 			state.order.id = (new Date()).getTime()
 		}
 	},
-	[OrderMutations.ADD_ORDER_DETAIL] (state, data: any): void{
+	[OrderMutations.ADD_ORDER_DETAIL] (state, data): void{
 		if (data.position != null || data.position_presail != null) {
 			state.order_detail.id = data.id
 			state.order_detail.count = data.count
@@ -239,5 +240,8 @@ export const mutations: MutationTree<OrderState> = {
 				})
 		}
 	},
+	[OrderMutations.CLEAN_ORDER_DETAIL] (state): void {
+		state.order_detail = Object.assign({}, DefaultOrder)
+	}
 
 }

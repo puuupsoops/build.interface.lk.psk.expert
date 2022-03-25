@@ -15,7 +15,7 @@
 	<div v-if="productFound.length>0">  
 		<ProductHeaderCard
 			:title="String(product.NAME)"
-			:price="String(product.PRICE)"
+			:price="String(product.PRICE_OPT)"
 			:status="String(product.STATUS)"
 			:discount="discount"
 			@ShowSearch="newSearch()"

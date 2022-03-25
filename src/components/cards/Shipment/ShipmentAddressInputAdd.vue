@@ -1,5 +1,6 @@
 <template>
-<div :class="'product-search fullwidth' + (modelValue ? '': ' none')" ref="target">
+
+<div :class="'product-search fullwidth' + (show ? '': ' none')" ref="target">
 	<div class="product-search-input-container">
 		<div class="product-search-input options" >
 			<input 
@@ -32,7 +33,7 @@
 			<div 
 				class="product-search-clear" 
 				title="Отмена"  
-				@click="close()"
+				@click="clear()"
 			></div>
 		</div>
 		<div 
@@ -86,8 +87,16 @@ export default defineComponent({
 			type: String,
 			required: true,
 		},
+		edit: {
+			type: Number,
+			default: -1
+		},
+		show: {
+			type: Boolean,
+			default: false
+		}
 	},
-	emits:['update:modelValue', 'update:value', 'save'],
+	emits:['update:modelValue', 'update:show',  'update:edit', 'save'],
 	components:{
 		PreloaderLocal
 	},
@@ -128,19 +137,43 @@ export default defineComponent({
 		}
 		const clear = () => {
 			search_str.value = ''
+			emit('update:edit', -1)
 			emit('update:modelValue', '')
+			emit('update:show', false)
 		}
 		onClickOutside(target, () => {options.value == false})
 		
 		watch( ()=>props.modelValue, () => {
-			//search_str.value= props.value
+			search_str.value= props.modelValue
 			store.commit(ShipmentsMutations.CLEAR_ADDRESS_PROMPT)
 			nextTick(() => {
 				searchInput.value.focus();
 			});
 			
 			})
+			
+		const save = ()=>{
 		
+			if (props.edit == -1) {
+					const res = [{
+					label:  active_elem.value !=-1 ? active_elem.value.value : '',
+					latitude:  active_elem.value !=-1 ? active_elem.value.data.geo_lat : '',
+					longitude:  active_elem.value !=-1 ? active_elem.value.data.geo_lon : '',
+				}]
+				store.dispatch(ShipmentsActions.ADD_SHIPMENTS_ADDRESS, res)
+			} else{
+				const res = [{
+					index: props.edit,
+					label:  active_elem.value !=-1 ? active_elem.value.value : '',
+					latitude:  active_elem.value !=-1 ? active_elem.value.data.geo_lat : '',
+					longitude:  active_elem.value !=-1 ? active_elem.value.data.geo_lon : '',
+				}]
+				store.dispatch(ShipmentsActions.UPDATE_SHIPMENTS_ADDRESS, res)
+			}
+			
+			emit('update:modelValue', '')
+			clear();
+		}
 		return {
 			search_str,
 			loading,
@@ -153,7 +186,7 @@ export default defineComponent({
 			
 			doSearch,
 			clear,
-			
+			save,
 		}
 
 	},
