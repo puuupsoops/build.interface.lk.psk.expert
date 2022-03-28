@@ -86,7 +86,6 @@ import { ProductCharacteristic } from '@/models/Product';
 
 export default defineComponent({
 	props: {
-	
 		data: {
 			type: Object as PropType<OrderStateOrder>,
 			required: true

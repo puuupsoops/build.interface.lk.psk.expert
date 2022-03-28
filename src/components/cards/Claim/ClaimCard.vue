@@ -237,6 +237,7 @@ export default defineComponent({
 			data.value.partner_name=store.getters.getCompanyData(data.value.partner_guid).name
 			data.value.title = 'Претензия по Заказу №'+order.value+' от ' + store.getters.getOrders.find((x: Orders) => x.n == order.value)?.date.substring(0,10)
 			//console. log(data.value)
+			data.value.id = order.value
 			emit('update:modelValue', data.value)
 		})
 		

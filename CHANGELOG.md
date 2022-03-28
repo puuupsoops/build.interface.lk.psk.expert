@@ -1,8 +1,14 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
-Date:   2022-03-25
+Date:   2022-03-28
 
     #0.1.85
     1. Добавлен список претензий
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-03-28
+
+    #0.1.86
+    1. BugFix Добавлен ID заказа в создание претензии.
 
 
 Author: Vadim Zaboturin <vadimzab@gmail.com>
@@ -12,6 +18,7 @@ Date:   2022-03-25
     1. На странице оформления претензий список товаров отображается из выбранного заказа
     2. Адреса доставки в разделе логистика можно создавать/удалять/редактировать
     3. Цена в заголовках продукта и создания заказа отображается с бекенда как product.PRICE_OPT
+       
        
 Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-03-24
@@ -24,6 +31,7 @@ Date:   2022-03-23
 
     #0.1.82
     1. BagFix создание заявки на отгрузку ТК
+    
     
 Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-03-22
