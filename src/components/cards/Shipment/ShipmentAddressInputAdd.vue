@@ -33,7 +33,7 @@
 			<div 
 				class="product-search-clear" 
 				title="Отмена"  
-				@click="clear()"
+				@click="search_str != '' ? search_str = '' : clear()"
 			></div>
 		</div>
 		<div 
@@ -41,7 +41,7 @@
 		>
 			<!-- <PreloaderLocal v-if="loading"></PreloaderLocal> -->
 			
-			<span v-if="search_str == ''">Чтобы добавить новый адрес - начните ввод</span>
+			<span v-if="search_str == ''">{{edit == -1 ? 'Чтобы добавить новый адрес - начните ввод': 'Чтобы изменить адрес - начните ввод'}}</span>
 			<div v-else>
 			
 				<p
@@ -143,7 +143,7 @@ export default defineComponent({
 		}
 		onClickOutside(target, () => {options.value == false})
 		
-		watch( ()=>props.modelValue, () => {
+		watch( ()=>props.show, () => {
 			search_str.value= props.modelValue
 			store.commit(ShipmentsMutations.CLEAR_ADDRESS_PROMPT)
 			nextTick(() => {

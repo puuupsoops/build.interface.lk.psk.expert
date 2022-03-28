@@ -8,11 +8,12 @@ import { ClaimMutations } from './mutations'
 
 export enum ClaimActions {
 	ADD_CLAIMS = "ADD_CLAIMS",
+	GET_CLAIMS = "GET_CLAIMS",
 }
 
 export const actions: ActionTree<ClaimState, RootState> =  {
 	async [ClaimActions.ADD_CLAIMS] ({commit}, data) {
-		axios.post( '/user/claims/add',
+		await axios.post( '/user/claims/add',
 				data,
 				{
 					headers: {
@@ -20,10 +21,20 @@ export const actions: ActionTree<ClaimState, RootState> =  {
 				}
 			}
 			).then(response=> {
-				commit(ClaimMutations.SET_SUCCESS, response.data.response.id)
+				commit(ClaimMutations.SET_CLAIMS_SUCCESS, response.data.response.id)
 			})
 			.catch(error => {
 				commit(AuthMutations.SET_ERROR, 'Request ADD_CLAIMS error:<br>'+error)
+			});
+		},
+
+	async [ClaimActions.GET_CLAIMS] ({commit}) {
+		await axios.get( '/user/claims').then(response=> {
+				
+				commit(ClaimMutations.SET_CLAIMS, response.data.response)
+			})
+			.catch(error => {
+				commit(AuthMutations.SET_ERROR, 'Request GET_CLAIMS error:<br>'+error)
 			});
 		}
 }

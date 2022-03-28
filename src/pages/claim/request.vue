@@ -68,6 +68,8 @@ export default defineComponent({
 
 		const loading = ref(false)
 		const calimDefault = ref<Claim>({
+			date_create: '',
+			status: 0,
 			title: '',
 			partner_name: '',
 			partner_guid: '',
@@ -89,7 +91,7 @@ export default defineComponent({
 						loading.value = false})
 				})
 			}
-			store.commit(ClaimMutations.SET_CLEAR_SUCCESS)
+			store.commit(ClaimMutations.CLEAR_CLAIMS_SUCCESS)
 		})
 		
 		const add = () => {

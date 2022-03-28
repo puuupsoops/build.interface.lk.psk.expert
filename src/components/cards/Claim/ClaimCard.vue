@@ -168,6 +168,8 @@ export default defineComponent({
 		const store = useStore(key)
 		
 		const data = ref<Claim>({
+			date_create:'',
+			status: 0,
 			title: '',
 			partner_name: '',
 			partner_guid: '',
@@ -233,7 +235,7 @@ export default defineComponent({
 		watch( data.value, ()=>{
 			data.value.partner_guid=companyUID.value
 			data.value.partner_name=store.getters.getCompanyData(data.value.partner_guid).name
-			data.value.title = 'Заказ №'+order.value+' от ' + store.getters.getOrders.find((x: Orders) => x.n == order.value)?.date.substring(0,10)
+			data.value.title = 'Претензия по Заказу №'+order.value+' от ' + store.getters.getOrders.find((x: Orders) => x.n == order.value)?.date.substring(0,10)
 			//console. log(data.value)
 			emit('update:modelValue', data.value)
 		})

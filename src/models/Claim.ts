@@ -1,8 +1,12 @@
+import { Orders } from "./Orders";
 import { ProductCharacteristic } from "./Product";
 
 
 
 export interface Claim {
+    bitrix_id?:    string;
+    date_create:   string;
+    status:        number;
     title:         string;
     partner_name:  string;
     partner_guid:  string;
@@ -11,6 +15,7 @@ export interface Claim {
     products:      ProductCharacteristic[];
     message:       string;
     files:         any[];
+    order?:        Orders|undefined;
 }
 
 

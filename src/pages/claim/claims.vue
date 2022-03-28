@@ -1,59 +1,76 @@
 <template>
 	<div>
 		<div class="top-line product-page">
-			<CompanyBarTop :data="companyBarTopData" v-model="activeCompanyUid" />
+			<CompanyBarTop :data="companyBarTopData" v-model="filterCompanyUid"></CompanyBarTop>
 			<Notification />
 			<PersonalBar />
 		</div>
 		<top-nav claims></top-nav>
 
-				<div class="orders-heading">
-				<div class="orders-heading-elem">
-				<div class="orders-heading-item">
-					<div class="orders-heading-text">Контрагент:</div>
+		<div class="orders-heading">
+			<div class="orders-heading-elem">
+			<div class="orders-heading-item">
+				<div class="orders-heading-text">Контрагент:</div>
+				<SelectInput 
+					:data="filterCompanyData"
+					v-model="filterCompanyUid"
+				/>
+			</div>
+			<div class="orders-heading-item">
+				<div class="orders-heading-text">Статус:</div>
+				<SelectInput 
+					:data="OrdersSatusCode"
+					v-model="filterStatus"
+				/>
+			</div>
+			<div class="orders-heading-item" data-select2-id="147">
+				<div class="orders-heading-text">Период:</div>
 					<SelectInput 
-						:data="companyBarTopData"
-						v-model="activeCompanyUid"
+						:data="filterPeriodData"
+						v-model="filterPeriod"
 					/>
-				</div>
-				<div class="orders-heading-item">
-					<div class="orders-heading-text">Договор:</div>
-					<SelectInput :data="dogovor"/>
-				</div>
-				<div class="orders-heading-item" >
-					<div class="orders-heading-text">Период:</div>
-						<SelectInput :data="period"/>
-				</div>
-				<div class="orders-heading-clean"></div>
-				</div>
-				<div class="orders-heading-elem">
-				
+	
+			</div>
+			<div class="orders-heading-clean" title="Убрать фильтры" @click="filterCompanyUid='';filterPeriod=0;filterStatus=0"></div>
+			</div>
+			<div class="orders-heading-elem">
+			
 			</div>
 		</div>
 		<OrdersSearchCard
-			:data="header"
+			:data="searchColumn"
 			v-model="search"
 		/>
-		<!-- <ShipmentsListCard
-			:data="shipmentsList"
-		/> -->
+		
+		<ClaimsListCard
+			:data="claimsList"
+			:loading="loading"
+			:contrAgent="filterCompanyUid"
+			:period="filterPeriodData[filterPeriod].name"
+			:status="OrdersSatusCode[filterStatus].name"
+			:search="search"
+		/>
 		
 	</div>
 </template>
 
-<script>
-import PersonalBar from "@/components/cards/PersonalBar"
-import Notification from "@/components/cards/Notification"
-import CompanyBarTop from "@/components/cards/Company/CompanyBarTop"
-import TopNav from "@/components/nav/TopNav"
-//import ShipmentsListCard from '@/components/cards/Shipment/ShipmentsListCard.vue'
+<script lang="ts">
+import PersonalBar from "@/components/cards/PersonalBar.vue"
+import Notification from "@/components/cards/Notification.vue"
+import CompanyBarTop from "@/components/cards/Company/CompanyBarTop.vue"
+import TopNav from "@/components/nav/TopNav.vue"
+import ClaimsListCard from '@/components/cards/Claim/ClaimsListCard.vue'
 import OrdersSearchCard from '@/components/cards/Order/OrdersSearchCard.vue'
+import { OrdersSatusCode } from '@/store/orders/types'
 
-import SelectInput from '@/components/ui/SelectInput'
+import SelectInput from '@/components/ui/SelectInput.vue'
 import { useStore } from 'vuex'
 import { key } from '@/store'
-import { defineComponent, ref,computed,onMounted }from 'vue'
+import { SearchData } from '@/models/Components'
+import { defineComponent, ref,computed,onMounted } from 'vue'
 import { CompanyActions } from "@/store/company/actions"
+import { ClaimActions } from "@/store/claims/actions"
+import { OrdersActions } from "@/store/orders/actions"
 
 export default defineComponent({
 	components: {
@@ -63,35 +80,31 @@ export default defineComponent({
 		TopNav,
 		SelectInput,
 		OrdersSearchCard,
-		//ShipmentsListCard,
+		ClaimsListCard,
 	},
 	setup() {
 		const store = useStore(key)
-		const activeCompanyUid = ref('')
-		const search = ref({left: 1, right: 0})
-		const period = ref([
-			{id: 1, name:'01.01.2021-31.01.2021'},
-			{id: 2, name:'01.02.2021-28.02.2021'},
-			{id: 3, name:'01.03.2021-31.03.2021'},
-			{id: 4, name:'01.04.2021-30.04.2021'},
-		])
-
-		const dogovor = ref([
-			{id: 1, name:'По умолчанию № 1'},
-			{id: 2, name:'По умолчанию № 2'},
-			{id: 3, name:'По умолчанию № 3'},
-			{id: 4, name:'По умолчанию № 4'},
-		]);
-		const header = ref([
+		const loading = ref(false)
+		const filterCompanyUid = ref('');
+		const filterPeriod = ref(0)
+		const filterStatus = ref(0)
+		
+		const search = ref<SearchData|null>({id: 1, search: ''})
+	
+		const searchColumn = [
 			{id: 1, name: 'Наименование'},
-			{id: 2, name: 'Контрагент'},
-			{id: 3, name: 'Желаемая дата'},
-			{id: 4, name: 'Номер'},
-			{id: 5, name: 'Дата отгрузки'},
-			{id: 6, name: 'Статус'},
-		])
+			{id: 2, name: 'Дата создания'},
+			{id: 3, name: 'Номер заказа'},
+			{id: 4, name: 'Причина'},
+			
+		];
+		
 		
 		onMounted(() => {
+			loading.value = true
+			store.dispatch(OrdersActions.GET_ORDERS).finally(()=>{
+				store.dispatch(ClaimActions.GET_CLAIMS).finally(()=>{loading.value = false})
+			})
 			if (!store.getters.isCompanysLoad)
 			{
 				store.dispatch(CompanyActions.GET_COMPANYS)
@@ -99,12 +112,22 @@ export default defineComponent({
 		});
 
 		return {
-			companyBarTopData: computed(() => store.getters.getCompanysList),
-			activeCompanyUid,
-			header,
-			dogovor,
-			period,
+			//data
+			loading,
+			searchColumn,
 			search,
+			filterCompanyUid,
+			filterPeriod,
+			filterStatus,
+			OrdersSatusCode,
+			
+			//computed
+			companyBarTopData: computed(() => store.getters.getCompanysList),
+			filterCompanyData: computed(() => store.getters.getCompanysListInput),
+			filterPeriodData: computed(() => store.getters.getOrdersDataPeriodArray),
+			claimsList: computed(() => store.getters.getClaims),
+			
+			//methods
 		}
 	},
 });
