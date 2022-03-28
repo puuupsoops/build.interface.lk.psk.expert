@@ -31,6 +31,7 @@ export const mutations: MutationTree<ShipmentsState> = {
 			const order = stateOrders.orders.find(o => o.n == parseInt(x.id))
 			if (order) x.order = order
 		})
-		state.shipments = data
+
+		state.shipments = data.sort((a,b) => (a.date_create < b.date_create) ? 1 : ((b.date_create < a.date_create) ? -1 : 0))
 	}
 }
