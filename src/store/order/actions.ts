@@ -56,7 +56,7 @@ export const actions: ActionTree<OrderState, RootState> =  {
 				commit(OrderMutations.ADD_ORDER, response.data.response)
 			})
 			.catch(error => {
-				if (error.response.status == 400) {
+				if (error.response.status == 400 || error.response.status == 400) {
 					commit(OrderMutations.CLEAN_ORDER_ERROR, error.response.data.error.message)
 					return Promise.reject(error)
 				}

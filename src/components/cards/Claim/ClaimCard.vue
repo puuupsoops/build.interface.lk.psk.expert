@@ -82,7 +82,7 @@
 							</div>
 							
 							<ClaimOrder
-								
+								v-else
 								:data="order_detail"
 								v-model="data.products"
 							></ClaimOrder>

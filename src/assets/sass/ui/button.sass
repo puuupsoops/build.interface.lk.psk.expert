@@ -78,6 +78,24 @@
 			rect
 				fill: $accent-color
 
+.edit-btn
+	position: absolute
+	top: 15px
+	right: 25px
+	width: 24px
+	height: 24px
+	+prefix(transition, $default-transition)
+	cursor: pointer
+
+	&-img
+		rect
+			+prefix(transition, $default-transition)
+
+	&:hover
+		.edit-btn-img
+			.fill
+				fill: $accent-color
+
 .default-btn
 	
 	bottom: 50px

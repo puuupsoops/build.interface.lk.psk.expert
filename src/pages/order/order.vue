@@ -148,7 +148,9 @@ export default defineComponent({
 		const productItems = ref<OrderStatePositionOffer[]>([]);
 
 		const addToOrder = () => {
-			let new_pos = <OrderStatePosition>{ 
+			let new_pos = <OrderStatePosition>{
+					article: store.getters.getProduct.ARTICLE,
+					guid:store.getters.getProduct.UID, 
 					product: store.getters.getProduct, 
 					characteristics: productItems.value,
 				}

@@ -31,12 +31,13 @@
 				
 			</div>
 			</div>
-			<div class="order-list-bottom scroll-elem">
+			<div class="scroll-elem">
 				
 				<div class="order-list-bottom-wrap"> 
 					
 					<div class="order-list-row order-list-heading" v-if="data.position.length>0">
 						<div class="order-list-elem">№</div>
+						<div class="order-list-elem">Артикул</div>
 						<div class="order-list-elem">Наименование</div>
 						<div class="order-list-elem">{{ open.length != 0 ? 'Цена':'' }}</div>
 						<div class="order-list-elem">Кол-во</div>
@@ -57,14 +58,25 @@
 								{{key+1}}
 							<div class="table-arrow"></div>
 						</div>
-
+						<div class="order-list-elem">
+							<router-link 
+								tag="a"
+								class="order-list-elem"
+								:to="'/order/'+item.article"
+								title="Добавить"
+							>
+								<span v-html = "item.article"></span>
+							</router-link>
+						</div>
 						<div class="order-list-elem"><span v-html = "item.product.NAME"></span></div>
 						<div class="order-list-elem"></div>
 						<div class="order-list-elem">{{ item.count }}</div>
 						<div class="order-list-elem">{{ Number(item.total).toLocaleString() }} ₽</div>
-
+						<div class="order-list-elem-edit" title="Добавить">
+							<EditButton @click.stop="goTo(item.article)"></EditButton>
+						</div> 
 						<div class="order-list-elem-delete">
-							<DeleteButton @onClick="removePosition(false, item.product.ID)"/>
+							<DeleteButton @onClick="removePosition(false, item.guid)"/>
 						</div>
 						</div>
 						<div
@@ -75,6 +87,7 @@
 								:key="k"
 								class="order-list-row"
 							>
+								<div class="order-list-elem"> </div>
 								<div class="order-list-elem"> </div>
 								<div class="order-list-elem">{{ characteristic.CHARACTERISTIC }}</div>
 								<div class="order-list-elem">{{ Number(characteristic.PRICE).toLocaleString() }} ₽</div>
@@ -87,9 +100,9 @@
 									/>
 								</div>
 								<div class="order-list-elem">{{ Number(characteristic.PRICE * characteristic.count).toLocaleString() }} ₽</div>
-								
+
 								<div class="order-list-elem-delete">
-									<DeleteButton  @onClick="removeCharacteristic(false, {product: item.product, characteristics: [characteristic]})" />
+									<DeleteButton  @onClick="removeCharacteristic(false, {guid: item.guid, characteristics: [characteristic]})" />
 								</div>
 							</div>
 							
@@ -106,6 +119,7 @@
 					
 					<div class="order-list-row order-list-heading">
 						<div class="order-list-elem">№</div>
+						<div class="order-list-elem">Артикул</div>
 						<div class="order-list-elem">Наименование</div>
 						<div class="order-list-elem">{{ open_presail.length != 0 ? 'Цена':'' }}</div>
 						<div class="order-list-elem">Кол-во</div>
@@ -126,14 +140,19 @@
 								{{key+1}}
 							<div class="table-arrow"></div>
 						</div>
-
+						<div class="order-list-elem"> <span v-html = "item.article"></span></div>
 						<div class="order-list-elem"><span v-html = "item.product.NAME"></span></div>
 						<div class="order-list-elem"></div>
 						<div class="order-list-elem">{{ item.count }}</div>
 						<div class="order-list-elem">{{ Number(item.total).toLocaleString() }} ₽</div>
-
+						<div class="order-list-elem-edit" title="Добавить"
+						>
+							<EditButton @click.stop="goTo(item.article)"></EditButton>
+						</div> 
+						
 						<div class="order-list-elem-delete">
-							<DeleteButton @onClick="removePosition(true, item.product.ID)"/>
+							
+							<DeleteButton @onClick="removePosition(true, item.guid)"/>
 						</div>
 						</div>
 						<div
@@ -144,6 +163,7 @@
 								:key="k"
 								class="order-list-row"
 							>
+								<div class="order-list-elem"> </div>
 								<div class="order-list-elem"> </div>
 								<div class="order-list-elem">{{ characteristic.CHARACTERISTIC }}</div>
 								<div class="order-list-elem">{{ Number(characteristic.PRICE).toLocaleString() }} ₽</div>
@@ -157,7 +177,7 @@
 								<div class="order-list-elem">{{ Number(characteristic.PRICE * characteristic.count).toLocaleString() }} ₽</div>
 								
 								<div class="order-list-elem-delete">
-									<DeleteButton  @onClick="removeCharacteristic(true, {product: item.product, characteristics: [characteristic]})" />
+									<DeleteButton  @onClick="removeCharacteristic(true, {guid: item.guid, characteristics: [characteristic]})" />
 								</div>
 							</div>
 							
@@ -186,6 +206,7 @@ import { useStore } from 'vuex'
 
 import AmountInput from '@/components/ui/AmountInput.vue'
 import DeleteButton from '@/components/ui/DeleteButton.vue'
+import EditButton from '@/components/ui/EditButton.vue'
 import SelectInput from '@/components/ui/SelectInput.vue'
 import SnackBar from '@/components/ui/SnackBar.vue'
 
@@ -193,6 +214,7 @@ import { key } from '@/store/index'
 import { OrderMutations } from '@/store/order/mutations'
 import { OrderActions } from '@/store/order/actions'
 import { OrderStateOrder, OrderStatePosition } from '@/store/order/types'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
 	props: {
@@ -211,11 +233,13 @@ export default defineComponent({
 	components: {
 		AmountInput,
 		DeleteButton,
+		EditButton,
 		SelectInput,
 		SnackBar,
 	},
 	setup(props, { emit }) {
 		const store = useStore(key);
+		const router = useRouter();
 		const open = ref([]);
 		const open_presail = ref([]);
 		let error = ref(false);
@@ -229,11 +253,11 @@ export default defineComponent({
 		let updOrder = () => {
 			store.commit(OrderMutations.CALC_ORDER)
 		}
-		let removePosition = (presail: boolean, ID: number) => {
+		let removePosition = (presail: boolean, guid: string) => {
 			if (presail)
-				store.dispatch(OrderActions.REMOVE_POSITION_PRESAIL, ID)
+				store.dispatch(OrderActions.REMOVE_POSITION_PRESAIL, guid)
 			else
-				store.dispatch(OrderActions.REMOVE_POSITION, ID)
+				store.dispatch(OrderActions.REMOVE_POSITION, guid)
 
 		}
 		let removeCharacteristic = (presail: boolean, CHAR: OrderStatePosition) => {
@@ -260,12 +284,16 @@ export default defineComponent({
 				snackMsg.value = 'Заказ добавлен в черновик'
 			}
 		}
+		const goTo = (to: string) =>{
+			router.push('/order/'+to)
+		}
 		return {
 			updOrder,
 			removePosition,
 			removeCharacteristic,
 			onClick,
 			addToDraft,
+			goTo,
 			isOrderInDraft: computed(()=> store.getters.isOrderInDraft),
 			selectCompany,
 			open,

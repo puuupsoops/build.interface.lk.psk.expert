@@ -16,7 +16,7 @@ export const getters: GetterTree<OrderState, RootState> = {
 			count: state.order.count,
 			partner_id: state.partner_id,
 			position: state.order.position.map((x)=>({
-				guid: x.product?.UID,
+				guid: x.guid,
 				characteristics: x.characteristics.map((c)=>({
 					guid: c.GUID,
 					orgguid: c.ORGGUID,

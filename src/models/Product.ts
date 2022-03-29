@@ -17,6 +17,7 @@ export interface Found {
 export interface Offer {
     ID:             number;
     GUID:           string;
+    guid:           string;
     ORGGUID:        string;
     CHARACTERISTIC: string;
     RESIDUE:        number;

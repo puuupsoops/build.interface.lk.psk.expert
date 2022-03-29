@@ -120,6 +120,7 @@ export default defineComponent({
 									PRICE: x.PRICE,
 									RESIDUE: x.RESIDUE,
 									GUID: x.GUID,
+									guid: x.GUID,
 									ORGGUID: x.ORGGUID,
 								})
 					}
@@ -142,6 +143,7 @@ export default defineComponent({
 					PRICE: item.PRICE,
 					PPDATA: item.PPDATA,
 					GUID: item.GUID,
+					guid: item.GUID,
 					ORGGUID: item.ORGGUID,
 					count: 0,
 					check: false,

@@ -8,6 +8,7 @@
 					
 					<div class="order-list-row order-list-heading" v-if="data.position.length>0">
 						<div class="order-list-elem">№</div>
+						<div class="order-list-elem">Артикул</div>
 						<div class="order-list-elem">Наименование</div>
 						<div class="order-list-elem">{{ open.length != 0 ? 'Цена':'' }}</div>
 						<div class="order-list-elem">Кол-во</div>
@@ -28,7 +29,7 @@
 								{{key+1}}
 							
 						</div>
-
+						<div class="order-list-elem">{{ item.article }}</div>
 						<div class="order-list-elem"><span v-html = "item.product.NAME"></span></div>
 						<div class="order-list-elem"></div>
 						<div class="order-list-elem">{{ item.count }}</div>
@@ -46,6 +47,7 @@
 								:key="k"
 								class="order-list-row"
 							>
+								<div class="order-list-elem"> </div>
 								<div class="order-list-elem"> </div>
 								<div class="order-list-elem">{{ characteristic.CHARACTERISTIC }}</div>
 								<div class="order-list-elem">{{ Number(characteristic.PRICE).toLocaleString() }} ₽</div>
@@ -71,6 +73,7 @@
 					
 					<div class="order-list-row order-list-heading">
 						<div class="order-list-elem">№</div>
+						<div class="order-list-elem">Артикул</div>
 						<div class="order-list-elem">Наименование</div>
 						<div class="order-list-elem">{{ open_presail.length != 0 ? 'Цена':'' }}</div>
 						<div class="order-list-elem">Кол-во</div>
@@ -90,7 +93,7 @@
 							<div class="order-list-elem">
 								{{key+1}}
 							</div>
-
+						<div class="order-list-elem">{{ item.article }}</div>
 						<div class="order-list-elem"><span v-html = "item.product.NAME"></span></div>
 						<div class="order-list-elem"></div>
 						<div class="order-list-elem">{{ item.count }}</div>

@@ -93,11 +93,10 @@
 								@click.stop="active_more = key"
 							>Подробно</button>
 							<div
-								
 								:class="'orders-list-more-dropdown' +  ( key == active_more ? ' active': '' )"
 							>
-								<a class="orders-list-more-dropdown-link" href="#">Повторить</a>
-								<a class="orders-list-more-dropdown-link" href="#" @click="detailOrderId = item.n; showDetail=true" >Детали заказа</a>
+								<a class="orders-list-more-dropdown-link" href="#" @click.stop="detailOrderId = item.n; showDetail=true; repeatOrder=true;" >Повторить</a>
+								<a class="orders-list-more-dropdown-link" href="#" @click.stop="detailOrderId = item.n; showDetail=true" >Детали заказа</a>
 								<a class="orders-list-more-dropdown-link" href="#">Скачать документы</a>
 								<a class="orders-list-more-dropdown-link" href="#">Скачать сертификаты</a>
 								<router-link 
@@ -232,7 +231,11 @@
 			</div>
 	</div>
 	<PreloaderLocal v-if="loading" style="width: 100%"></PreloaderLocal>
-	<OrderDetailModal v-model="showDetail" :orderId="detailOrderId"></OrderDetailModal>
+	<OrderDetailModal 
+		v-model="showDetail" 
+		:orderId="detailOrderId" 
+		v-model:repeatOrder="repeatOrder"
+	></OrderDetailModal>
 </div>
 </template>
 
@@ -254,6 +257,7 @@ import { OrdersSatusCode } from '@/store/orders/types'
 
 import { SearchData } from '@/models/Components'
 import { KeysMutations } from '@/store/keys/mutations'
+
 
 export default defineComponent({
 	props: {
@@ -295,6 +299,7 @@ export default defineComponent({
 			{name: 'name', value: '', show: false},
 			{name: 'date', value: '', show: false},
 		])
+		const repeatOrder = ref(false)
 		
 		onClickOutside(target, () => {
 			active_more.value = -1
@@ -417,7 +422,7 @@ export default defineComponent({
 			} else show = true
 			return  show
 		}
-
+		
 		return {
 			//data
 			target,
@@ -428,6 +433,8 @@ export default defineComponent({
 			detailOrderId,
 			OrdersSatusCode,
 			filter,
+			repeatOrder,
+			
 			//computed
 			data_filtred,
 			orders_list,
@@ -438,7 +445,7 @@ export default defineComponent({
 			getStorageName,
 			setOrderId,
 			filtred,
-			
+					
 		}
 	},
 })

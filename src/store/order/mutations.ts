@@ -4,6 +4,7 @@ import { DefaultNewOrder, DefaultOrder, OrderState, OrderStateOrder, OrderStateP
 
 export enum OrderMutations {
 	CREATE_ORDER = "CREATE_ORDER",
+	CREATE_ORDER_FROM_DETAIL = "CREATE_ORDER_FROM_DETAIL",
 	ADD_POSITION = "ADD_POSITION",
 	REMOVE_POSITION = "REMOVE_POSITION",
 	REMOVE_POSITION_PRESAIL = "REMOVE_POSITION_PRESAIL",
@@ -31,13 +32,13 @@ export const mutations: MutationTree<OrderState> = {
 		state.error = null;
 	},
 	[OrderMutations.ADD_POSITION] (state, data: OrderStatePosition): void{
-
+		console.log(data)
 		if (data.characteristics.length > 0)
 		{
-			const exist = state.order.position.find(x => x.product.ID == data.product.ID);
+			const exist = state.order.position.find(x => x.guid == data.guid);
 			if (exist) { // если уже добавлено
 				data.characteristics.forEach(char => {
-					const exist_char = exist.characteristics.find(x => x.ID == char.ID);
+					const exist_char = exist.characteristics.find(x => x.guid == char.guid);
 					if (exist_char) {  // усли у тавара уже добавлена характеристика, то проссумировать количество
 						exist_char.count = exist_char.count + char.count
 					} else { // добавить новую характиристику 
@@ -58,18 +59,20 @@ export const mutations: MutationTree<OrderState> = {
 				if (char.count > char.RESIDUE) {
 					const presail_count = char.count - char.RESIDUE
 					char.count = char.RESIDUE
-					const exist = state.order.position_presail.find(x => x.product.ID == pos.product.ID);
+					const exist = state.order.position_presail.find(x => x.guid == pos.guid);
 					if (exist) { // если уже добавлен продукт
-						const exist_char = exist.characteristics.find(x => x.ID == char.ID);
+						const exist_char = exist.characteristics.find(x => x.guid == char.guid);
 						if (exist_char) {  // усли у тавара уже добавлена характеристика, то проссумировать количество
 							exist_char.count = exist_char.count + presail_count
 						} else { // добавить новую характиристику 
 							exist.characteristics.push( Object.assign({}, char));
-							const e = exist.characteristics.find(x=> x.ID == char.ID)
+							const e = exist.characteristics.find(x=> x.guid == char.guid)
 							if (e) e.count = presail_count
 						}
 					} else { //добавить новый продукт
 						const new_pos = <OrderStatePosition>{
+							guid: pos.product.UID,
+							article: pos.product.ARTICLE,
 							product: pos.product,
 							characteristics: []
 						}
@@ -81,22 +84,22 @@ export const mutations: MutationTree<OrderState> = {
 			})
 		})
 	},
-	[OrderMutations.REMOVE_POSITION] (state, ID: number): void{
-		state.order.position=state.order.position.filter(x=> x.product.ID !== String(ID));
+	[OrderMutations.REMOVE_POSITION] (state, guid: string): void{
+		state.order.position=state.order.position.filter(x=> x.guid !== guid);
 	},
-	[OrderMutations.REMOVE_POSITION_PRESAIL] (state, ID: number): void{
-		state.order.position_presail=state.order.position_presail.filter(x=> x.product.ID !== String(ID));
+	[OrderMutations.REMOVE_POSITION_PRESAIL] (state, guid: string): void{
+		state.order.position_presail=state.order.position_presail.filter(x=> x.guid !== guid);
 	},
 	[OrderMutations.REMOVE_CHARACTERISTIC] (state, data: OrderStatePosition): void{
 		state.order.position.forEach(pos => {
-			if (data.product.ID == pos.product.ID)
-				pos.characteristics = pos.characteristics.filter(x=> x.ID !== data.characteristics[0].ID)
+			if (data.guid == pos.guid)
+				pos.characteristics = pos.characteristics.filter(x=> x.guid !== data.characteristics[0].guid)
 		});
 	},
 	[OrderMutations.REMOVE_CHARACTERISTIC_PRESAIL] (state, data: OrderStatePosition): void{
 		state.order.position_presail.forEach(pos => {
-			if (data.product.ID == pos.product.ID)
-				pos.characteristics = pos.characteristics.filter(x=> x.ID !== data.characteristics[0].ID)
+			if (data.guid == pos.guid)
+				pos.characteristics = pos.characteristics.filter(x=> x.guid !== data.characteristics[0].guid)
 		});
 	},
 	[OrderMutations.CALC_ORDER] (state): void{
@@ -187,6 +190,7 @@ export const mutations: MutationTree<OrderState> = {
 			state.order_detail.id = data.id
 			state.order_detail.count = data.count
 			state.order_detail.partner_id = data.partner_id
+			
 			state.order_detail.total = data.total
 			
 			if (data.position)
@@ -204,10 +208,12 @@ export const mutations: MutationTree<OrderState> = {
 						count: total_count, 
 						total: total_price,
 						guid: x.guid,
+						article: x.article,
 						characteristics: x.characteristics.map((c: any) => {
 							return {
 								CHARACTERISTIC: c.title,
 								PRICE: c.price,
+								guid: c.guid,
 								count: c.quantity,
 							}
 						})
@@ -229,6 +235,7 @@ export const mutations: MutationTree<OrderState> = {
 						count: total_count, 
 						total: total_price,
 						guid: x.guid,
+						article: x.article,
 						characteristics: x.characteristics.map((c: any) => {
 							return {
 								CHARACTERISTIC: c.title,
@@ -242,6 +249,11 @@ export const mutations: MutationTree<OrderState> = {
 	},
 	[OrderMutations.CLEAN_ORDER_DETAIL] (state): void {
 		state.order_detail = Object.assign({}, DefaultOrder)
-	}
-
+	},
+	[OrderMutations.CREATE_ORDER_FROM_DETAIL](state): void{
+		state.order = Object.assign({}, state.order_detail) 
+		state.order.id = (new Date()).getTime()
+		state.error = null;
+		
+	},
 }

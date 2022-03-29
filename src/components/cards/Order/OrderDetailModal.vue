@@ -24,8 +24,18 @@
 			</div>
 
 		</div>
-		
-
+		<div v-if="!loading">
+			<div v-if="repeatOrder" class="shipment-address-list-row-info" >
+				<div>Использовать позиции заказа для оформления нового заказа?</div>
+				<div>
+					<a href="#" @click="setOrder()">Да</a>
+					<a href="#" @click="$emit('update:repeatOrder', false)">Нет</a>
+				</div>
+			</div>	
+			<div class="order-modal-action" v-else>
+				<button @click="$emit('update:repeatOrder', true)" class="order-list-btn">Повторить заказ</button>
+			</div>
+		</div>
 	</div>
 </div>
 </template>
@@ -42,6 +52,8 @@ import { onClickOutside } from '@vueuse/core'
 
 import { key } from '@/store'
 import { OrderActions } from '@/store/order/actions'
+import { useRouter } from 'vue-router'
+import { OrderMutations } from '@/store/order/mutations'
 
 
 export default defineComponent({
@@ -59,20 +71,27 @@ export default defineComponent({
 			type: Number,
 			default: -1
 		},
+		repeatOrder: {
+			type: Boolean,
+			default: false
+		}
 	},
-	emits: ['update:modelValue'],
+	emits: ['update:modelValue', 'update:repeatOrder'],
 	setup(props, { emit }){
 		const store = useStore(key)
+		const router = useRouter()
 		const shake = ref(false)
 		const targetModal = ref(null)
 		const loading = ref(false)
+		const useRepeat = ref(false)
 		
 		onClickOutside(targetModal, () => {
-			shake.value = true;
-			setTimeout(() => {shake.value=false;}, 500);
+			shake.value = true
+			setTimeout(() => {shake.value=false;}, 500)
 		});
 		const close = () => {
-			emit('update:modelValue', false);
+			emit('update:repeatOrder', false)
+			emit('update:modelValue', false)
 		};
 		watch( ()=>props.orderId, ()=>{
 			if (props.orderId!=-1){
@@ -82,11 +101,17 @@ export default defineComponent({
 		})
 		
 		
+		const  setOrder = async () => {
+			await store.commit(OrderMutations.CREATE_ORDER_FROM_DETAIL)
+			router.push({name: 'Order'})
+		}
+		
 		return {
 			//data
 			shake,
 			targetModal,
 			loading,
+			useRepeat,
 
 			//computed
 			order_detail: computed(() => store.getters.getOrderDetail),
@@ -94,7 +119,7 @@ export default defineComponent({
 
 			//methods
 			close,
-		
+			setOrder,
 		}
 	}
 })

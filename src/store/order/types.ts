@@ -24,6 +24,8 @@ export interface OrderStateOrder {
 
 export interface OrderStatePosition {
 	product:         Product;
+	guid:            string;
+	article:         string;
 	characteristics: OrderStatePositionOffer[];
 	total?:           number;
 	count?:           number;
