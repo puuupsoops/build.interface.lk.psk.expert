@@ -240,6 +240,13 @@
 			background: -o-linear-gradient(left, #FFBF60 0%, #FF9900 100%)
 			background: linear-gradient(90deg, #FFBF60 0%, #FF9900 100%)
 			
+			&.edit
+				
+				background: -webkit-gradient(linear, left top, right top, from(#FFBF60), to(#FF9900))
+				background: -o-linear-gradient(left, #FFBF60 0%, #FF9900 100%)
+				background: linear-gradient(90deg, $bg-default-color 0%, #1e2022 100%)
+			
+			
 			&-info
 				padding: 0 30px
 					top: 20px
@@ -285,8 +292,11 @@
 				+flex-wrap(wrap)
 
 			&-text
-				padding: 2px	
+				padding: 2px
 				width: 50%
+				
+				&.edit
+					padding: 10px
 
 				&:nth-child(even)
 					text-align: right
@@ -317,9 +327,14 @@
 				line-height: 28px
 				color: $white
 				text-align: center
+				cursor: pointer
 				background-color: #A76C14
 				+prefix(transition, $default-transition)
-
+				
+				&.edit
+					background-color: $bg-color2
+					color: $font-light-color
+					
 				&:hover
 					opacity: $default-opacity
 

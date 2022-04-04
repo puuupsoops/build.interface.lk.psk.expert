@@ -1,7 +1,7 @@
 
 <template>
 	
-			<div  v-if="modelValue!==null" class="company-head-wrap">
+			<div  v-if="data.length !== 0" class="company-head-wrap">
 				
 				<CompanyStorageCard 
 					v-for="(storage, id) in data" 

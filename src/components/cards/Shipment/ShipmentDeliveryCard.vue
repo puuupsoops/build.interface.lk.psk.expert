@@ -42,12 +42,12 @@
 											@onInput="data.dateError=false"
 										/>
 									</div>
-									<div
+									<!-- <div
 										:class="'shipment-form-btn shipment-form-urgently-btn' + ( data.quick ? ' active':'')"
 										@click="data.quick=!data.quick"
 									>
 										Срочно
-									</div>
+									</div> -->
 								</div>
 							</div>
 						</div>

@@ -56,7 +56,7 @@ export default {
 				initialView: 'dayGridMonth',
 				locale: ruLocale,
 				events: eventsArr.value.map(doc => ({
-														"title": `Счёт №${doc.number} от ${doc.date_str} на ${doc.debt}₽`,
+														"title": `Счёт от ${doc.date_str} на ${doc.debt}₽`,
 														"start": doc.expires,
 														"backgroundColor": '#378006',
 														"allDay": true,

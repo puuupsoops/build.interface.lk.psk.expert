@@ -11,7 +11,7 @@
 							
 							>
 						<img class="company-head-list-img" src="@/assets/img/icon/doc.svg" alt="">
-						<a class="company-head-list-link" href="#CompanyCalendar" @click="docDate = document.expires">ЭС - счёт №{{document.number}} от {{document.date_str}}</a>
+						<a class="company-head-list-link" href="#CompanyCalendar" @click="docDate = document.expires">Cчёт от {{document.date_str}}</a>
 					</li>
 				</ul>
 			</div>
