@@ -96,6 +96,7 @@
 						tag="a" 
 						:to="'/claims/request'"
 						class="content-heading-btn"
+						@click="$emit('onClick')"
 					>
 						
 					<svg class="content-heading-btn-img" width="26" height="25" viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg" >

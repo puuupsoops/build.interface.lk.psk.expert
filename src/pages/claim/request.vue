@@ -8,19 +8,21 @@
 	<top-nav></top-nav>
 
 	<div
-		v-for="claim, key in calimArr"
-		:key="key"
+		
 	>
 
-		<ClaimCard 
-			v-model="calimArr[key]"
+		<ClaimCard
+			v-for="claim, key in calim_new"
+			:key="key"
+			v-model="calim_new[key]"
 			:cardId="key"
 			@close="del(key)"
 		></ClaimCard>
 	</div>
 	
 	<div class="claim-bottom">
-		<div class="claim-add-basis" @click="add">Добавить</div>
+		<preloader-local v-if="loading_claim"></preloader-local>
+		<div class="claim-add-basis" v-else @click="add">Добавить</div>
 		
 		<div
 			class="gradient-btn claim-submit"
@@ -39,20 +41,20 @@
 
 import TopNav from "@/components/nav/TopNav.vue"
 import Preloader from '@/components/Preloader.vue'
+import PreloaderLocal from '@/components/PreloaderLocal.vue'
 
 import ClaimCard from '@/components/cards/Claim/ClaimCard.vue'
 
 
 import { useStore } from 'vuex'
 import { key } from '@/store'
-import { defineComponent, ref,onMounted }from 'vue';
+import { defineComponent, ref,onMounted, computed }from 'vue';
 import { CompanyActions } from "@/store/company/actions"
 import { Claim }  from "@/models/Claim"
 import { OrdersActions } from "@/store/orders/actions"
 import { ClaimActions } from "@/store/claims/actions"
 import { useRouter } from 'vue-router'
 import { ClaimMutations } from "@/store/claims/mutations"
-import { OrderActions } from "@/store/order/actions"
 
 
 
@@ -60,6 +62,7 @@ export default defineComponent({
 	components: {
 		TopNav,
 		Preloader,
+		PreloaderLocal,
 		ClaimCard,
 	},
 	setup() {    
@@ -67,44 +70,40 @@ export default defineComponent({
 		const router = useRouter()
 
 		const loading = ref(false)
-		const calimDefault = ref<Claim>({
-			date_create: '',
-			status: 0,
-			title: '',
-			partner_name: '',
-			partner_guid: '',
-			id: 0,
-			case: 1, //Причина притензии. [0 - другое, 1 - недосдача, 2 - пересорт , 3 - качество ]
-			products: [],
-			message: '',
-			files: []
-		})
-		const calimArr = ref<Claim[]>([])
-		calimArr.value.push(Object.assign({}, calimDefault.value))
+		const loading_claim = ref(false)
 		
 		onMounted(() => {
 			if (!store.getters.isCompanysLoad) store.dispatch(CompanyActions.GET_COMPANYS)
 			if (!store.getters.isOrders) {
 				loading.value = true
 				store.dispatch(OrdersActions.GET_ORDERS).then(()=>{ 
-					store.dispatch(OrderActions.GET_ORDER_DETAIL, store.getters.getOrders[0].n).then(()=>{
-						loading.value = false})
+					if (store.getters.getClaimNew.length == 0)
+						store.dispatch(ClaimActions.ADD_CLAIMS_NEW, store.getters.getOrdersMaxId).then(()=>{loading.value = false})
+					else
+						loading.value = false
 				})
+			} else {
+				if (store.getters.getClaimNew.length == 0) {
+					loading.value=true
+					store.dispatch(ClaimActions.ADD_CLAIMS_NEW, store.getters.getOrdersMaxId).then(()=>{loading.value=false})
+				}
 			}
+			
 			store.commit(ClaimMutations.CLEAR_CLAIMS_SUCCESS)
 		})
 		
 		const add = () => {
-			calimArr.value.push(Object.assign({}, calimDefault.value))
+			loading_claim.value=true
+			store.dispatch(ClaimMutations.ADD_CLAIMS_NEW, store.getters.getOrdersMaxId).then(()=>{loading_claim.value=false})
 		}
 		const del = (id:number) => {
-
-			calimArr.value.splice(id, 1)
+		
+			store.commit(ClaimMutations.DEL_CLAIMS_NEW, id)
 		}
 		
 		const send = async () => {
 			loading.value = true
-			await calimArr.value.forEach((claim: Claim) =>{
+			await store.getters.getClaimNew.forEach((claim: Claim) =>{
 				let formData = new FormData();
 				claim.files.forEach((x:any, index:number) => {formData.append('files['+index+']',x)})
 				
@@ -122,9 +121,10 @@ export default defineComponent({
 		}
 		
 	return {
-		calimArr,
 		loading,
-		
+		loading_claim,
+		//computed
+		calim_new: computed( ()=> store.getters.getClaimNew ),
 		//methods
 		add,
 		del,

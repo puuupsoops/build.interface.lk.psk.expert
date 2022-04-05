@@ -2,5 +2,6 @@ import { ClaimState } from "./types"
 
 export const state: ClaimState = {
 	claims: [],
-	claimSuccess:[]
+	claim_success:[],
+	claim_new: [],
 }

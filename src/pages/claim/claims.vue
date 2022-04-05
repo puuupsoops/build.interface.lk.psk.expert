@@ -5,7 +5,7 @@
 			<Notification />
 			<PersonalBar />
 		</div>
-		<top-nav claims></top-nav>
+		<top-nav claims @onClick="newClaim"></top-nav>
 
 		<div class="orders-heading">
 			<div class="orders-heading-elem">
@@ -71,6 +71,7 @@ import { defineComponent, ref,computed,onMounted } from 'vue'
 import { CompanyActions } from "@/store/company/actions"
 import { ClaimActions } from "@/store/claims/actions"
 import { OrdersActions } from "@/store/orders/actions"
+import { ClaimMutations } from "@/store/claims/mutations"
 
 export default defineComponent({
 	components: {
@@ -111,6 +112,10 @@ export default defineComponent({
 			}
 		});
 
+		const newClaim = ()=>{
+			store.commit(ClaimMutations.CLEAR_CLAIMS_NEW)
+		}
+		
 		return {
 			//data
 			loading,
@@ -128,6 +133,7 @@ export default defineComponent({
 			claimsList: computed(() => store.getters.getClaims),
 			
 			//methods
+			newClaim,
 		}
 	},
 });

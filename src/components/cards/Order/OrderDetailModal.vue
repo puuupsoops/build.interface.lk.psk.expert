@@ -22,9 +22,8 @@
 				</div>
 				<OrderDraftCard v-else :data="order_detail"></OrderDraftCard>
 			</div>
-
 		</div>
-		<div v-if="!loading">
+		<div v-if="!loading && order_detail.id !=0 ">
 			<div v-if="repeatOrder" class="shipment-address-list-row-info" >
 				<div>Использовать позиции заказа для оформления нового заказа?</div>
 				<div>

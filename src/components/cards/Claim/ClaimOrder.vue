@@ -32,15 +32,13 @@
 						<div class="order-list-elem"> <span v-html = "item.product.NAME"></span></div>		
 						<div class="order-list-elem"></div>
 						<div class="order-list-elem">{{ item.count }}</div>
-						<div class="order-list-elem">{{ Number(item.total).toLocaleString() }} ₽</div>
+						<div class="order-list-elem" v-if="item.total">{{ Number(item.total).toLocaleString() }} ₽</div><div class="order-list-elem" v-else> -- </div>
 
 						<div class="order-list-elem">
 							{{item.characteristics.filter(x => x.select>0).length}}
 						</div>
 						</div>
-						<div
-							:class="open.indexOf(key) !== -1 ? 'order-list-sublist active' : 'order-list-sublist'"
-						>
+						<div :class="open.indexOf(key) !== -1 ? 'order-list-sublist active' : 'order-list-sublist'">
 							<div
 								v-for="(characteristic, k) in item.characteristics"
 								:key="k"
@@ -49,11 +47,9 @@
 								<div class="order-list-elem"></div>
 								<div class="order-list-elem"></div>
 								<div class="order-list-elem">{{ characteristic.CHARACTERISTIC }}</div>
-								<div class="order-list-elem">{{ Number(characteristic.PRICE).toLocaleString() }} ₽</div>
-								<div class="order-list-elem"> 
-									<span>{{characteristic.count}}</span>
-								</div>
-								<div class="order-list-elem">{{ Number(characteristic.PRICE * characteristic.count).toLocaleString() }} ₽</div>
+								<div class="order-list-elem" v-if="characteristic.PRICE">{{  Number(characteristic.PRICE).toLocaleString() }} ₽</div><div class="order-list-elem" v-else> -- </div>
+								<div class="order-list-elem"> <span>{{characteristic.count}}</span></div>
+								<div class="order-list-elem" v-if="characteristic.PRICE">{{ Number(characteristic.PRICE * characteristic.count).toLocaleString() }} ₽</div><div class="order-list-elem" v-else> -- </div>
 						
 								<div class="order-list-elem">
 									<amount-input :max="characteristic.count" v-model="characteristic.select" @onInput="upd"></amount-input>
@@ -88,7 +84,7 @@ export default defineComponent({
 	props: {
 		data: {
 			type: Object as PropType<OrderStateOrder>,
-			required: true
+			
 		},
 		modelValue: {
 			type: Array as PropType<ProductCharacteristic[]>,
@@ -101,34 +97,34 @@ export default defineComponent({
 		AmountInput,
 
 	},
-	setup(props, {emit}) {
+	setup(props, { emit }) {
 		const open = ref([])
 		const open_presail = ref({})
 		
-		const val = computed({
-			get: ()=>{
+		const val = computed(
+			()=>{
 				let res = Object.assign({}, props.data)
-				
-				res.position.forEach((x : any) => {
-						x.characteristics.forEach((c :any ) => c.select=0)
-				})
+
+				if (res.position)
+					res.position.forEach((x : any) => {
+							x.characteristics.forEach((c :any ) => c.select=0)
+					})
+					else return null
 				return res
-				},
-			set: (val)=>{ console.log (val)}
-			
 		})
 		
 		const upd = () =>{
 			let selectedVal = <ProductCharacteristic[]>[]
-			val.value.position.forEach((x : any) => {
-				x.characteristics.forEach((c :any ) => {
-					if (c.select > 0) selectedVal.push({
-																productUID: <string>x.product.UID,
-																characteristicGUID: <string>c.CHARACTERISTIC, 
-																count: <number>c.select
-															})
+			if (val.value)
+				val.value.position.forEach((x : any) => {
+					x.characteristics.forEach((c :any ) => {
+						if (c.select > 0) selectedVal.push({
+															productUID: <string>x.product.UID,
+															characteristicGUID: <string>c.CHARACTERISTIC, 
+															count: <number>c.select
+														})
+					})
 				})
-			})
 			emit('update:modelValue', selectedVal)
 		}
 	

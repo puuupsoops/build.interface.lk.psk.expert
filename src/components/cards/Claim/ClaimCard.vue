@@ -15,7 +15,7 @@
 					
 					<div class="shipment-heading-info">
 
-					<div v-if="order" class="shipment-title"><span>Оформить претензию по Заказу № {{order}} от {{orders.find(x => x.n == order)?.date.substring(0,10)}}</span></div>
+					<div v-if="order" class="shipment-title"><span>Оформить претензию по Заказу № {{modelValue.id}} от {{orders.find(x => x.n == order)?.date.substring(0,10)}}</span></div>
 					<div v-else class="shipment-title"><span>Отсутвуют заказы</span></div>
 						<div class="shipment-heading-select"><span>Основание: &nbsp;</span>
 							<div class="base-select-wrap">
@@ -73,7 +73,7 @@
 
 			<div class="claim-info">
 				<div class="claim-info-elem">
-					<div class="claim-info-title">Перечень товаров {{ order_detail.position.length != 0 ? '['+order_detail.position.length+']':''}}</div>
+					<!-- <div class="claim-info-title"  v-if="Object.keys(data.order_detail).length !=0" >Перечень товаров {{ data.order_detail.position.length != 0 ? '['+data.order_detail.position.length+']':''}}</div> -->
 					<div class="content-elem">
 						<div class="order-list-bottom scroll-elem">
 							
@@ -83,7 +83,7 @@
 							
 							<ClaimOrder
 								v-else
-								:data="order_detail"
+								:data="modelValue.order_detail"
 								v-model="data.products"
 							></ClaimOrder>
 						</div>
@@ -142,8 +142,6 @@ import { ProductCharacteristic } from '@/models/Product'
 import { Claim } from "@/models/Claim"
 
 import { Orders } from '@/models/Orders'
-import { KeysConst } from '@/store/keys/types'
-import { KeysMutations } from '@/store/keys/mutations'
 import { OrderActions } from '@/store/order/actions'
 
 export default defineComponent({
@@ -154,13 +152,12 @@ export default defineComponent({
 	},
 	props:{
 		modelValue:{
-			type: Object as PropType<Claim>
+			type: Object as PropType<Claim>,
+			required: true,
 		},
-		
-	
 		cardId:{
 			type: Number,
-			required: true
+			required: true,
 		}
 	},
 	emits:['update:modelValue', 'update:files','close'],
@@ -173,16 +170,13 @@ export default defineComponent({
 			title: '',
 			partner_name: '',
 			partner_guid: '',
-			id: 0,
+			id:  props.modelValue.id,
 			case: 1, //Причина притензии. [0 - другое, 1 - недосдача, 2 - пересорт , 3 - качество ]
 			products: <ProductCharacteristic[]>[],
 			message: '',
 			files: []
 		})
-		const orderVal = ref(null)
 		const loading = ref(false)
-		
-		
 		
 		const companyUID = computed({
 			get: ()=>{
@@ -191,53 +185,33 @@ export default defineComponent({
 				} else 
 				return data.value.partner_guid
 			},
-			set: (val:string)=>{data.value.partner_guid = val}
+			set: (val:string)=>{ data.value.partner_guid = val }
 		})
-		
 		
 		const order = computed({
 			get: () => {
-				if (orderVal.value == null) {
-					const id = store.getters.getCurrentOrderId
-					if (id != null && id != KeysConst.DEFAULT_ORDER_ID) {
-						
-						return id
-					}
-					else 
-						if (store.getters.getOrders[0] != undefined) {
-							store.commit(KeysMutations.SET_CURRENT_ORDER, store.getters.getOrders[0].n)
-							
-							return store.getters.getOrders[0].n
-						} else {
-							store.commit(KeysMutations.SET_CURRENT_ORDER, KeysConst.DEFAULT_ORDER_ID)
-						return null
-					}
-				} else {
-					
-					return orderVal.value
-				}
-				
+				return props.modelValue.id ?  props.modelValue.id : data.value.id
 			},
 			set: (val) => {
-				orderVal.value = val
-				loading.value=true
-				store.commit(KeysMutations.SET_CURRENT_ORDER, KeysConst.DEFAULT_ORDER_ID)
-				store.dispatch(OrderActions.GET_ORDER_DETAIL, val).finally(()=>{loading.value=false})
+				data.value.id = val
+				emit('update:modelValue', data.value)
 				data.value.partner_guid=store.getters.getOrders.find( (x: Orders) => x.n == val).partner_guid
-				}
+				loading.value=true
+				
+				store.dispatch(OrderActions.GET_ORDER_DETAIL, val).finally(()=>{
+					data.value.order_detail = store.getters.getOrderDetail
+					loading.value=false
+				})
+			}
 		})
 		
-		
-		const order_detail = computed(() => {
-			return store.getters.getOrderDetail
-		})
 
+		
 		watch( data.value, ()=>{
 			data.value.partner_guid=companyUID.value
 			data.value.partner_name=store.getters.getCompanyData(data.value.partner_guid).name
 			data.value.title = 'Претензия по Заказу №'+order.value+' от ' + store.getters.getOrders.find((x: Orders) => x.n == order.value)?.date.substring(0,10)
-			//console. log(data.value)
-			data.value.id = order.value
+			data.value.order_detail = props.modelValue.order_detail
 			emit('update:modelValue', data.value)
 		})
 		
@@ -247,6 +221,7 @@ export default defineComponent({
 		}
 		const delFile = (id:number) => {
 			data.value.files.splice(id, 1)
+			emit('update:modelValue', data.value)
 		}
 
 		
@@ -259,7 +234,7 @@ export default defineComponent({
 			companyUID,
 			orders: computed(() => store.getters.getOrders),
 			companys: computed(() => store.getters.getCompanysList),
-			order_detail,
+
 			//methods
 			handleFileUpload,
 			delFile,

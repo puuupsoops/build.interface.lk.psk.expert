@@ -95,18 +95,11 @@
 							<div
 								:class="'orders-list-more-dropdown' +  ( key == active_more ? ' active': '' )"
 							>
-								<a class="orders-list-more-dropdown-link" href="#" @click.stop="detailOrderId = item.n; showDetail=true; repeatOrder=true;" >Повторить</a>
-								<a class="orders-list-more-dropdown-link" href="#" @click.stop="detailOrderId = item.n; showDetail=true" >Детали заказа</a>
-								<a class="orders-list-more-dropdown-link" href="#">Скачать документы</a>
-								<a class="orders-list-more-dropdown-link" href="#">Скачать сертификаты</a>
-								<router-link 
-									class="orders-list-more-dropdown-link" 
-									tag="a"
-									:to="'/claims/request'"
-									@click="setOrderId(item.n)"
-								>
-										<span>Оформить претензию</span>
-								</router-link>
+								<a class="orders-list-more-dropdown-link" @click.stop="detailOrderId = item.n; showDetail=true; repeatOrder=true;" >Повторить</a>
+								<a class="orders-list-more-dropdown-link" @click.stop="detailOrderId = item.n; showDetail=true" >Детали заказа</a>
+								<a class="orders-list-more-dropdown-link" >Скачать документы</a>
+								<a class="orders-list-more-dropdown-link" >Скачать сертификаты</a>
+								<a class="orders-list-more-dropdown-link" @click.stop="setClaimOrderId(item.n)">Оформить претензию</a>
 								
 								<router-link 
 									class="orders-list-more-dropdown-link" 
@@ -231,6 +224,7 @@
 			</div>
 	</div>
 	<PreloaderLocal v-if="loading" style="width: 100%"></PreloaderLocal>
+	<Preloader v-if="loading_global"></Preloader>
 	<OrderDetailModal 
 		v-model="showDetail" 
 		:orderId="detailOrderId" 
@@ -241,6 +235,7 @@
 
 <script lang="ts">
 import PreloaderLocal from '@/components/PreloaderLocal.vue'
+import Preloader from '@/components/Preloader.vue'
 import OrderDetailModal from '@/components/cards/Order/OrderDetailModal.vue'
 import ModalInput from '@/components/ui/ModalInput.vue'
 import ModalDatePicker from '@/components/ui/ModalDatePicker.vue'
@@ -257,6 +252,10 @@ import { OrdersSatusCode } from '@/store/orders/types'
 
 import { SearchData } from '@/models/Components'
 import { KeysMutations } from '@/store/keys/mutations'
+import { useRouter } from 'vue-router'
+import { OrderMutations } from '@/store/order/mutations'
+import { ClaimActions } from '@/store/claims/actions'
+import { ClaimMutations } from '@/store/claims/mutations'
 
 
 export default defineComponent({
@@ -282,12 +281,15 @@ export default defineComponent({
 	},
 	components: {
 		PreloaderLocal,
+		Preloader,
 		OrderDetailModal,
 		ModalInput,
 		ModalDatePicker,
 	},
 	setup(props) {
 		const store = useStore(key)
+		const router = useRouter()
+		const loading_global = ref(false)
 		const active = ref(-1)
 		const active_more = ref(-1)
 		const target = ref(null)
@@ -413,6 +415,18 @@ export default defineComponent({
 		
 		const setOrderId = (id: number) => {
 			store.commit(KeysMutations.SET_CURRENT_ORDER, id)
+
+		}
+		
+		const setClaimOrderId = (id: number) => {
+			loading_global.value = true
+			store.commit(OrderMutations.CLEAN_ORDER_DETAIL)
+			store.commit(ClaimMutations.CLEAR_CLAIMS_NEW)
+			store.dispatch(ClaimActions.ADD_CLAIMS_NEW, id).then(() => {
+				loading_global.value = false
+				router.push('/claims/request')
+			})
+			
 		}
 		
 		const filtred = ( item: Orders) => {
@@ -428,6 +442,7 @@ export default defineComponent({
 			target,
 			active,
 			active_more,
+			loading_global,
 			loading_bill,
 			showDetail,
 			detailOrderId,
@@ -438,12 +453,13 @@ export default defineComponent({
 			//computed
 			data_filtred,
 			orders_list,
-			//methods
 			
+			//methods
 			checkStatus,
 			downloadBill,
 			getStorageName,
 			setOrderId,
+			setClaimOrderId,
 			filtred,
 					
 		}

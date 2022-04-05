@@ -1,3 +1,4 @@
+import { OrderStateOrder } from "@/store/order/types";
 import { Orders } from "./Orders";
 import { ProductCharacteristic } from "./Product";
 
@@ -16,6 +17,7 @@ export interface Claim {
     message:       string;
     files:         any[];
     order?:        Orders|undefined;
+    order_detail?: OrderStateOrder;
 }
 
 
