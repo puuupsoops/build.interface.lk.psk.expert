@@ -41,7 +41,7 @@
 								> 
 									<router-link 
 										tag="a" 
-										:to="'/catalog/'+child.code"
+										:to="'/catalog/catalog/'+child.code"
 										class="catalog-menu-nav-dropdown-link" 
 										active-class="catalog-menu-nav-dropdown-link active"
 										@click="$emit('update:catalogName', child.name)"

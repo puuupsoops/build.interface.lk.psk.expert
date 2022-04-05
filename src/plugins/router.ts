@@ -14,15 +14,23 @@ const routes = [
 			}
 	},
 	{
-		path: '/catalog/:id?',
-		component: () => import('@/pages/catalog.vue'),
+		path: '/catalog/catalog/:id?',
+		component: () => import('@/pages/catalog/catalog.vue'),
 		name: 'Catalog',
 		props: true,
 		meta:{
 				auth: true,	
 			}
 	},
-	
+	{
+		path: '/catalog/interactive',
+		component: () => import('@/pages/catalog/interactive.vue'),
+		name: 'CatalogInfo',
+		props: true,
+		meta:{
+				auth: true,	
+			}
+	},
 	{
 		path: '/company/:id?', 
 		component: () => import('@/pages/company.vue'),

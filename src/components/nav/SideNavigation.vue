@@ -68,7 +68,8 @@
 						>
 							<router-link
 								tag="a"
-								:to="child.link" 
+								:to="child.link"
+								@click="collapsed(child.collapsed)"
 								:class="'sidebar-nav-dropdown-link' + (child.lock ? ' lock':'')" 
 								active-class="sidebar-nav-dropdown-link active"
 							>
@@ -132,39 +133,39 @@ export default defineComponent({
 				{title: 'Мои компании', link: null, lock: false, children: [
 				]},
 				{title: 'Рабочий стол', link: null, lock: false, children: [
-					{title: 'Поиск товара', link: '/product', lock: false},
-					{title: 'Заказы', link: '/orders', lock: false},
-					{title: 'Отгрузки', link: '/shipments', lock: false},
-					{title: 'Претензии', link:'/claims', lock: false},
-					{title: 'Конструктор КП', link: '/kp', lock: true},
-					{title: 'История', link: '/history', lock: true},
+					{title: 'Поиск товара', link: '/product', lock: false, collapsed: false},
+					{title: 'Заказы', link: '/orders', lock: false, collapsed: false},
+					{title: 'Отгрузки', link: '/shipments', lock: false, collapsed: false},
+					{title: 'Претензии', link:'/claims', lock: false, collapsed: false},
+					{title: 'Конструктор КП', link: '/kp', lock: true, collapsed: false},
+					{title: 'История', link: '/history', lock: true, collapsed: false},
 					
 				]},
 				{title: 'Логистика', link: '/settlements', lock: false, children: [
-					{title: 'Заявка на отгрузку', link: '/shipments/request', lock: false},
-					{title: 'Адреса Доставки', link: '/shipments/address', lock: false},
+					{title: 'Заявка на отгрузку', link: '/shipments/request', lock: false, collapsed: false},
+					{title: 'Адреса Доставки', link: '/shipments/address', lock: false, collapsed: false},
 				]},
 				{title: 'Сертификаты', link: null, lock: true, children: [
-					{title: 'Разрешительная', link: '/permissive', lock: true},
-					{title: 'Нормативная', link: '/regulatory', lock: true},
-					{title: 'Доп.Информация', link: '/dop_info', lock: true},
+					{title: 'Разрешительная', link: '/permissive', lock: true, collapsed: false},
+					{title: 'Нормативная', link: '/regulatory', lock: true, collapsed: false},
+					{title: 'Доп.Информация', link: '/dop_info', lock: true, collapsed: false},
 				]},
 				{title: 'Взаиморасчеты', link: '/settlements', lock: true, children: [
-					{title: 'Счета', link: '/bills', lock: true},
-					{title: 'Реализации', link: '/realization', lock: true},
-					{title: 'Корректировки', link: '/adjustments', lock: true},
-					{title: 'Акты сверки', link: '/acts', lock: true},
-					{title: 'ЭДО', link: '/edo', lock: true},
+					{title: 'Счета', link: '/bills', lock: true, collapsed: false},
+					{title: 'Реализации', link: '/realization', lock: true, collapsed: false},
+					{title: 'Корректировки', link: '/adjustments', lock: true, collapsed: false},
+					{title: 'Акты сверки', link: '/acts', lock: true, collapsed: false},
+					{title: 'ЭДО', link: '/edo', lock: true, collapsed: false},
 				]},
 				{title: 'Каталог', link: null, lock: false, children: [
-					{title: 'Электронный', link: '/catalog', lock: false},
-					{title: 'Интерактивный', link: '/dop_info', lock: true},
+					{title: 'Электронный', link: '/catalog/catalog', lock: false, collapsed: true},
+					{title: 'Интерактивный', link: '/catalog/interactive', lock: false, collapsed: true},
 				]},
 				{title: 'Маркетинг', link: null, lock: true, children: [
-					{title: 'Баннеры', link: '/banners', lock: true},
-					{title: 'Фотографический материал', link: '/photo_mat', lock: true},
-					{title: 'Обучающий материал', link: '/ed_mat', lock: true},
-					{title: 'Интеграции', link: '/ingration', lock: true},
+					{title: 'Баннеры', link: '/banners', lock: true, collapsed: false},
+					{title: 'Фотографический материал', link: '/photo_mat', lock: true, collapsed: false},
+					{title: 'Обучающий материал', link: '/ed_mat', lock: true, collapsed: false},
+					{title: 'Интеграции', link: '/ingration', lock: true, collapsed: false},
 				]},
 				{title: 'Novelty', link: '/Novelty', lock: true, children: null },
 				{title: 'Контакты', link: '/contacts', lock: true, children: null},
@@ -181,18 +182,26 @@ export default defineComponent({
 											.replace(/Акционерное общество/, 'АО'),
 						link: '/company/'+element.uid,
 						lock: false,
+						collapsed: false,
 						})	
 			});
-			arr.push({title: 'Договоры', link: '/agreements', lock: true});
-			arr.push({title: 'Аналитика', link: '/analytics', lock: true});
-			arr.push({title: 'Программа лояльности', link: '/loyalty', lock: true});
+			arr.push({title: 'Договоры', link: '/agreements', lock: true, collapsed: false,});
+			arr.push({title: 'Аналитика', link: '/analytics', lock: true, collapsed: false,});
+			arr.push({title: 'Программа лояльности', link: '/loyalty', lock: true, collapsed: false,});
 			menu_start[0].children = arr;
 			return menu_start;
 		});
+		
+		const collapsed = (isCollapsed: boolean) => {
+			if (isCollapsed) store.commit(KeysMutations.SET_COLLAPSED, false)
+		}
 		return {
 			menu,
 			isDebug,
+			//computed
 			logout: ()=>store.dispatch(AuthActions.LOGOUT),
+			//method
+			collapsed,
 		}
 	}
 })
