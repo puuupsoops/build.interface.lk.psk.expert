@@ -1,5 +1,13 @@
 
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-04-06
+
+    #0.1.91
+    1. Добавил вывод версии приложения в панель навигации Sidebar.
+    2. Добавил контекстное меню при клике на аватарку. В меню только выход.
+
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-04-05
 
     #0.1.90

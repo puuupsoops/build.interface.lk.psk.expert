@@ -97,11 +97,16 @@
 			</li>
 		</ul>
 		<div class="sidebar-logo">
-			<img src="@/assets/img/lamp.png"/>
+			<img class="sidebar-logo-img" src="@/assets/img/lamp.png"/>
 			<div class="sidebar-logo-text">
 				<span>Сделай лучше<br>наше сотрудничество</span>
 			</div>
+			
 		</div>
+		<div class="sidebar-logo-version">
+			Версия {{version}}
+		</div>
+		
 	</div>
 
 </template>
@@ -113,6 +118,7 @@ import { useStore } from 'vuex'
 import { KeysMutations } from '@/store/keys/mutations'
 import { CompanyActions } from '@/store/company/actions'
 import { AuthActions } from '@/store/auth/actions'
+
 
 export default defineComponent({
 	props: {
@@ -200,6 +206,7 @@ export default defineComponent({
 			isDebug,
 			//computed
 			logout: ()=>store.dispatch(AuthActions.LOGOUT),
+			version:  process.env.VUE_APP_VERSION,
 			//method
 			collapsed,
 		}
