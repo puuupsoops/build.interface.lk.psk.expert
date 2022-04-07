@@ -33,7 +33,7 @@ export default defineComponent({
 	props: {
 		data: {
 			type: Array as PropType<SelectInputData[]>,
-            require: true
+			require: true
 		},
 		error: {
 			type: Boolean,

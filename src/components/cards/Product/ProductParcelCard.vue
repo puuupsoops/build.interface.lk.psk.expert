@@ -22,7 +22,7 @@
 						</div>
 						<div class="product-parcel-row">
 							<div class="product-parcel-text">Цена с наценкой: </div>
-							<div class="product-parcel-value">{{ Number( markup ).toLocaleString() }} ₽</div>
+							<div class="product-parcel-value">{{ Number( markup ).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
 						</div>
 					</div>
 				</transition>
@@ -37,7 +37,7 @@
 						</div>
 						<div class="product-parcel-row">
 							<div class="product-parcel-text">Сума: </div>
-							<div class="product-parcel-value">{{ Number(markup * count).toLocaleString() }} ₽</div>
+							<div class="product-parcel-value">{{ Number(markup * count).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
 						</div>
 						<div class="product-parcel-row">
 							<div class="product-parcel-text">Средний вес: </div>
@@ -66,6 +66,9 @@ export default {
 	props: {
 		data:{
 			type: Object
+		},
+		discount:{
+			type: Number
 		}
 	},
 	components: {
@@ -78,8 +81,9 @@ export default {
 		let parcel_type = ref('percent')
 		let markup = computed(()=>{
 			//console.log(Number(props.data.PRICE) + Number(markup).value * (Number(props.data.PRICE)/100));
-			if ( props.data.PRICE ){
-				return parcel_type.value === 'add' ? Number(props.data.PRICE)+Number(markup_val.value) : Number(props.data.PRICE) + Number(props.data.PRICE)/100*Number(markup_val.value)
+			if ( props.data.PRICE_OPT ){
+				let price = props.discount ? Number(props.data.PRICE_OPT)-(Number(props.data.PRICE_OPT/100))*props.discount : props.data.PRICE_OPT
+				return parcel_type.value === 'add' ? Number(price)+Number(markup_val.value) : Number(price) + Number(price)/100*Number(markup_val.value)
 			} else return 0
 		})
 		return{

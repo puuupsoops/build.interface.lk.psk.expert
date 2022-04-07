@@ -43,7 +43,7 @@
 			</div>
 			<div class="content-wrap-elem">
 				<ProductSliderCard :data="productImages" @toOrder="toOrder"></ProductSliderCard>
-				<ProductParcelCard :data="product"></ProductParcelCard>
+				<ProductParcelCard :data="product" :discount="discount"></ProductParcelCard>
 				<ProductInfoCard :data="product" :protect="productProtect"></ProductInfoCard>
 			</div>
 		</div>

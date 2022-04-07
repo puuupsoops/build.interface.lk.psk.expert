@@ -14,11 +14,11 @@
 					></router-link>
 					
 					<div class="shipment-heading-info">
-
+		
 					<div v-if="order" class="shipment-title"><span>Оформить претензию по Заказу № {{modelValue.id}} от {{orders.find(x => x.n == order)?.date.substring(0,10)}}</span></div>
 					<div v-else class="shipment-title"><span>Отсутвуют заказы</span></div>
 						<div class="shipment-heading-select"><span>Основание: &nbsp;</span>
-							<div class="base-select-wrap">
+							<div class="base-select-wrap" >
 								<select class="base-select" style="width: 100%" v-model="order">
 									<option v-for="(order, key) in orders"
 										:key="key"
@@ -32,6 +32,8 @@
 				<div class="shipment-heading-elem">
 					<div class="orders-heading-item">
 						<div class="orders-heading-text">Контрагент:</div>
+							<!-- <div v-if="companys"> {{ companys.find(x =>x.id == companysUID).name }}</div> -->
+						
 						<SelectInput 
 							:data="companys"
 							v-model="companyUID"
@@ -185,7 +187,13 @@ export default defineComponent({
 				} else 
 				return data.value.partner_guid
 			},
-			set: (val:string)=>{ data.value.partner_guid = val }
+			set: (val:string)=>{ 
+				data.value.partner_guid = val
+				const orders = store.getters.getOrders.filter((x: Orders) => x.partner_guid == val )
+				if (orders.length)
+					data.value.id = Math.max(...orders.map((x: Orders) => x.n)),
+				emit('update:modelValue', data.value)
+			}
 		})
 		
 		const order = computed({
@@ -232,7 +240,7 @@ export default defineComponent({
 			//computed
 			order,
 			companyUID,
-			orders: computed(() => store.getters.getOrders),
+			orders: computed(() => store.getters.getOrders.filter((x: Orders) => x.partner_guid == companyUID.value )),
 			companys: computed(() => store.getters.getCompanysList),
 
 			//methods

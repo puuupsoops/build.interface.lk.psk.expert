@@ -4,7 +4,7 @@
 	<div style="min-height: 800px; padding-top: 30px">
 		<iframe
 			width="100%" height="800vh"
-			src="/catalog/mobile/index.html"
+			src="/catalog/index.html"
 			frameborder="0" >
 		</iframe>
 	</div>
