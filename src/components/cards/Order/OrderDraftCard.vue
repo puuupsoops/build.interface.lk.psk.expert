@@ -112,6 +112,7 @@
 								class="order-list-row"
 							>
 								<div class="order-list-elem"> </div>
+								<div class="order-list-elem"> </div>
 								<div class="order-list-elem">{{ characteristic.CHARACTERISTIC }}</div>
 								<div class="order-list-elem">{{ Number(characteristic.PRICE).toLocaleString() }} ₽</div>
 								<div class="order-list-elem"> 
