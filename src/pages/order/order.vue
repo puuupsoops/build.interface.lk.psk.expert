@@ -43,6 +43,7 @@
 		<div class="content-wrap-elem">
 			<ProductOffersOrderCard 
 				:data="productOffers"
+				:discount="discount"
 				v-model="productItems"
 				@onClick="addToOrder()"
 			/>
@@ -51,6 +52,7 @@
 	</div>
 	<OrderHeaderCard 
 		v-if="isOrder"
+		:discount="discount"
 		:data="order"
 	/>
 	<div class="content-heading-wrap proudct-heading-wrap" v-else>
@@ -191,8 +193,13 @@ export default defineComponent({
 					.finally(() => {loader.value=false})
 			}
 		});
+		watch(activeCompanyUid, () => {
+			store.commit(OrderMutations.ADD_ORDER_PARTNER_ID, activeCompanyUid.value)
+			store.commit(OrderMutations.CALC_ORDER)
+		})
 
 		onMounted(() => {
+			store.commit(OrderMutations.ADD_ORDER_PARTNER_ID, activeCompanyUid.value)
 			if (!store.getters.isCompanysLoad)
 			{
 				store.dispatch(CompanyActions.GET_COMPANYS).finally(() => { setTimeout(()=>{

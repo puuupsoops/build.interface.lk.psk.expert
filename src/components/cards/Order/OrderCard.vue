@@ -71,7 +71,7 @@
 						<div class="order-list-elem"><span v-html = "item.product.NAME"></span></div>
 						<div class="order-list-elem"></div>
 						<div class="order-list-elem">{{ item.count }}</div>
-						<div class="order-list-elem">{{ Number(item.total).toLocaleString() }} ₽</div>
+						<div class="order-list-elem">{{ Number(item.total_discount).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
 						<div class="order-list-elem-edit" title="Добавить">
 							<EditButton @click.stop="goTo(item.article)"></EditButton>
 						</div> 
@@ -90,7 +90,10 @@
 								<div class="order-list-elem"> </div>
 								<div class="order-list-elem"> </div>
 								<div class="order-list-elem">{{ characteristic.CHARACTERISTIC }}</div>
-								<div class="order-list-elem">{{ Number(characteristic.PRICE).toLocaleString() }} ₽</div>
+								<div class="order-list-elem">
+									{{ Number(characteristic.price_discount).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2}).replace(',','.') }} ₽
+									<div class="order-list-elem-text" v-if="characteristic.discount>0">скидка {{ characteristic.discount }}% </div>
+								</div>
 								<div class="order-list-elem"> 
 									<AmountInput 
 										v-model="characteristic.count"
@@ -99,7 +102,7 @@
 										@onInput="updOrder()"
 									/>
 								</div>
-								<div class="order-list-elem">{{ Number(characteristic.PRICE * characteristic.count).toLocaleString() }} ₽</div>
+								<div class="order-list-elem">{{ Number(characteristic.price_discount * characteristic.count).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
 
 								<div class="order-list-elem-delete">
 									<DeleteButton  @onClick="removeCharacteristic(false, {guid: item.guid, characteristics: [characteristic]})" />
@@ -144,7 +147,7 @@
 						<div class="order-list-elem"><span v-html = "item.product.NAME"></span></div>
 						<div class="order-list-elem"></div>
 						<div class="order-list-elem">{{ item.count }}</div>
-						<div class="order-list-elem">{{ Number(item.total).toLocaleString() }} ₽</div>
+						<div class="order-list-elem">{{ Number(item.total_discount).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
 						<div class="order-list-elem-edit" title="Добавить"
 						>
 							<EditButton @click.stop="goTo(item.article)"></EditButton>
@@ -166,7 +169,10 @@
 								<div class="order-list-elem"> </div>
 								<div class="order-list-elem"> </div>
 								<div class="order-list-elem">{{ characteristic.CHARACTERISTIC }}</div>
-								<div class="order-list-elem">{{ Number(characteristic.PRICE).toLocaleString() }} ₽</div>
+								<div class="order-list-elem">
+									{{ Number(characteristic.price_discount).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2}).replace(',','.') }} ₽
+									<div class="order-list-elem-text" v-if="characteristic.discount>0">скидка {{ characteristic.discount }}% </div>
+								</div>
 								<div class="order-list-elem"> 
 									<AmountInput 
 										v-model="characteristic.count"
@@ -174,7 +180,7 @@
 										@onInput="updOrder()"
 									/>
 								</div>
-								<div class="order-list-elem">{{ Number(characteristic.PRICE * characteristic.count).toLocaleString() }} ₽</div>
+								<div class="order-list-elem">{{ Number(characteristic.price_discount * characteristic.count).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
 								
 								<div class="order-list-elem-delete">
 									<DeleteButton  @onClick="removeCharacteristic(true, {guid: item.guid, characteristics: [characteristic]})" />

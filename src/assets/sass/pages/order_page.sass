@@ -295,6 +295,10 @@
 				margin:
 					right: 3.67%
 				width: 9.17%
+				cursor: pointer
+				&:hover
+					.order-list-elem-text
+						display: block
 			
 			&:nth-child(5)
 				margin:
@@ -314,7 +318,15 @@
 
 			&.error
 				color: #FF5449
+			
+			&-text
+				//display: none
+				color: $font-light-color
+				font-size: 10px
+				line-height: 5px
+				+prefix(transition,  max-height $default-transition)
 
+			
 		&-sublist
 			
 			overflow: hidden

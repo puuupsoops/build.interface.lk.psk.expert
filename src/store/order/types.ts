@@ -2,17 +2,18 @@ import { NewOrder, Order, Position } from "@/models/Order";
 import { Offer, Product } from "@/models/Product";
 
 export interface OrderState {
-	order: OrderStateOrder;
-	new_order: NewOrder;
-	order_drafts: OrderStateOrder[];
-	error: string|null;
-	partner_id: string;
-	order_detail: OrderStateOrder;
+	order:          OrderStateOrder;
+	new_order:      NewOrder;
+	order_drafts:   OrderStateOrder[];
+	error:          string|null;
+	partner_id:     string;
+	order_detail:   OrderStateOrder;
 }
 
 export interface OrderStateOrder {
 	id:               number;
 	total:            number;
+	total_discount?:  number;
 	count:            number;
 	partner_id:       string;
 	position:         OrderStatePosition[];
@@ -27,12 +28,15 @@ export interface OrderStatePosition {
 	guid:            string;
 	article:         string;
 	characteristics: OrderStatePositionOffer[];
-	total?:           number;
-	count?:           number;
+	total?:          number;
+	total_discount?: number;
+	count?:          number;
 }
 //ProductOffersOrderCard возвращает тип
 export interface OrderStatePositionOffer extends Offer {
 	count:           number;
+	price_discount?: number;
+	discount?:       number;
 }
 
 

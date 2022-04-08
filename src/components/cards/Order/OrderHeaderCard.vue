@@ -6,7 +6,12 @@
 		<div class="content-heading-wrap-elem">
 		<div class="content-heading-price"> 
 			<div class="content-heading-price-text">Сумма заказа: </div>
-			<div class="content-heading-price-value">{{Number(data.total).toLocaleString()}} ₽</div>
+			<div class="content-heading-price-value" v-if="data.total != data.total_discount">
+				<span class="strikethrough">{{ Number(data.total).toLocaleString()}} ₽</span>
+				{{ Number(data.total_discount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽
+				
+			</div>
+			<div class="content-heading-price-value" v-else>{{Number(data.total).toLocaleString()}} ₽</div>
 		</div>
 		</div>
 		<div class="content-heading-info"> 
@@ -23,7 +28,10 @@ export default {
 	props: {
 		data: {
 			type: Object,
-		}
+		},
+		discount:{
+			type: Number
+		},
 	},
 	setup() {
 		

@@ -1,6 +1,15 @@
 import { NewOrder } from "@/models/Order";
 import { MutationTree } from "vuex";
 import { DefaultNewOrder, DefaultOrder, OrderState, OrderStateOrder, OrderStatePosition, OrderStatePositionOffer } from "./types";
+import { state as CompanyState} from '@/store/company/state'
+
+const getCompanyDiscount = (uid: string, guid: string): number => {
+	if (uid){
+		const company = CompanyState.companys.find(x => x.uid === uid)
+		const res = company && company.storages ? company.storages.find(x => x.guid === guid): null
+		return res?res.discount:0
+	} else { return 0 }
+}
 
 export enum OrderMutations {
 	CREATE_ORDER = "CREATE_ORDER",
@@ -32,7 +41,7 @@ export const mutations: MutationTree<OrderState> = {
 		state.error = null;
 	},
 	[OrderMutations.ADD_POSITION] (state, data: OrderStatePosition): void{
-		console.log(data)
+		//console.log(data)
 		if (data.characteristics.length > 0)
 		{
 			const exist = state.order.position.find(x => x.guid == data.guid);
@@ -105,41 +114,63 @@ export const mutations: MutationTree<OrderState> = {
 	[OrderMutations.CALC_ORDER] (state): void{
 		state.order.position = state.order.position.filter(x=> x.characteristics.length > 0)
 		state.order.position_presail = state.order.position_presail.filter(x=> x.characteristics.length > 0)
-		let total = 0;
-		let total_count = 0;
-		let total_valume = 0;
-		let total_weight = 0;
+		let total = 0
+		let total_discount = 0
+		let total_count = 0
+		let total_valume = 0
+		let total_weight = 0
+		
+		
 
 		state.order.position.forEach(pos => {
-			let total_pos = 0;
-			let total_count_pos = 0;
-			const total_valume_pos = Number(pos.product.VALUME);
-			const total_weigth_pos = Number(pos.product.WEIGHT);
+			let total_pos = 0
+			let total_discount_pos = 0
+			let total_count_pos = 0
+			
+			
+			const total_valume_pos = pos.product.VALUME
+			const total_weigth_pos = pos.product.WEIGHT
 			pos.characteristics.forEach( c => {
-				total_pos = total_pos + Number(c.PRICE) * Number(c.count);
-				total_count_pos = total_count_pos + Number(c.count);
+				total_pos = total_pos + c.PRICE * c.count
+				c.discount = getCompanyDiscount(state.partner_id, c.ORGGUID)
+				c.price_discount = c.PRICE-c.discount*(c.PRICE/100)
+				
+				total_discount_pos = total_discount_pos +c.price_discount * c.count
+				total_count_pos = total_count_pos + c.count;
 			});
-			pos.total = total_pos;
+			pos.total = total_pos
+			pos.total_discount = total_discount_pos
 			pos.count = total_count_pos
 
 			total = total + total_pos;
-			total_count = total_count + total_count_pos;
-			total_valume = total_valume_pos * total_count_pos;
-			total_weight = total_weigth_pos * total_count_pos;
+			total_discount = total_discount + total_discount_pos
+			total_count = total_count + total_count_pos
+			total_valume = total_valume_pos * total_count_pos
+			total_weight = total_weigth_pos * total_count_pos
 		});
+		
 		state.order.position_presail.forEach(pos => {
-			let total_pos = 0;
-			let total_count_pos = 0;
+			let total_pos = 0
+			let total_discount_pos = 0
+			let total_count_pos = 0
+			
+			
 			pos.characteristics.forEach( c => {
-				total_pos = total_pos + Number(c.PRICE) * Number(c.count);
-				total_count_pos = total_count_pos + Number(c.count);
+				total_pos = total_pos + c.PRICE * c.count
+				c.discount = getCompanyDiscount(state.partner_id, c.ORGGUID)
+				c.price_discount = c.PRICE-c.discount*(c.PRICE/100)
+				
+				total_discount_pos = total_discount_pos +c.price_discount * c.count
+				total_count_pos = total_count_pos + c.count
 			});
-			pos.total = total_pos;
-			pos.count = total_count_pos;
+			pos.total = total_pos
+			pos.total_discount= total_discount_pos
+			pos.count = total_count_pos
 		});
 
 		state.order.count = state.order.position.length;
 		state.order.total = total;
+		state.order.total_discount = total_discount
 		state.order.total_count = total_count;
 		state.order.total_valume = Number(total_valume.toFixed(3));
 		state.order.total_weight = Number(total_weight.toFixed(3));
