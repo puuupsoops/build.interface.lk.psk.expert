@@ -88,7 +88,7 @@
 											
 											@click="downloadBill(check.guid)"
 										>
-											<span> Счёт от {{item.date.substring(0,10)}} </span>
+											<span> Счёт от {{item.order.date.substring(0,10)}} </span>
 											<preloader-local
 												v-if="loading_bill.includes(item.guid)"
 												small
@@ -100,7 +100,7 @@
 										<div
 											class="orders-list-info-download disable"
 										>
-											Счёт от {{item.date.substring(0,10)}} 
+											Счёт от {{item.order.date.substring(0,10)}} 
 										</div>
 										<span class="tooltiptext">Сохранить счет можно только <br> после подтверждения заказа</span>
 									</div>

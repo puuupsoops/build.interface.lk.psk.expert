@@ -100,7 +100,6 @@ export default defineComponent({
 			get: () => store.getters.getLoader,
 			set: (val: boolean) => store.commit(KeysMutations.SET_LOADER, val)
 		})
-
 		const activeCompanyUid = ref('');
 		const search_str = ref('')
 		const isLoad = ref(false);
@@ -141,7 +140,13 @@ export default defineComponent({
 			}
 		});
 		
-		const discount = computed(() => store.getters.getCompanyDiscount(activeCompanyUid.value, store.getters.getProductOffersORGGUID))
+		const discount = computed(() => {
+			const status = store.getters.getProduct.status
+			if (status == 'Outlet' || status == 'Discount' || status == 'Activity')
+				return 0
+			else
+				return store.getters.getCompanyDiscount(activeCompanyUid.value, store.getters.getProductOffersORGGUID)
+		})
 
 		const loadProduct = () => {
 			loader.value = true;

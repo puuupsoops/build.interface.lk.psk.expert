@@ -230,7 +230,13 @@ export default defineComponent({
 					})
 				.finally(() => {loader.value=false})
 		};
-		const discount = computed(() => store.getters.getCompanyDiscount(activeCompanyUid.value, store.getters.getProductOffersORGGUID))
+		const discount = computed(() => {
+			const status = store.getters.getProduct.status
+			if (status == 'Outlet' || status == 'Discount' || status == 'Activity')
+				return 0
+			else
+				return store.getters.getCompanyDiscount(activeCompanyUid.value, store.getters.getProductOffersORGGUID)
+		})
 
 		return {
 			//data

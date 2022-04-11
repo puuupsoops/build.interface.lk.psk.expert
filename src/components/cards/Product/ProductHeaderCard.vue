@@ -31,7 +31,11 @@
 		</div>
 		</div>
 		<div class="content-heading-info"> 
-		<div class="content-heading-info-elem"> <span class="content-heading-info-text">Скидка: </span><span class="content-heading-info-value">Не распостроняется</span></div>
+		<div class="content-heading-info-elem" v-if="discount"> <span class="content-heading-info-text">Скидка: </span><span class="content-heading-info-value">{{discount}}%</span></div>
+		<div class="content-heading-info-elem" v-if="status == 'Outlet' || status == 'Discount' || status == 'Activity'"> 
+			<span class="content-heading-info-text">Скидка: </span><span class="content-heading-info-value">Не распостроняется</span>
+		</div>
+
 		<div class="content-heading-info-elem"> <span class="content-heading-info-text">Статус товара: </span><span class="content-heading-info-value" v-html="status"></span></div>
 		</div>
 	</div>

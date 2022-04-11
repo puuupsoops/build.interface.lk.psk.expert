@@ -3,7 +3,8 @@ import { MutationTree } from "vuex";
 import { DefaultNewOrder, DefaultOrder, OrderState, OrderStateOrder, OrderStatePosition, OrderStatePositionOffer } from "./types";
 import { state as CompanyState} from '@/store/company/state'
 
-const getCompanyDiscount = (uid: string, guid: string): number => {
+const getCompanyDiscount = (uid: string, guid: string, status: string): number => {
+	if (status == 'Outlet' || status == 'Discount' || status == 'Activity') return 0
 	if (uid){
 		const company = CompanyState.companys.find(x => x.uid === uid)
 		const res = company && company.storages ? company.storages.find(x => x.guid === guid): null
@@ -132,7 +133,7 @@ export const mutations: MutationTree<OrderState> = {
 			const total_weigth_pos = pos.product.WEIGHT
 			pos.characteristics.forEach( c => {
 				total_pos = total_pos + c.PRICE * c.count
-				c.discount = getCompanyDiscount(state.partner_id, c.ORGGUID)
+				c.discount = getCompanyDiscount(state.partner_id, c.ORGGUID, pos.product.STATUS)
 				c.price_discount = c.PRICE-c.discount*(c.PRICE/100)
 				
 				total_discount_pos = total_discount_pos +c.price_discount * c.count
@@ -157,7 +158,7 @@ export const mutations: MutationTree<OrderState> = {
 			
 			pos.characteristics.forEach( c => {
 				total_pos = total_pos + c.PRICE * c.count
-				c.discount = getCompanyDiscount(state.partner_id, c.ORGGUID)
+				c.discount = getCompanyDiscount(state.partner_id, c.ORGGUID, pos.product.STATUS)
 				c.price_discount = c.PRICE-c.discount*(c.PRICE/100)
 				
 				total_discount_pos = total_discount_pos +c.price_discount * c.count
