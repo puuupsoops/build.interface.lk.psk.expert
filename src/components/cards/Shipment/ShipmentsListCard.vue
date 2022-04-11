@@ -62,10 +62,10 @@
 								
 								:class="'orders-list-more-dropdown' +  ( key == active_more ? ' active': '' )"
 							>
-								<a class="orders-list-more-dropdown-link" href="#">Повторить</a>
-								<a class="orders-list-more-dropdown-link" href="#" @click="detailOrderId = item.order.n; showDetail=true" >Детали заказа</a>
-								<a class="orders-list-more-dropdown-link" href="#">Структура</a>
-								<a class="orders-list-more-dropdown-link" href="#">Скачать заявку</a>
+								<a class="orders-list-more-dropdown-link" @click.stop="detailOrderId = item.order.n; showDetailOrder=true; repeatOrder=true;">Повторить заказ</a>
+								<a class="orders-list-more-dropdown-link" @click.stop="detailOrderId = item.order.n; showDetailOrder=true" >Детали заказа</a>
+								<a class="orders-list-more-dropdown-link" @click.stop="detailShipmentId = key; showDetailShipment=true">Заявка на отгрузку</a>
+								<a class="orders-list-more-dropdown-link">Скачать заявку</a>
 								
 							</div>
 						</div>
@@ -191,7 +191,15 @@
 			</div>
 	</div>
 	<PreloaderLocal v-if="loading" style="width: 100%"></PreloaderLocal>
-	<OrderDetailModal v-model="showDetail" :orderId="detailOrderId"></OrderDetailModal>
+	<OrderDetailModal
+		v-model="showDetailOrder"
+		:orderId="detailOrderId"
+		v-model:repeatOrder="repeatOrder"
+	></OrderDetailModal>
+	<ShipmentDetailModal
+		v-model="showDetailShipment"
+		:data="data[detailShipmentId]"
+	></ShipmentDetailModal>
 </div>
 </template>
 
@@ -199,6 +207,7 @@
 import PreloaderLocal from '@/components/PreloaderLocal.vue'
 import OrderDetailModal from '@/components/cards/Order/OrderDetailModal.vue'
 import ModalInput from '@/components/ui/ModalInput.vue'
+import ShipmentDetailModal from '@/components/cards/Shipment/ShipmentDetailModal.vue'
 
 import { ref, PropType, defineComponent, watch, computed } from 'vue'
 import { onClickOutside } from '@vueuse/core'
@@ -241,6 +250,7 @@ export default defineComponent({
 	components: {
 		PreloaderLocal,
 		OrderDetailModal,
+		ShipmentDetailModal,
 		ModalInput,
 	},
 	setup(props) {
@@ -248,9 +258,14 @@ export default defineComponent({
 		const active = ref(-1)
 		const active_more = ref(-1)
 		const target = ref(null)
-		const showDetail = ref(false)
 		const loading_bill = ref<string[]>([])
 		const detailOrderId = ref(-1)
+		const showDetailOrder = ref(false)
+		const repeatOrder = ref(false)
+		
+		const detailShipmentId = ref(-1)
+		const showDetailShipment = ref(false)
+		
 		const filter = ref([
 			{name: 'id', value: '', show: false},
 			{name: 'name', value: '', show: false},
@@ -377,10 +392,14 @@ export default defineComponent({
 			active,
 			active_more,
 			loading_bill,
-			showDetail,
+			showDetailOrder,
 			detailOrderId,
+			repeatOrder,
 			OrdersSatusCode,
 			filter,
+			detailShipmentId,
+			showDetailShipment,
+			
 			//computed
 			data_filtred,
 			//methods

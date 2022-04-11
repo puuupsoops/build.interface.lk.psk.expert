@@ -41,10 +41,10 @@
 			</div>
 	</div>
 
-	<OrdersSearchCard
+	<!-- <OrdersSearchCard
 		:data="searchColumn"
 		v-model="search"
-	/>
+	/> -->
 
 	<OrdersListCard
 	
@@ -64,7 +64,7 @@ import Notification from '@/components/cards/Notification.vue'
 import CompanyBarTop from '@/components/cards/Company/CompanyBarTop.vue'
 import TopNav from '@/components/nav/TopNav.vue'
 import SelectInput from '@/components/ui/SelectInput.vue'
-import OrdersSearchCard from '@/components/cards/Order/OrdersSearchCard.vue'
+// import OrdersSearchCard from '@/components/cards/Order/OrdersSearchCard.vue'
 import OrdersListCard from '@/components/cards/Order/OrdersListCard.vue'
 
 import { useStore } from 'vuex'
@@ -82,7 +82,7 @@ export default defineComponent({
 		CompanyBarTop,
 		TopNav,
 		SelectInput,
-		OrdersSearchCard,
+		// OrdersSearchCard,
 		OrdersListCard,
 	},
 	setup(){

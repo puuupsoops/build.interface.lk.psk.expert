@@ -1,5 +1,19 @@
 
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-04-11
+
+    #0.1.95
+    1. На странице с Отгрузки  добавил детали заказа.
+    2. Убрал фильтры на страницах Заказы Отгрузки Претензии.
+    
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-04-08
+
+    #0.1.94
+    1. bagFix
+    
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-04-08
 
     #0.1.93

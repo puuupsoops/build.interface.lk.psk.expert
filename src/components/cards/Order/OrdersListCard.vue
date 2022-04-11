@@ -95,7 +95,7 @@
 							<div
 								:class="'orders-list-more-dropdown' +  ( key == active_more ? ' active': '' )"
 							>
-								<a class="orders-list-more-dropdown-link" @click.stop="detailOrderId = item.n; showDetail=true; repeatOrder=true;" >Повторить</a>
+								<a class="orders-list-more-dropdown-link" @click.stop="detailOrderId = item.n; showDetail=true; repeatOrder=true;" >Повторить заказ</a>
 								<a class="orders-list-more-dropdown-link" @click.stop="detailOrderId = item.n; showDetail=true" >Детали заказа</a>
 								<a class="orders-list-more-dropdown-link" >Скачать документы</a>
 								<a class="orders-list-more-dropdown-link" >Скачать сертификаты</a>

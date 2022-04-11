@@ -33,7 +33,7 @@
 						<div class="order-list-elem"><span v-html = "item.product.NAME"></span></div>
 						<div class="order-list-elem"></div>
 						<div class="order-list-elem">{{ item.count }}</div>
-						<div class="order-list-elem">{{ Number(item.total).toLocaleString() }} ₽</div>
+						<div class="order-list-elem">{{ Number(item.total).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
 
 						<div class="order-list-elem-delete">
 							
@@ -50,11 +50,11 @@
 								<div class="order-list-elem"> </div>
 								<div class="order-list-elem"> </div>
 								<div class="order-list-elem">{{ characteristic.CHARACTERISTIC }}</div>
-								<div class="order-list-elem">{{ Number(characteristic.PRICE).toLocaleString() }} ₽</div>
+								<div class="order-list-elem">{{ Number(characteristic.PRICE).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
 								<div class="order-list-elem"> 
 									<span>{{characteristic.count}}</span>
 								</div>
-								<div class="order-list-elem">{{ Number(characteristic.PRICE * characteristic.count).toLocaleString() }} ₽</div>
+								<div class="order-list-elem">{{ Number(characteristic.PRICE * characteristic.count).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
 								
 								<div class="order-list-elem-delete">
 									
@@ -97,7 +97,7 @@
 						<div class="order-list-elem"><span v-html = "item.product.NAME"></span></div>
 						<div class="order-list-elem"></div>
 						<div class="order-list-elem">{{ item.count }}</div>
-						<div class="order-list-elem">{{ Number(item.total).toLocaleString() }} ₽</div>
+						<div class="order-list-elem">{{ Number(item.total).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
 
 						<div class="order-list-elem-delete">
 							
@@ -114,11 +114,11 @@
 								<div class="order-list-elem"> </div>
 								<div class="order-list-elem"> </div>
 								<div class="order-list-elem">{{ characteristic.CHARACTERISTIC }}</div>
-								<div class="order-list-elem">{{ Number(characteristic.PRICE).toLocaleString() }} ₽</div>
+								<div class="order-list-elem">{{ Number(characteristic.PRICE).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
 								<div class="order-list-elem"> 
 									<span>{{characteristic.count}}</span>
 								</div>
-								<div class="order-list-elem">{{ Number(characteristic.PRICE * characteristic.count).toLocaleString() }} ₽</div>
+								<div class="order-list-elem">{{ Number(characteristic.PRICE * characteristic.count).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
 								
 								<div class="order-list-elem-delete">
 									

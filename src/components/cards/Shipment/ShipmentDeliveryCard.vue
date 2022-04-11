@@ -163,7 +163,7 @@ export default defineComponent({
 			res.push( (props.order ? props.order.name: ''))
 			res.push( 'Контрагент: ' + company.value)
 			if (data.value.date != '') res.push( 'Желаемая дата отгрузки: ' + data.value.date)
-			if (data.value.address!=-1) res.push( 'Адрес самовывоза: ' +  address.value)
+			if (data.value.address!=-1) res.push( 'Адрес доставки: ' +  address.value)
 			res.push( 'Комментрий: '+ ( data.value.comment.trim() == '' ? 'Нет' : data.value.comment))
 			if (data.value.accept) res.push( 'Подтвердить: да')
 			if (data.value.quick) res.push( 'Срочно: да')

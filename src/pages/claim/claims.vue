@@ -37,10 +37,10 @@
 			
 			</div>
 		</div>
-		<OrdersSearchCard
+		<!-- <OrdersSearchCard
 			:data="searchColumn"
 			v-model="search"
-		/>
+		/> -->
 		
 		<ClaimsListCard
 			:data="claimsList"
@@ -60,7 +60,7 @@ import Notification from "@/components/cards/Notification.vue"
 import CompanyBarTop from "@/components/cards/Company/CompanyBarTop.vue"
 import TopNav from "@/components/nav/TopNav.vue"
 import ClaimsListCard from '@/components/cards/Claim/ClaimsListCard.vue'
-import OrdersSearchCard from '@/components/cards/Order/OrdersSearchCard.vue'
+// import OrdersSearchCard from '@/components/cards/Order/OrdersSearchCard.vue'
 import { OrdersSatusCode } from '@/store/orders/types'
 
 import SelectInput from '@/components/ui/SelectInput.vue'
@@ -80,7 +80,7 @@ export default defineComponent({
 		CompanyBarTop,
 		TopNav,
 		SelectInput,
-		OrdersSearchCard,
+		// OrdersSearchCard,
 		ClaimsListCard,
 	},
 	setup() {

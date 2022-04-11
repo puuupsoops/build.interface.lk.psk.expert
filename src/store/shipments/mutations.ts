@@ -32,6 +32,6 @@ export const mutations: MutationTree<ShipmentsState> = {
 			if (order) x.order = order
 		})
 
-		state.shipments = data.sort((a,b) => (a.date_create < b.date_create) ? 1 : ((b.date_create < a.date_create) ? -1 : 0))
+		state.shipments = data.sort((a,b) => (parseInt(a.bitrix_id) < parseInt(b.bitrix_id)) ? 1 : ((parseInt(b.bitrix_id) < parseInt(a.bitrix_id)) ? -1 : 0))
 	}
 }
