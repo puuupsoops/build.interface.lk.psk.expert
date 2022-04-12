@@ -71,7 +71,6 @@ export default defineComponent({
 		},
 		data:{
 			type: Object as PropType<Shipments>,
-			required: true,
 		},
 	},
 	emits: ['update:modelValue'],
@@ -86,10 +85,10 @@ export default defineComponent({
 		
 		const view_message = computed(()=>{
 			let res = <String[]>[]
-			res.push( (props.data.order ? props.data.order.name: ''))
-			res.push( 'Контрагент: ' + (props.data.partner_name))
-			res.push( 'Желаемая дата отгрузки: ' + (props.data.date))
-			if (props.data.case == 'До транспортной') {
+			res.push( (props.data?.order ? props.data.order.name: ''))
+			res.push( 'Контрагент: ' + (props.data?.partner_name))
+			res.push( 'Желаемая дата отгрузки: ' + (props.data?.date))
+			if (props.data?.case == 'До транспортной') {
 				if (props.data.carriers == '2') res.push( 'Транспортная компания: ПЭК')
 				if (props.data.carriers == '3') res.push( 'Транспортная компания: Деловые линии')
 				if (props.data.carriers == '4') res.push( 'Транспортная компания: Байкал')
@@ -98,15 +97,15 @@ export default defineComponent({
 
 				res.push( String(props.data.extra) )
 			}
-			if (props.data.case == 'Самовывоз') {
+			if (props.data?.case == 'Самовывоз') {
 				res.push( `Адрес самовывоза: ${props.data.address}`)
 				
 			}
-			if (props.data.case == 'Доставка') {
+			if (props.data?.case == 'Доставка') {
 				res.push( `Адрес доставки: ${props.data.address}`)
 			}
 			
-			res.push( 'Комментрий: '+ props.data.comment)
+			res.push( 'Комментрий: '+ props.data?.comment)
 		
 			
 			return res

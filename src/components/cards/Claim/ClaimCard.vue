@@ -7,7 +7,7 @@
 				
 				<div class="shipment-heading-elem">
 					<router-link
-						v-if="cardId ==0"
+						v-if="cardId == 0"
 						tag="a" 
 						:to="'/claims'"
 						class="shipment-heading-back-btn"
@@ -191,7 +191,7 @@ export default defineComponent({
 				data.value.partner_guid = val
 				const orders = store.getters.getOrders.filter((x: Orders) => x.partner_guid == val )
 				if (orders.length)
-					data.value.id = Math.max(...orders.map((x: Orders) => x.n)),
+					data.value.id = Math.max(...orders.map((x: Orders) => x.n))
 				emit('update:modelValue', data.value)
 			}
 		})

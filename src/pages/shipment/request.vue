@@ -111,12 +111,12 @@ export default defineComponent({
 		const store = useStore(key)
 		const partner_guid = ref('')
 		const loading = ref(false)
-		const oderVal = ref(null)
+		const oderVal = ref<number>(-1)
 		const activeCard = ref('ShipmentPickupCard')
 		
 		const order = computed({
 			get: () => {
-				if (oderVal.value == null) {
+				if (oderVal.value == -1) {
 					const id = store.getters.getCurrentOrderId
 					if (id != null && id != KeysConst.DEFAULT_ORDER_ID) 
 						return id
@@ -126,7 +126,7 @@ export default defineComponent({
 							return store.getters.getOrders[0].n
 						} else {
 							store.commit(KeysMutations.SET_CURRENT_ORDER, KeysConst.DEFAULT_ORDER_ID)
-						return null
+						return -1
 					}
 				} else return oderVal.value
 				
@@ -145,7 +145,12 @@ export default defineComponent({
 				} else 
 				return partner_guid.value
 			},
-			set: (val:string)=>{ partner_guid.value = val}
+			set: (val:string)=>{
+				partner_guid.value = val
+				const orders = store.getters.getOrders.filter((x: Orders) => x.partner_guid == val )
+				if (orders.length)
+					oderVal.value = Math.max(...orders.map((x: Orders) => x.n))
+			}
 		})
 		
 		onMounted(() => {
@@ -163,7 +168,7 @@ export default defineComponent({
 			order,
 			//computed
 
-			orders: computed(() => store.getters.getOrders),
+			orders: computed(() => store.getters.getOrders.filter((x: Orders) => x.partner_guid == companyUID.value )),
 			companys: computed(() => store.getters.getCompanysList),
 			companyUID,
 		}
