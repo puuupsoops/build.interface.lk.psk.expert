@@ -28,7 +28,7 @@ export const mutations: MutationTree<ClaimState> = {
 			const order = stateOrders.orders.find(o => o.n == x.id)
 			if (order) x.order = order
 		})
-		state.claims = data.sort((a,b) => (a.id < b.id) ? 1 : ((b.id < a.id) ? -1 : 0))
+		state.claims = data.sort((a,b) => (parseInt(a.bitrix_id?a.bitrix_id:"0") < parseInt(b.bitrix_id?b.bitrix_id:"0")) ? 1 : ((parseInt(b.bitrix_id?b.bitrix_id:"0") < parseInt(a.bitrix_id?a.bitrix_id:"0")) ? -1 : 0))
 	},
 	[ClaimMutations.ADD_CLAIMS_NEW] (state, data: Claim) {
 		state.claim_new.push(data)
