@@ -2,6 +2,13 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-04-14
 
+    #0.1.99
+    1. BagFix
+   
+   
+Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-04-14
+
     #0.1.98
     1. Правки дизайна
     

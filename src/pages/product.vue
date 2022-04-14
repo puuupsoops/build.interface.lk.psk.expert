@@ -141,7 +141,7 @@ export default defineComponent({
 		});
 		
 		const discount = computed(() => {
-			const status = store.getters.getProduct.status
+			let status = store.getters.getProduct.STATUS
 			if (status == 'Outlet' || status == 'Discount' || status == 'Activity')
 				return 0
 			else

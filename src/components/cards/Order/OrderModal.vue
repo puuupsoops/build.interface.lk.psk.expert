@@ -77,32 +77,29 @@
 					v-if="isAddNewOrder"
 					@click="delOrder()"
 				> 
-					<svg class="order-list-buttons-item-img" width="32" height="21" viewBox="0 0 32 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<rect class="fill" x="2.06573" y="4.13147" width="10.3286" height="2.06571" rx="1.03286" fill="#A5A7A9"></rect>
-							<rect class="fill" y="7.74646" width="10.3286" height="2.06571" rx="1.03286" fill="#A5A7A9"></rect>
-							<rect class="fill" x="2.06573" y="11.3615" width="7.23" height="2.06571" rx="1.03286" fill="#A5A7A9"></rect>
-							<rect class="fill" x="3.09857" width="18.5914" height="2.06571" rx="1.03286" fill="#A5A7A9"></rect>
-							<rect class="fill" x="27.3458" y="10.0944" width="8.32268" height="2.14434" rx="1.07217" transform="rotate(-116.966 27.3458 10.0944)" fill="#A5A7A9"></rect>
-							<rect class="fill" x="29.761" y="12.6008" width="6.17839" height="2.14434" rx="1.07217" transform="rotate(-128.694 29.761 12.6008)" fill="#A5A7A9"></rect>
-							<rect class="fill" x="19.6243" y="8.26282" width="9.29572" height="2.06571" rx="1.03286" fill="#A5A7A9"></rect>
-							<rect class="fill" x="21.69" width="10.3286" height="2.06571" rx="1.03286" transform="rotate(90 21.69 0)" fill="#A5A7A9"></rect>
-							<rect class="fill" x="25.8214" y="4.13147" width="5.16429" height="2.06571" rx="1.03286" transform="rotate(-180 25.8214 4.13147)" fill="#A5A7A9"></rect>
-							<rect class="fill" x="30.9857" y="18.5914" width="5.16429" height="2.06571" rx="1.03286" transform="rotate(-180 30.9857 18.5914)" fill="#A5A7A9"></rect>
-							<rect class="fill" x="28.92" y="18.5914" width="8.26286" height="2.06571" rx="1.03286" transform="rotate(-90 28.92 18.5914)" fill="#A5A7A9"></rect>
-							<rect class="fill" x="12.3943" y="16.5258" width="9.64955" height="2.14434" rx="1.07217" fill="#A5A7A9"></rect>
-							<rect class="fill" x="4.13141" y="16.5258" width="5.16429" height="2.06571" rx="1.03286" fill="#A5A7A9"></rect>
-							<circle class="stroke" cx="10.6824" cy="17.4406" r="2.21652" stroke="#A5A7A9" stroke-width="2"></circle>
-							<circle class="stroke" cx="23.8737" cy="17.4406" r="2.21652" stroke="#A5A7A9" stroke-width="2"></circle>
-						</svg>
+					<svg class="order-list-buttons-item-img" width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<rect class="fill" x="0.0802612" y="2.04846" width="4.25606" height="2.07613" rx="1.03806" fill="#A5A7A9"></rect>
+						<rect class="fill" x="3.9931" y="2" width="17.8806" height="2.07613" rx="1.03806" transform="rotate(69.6255 3.9931 2)" fill="#A5A7A9"></rect>
+						<rect class="fill" x="8.38477" y="6.20068" width="16.609" height="2.07613" rx="1.03806" fill="#A5A7A9"></rect>
+						<rect class="fill" x="24" y="3" width="8" height="2" rx="1" fill="#A5A7A9"></rect>
+						<rect class="fill" x="29" width="8" height="2" rx="1" transform="rotate(90 29 0)" fill="#A5A7A9"></rect>
+						<rect class="fill" x="21.0491" y="19.1241" width="13.0871" height="2.07613" rx="1.03806" transform="rotate(-80.9286 21.0491 19.1241)" fill="#A5A7A9"></rect>
+						<rect class="fill" x="7.34668" y="17.6194" width="15.8824" height="2.07613" rx="1.03806" fill="#A5A7A9"></rect>
+						<rect class="fill" x="6.30865" y="21.7716" width="9.34257" height="2.07613" rx="1.03806" fill="#A5A7A9"></rect>
+						<path class="stroke" d="M8.38477 18.6575C6.82768 18.6575 5.78961 18.9374 5.78961 20.7336C5.78961 22.8097 7.34671 22.8097 7.86574 22.8097" stroke="#A5A7A9" stroke-width="2"></path>
+						<circle class="stroke" cx="9.42285" cy="24.8858" r="2.11419" stroke="#A5A7A9" stroke-width="2"></circle>
+						<circle class="stroke" cx="20.8415" cy="24.8858" r="2.11419" stroke="#A5A7A9" stroke-width="2"></circle>
+					</svg>
 						<div class="order-modal-action-btn-text" >Новый заказ</div>
 				</button>	
 				
 			</div>
 			<div class="order-list-buttons-wrap" v-if="isAddNewOrder">
-				<div class="order-modal-action-btn">
+
 					<router-link
-						tag="a"
+						tag="div"
 						to="/shipments/request"
+						class="order-modal-action-btn"
 						title="Заявка на транспорт"
 					>
 						<svg class="order-list-buttons-item-img" width="32" height="21" viewBox="0 0 32 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -122,9 +119,10 @@
 							<circle class="stroke" cx="10.6824" cy="17.4406" r="2.21652" stroke="#A5A7A9" stroke-width="2"></circle>
 							<circle class="stroke" cx="23.8737" cy="17.4406" r="2.21652" stroke="#A5A7A9" stroke-width="2"></circle>
 						</svg>
+						<div class="order-modal-action-btn-text" >Способ получения товара</div>
 					</router-link>
-					<div class="order-modal-action-btn-text" >Способ получения товара</div>
-				</div>
+					
+				
 				
 			</div>
 		</div>
@@ -191,6 +189,7 @@ export default defineComponent({
 			error: computed(() => store.getters.getOrderError),
 			errorMsg: computed(() => store.getters.getOrderErrorMsg),
 			isAddNewOrder: computed(() => store.getters.isOrderAddNew),
+			// isAddNewOrder: true,
 			newOrder: computed(() => store.getters.getOrderAddNew),
 		}
 	}

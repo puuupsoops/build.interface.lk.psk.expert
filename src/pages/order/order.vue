@@ -231,7 +231,7 @@ export default defineComponent({
 				.finally(() => {loader.value=false})
 		};
 		const discount = computed(() => {
-			const status = store.getters.getProduct.status
+			const status = store.getters.getProduct.STATUS
 			if (status == 'Outlet' || status == 'Discount' || status == 'Activity')
 				return 0
 			else

@@ -141,7 +141,8 @@ export default defineComponent({
 		const companyUID = computed({
 			get: ()=>{
 				if (partner_guid.value == '' && order.value !== null ){
-					return store.getters.getOrders.find( (x: Orders) => x.n == order.value).partner_guid
+					const order_n = store.getters.getOrders.find( (x: Orders) => x.n == order.value)
+					return order_n? order_n.partner_guid : ''
 				} else 
 				return partner_guid.value
 			},
