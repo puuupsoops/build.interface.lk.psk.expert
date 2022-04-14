@@ -169,7 +169,7 @@ export default defineComponent({
 		const data = ref<Claim>({
 			date_create:'',
 			status: 0,
-			title: '',
+			title: 'Претензия по Заказу №',
 			partner_name: '',
 			partner_guid: '',
 			id:  props.modelValue.id,

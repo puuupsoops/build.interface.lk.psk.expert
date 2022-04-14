@@ -30,7 +30,7 @@
 								@onClick="onCheck(offer)"/>
 							
 						</div>
-						<div class="table-elem"><span>{{offer.PPDATA}}</span></div>
+						<div class="table-elem"><span>{{offer.PPDATA.replaceAll('/', '&nbsp;/&nbsp;')}}</span></div>
 					</div>
 				</div>
 			</div>

@@ -1,5 +1,13 @@
 
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-04-14
+
+    #0.1.98
+    1. Правки дизайна
+    
+    
+    
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-04-12
 
     #0.1.97

@@ -17,7 +17,7 @@
                     <div class="table-elem"><span v-html="offer.CHARACTERISTIC"></span></div>
                     <div class="table-elem"><span v-html="offer.RESIDUE"></span></div>
                     <div class="table-elem"><span v-html="(offer.PRICE ? offer.PRICE-(offer.PRICE/100)*discount : 0 ).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') + ' ₽'"></span></div>
-                    <div class="table-elem"><span v-html="offer.PPDATA"></span></div>
+                    <div class="table-elem"><span v-html="offer.PPDATA.replaceAll('/', '&nbsp;/&nbsp;')"></span></div>
                 </div>
             
             </div>

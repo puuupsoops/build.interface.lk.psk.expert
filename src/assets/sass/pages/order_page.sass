@@ -370,10 +370,12 @@
 
 			&-wrap
 				+flex
-				margin: 0 0 0 auto
-				padding-right: 20px
-				padding-top: 20px
-				padding-bottom: 10px
+				width: 100%
+				padding:
+					right: 20px
+					left: 20px
+				// padding-top: 20px
+				// padding-bottom: 10px
 
 			&-item
 				+flex
@@ -640,10 +642,40 @@
 	
 	&-action
 		+flex
-		+justify-content(space-between)
+		+justify-content(space-around)
 		width: 100%
 		min-height: 50px
 		padding:
 			left: 20px
 			right: 20px
 			bottom: 10px
+			
+		&-btn
+			+flex
+			bottom: 50px
+			padding: 10px 12px
+			right: 50px
+			font-size: 16px
+			line-height: 25px
+			border: 1px solid $active-color
+			border-radius: 6px
+			color: $font-light-color
+			background-color: $bg-dlight-color
+			cursor: pointer
+			width: 100%
+			margin: 
+				left: 5px
+				right: 5px
+			+prefix(transition, $default-transition)
+		
+			&:hover
+				color: $accent-color
+				background-color: $bg-default-color
+				.fill
+					fill: $accent-color
+					
+				.stroke
+					stroke: $accent-color
+			&-text
+				display: inline
+				margin: auto

@@ -3,7 +3,7 @@
 	<div class="company-sale sale">
 		<div class="sale-head">
 			<div class="sale-title">Скидка {{discount.discount}} %</div>
-			<div class="sale-lacks" v-if="ostatok != Infinity">Не хватает {{ostatok.toLocaleString().replace(',','.')}} до скидки {{discount.next}} %</div>
+			<div class="sale-lacks" v-if="ostatok != Infinity">Не хватает <span>{{ostatok.toLocaleString().replace(',','.')}}&nbsp;₽</span> до скидки {{discount.next}} %</div>
 
 		</div>
 		
@@ -11,10 +11,10 @@
 			<div class="sale-progressbar tooltip">
 				
 					
-				<div class="sale-progressbar-line" :style="'width: '+ (progressInPercent < 3 ? 3 : progressInPercent) +'%'">
+				<div class="sale-progressbar-line" :style="'width: '+ (progressInPercent) +'%'">
 					<div class="sale-progressbar-val">
 						<div>
-							<span class="sale-progressbar-val-money">({{spent.toLocaleString().replace(',','.')}})</span>
+							<span class="sale-progressbar-val-money">({{spent.toLocaleString().replace(',','.')}}&nbsp;₽)</span>
 							<span class="sale-progressbar-val-percent">{{progressInPercent.toFixed(2)}}%</span>
 						</div>
 					</div>
