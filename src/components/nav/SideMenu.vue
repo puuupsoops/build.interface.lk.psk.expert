@@ -29,6 +29,9 @@
 					to="/order"
 					title="Сделать заказ"
 				>
+					<div class="sidebar-btn-notification" v-if="orderPositionLength>0">
+						{{orderPositionLength}}
+					</div>
 					<svg class="sidebar-btn-img" width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<rect class="fill" x="0.0802612" y="2.04846" width="4.25606" height="2.07613" rx="1.03806" fill="#A5A7A9"></rect>
 						<rect class="fill" x="3.9931" y="2" width="17.8806" height="2.07613" rx="1.03806" transform="rotate(69.6255 3.9931 2)" fill="#A5A7A9"></rect>
@@ -42,6 +45,7 @@
 						<circle class="stroke" cx="9.42285" cy="24.8858" r="2.11419" stroke="#A5A7A9" stroke-width="2"></circle>
 						<circle class="stroke" cx="20.8415" cy="24.8858" r="2.11419" stroke="#A5A7A9" stroke-width="2"></circle>
 					</svg>
+					
 				</router-link>
 				</div>
 				<div class="sidebar-btn">
@@ -148,7 +152,12 @@ export default defineComponent({
 					set: (val: boolean) => store.commit(KeysMutations.SET_COLLAPSED, val)
 				})
 			let active_item = ref(0);
-			return { collapsed, active_item}
+			return { 
+				collapsed,
+				active_item,
+				// computed
+				orderPositionLength: computed(() => store.getters.getOrderPositionLength),
+			}
 		}
 })
 </script>

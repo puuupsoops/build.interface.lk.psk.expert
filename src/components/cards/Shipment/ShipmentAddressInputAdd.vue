@@ -141,7 +141,7 @@ export default defineComponent({
 			emit('update:modelValue', '')
 			emit('update:show', false)
 		}
-		onClickOutside(target, () => {options.value == false})
+		onClickOutside(target, () => {options.value == false; emit('update:show', false)})
 		
 		watch( ()=>props.show, () => {
 			search_str.value= props.modelValue

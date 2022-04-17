@@ -2,8 +2,18 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-04-14
 
+    #0.2.0
+    1. При переходе по Способ получения товара в окне создания заказа старый заказ удаляется.
+    2. В меню SideMenu добавил индикатор наличия заказа в виде вывода количества позиций в карзине.
+   
+   
+   
+Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-04-14
+
     #0.1.99
     1. BagFix
+   
    
    
 Author: Vadim Zaboturin <vadimzab@gmail.com>

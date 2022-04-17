@@ -101,6 +101,7 @@
 						to="/shipments/request"
 						class="order-modal-action-btn"
 						title="Заявка на транспорт"
+						@click="delOrder()"
 					>
 						<svg class="order-list-buttons-item-img" width="32" height="21" viewBox="0 0 32 21" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<rect class="fill" x="2.06573" y="4.13147" width="10.3286" height="2.06571" rx="1.03286" fill="#A5A7A9"></rect>

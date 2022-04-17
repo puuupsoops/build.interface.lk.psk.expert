@@ -9,6 +9,7 @@ export const getters: GetterTree<OrderState, RootState> = {
 	getOrderAddNew: state => state.new_order,
 	isOrder: state => state.order.id !== 0,
 	getOrder: state => state.order,
+	getOrderPositionLength: state => state.order.position.length,
 	getOrderToAdd: state => (
 		{
 			id: state.order.id,

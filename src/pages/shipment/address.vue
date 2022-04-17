@@ -28,6 +28,7 @@
 
 					<div class="shipment-address-list-row heading">
 						<div class="shipment-address-list-elem">№</div>
+						<div class="shipment-address-list-elem">Наименование</div>
 						<div class="shipment-address-list-elem">Адрес</div>
 					</div>
 					<div class="shipment-address-list-row">
@@ -56,7 +57,9 @@
 						>
 							<div class="shipment-address-list-elem">{{key+1}}</div>
 							<div class="shipment-address-list-elem">{{item.label}}</div>
-							<div class="shipment-address-list-elem actions" 
+							<div class="shipment-address-list-elem">{{item.label}}</div>
+							<div class="shipment-address-list-elem actions"
+								style="margin-left:auto"
 								v-if="key == currentAddr"
 							>
 								<div

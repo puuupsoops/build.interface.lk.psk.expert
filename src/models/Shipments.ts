@@ -3,6 +3,7 @@ import { Orders } from "./Orders";
 export interface ShipmentsAddress {
     index?:      number;
     label:      string;
+    address:    string;
     latitude:   string;
     longitude:  string;
 }
