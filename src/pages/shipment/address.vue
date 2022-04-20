@@ -6,7 +6,7 @@
 			<Notification></Notification>
 			<PersonalBar></PersonalBar>
 		</div>
-		<top-nav address @onClick="editAddrName=-1; addrName= ''; showAddr=true;">
+		<top-nav address @onClick="editAddrName=-1; addrName= ''; addrLabel='', showAddr=true;">
 		</top-nav>
 		<div class="shipment-heading">
 			<div class="shipment-heading-elem"> 
@@ -34,9 +34,9 @@
 					<div class="shipment-address-list-row">
 						<ShipmentAddressInputAdd
 							v-model= "addrName"
+							v-model:label = "addrLabel"
 							v-model:show = "showAddr"
 							v-model:edit = "editAddrId"
-							
 						/>
 						
 					</div>
@@ -57,13 +57,13 @@
 						>
 							<div class="shipment-address-list-elem">{{key+1}}</div>
 							<div class="shipment-address-list-elem">{{item.label}}</div>
-							<div class="shipment-address-list-elem">{{item.label}}</div>
+							<div class="shipment-address-list-elem">{{item.address}}</div>
 							<div class="shipment-address-list-elem actions"
 								style="margin-left:auto"
 								v-if="key == currentAddr"
 							>
 								<div
-									@click="editAddrId=item.index; addrName=item.label; showAddr=true"
+									@click="editAddrId=item.index; addrName=item.address; addrLabel=item.label, showAddr=true"
 								>
 									<svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 0 24 24" width="30px" fill="#8D8D8D">
 										<path d="M0 0h24v24H0V0z" fill="none"/>
@@ -99,8 +99,8 @@
 					</div>
 					
 					<div v-if="address.length == 0" class="shipment-address-list-row">
-						<div class="shipment-address-list-elem"></div>
-						<div class="shipment-address-list-elem">Адреса доставки отсутсвуют</div>
+						
+						<div class="shipment-address-list-nores">Адреса доставки отсутсвуют</div>
 					</div>
 				</div>
 			</div>
@@ -149,6 +149,7 @@ export default defineComponent({
 		const router = useRouter()
 		const currentAddr = ref(0)
 		const addrName = ref('')
+		const addrLabel = ref('')
 		const delAddr = ref(false)
 		const delPreloader = ref(false)
 		const editAddrId = ref(-1)
@@ -194,6 +195,7 @@ export default defineComponent({
 			activeCompanyUid,
 			currentAddr,
 			addrName,
+			addrLabel,
 			delAddr,
 			delPreloader,
 			editAddrId,
