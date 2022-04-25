@@ -1,4 +1,12 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-04-25
+
+    #0.2.2
+    1. Исправлена орфографическая ошибка
+    2. Добавил индикатор наличия заказа в виде вывода количества позиций в TopNav напротив нового заказа.
+
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-04-20
 
     #0.2.1

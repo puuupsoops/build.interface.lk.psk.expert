@@ -410,6 +410,7 @@ a
 
 	&-list
 		+flex
+		+align-items(center)
 		list-style-type: none
 		+flex-wrap(wrap)
 
@@ -437,6 +438,23 @@ a
 			opacity: 0.4
 		&.last
 			margin-left: auto
+			
+		&-notification
+			display: inline-block
+			position: absolute
+			margin-left: 5px
+			width: 14px
+			height: 14px
+			font-size: 10px
+			font-weight: bold
+			color: #000
+			text-align: center
+			background-color: #ffffff
+			border-radius: 50px
+			vertical-align: middle
+			div
+				position: relative
+				top: -6px
 
 .custom-select
 	width: 100%

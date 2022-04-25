@@ -36,7 +36,7 @@
 							<AmountInput v-model="count"></AmountInput>
 						</div>
 						<div class="product-parcel-row">
-							<div class="product-parcel-text">Сума: </div>
+							<div class="product-parcel-text">Сумма: </div>
 							<div class="product-parcel-value">{{ Number(markup * count).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
 						</div>
 						<div class="product-parcel-row">

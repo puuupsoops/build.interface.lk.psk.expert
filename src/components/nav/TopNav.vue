@@ -11,6 +11,9 @@
 					:to="item.link"
 				>
 							{{ item.title }}
+							<div class="nav-link-notification" v-if="orderPositionLength>0 && item.link=='/order'">
+									<div>{{orderPositionLength}}</div>
+							</div>
 							<span
 									v-if="item.lock"
 									class="tooltip"
@@ -26,7 +29,8 @@
 						tag="a" 
 						:to="'/order'"
 						class="content-heading-btn"
-					>
+					> 
+						
 						<svg class="content-heading-btn-img" width="26" height="25" viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path class="fill" fill-rule="evenodd" clip-rule="evenodd" d="M3 2H18.75C19.3023 2 19.75 2.44772 19.75 3V11.5H21.75V3C21.75 1.34315 20.4069 0 18.75 0H3C1.34315 0 0 1.34315 0 3V21.8571C0 23.514 1.34315 24.8571 3 24.8571H16V22.8571H3C2.44772 22.8571 2 22.4094 2 21.8571V3C2 2.44772 2.44772 2 3 2Z" fill="#A5A7A9"></path>
 						<rect class="fill" x="17.6071" y="5.17871" width="1.7" height="13.4643" rx="0.85" transform="rotate(90 17.6071 5.17871)" fill="#A5A7A9"></rect>
@@ -128,7 +132,9 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { key } from "@/store";
+import { computed, defineComponent } from "vue";
+import { useStore } from "vuex";
 
 export default defineComponent({
 	props:{
@@ -175,8 +181,11 @@ export default defineComponent({
 			{title: 'Договоры', link: '/agreements', lock: true},
 			{title: 'Взаиморасчеты', link: '/settlements', lock: true},
 		];
+		const store = useStore(key)
 		return {
-			menu
+			menu,
+			// computed
+			orderPositionLength: computed(() => store.getters.getOrderPositionLength),
 		}
 	}
 })
