@@ -36,8 +36,8 @@
 			<div class="company-head-info-row">
 				<div class="company-head-info-elem l">
 					<span class="company-head-info-title">Отстрочка</span>
-					<span class="company-head-info-val">{{data.deferment}} {{getDay(data.deferment)}}</span>
-					
+					<span class="company-head-info-val" v-if="data.deferment>0">{{data.deferment}} {{getDay(data.deferment)}}</span>
+					<span class="company-head-info-val" v-else>Предоплата</span>
 				</div>
 				<div class="company-head-info-elem r">
 					<span class="company-head-info-title">Дата погашения</span>

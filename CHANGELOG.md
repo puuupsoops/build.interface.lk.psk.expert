@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-04-26
+
+    #0.2.3
+    1. На компоненте склад поменял если отсрочка 0 дней меняем поле на Предоплата
+
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-04-25
 
     #0.2.2
