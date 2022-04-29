@@ -1,6 +1,7 @@
 import { GetterTree } from "vuex"
 import { RootState } from "@/store"
 import { CompanyState } from "./types"
+import { Partner } from "@/models/Partner"
 
 export const getters: GetterTree<CompanyState, RootState> = {
 	isCompanysLoad: state => state.companys.length !== 0,
@@ -20,7 +21,7 @@ export const getters: GetterTree<CompanyState, RootState> = {
 			res.unshift({id: '', name: "Все"})
 			return res
 		},
-		getCompanyData : state => (uid: string) => {
+		getCompanyData : state => (uid: string): Partner|{} => {
 			const company = state.companys.find(x => x.uid === uid)
 			return company ? ({
 				"name": company.name,
@@ -31,6 +32,7 @@ export const getters: GetterTree<CompanyState, RootState> = {
 				"address": company.address,
 				"city": company.city,
 				"email": company.email,
+				"phone": company.phone,
 				"uid": company.uid,
 			}) : {}
 		},
