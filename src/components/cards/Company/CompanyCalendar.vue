@@ -22,6 +22,7 @@ import ManagerCard from '@/components/cards/ManagerCard';
 import FullCalendar from '@fullcalendar/vue3';
 import ruLocale from '@fullcalendar/core/locales/ru';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction';
 import { ref, computed, onUpdated, watch, inject } from 'vue';
 
@@ -52,8 +53,14 @@ export default {
 		let eventsArr = computed( () => props.data === null ? [] : props.data );
 
 		let calendarOptions = computed( () => ({
-				plugins: [ dayGridPlugin, interactionPlugin ],
+				plugins: [ dayGridPlugin, timeGridPlugin, interactionPlugin ],
+				headerToolbar: {
+					left: 'today prev,next',
+					center: 'title',
+					right: 'dayGridMonth,timeGridWeek,timeGridDay'
+				},
 				initialView: 'dayGridMonth',
+				duration: { days: 3 },
 				locale: ruLocale,
 				events: eventsArr.value.map(doc => ({
 														"title": `Счёт от ${doc.date_str} на ${doc.debt}₽`,

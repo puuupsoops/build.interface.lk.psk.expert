@@ -21,7 +21,7 @@
 						</a>
 					</div>
 
-					<div class="company-consultant-info-about"> 
+					<!-- <div class="company-consultant-info-about"> 
 						<div class="company-consultant-name">Иванов Иван Иванович</div>
 						<div class="company-consultant-position">Руководитель</div>
 					</div>
@@ -34,7 +34,7 @@
 					<div class="company-consultant-time">
 						<div class="company-consultant-time-title">Режим работы</div>
 						<div class="company-consultant-time-val">Пн-Пт, 9:00 - 18:00 МСК</div>
-					</div>
+					</div> -->
 				</div>
 			</div>
 				<a class="company-consultant-mail" :title="managerData.email" :href="'mailto:'+managerData.email">
