@@ -22,7 +22,8 @@ import PreloaderLocal from '@/components/PreloaderLocal.vue'
 
 import { useStore } from 'vuex'
 import { key } from '@/store'
-import { computed, defineComponent }from 'vue';
+import { computed, defineComponent  }from 'vue';
+
 
 
 export default defineComponent({
@@ -32,7 +33,7 @@ export default defineComponent({
 	},
 	setup() {
 		const store = useStore(key);
-
+		
 		return {
 			id: computed(() => store.getters.getShipmentsSuccess)
 		}

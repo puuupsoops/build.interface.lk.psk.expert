@@ -199,6 +199,7 @@ import { ShipmentsActions } from '@/store/shipments/actions'
 import { useRouter } from 'vue-router'
 import { Partner } from '@/models/Partner'
 import { Orders } from '@/models/Orders'
+import { ClaimMutations } from '@/store/claims/mutations'
 
 
 
@@ -291,6 +292,7 @@ export default defineComponent({
 					formData.append('address', data.value.address)
 					formData.append('comment', data.value.comment)
 					formData.append('extra', '')
+					store.commit(ClaimMutations.CLEAR_CLAIMS_SUCCESS)
 					store.dispatch(ShipmentsActions.ADD_SHIPMENTS, formData).then(() => {
 						router.push({name: 'ShipmentsRequestSuccess'})
 						loading.value = false
