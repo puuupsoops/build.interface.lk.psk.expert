@@ -2,10 +2,10 @@
 
 <div
 	v-if="data"
-	:class="'company-head-item ' + ( data.debt > 1000 ? 'red' : 'yellow' )"
+	:class="'company-head-item ' + ( data.debt > 1000 ? 'red' : 'yellow' ) + (active ?' content-elem-active': '')"
 	v-on:click="$emit('onClick', $event)"
 	>
-	<div :class="'content-elem' + (active ?' content-elem-active': '')">
+	<div class="content-elem">
 		<div class="company-head-item-title">{{data.name}}</div>
 		<div class="company-card-sale" :style="active ? 'right: -6px;':''">
 			<div class="company-card-sale-box">
@@ -18,14 +18,20 @@
 			v-if="active" 
 			:class="'company-card-showdoc' + ( showDoc ? ' active' : '')"
 			@click="$emit('onShowDoc')"
-			title="Показать документы" 
 		>
-				<svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<div
+				tooltip="Показать документы"
+				flow="left" 
+			>
+				<svg 
+					width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M17.0837 5.3183C17.0834 5.31807 17.0832 5.31784 17.0829 5.31761C17.0747 5.30191 17.0593 5.27543 17.0342 5.24899L13.2468 0.999148L13.247 0.998928L13.2389 0.990791C13.2227 0.974599 13.2063 0.962049 13.1951 0.953938C13.1842 0.945974 13.173 0.938491 13.1654 0.933451L13.1644 0.932749C13.1554 0.9268 13.1507 0.9236 13.147 0.920935C13.147 0.920918 13.147 0.920901 13.1469 0.920885L13.0922 0.866106H13.0628C13.0526 0.861177 13.0414 0.85677 13.0292 0.853209C12.9672 0.825769 12.8815 0.8 12.789 0.8H3.49001C2.01335 0.8 0.8 2.01335 0.8 3.49001V18.7606C0.8 20.2373 2.01335 21.4506 3.49001 21.4506H14.5078C15.9844 21.4506 17.1978 20.2373 17.1978 18.7606V5.64949C17.1978 5.64634 17.1979 5.6434 17.1983 5.63552C17.1985 5.63249 17.1987 5.62874 17.1989 5.62397C17.1996 5.61017 17.2006 5.58913 17.1995 5.56581C17.1974 5.51818 17.1868 5.44882 17.1402 5.3814C17.1198 5.35204 17.0949 5.32857 17.0837 5.3183ZM13.4077 5.05285V3.02485L15.2085 5.05285H13.4077ZM15.9604 18.7386C15.9604 19.5571 15.3193 20.2133 14.5078 20.2133H3.49001C2.67671 20.2133 2.03735 19.5553 2.03735 18.7606V3.46798C2.03735 2.65468 2.69527 2.01531 3.49001 2.01531H12.1703V5.64949C12.1703 5.97338 12.4293 6.26816 12.789 6.26816H15.9604V18.7386Z" fill="#A5A7A9" stroke="#A5A7A9" stroke-width="0.4"/>
 					<path d="M3.97479 6.26831H7.65472C7.97861 6.26831 8.27339 6.00927 8.27339 5.64963C8.27339 5.29678 8.00756 5.03096 7.65472 5.03096H3.97479C3.65089 5.03096 3.35611 5.28999 3.35611 5.64963C3.35611 6.00927 3.65089 6.26831 3.97479 6.26831Z" fill="#A5A7A9" stroke="#A5A7A9" stroke-width="0.4"/>
 					<path d="M7.65469 10.363H3.97477C3.65087 10.363 3.35609 10.622 3.35609 10.9817C3.35609 11.3056 3.61513 11.6003 3.97477 11.6003H7.65469C7.97859 11.6003 8.27337 11.3413 8.27337 10.9817C8.27337 10.6509 7.9855 10.363 7.65469 10.363Z" fill="#A5A7A9" stroke="#A5A7A9" stroke-width="0.4"/>
 					<path d="M3.35611 8.42551C3.35611 8.7494 3.61515 9.04418 3.97479 9.04418H13.8026C14.1265 9.04418 14.4213 8.78515 14.4213 8.42551C14.4213 8.10162 14.1623 7.80684 13.8026 7.80684H3.97479C3.65089 7.80684 3.35611 8.06587 3.35611 8.42551Z" fill="#A5A7A9" stroke="#A5A7A9" stroke-width="0.4"/>
 				</svg>
+			</div>
+
 		</div>
 
 		<div class="company-head-info">
@@ -45,36 +51,25 @@
 				</div>
 			</div>
 		</div>
+	</div>
 
-
-		<div class="company-head-sale sale">
-			<div class="sale-title">До скидки 0 %</div>
-			<div class="sale-progressbar-wrap tooltip">
-				<div class="sale-progressbar">
-					<div class="sale-progressbar-line" :style="'width: '+ (progressInPercent < 3 ? 3 : progressInPercent) +'%'">
-						<div class="sale-progressbar-val"><span class="sale-progressbar-val-money">({{data.spent.toLocaleString().replace(',','.')}})</span>
-						<span class="sale-progressbar-val-percent">{{progressInPercent.toFixed(2)}}%</span></div>
-						
-					</div>
-				</div>
-				<div class="sale-progressbar-money">
-					<div class="sale-progressbar-min">{{discount.progressMoneyMin.toLocaleString()}}</div>
-					<div class="sale-progressbar-max">{{discount.progressMoneyMax.toLocaleString()}}</div>
-				</div>
-				<span class="tooltiptext" style="top: 50px; left: 10px;">
-					<table>
-						<tr><th>Сумма заказа,руб</th><th>Скидка,%</th></tr>
-						<tr><td>От 3 до 5 млн.</td><td>12.5</td></tr>
-						<tr><td>От 5 до 8 млн.</td><td>13.5</td></tr>
-						<tr><td>От 8 до 15 млн.</td><td>14.4</td></tr>
-						<tr><td>Более 15 млн.</td><td>16.3</td></tr>
-					</table>
-				</span>
-			</div>
-			
+	<div class="company-head-sale " tooltip="Всего потрачено по договору"
+				flow="up" >
+		<div class="sale-val">
+			<span class="sale-val-money">{{data.spent.toLocaleString().replace(',','.')}}  ₽</span>
 		</div>
 		
-	</div>
+		<div :class="'sale-tooltip' + (active ?' active': '')" style="width: auto" 
+				tooltip="Всего потрачено по договору"
+				flow="left" 
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+				<path class="fill" fill="#A5A7A9" d="M12.05 17.125Q12.35 17.125 12.562 16.913Q12.775 16.7 12.775 16.375Q12.775 16.075 12.562 15.863Q12.35 15.65 12.05 15.65Q11.725 15.65 11.513 15.863Q11.3 16.075 11.3 16.375Q11.3 16.7 11.513 16.913Q11.725 17.125 12.05 17.125ZM11.55 13.9H12.45Q12.475 13.25 12.688 12.85Q12.9 12.45 13.525 11.825Q14.2 11.175 14.513 10.65Q14.825 10.125 14.825 9.45Q14.825 8.3 14.025 7.612Q13.225 6.925 12.1 6.925Q11.05 6.925 10.312 7.487Q9.575 8.05 9.225 8.8L10.1 9.15Q10.35 8.6 10.788 8.188Q11.225 7.775 12.05 7.775Q13.025 7.775 13.475 8.312Q13.925 8.85 13.925 9.5Q13.925 10.025 13.65 10.412Q13.375 10.8 12.925 11.225Q12.1 12 11.825 12.562Q11.55 13.125 11.55 13.9ZM12 20.85Q10.15 20.85 8.538 20.163Q6.925 19.475 5.725 18.275Q4.525 17.075 3.838 15.462Q3.15 13.85 3.15 12Q3.15 10.15 3.838 8.537Q4.525 6.925 5.725 5.725Q6.925 4.525 8.538 3.837Q10.15 3.15 12 3.15Q13.85 3.15 15.463 3.837Q17.075 4.525 18.275 5.725Q19.475 6.925 20.163 8.537Q20.85 10.15 20.85 12Q20.85 13.85 20.163 15.462Q19.475 17.075 18.275 18.275Q17.075 19.475 15.463 20.163Q13.85 20.85 12 20.85ZM12 12Q12 12 12 12Q12 12 12 12Q12 12 12 12Q12 12 12 12Q12 12 12 12Q12 12 12 12Q12 12 12 12Q12 12 12 12ZM12 19.925Q15.3 19.925 17.613 17.613Q19.925 15.3 19.925 12Q19.925 8.7 17.613 6.387Q15.3 4.075 12 4.075Q8.725 4.075 6.4 6.387Q4.075 8.7 4.075 12Q4.075 15.3 6.4 17.613Q8.725 19.925 12 19.925Z"/>
+			</svg>
+			
+		</div>
+	</div>	
+	
 </div>
 
 
@@ -82,7 +77,7 @@
 	v-else
 	class="company-head-item yellow">
 	<div class="content-elem active">
-		<div class="company-head-item-title">Информация о складах отсутвует </div>
+		<div class="company-head-item-title">Договор<br>отсутствует</div>
 		<div class="company-card-sale" style="right: -6px;">
 			<div class="company-card-sale-box"><span class="company-card-sale-text">Скидка</span>
 				<div class="company-card-sale-value">Скидка %</div>
@@ -107,26 +102,23 @@
 				</div>
 			</div>
 		</div>
-
-
-		<div class="company-head-sale sale">
-			<div class="sale-title">До скидки 6 %</div>
-			<div class="sale-progressbar-wrap">
-				<div class="sale-progressbar">
-					<div class="sale-progressbar-line">
-						<div class="sale-progressbar-val">
-							<span class="sale-progressbar-val-money">(0)</span>
-							<span class="sale-progressbar-val-percent">0%</span>
-						</div>
-					</div>
-				</div>
-				<div class="sale-progressbar-money">
-					<div class="sale-progressbar-min">0</div>
-					<div class="sale-progressbar-max">120 000</div>
-				</div>
-			</div>
-		</div>
 	</div>
+	<div class="company-head-sale " tooltip="Всего потрачено по договору"
+				flow="up" >
+		<div class="sale-val">
+			<span class="sale-val-money">0  ₽</span>
+		</div>
+		
+		<div :class="'sale-tooltip' + (active ?' active': '')" style="width: auto" 
+				tooltip="Всего потрачено по договору"
+				flow="left" 
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+				<path class="fill" fill="#A5A7A9" d="M12.05 17.125Q12.35 17.125 12.562 16.913Q12.775 16.7 12.775 16.375Q12.775 16.075 12.562 15.863Q12.35 15.65 12.05 15.65Q11.725 15.65 11.513 15.863Q11.3 16.075 11.3 16.375Q11.3 16.7 11.513 16.913Q11.725 17.125 12.05 17.125ZM11.55 13.9H12.45Q12.475 13.25 12.688 12.85Q12.9 12.45 13.525 11.825Q14.2 11.175 14.513 10.65Q14.825 10.125 14.825 9.45Q14.825 8.3 14.025 7.612Q13.225 6.925 12.1 6.925Q11.05 6.925 10.312 7.487Q9.575 8.05 9.225 8.8L10.1 9.15Q10.35 8.6 10.788 8.188Q11.225 7.775 12.05 7.775Q13.025 7.775 13.475 8.312Q13.925 8.85 13.925 9.5Q13.925 10.025 13.65 10.412Q13.375 10.8 12.925 11.225Q12.1 12 11.825 12.562Q11.55 13.125 11.55 13.9ZM12 20.85Q10.15 20.85 8.538 20.163Q6.925 19.475 5.725 18.275Q4.525 17.075 3.838 15.462Q3.15 13.85 3.15 12Q3.15 10.15 3.838 8.537Q4.525 6.925 5.725 5.725Q6.925 4.525 8.538 3.837Q10.15 3.15 12 3.15Q13.85 3.15 15.463 3.837Q17.075 4.525 18.275 5.725Q19.475 6.925 20.163 8.537Q20.85 10.15 20.85 12Q20.85 13.85 20.163 15.462Q19.475 17.075 18.275 18.275Q17.075 19.475 15.463 20.163Q13.85 20.85 12 20.85ZM12 12Q12 12 12 12Q12 12 12 12Q12 12 12 12Q12 12 12 12Q12 12 12 12Q12 12 12 12Q12 12 12 12Q12 12 12 12ZM12 19.925Q15.3 19.925 17.613 17.613Q19.925 15.3 19.925 12Q19.925 8.7 17.613 6.387Q15.3 4.075 12 4.075Q8.725 4.075 6.4 6.387Q4.075 8.7 4.075 12Q4.075 15.3 6.4 17.613Q8.725 19.925 12 19.925Z"/>
+			</svg>
+			
+		</div>
+	</div>	
 </div>
 
 

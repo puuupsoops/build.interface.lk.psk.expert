@@ -37,7 +37,10 @@ export const actions: ActionTree<ClaimState, RootState> =  {
 				commit(ClaimMutations.SET_CLAIMS, response.data.response)
 			})
 			.catch(error => {
-				commit(AuthMutations.SET_ERROR, 'Request GET_CLAIMS error:<br>'+error)
+				if (error.response && error.response.status =="404")
+					commit(ClaimMutations.SET_CLAIMS, [])
+				else
+					commit(AuthMutations.SET_ERROR, 'Request GET_CLAIMS error:<br>'+error)
 			});
 	},
 	async [ClaimActions.ADD_CLAIMS_NEW] ({commit, dispatch, getters}, n: number) {

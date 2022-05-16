@@ -28,9 +28,12 @@
 			max-width: 400px
 			scroll-snap-align: start
 			cursor: pointer
+			height: 100%
+			border-radius: 6px
 			
-			
-			
+			&.active
+				border: 2px solid $active-color
+				
 			&:last-child
 				overflow: hidden
 				text-overflow: ellipsis
@@ -70,7 +73,14 @@
 					background-color: #A76C14
 
 			.content-elem
-				padding: 20px 30px
+				border-bottom-left-radius: 0px
+				border-bottom-right-radius: 0px
+				padding:
+					left: 20px 
+					right: 20px
+					top: 30px
+					bottom: 40px
+				
 
 			&.documents
 				.content-elem
@@ -138,10 +148,40 @@
 				white-space: nowrap
 		
 		&-sale
+			+align-items(center)
+			background-color: $bg-color2
 			padding:
-				top: 20px
-
+				top: 15px
+				bottom: 15px
+			+flex
+			border-bottom-left-radius: 6px
+			border-bottom-right-radius: 6px
+			
 			.sale
+				&-val
+					width: 100%
+					text-align: center
+					&-money
+						margin:
+							right: 10px
+						font-size: 20px
+						line-height: 15px
+						color: $font-light-color
+						
+				&-tooltip
+					display: none
+					padding-right: 10px
+					position: absolute
+					right: 0px
+					+prefix(transition, $default-transition)
+					&.active
+						display: block
+					&:hover
+						+prefix(transform, translateY(-3px))
+						path
+							fill: $accent-color
+							
+						
 				&-title
 					font-size: 10px
 					line-height: 15px
