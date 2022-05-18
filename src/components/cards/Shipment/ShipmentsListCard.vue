@@ -186,7 +186,8 @@
 				v-if="data.length == 0 && !loading"
 			>
 				<div class="order-info">
-					Заявок не найдено. Создайте <router-link tag="a" class="order-info-link" :to="'/shipments/request'">новую заявку</router-link> и она появится в списке.
+					<span v-if="isOrders">Заявок не найдено. Создайте <router-link tag="a" class="order-info-link" :to="'/shipments/request'">новую заявку</router-link> и она появится в списке.</span>
+					<span v-else> Создайте <router-link tag="a" class="order-info-link" :to="'/order'">новый заказ</router-link> для того чтобы создать заявку на его отгрузку.</span>
 				</div>
 			</div>
 	</div>
@@ -402,6 +403,7 @@ export default defineComponent({
 			
 			//computed
 			data_filtred,
+			isOrders: computed(() => store.getters.isOrders),
 			//methods
 			
 			checkStatus,
