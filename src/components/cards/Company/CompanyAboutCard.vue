@@ -1,7 +1,8 @@
 <template>
 
 		<div :class="'company-head-about content-elem' + (edit ? ' edit':'')">
-			<Form validateOnMount @submit="onSave()" :validation-schema="schema" ref="aboutForm">
+		<div :class="edit ? ' edit':''">
+			<Form validateOnMount @submit="onSave()" :validation-schema="schema" ref="aboutForm" >
 				<div class="company-head-about-info">
 					<div class="company-head-about-title">{{data.name}}</div>
 					<div class="company-head-about-wrap">
@@ -269,6 +270,7 @@
 					</div>
 				</div>
 			</Form>
+		</div>
 		</div>
 
 </template>

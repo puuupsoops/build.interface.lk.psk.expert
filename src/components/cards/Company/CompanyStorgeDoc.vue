@@ -15,7 +15,11 @@
 					</li>
 				</ul>
 			</div>
-			<a class="company-head-btn" href="">Подробнее</a>
+			<router-link
+					class="company-head-btn"
+					tag="a"
+					to="/orders" 
+			>Подробнее</router-link>
 	</div>
 	
 </div>

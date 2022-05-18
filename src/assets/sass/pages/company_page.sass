@@ -281,13 +281,20 @@
 			background: -webkit-gradient(linear, left top, right top, from(#FFBF60), to(#FF9900))
 			background: -o-linear-gradient(left, #FFBF60 0%, #FF9900 100%)
 			background: linear-gradient(90deg, #FFBF60 0%, #FF9900 100%)
+			+prefix(transition, transform 0.5s)
 			
+			+prefix(transform, rotateX(0deg))
+			+prefix(transition-timing-function, cubic-bezier(.175, .885, .32, 1.275))
+			+prefix(transition-duration, .5s)
+			+prefix(transition-property, transform opacity)
 			&.edit
 				
+				+prefix(transform, rotateX(-180deg))
 				background: -webkit-gradient(linear, left top, right top, from(#FFBF60), to(#FF9900))
 				background: -o-linear-gradient(left, #FFBF60 0%, #FF9900 100%)
 				background: linear-gradient(90deg, $bg-default-color 0%, #1e2022 100%)
-			
+			>.edit
+				+prefix(transform, rotateX(180deg))
 			
 			&-info
 				padding: 0 30px
@@ -346,7 +353,7 @@
 
 				span
 					display: block
-				
+					
 				&-top
 					font-size: 12px
 					line-height: 18px

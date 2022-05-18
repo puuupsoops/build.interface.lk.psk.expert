@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-05-17
+
+    #0.2.7
+    1. Добавил анимации в карту редактирования клиента
+    2. На странице company изменил ссылку в Подробнее на /orders
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-05-16
 
     #0.2.6
