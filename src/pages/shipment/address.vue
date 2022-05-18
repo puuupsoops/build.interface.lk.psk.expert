@@ -110,6 +110,14 @@
 				:src="'https://yandex.ru/map-widget/v1/?mode=whatshere&whatshere%5Bpoint%5D=' + latlon.lon + '%2C'+ latlon.lat + '&z=15'" 
 				width="800" 
 				height="600" frameborder="0"></iframe>
+				
+			<!-- <yandex-map :coords="coords" class="shipment-address-map">
+				<ymap-marker 
+					marker-id="123" 
+					:coords="coords"
+					:marker-events="['click']"
+				></ymap-marker>
+			</yandex-map> -->
 		</div>
 	
 	</div>
@@ -122,7 +130,6 @@ import CompanyBarTop from '@/components/cards/Company/CompanyBarTop.vue'
 import ShipmentAddressInputAdd from '@/components/cards/Shipment/ShipmentAddressInputAdd.vue'
 import TopNav from '@/components/nav/TopNav.vue'
 import PreloaderLocal from '@/components/PreloaderLocal.vue'
-
 
 
 import { defineComponent, computed, ref, onMounted } from 'vue'
@@ -164,6 +171,7 @@ export default defineComponent({
 			}
 			return def
 		})
+		const coords = ref([54, 39])
 		const del = (index: number) => {
 			delPreloader.value = true
 			store.dispatch(ShipmentsActions.DEL_SHIPMENTS_ADDRESS, index)
@@ -201,6 +209,7 @@ export default defineComponent({
 			editAddrId,
 			showAddr,
 			loading,
+			coords,
 			
 			companyBarTopData: computed(() => store.getters.getCompanysList),
 			address: computed(() => store.getters.getShipmentsAddress),
@@ -216,4 +225,8 @@ export default defineComponent({
 <style scoped lang="sass">
 	.maxhigth
 		min-height: 100%
+
+	.ymap-container
+		height: 600px
+
 </style>

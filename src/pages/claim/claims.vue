@@ -5,7 +5,7 @@
 			<Notification />
 			<PersonalBar />
 		</div>
-		<top-nav claims @onClick="newClaim"></top-nav>
+		<top-nav :claims="isOrders" @onClick="newClaim"></top-nav>
 
 		<div class="orders-heading">
 			<div class="orders-heading-elem">
@@ -131,6 +131,7 @@ export default defineComponent({
 			filterCompanyData: computed(() => store.getters.getCompanysListInput),
 			filterPeriodData: computed(() => store.getters.getOrdersDataPeriodArray),
 			claimsList: computed(() => store.getters.getClaims),
+			isOrders: computed(() => store.getters.isOrders),
 			
 			//methods
 			newClaim,

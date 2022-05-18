@@ -1,6 +1,6 @@
 {
   "name": "lk.psk.expert",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -18,6 +18,7 @@
     "vee-validate": "^4.5.4",
     "vue": "^3.0.0",
     "vue-router": "^4.0.12",
+    "vue-yandex-maps": "^0.12.3",
     "vuex": "^4.0.2",
     "yup": "^0.32.11"
   },

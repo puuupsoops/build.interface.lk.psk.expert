@@ -6,7 +6,7 @@
 		<Notification></Notification>
 		<PersonalBar></PersonalBar>
 	</div>
-	<top-nav shipments></top-nav>
+	<top-nav :shipments="isOrders"></top-nav>
 
 	<div class="orders-heading">
 		<div class="orders-heading-elem">
@@ -116,18 +116,22 @@ export default defineComponent({
 		});
 
 		return{
-			companyBarTopData: computed(() => store.getters.getCompanysList),
-			//filterCompanyData: computed(() => store.getters.getCompanyFromShipments),
-			filterCompanyData: computed(() => store.getters.getCompanysListInput),
+			//data
 			filterCompanyUid,
-			filterPeriodData: computed(() => store.getters.getOrdersDataPeriodArray),
 			filterPeriod,
 			OrdersSatusCode,
 			filterStatus,
-			shipmentsList: computed(() => store.getters.getShipments),
 			search,
 			loading,
-			searchColumn
+			searchColumn,
+			
+			//computed
+			companyBarTopData: computed(() => store.getters.getCompanysList),
+			//filterCompanyData: computed(() => store.getters.getCompanyFromShipments),
+			filterCompanyData: computed(() => store.getters.getCompanysListInput),
+			filterPeriodData: computed(() => store.getters.getOrdersDataPeriodArray),
+			shipmentsList: computed(() => store.getters.getShipments),
+			isOrders: computed(() => store.getters.isOrders),
 		}
 	}
 })
