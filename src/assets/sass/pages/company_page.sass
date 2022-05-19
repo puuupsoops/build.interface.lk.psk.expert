@@ -21,9 +21,10 @@
 			overflow-y: hidden
 
 		&-item
-			position: relative
+			// position: relative
 			margin:
 				right: 30px
+				left: 4px
 			min-width: 300px
 			max-width: 400px
 			scroll-snap-align: start
@@ -45,33 +46,37 @@
 					min-width: 0px
 					height: 0px
 
-			.company-card-sale
-				top: 15px
-				right: -5px
-				+prefix(transform, translate(0))
+			// .company-card-sale
+			// 	top: 15px
+			// 	right: -5px
+			// 	+prefix(transform, translate(0))
 			
 			&.red
-				.company-card-sale					
+				.company-card-sale	
 					&-box
 						background-color: #B9342D
 
 					&::after
 						border-left: 6px solid #86140E
-				
-				.highlight 
-					background-color: #B9342D
-			
+				.company-card-balance
+					&-box
+						background-color: #B9342D
+					&::after
+						border-right: 6px solid #86140E
+						
 			&.yellow
-				.company-card-sale					
+				.company-card-sale
 					&-box
 						background-color: #A76C14
-
 					&::after
 						border-left: 6px solid #683F01
-				
-				.highlight 
-					background-color: #A76C14
-
+						
+				.company-card-balance
+					&-box
+						background-color: #A76C14
+					&::after
+						border-right: 6px solid #683F01
+						
 			.content-elem
 				border-bottom-left-radius: 0px
 				border-bottom-right-radius: 0px
@@ -79,7 +84,7 @@
 					left: 20px 
 					right: 20px
 					top: 30px
-					bottom: 40px
+					bottom: 0px
 				
 
 			&.documents
@@ -91,8 +96,8 @@
 					color: $font-light-color
 
 			&-title
-				padding:
-					right: 55px
+				margin:
+					right: 70px
 				font-size: 21px
 				line-height: 32px
 				height: 2em
@@ -115,20 +120,12 @@
 			
 			&-elem
 				&.l
+					white-space: nowrap
 					font-size: 16px
 					line-height: 25px
+					min-width: 70px
 
-				&.highlight
-					margin:
-						left: -30px
-					padding: 10px 30px
-					width: 100%
-					max-width: 258px
-					background-color: transparent
-					+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.1))
-					border:
-						top-right-radius: 40px
-						bottom-right-radius: 40px
+				
 			
 			&-title,
 			&-val
@@ -212,7 +209,8 @@
 			list-style-type: none
 			max-height: 251px
 			overflow: auto
-
+			overflow-x: hidden
+			
 			&-elem
 				+flex
 				margin:
@@ -779,17 +777,76 @@
 				line-height: 22px
 				color: $white
 
-		&-sale
+		&-agr
 			position: absolute
-			top: 50%
-			right: -21px
-			+prefix(transform, translateY(-50%))
+			
+			+prefix(transform, translateY(calc(-50% - 30px)) translateX(-26px))
 			border:
 				top-left-radius: 40px
 				bottom-left-radius: 40px
 				bottom-right-radius: 3px
 			+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.1))
 
+			&:after
+				content: ''
+				display: block
+				position: absolute
+				bottom: -4px
+				left: -4px
+				border: 4px solid transparent
+					right: 6px solid $active-color
+				z-index: 0
+				
+				
+			&-box
+				+flex
+				position: relative
+				padding: 8px 26px 8px 20px
+				border:
+					top-right-radius: 40px
+					bottom-right-radius: 40px
+					top-left-radius: 3px
+				+flex-flow(column)
+				+justify-content(center)
+				z-index: 1
+				background: linear-gradient(90deg, $active-color 0%, $accent-color 100%)
+
+		&-balance
+			position: relative
+			+prefix(transform, translateX(-26px))
+			margin:
+				top: 25px
+			max-width: 258px
+			background-color: transparent
+			
+			&::after
+				content: ''
+				display: block
+				position: absolute
+				top: -4px
+				left: -4px
+				border: 4px solid transparent
+					right: 6px solid transparent
+				z-index: 0
+			
+			&-box
+				+flex
+				position: relative
+				padding: 8px 26px 8px 20px
+				border:
+					top-left-radius: 3px
+					top-right-radius: 40px
+					bottom-right-radius: 40px
+				background-color: transparent
+				+flex-flow(column)
+				+justify-content(center)
+				z-index: 1
+				+box-shadow(-2px -2px 5px 0px #86140E)
+		&-sale
+			position: relative
+			float: right
+			+prefix(transform, translateY(-100%) translateX(26px))
+			
 			&:after
 				content: ''
 				display: block
@@ -812,7 +869,8 @@
 				+flex-flow(column)
 				+justify-content(center)
 				z-index: 1
-
+				+box-shadow(-2px -2px 5px 0px #86140E)
+				
 			&-text
 				font-size: 7px
 				color: rgba(255, 255, 255, 0.6)
@@ -823,22 +881,24 @@
 				color: $white
 
 		&-showdoc
-			position: absolute
-			right: -10px
-			top: 60px
-			// +prefix(transform, translateY(-50%))
-			padding: 8px 26px 8px 20px
+			position: relative
+			padding: 5px 20px 5px 20px
 			cursor: pointer
-			+prefix(transition, $default-transition)
-			&:hover
-				+prefix(transform, translateY(-3px))
-				path
-					fill: $accent-color
+			
+			& svg
+				+prefix(transition, $default-transition)
+				+prefix(transform, rotate(-90deg))
+			
+				&:hover
+					+prefix(transform, translateY(-3px) rotate(-90deg))
+					path
+						fill: $accent-color
 			
 			&.active
-				// +prefix(transform, translateX(-20px))
-				path
-					fill: $accent-color
+				& svg
+					+prefix(transform, rotate(0deg))
+					path
+						fill: $accent-color
 					
 		&-more
 			position: absolute
@@ -850,9 +910,16 @@
 			+prefix(transition, $default-transition)
 			opacity: 0
 
-
-
-
-
+		&-footer
+			+flex
+			+justify-content(space-between)
+			+align-items(center)
+			height: 60px
+			
+			&-text-agr
+				
+				line-height: 15px
+				color: $font-light-color
+			
 
 
