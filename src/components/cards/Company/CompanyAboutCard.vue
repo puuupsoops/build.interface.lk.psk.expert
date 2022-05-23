@@ -307,6 +307,8 @@ export default defineComponent({
 				bik:           '',
 				payment:       '',
 				correspondent: '',
+				managerName:   '',
+				managerUid:    '',
 			})
 			const aboutForm = ref<any>()
 			

@@ -5,7 +5,7 @@ import { AuthActions } from "@/store/auth/actions";
 import { AuthMutations } from "@/store/auth/mutations";
 
 
-const api_location = process.env.VUE_APP_API_LOCATIONL + '/api'
+const api_location = process.env.VUE_APP_API_LOCATION + '/api'
 
 const instanse = axios.create({
 	baseURL: api_location,

@@ -100,7 +100,7 @@
 									<a
 										v-if="check.doc_status?.StatusSchet  && check.status >= 2"
 										class="orders-list-info-doc sc" 
-										:href="`http://89.111.136.61/api/order/print?id=${check.guid}&name=Счет`"
+										:href="`${docLocation}/api/order/print?id=${check.guid}&name=Счет`"
 										target="_blank"
 										title="Открыть счет">
 									</a>
@@ -108,21 +108,21 @@
 									<a 
 										v-if="check.doc_status?.StatusUPD"
 										class="orders-list-info-doc upd"
-										:href="`http://89.111.136.61/api/order/print?id=${check.guid}&name=УПД`"
+										:href="`${docLocation}/api/order/print?id=${check.guid}&name=УПД`"
 										target="_blank"
 										title="Универсальный передаточный документ">
 									</a>
 									<a 
 										v-if="check.doc_status?.StatusSF"
 										class="orders-list-info-doc sf" 
-										:href="`http://89.111.136.61/api/order/print?id=${check.guid}&name=СФ`"
+										:href="`${docLocation}/api/order/print?id=${check.guid}&name=СФ`"
 										target="_blank"
 										title="Счёт-фактура">
 									</a>
 									<a 
 										v-if="check.doc_status?.StatusUPK"
 										class="orders-list-info-doc kor"
-										:href="`http://89.111.136.61/api/order/print?id=${check.guid}&name=УКД`"
+										:href="`${docLocation}/api/order/print?id=${check.guid}&name=УКД`"
 										target="_blank"
 										title="Универсальный корректировочный документ">
 									</a>
@@ -370,6 +370,7 @@ export default defineComponent({
 			detailOrderId,
 			OrdersSatusCode,
 			filter,
+			docLocation: process.env.VUE_APP_DOC_LOCATION,
 			//computed
 			data_filtred,
 			//methods

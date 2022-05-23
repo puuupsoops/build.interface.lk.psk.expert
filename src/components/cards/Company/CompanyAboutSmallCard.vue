@@ -10,8 +10,9 @@
 					<div class="company-card-info-row">Долг: <span class="company-card-value">{{ Number(data.storages[0].debt).toLocaleString() }} ₽</span></div>
 					<div class="company-card-info-row">Баланс: <span class="company-card-value">{{ Number(data.storages[0].balance).toLocaleString() }} ₽</span></div>
 				</div>
-				<div class="company-card-sale">
-					<div class="company-card-sale-box"><span class="company-card-sale-text">Скидка</span>
+				<div class="company-card-sale small">
+					<div class="company-card-sale-box">
+						<span class="company-card-sale-text">Скидка</span>
 						<div class="company-card-sale-value">{{data.storages[0].discount}} %</div>
 					</div>
 				</div>
@@ -33,7 +34,7 @@
 					<div class="company-card-info-row">Долг: <span class="company-card-value">{{ Number(data.storages[1].debt).toLocaleString() }} ₽</span></div>
 					<div class="company-card-info-row">Баланс: <span class="company-card-value">{{ Number(data.storages[1].balance).toLocaleString() }} ₽</span></div>
 				</div>
-				<div class="company-card-sale">
+				<div class="company-card-sale small">
 					<div class="company-card-sale-box"><span class="company-card-sale-text">Скидка</span>
 						<div class="company-card-sale-value">{{data.storages[1].discount}} %</div>
 					</div>

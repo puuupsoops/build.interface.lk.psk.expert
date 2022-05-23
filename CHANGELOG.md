@@ -1,4 +1,12 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-05-23
+
+    #0.2.9
+    1. Небольшие правки дизайна
+    2. Имя менеджера отображается из GET /api/partners а телефоны из GET /api/manager
+    3. Вынес адрес скачивания документов в отдельные файлы .env
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-05-19
 
     #0.2.8

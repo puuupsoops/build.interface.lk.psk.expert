@@ -1,7 +1,6 @@
 <template>
 
-<div id="CompanyCalendar">
-	<div class="company-calendar-wrap">
+
 		<div class="company-calendar-box content-elem">
 			<form class="company-search-wrap" action="">
 				<div class="company-search-input-wrap">
@@ -12,13 +11,9 @@
 			</form>
 			<FullCalendar ref="fullCalendar" :options='calendarOptions'></FullCalendar>
 		</div>
-		<ManagerCard></ManagerCard>
-	</div>
-</div>
 </template>
 
 <script>
-import ManagerCard from '@/components/cards/ManagerCard';
 import FullCalendar from '@fullcalendar/vue3';
 import ruLocale from '@fullcalendar/core/locales/ru';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -29,7 +24,6 @@ import { ref, computed, onUpdated, watch, inject } from 'vue';
 export default {
 	components:{
 		FullCalendar,
-		ManagerCard,
 	},
 	props:{
 		data: {

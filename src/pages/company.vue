@@ -19,7 +19,13 @@
 		<!---- Изза того что в тесте у складов одинаковые guid пришлось ставить костыль
 		<CompanyCalendar :data="companyStoragesData.find(x => x.guid === activeStorageUid).documents"></CompanyCalendar>
 		-->
-		<CompanyCalendar :data="activeStorageDocuments"></CompanyCalendar>
+		<div id="CompanyCalendar">
+			<div class="company-calendar-wrap">
+				<CompanyCalendar :data="activeStorageDocuments"></CompanyCalendar>
+				<ManagerCard :name="managerName"></ManagerCard>
+			</div>
+		</div>
+			
 	</div>
 </template>
 
@@ -31,6 +37,7 @@ import CompanyStorageBar from '@/components/cards/Company/CompanyStorageBar.vue'
 import CompanyBarTop from '@/components/cards/Company/CompanyBarTop.vue'
 import CompanySaleBar from '@/components/cards/Company/CompanySaleBar.vue'
 import CompanyCalendar from '@/components/cards/Company/CompanyCalendar.vue'
+import ManagerCard from '@/components/cards/ManagerCard.vue'
 
 import { useStore } from 'vuex'
 import { ref, onMounted, computed, watch , provide,  defineComponent} from 'vue'
@@ -48,7 +55,7 @@ export default defineComponent({
 		Notification,
 		PersonalBar,
 		CompanyCalendar,
-	
+		ManagerCard,
 	},
 	props: ['id'],
 	setup(props){
@@ -61,7 +68,8 @@ export default defineComponent({
 		let aboutCompanyData = computed(() => store.getters.getCompanyData(activeCompanyUid.value));
 		let companyStoragesData = computed(() =>  store.getters.getCompanyStoragesData(activeCompanyUid.value));
 		let companyBarTopData = computed(() => store.getters.getCompanysList);
-		let totalSpent = computed(() => store.getters.getCompanySpent(activeCompanyUid.value));
+		let totalSpent = computed(() => store.getters.getCompanySpent(activeCompanyUid.value))
+		let managerName = computed(() => store.getters.getManagerName(activeCompanyUid.value))
 		
 		const loader = computed<boolean>({
 			get: () => store.getters.getLoader,
@@ -69,6 +77,7 @@ export default defineComponent({
 		})
 
 		watch( () => props.id, () => {
+			//console.log(props.id)
 			if (props.id !=='') {
 					activeCompanyUid.value=props.id;
 				} else { activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid }
@@ -85,13 +94,13 @@ export default defineComponent({
 	
 
 		onMounted(() => {
-			//console.log('onMount')
-			if (!store.getters.isCompanysLoad || !store.getters.isManagerLoad)
+			console.log('onMount')
+			if (!store.getters.isCompanysLoad)// || !store.getters.isManagerLoad)
 			{
 				loader.value=true;
 				Promise.all([
 						store.dispatch(CompanyActions.GET_COMPANYS),
-						store.dispatch(CompanyActions.GET_MANAGER),
+						//store.dispatch(CompanyActions.GET_MANAGER),
 					])
 					//.catch(()=>{alert('error')})
 					.finally(() => { setTimeout(()=>{
@@ -120,6 +129,7 @@ export default defineComponent({
 			activeCompanyUid,
 			activeStorageUid,
 			activeStorageDocuments,
+			managerName,
 			isLoad,
 		}
 	}

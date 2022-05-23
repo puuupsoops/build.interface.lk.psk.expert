@@ -6,7 +6,7 @@
 				<div class="company-consultant-img-box"><img class="company-consultant-img" :src="managerData.image" :alt="managerData.name"></div>
 				<div class="company-consultant-info-box">
 					<div class="company-consultant-info-about"> 
-						<div class="company-consultant-name">{{managerData.name}}</div>
+						<div class="company-consultant-name">{{name}}</div>
 						<div class="company-consultant-position">Персональный менеджер</div>
 					</div>
 					<div class="company-consultant-contact">
@@ -44,13 +44,16 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import { useStore } from 'vuex'
 import { key } from '@/store'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, defineComponent } from 'vue'
 import { CompanyActions } from '@/store/company/actions'
 
-export default {
+export default defineComponent( {
+	props:{
+		name: String
+	},
 	setup(){
 		let store = useStore(key);
 		let isLoad = ref(true);
@@ -68,7 +71,7 @@ export default {
 			managerData: computed(() => store.getters.getManager),
 		}
 	}
-}
+})
 </script>
 
 <style>

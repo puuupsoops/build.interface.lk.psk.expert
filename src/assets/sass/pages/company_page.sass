@@ -772,6 +772,7 @@
 			color: $white
 		
 		&-info
+			width: 100%
 			&-row
 				font-size: 14px
 				line-height: 22px
@@ -842,10 +843,14 @@
 				+justify-content(center)
 				z-index: 1
 				+box-shadow(-2px -2px 5px 0px #86140E)
+		
 		&-sale
 			position: relative
 			float: right
 			+prefix(transform, translateY(-100%) translateX(26px))
+			
+			&.small
+				+prefix(transform, translateX(26px))
 			
 			&:after
 				content: ''
@@ -879,6 +884,7 @@
 				font-size: 14px
 				font-weight: 700
 				color: $white
+				white-space: nowrap
 
 		&-showdoc
 			position: relative
@@ -887,7 +893,7 @@
 			
 			& svg
 				+prefix(transition, $default-transition)
-				+prefix(transform, rotate(-90deg))
+				+prefix(transform, rotate(0deg))
 			
 				&:hover
 					+prefix(transform, translateY(-3px) rotate(-90deg))
@@ -896,7 +902,7 @@
 			
 			&.active
 				& svg
-					+prefix(transform, rotate(0deg))
+					+prefix(transform, rotate(-90deg))
 					path
 						fill: $accent-color
 					

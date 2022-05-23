@@ -20,7 +20,9 @@ export interface Partner {
     bik:           string;
     payment:       string;
     correspondent: string;
-    storages?:      Storage[];
+    managerName:   string;
+    managerUid:    string;
+    storages?:     Storage[];
 }
 
 export interface Storage {

@@ -72,6 +72,13 @@ export const getters: GetterTree<CompanyState, RootState> = {
 			} else { return 0 }
 		},
 		getManager: state => state.manager,
+		getManagerName: state=> (uid: String): String => {
+			if (uid){
+				const company = state.companys.find(x => x.uid === uid)
+				const res = company ? company.managerName : '';
+				return res
+			} else { return ''}
+		},
 		getCompanyDiscount: state => (uid: string, guid: string) => {
 			if (uid){
 			
