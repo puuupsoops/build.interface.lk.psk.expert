@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-05-24
+
+    #0.2.10
+    1. Небольшие правки дизайна
+    2. Перенес карточку с документами в карточку с информацией о складе. Информация меняется от переключения showDoc
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-05-23
 
     #0.2.9

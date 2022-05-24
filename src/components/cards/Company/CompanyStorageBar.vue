@@ -8,28 +8,21 @@
 					:key="id"
 					:data="storage ? storage : null"
 					:active="id===modelValue"
-					:showDoc="showDoc"
 					@onClick="$emit('update:modelValue', id)"
-					@onShowDoc="showDoc=!showDoc"
 				></CompanyStorageCard>
-				<CompanyStorgeDoc
-					:disabled="!showDoc"
-					:data="data[modelValue] ? data[modelValue].documents : null"
-					>
-				</CompanyStorgeDoc>
+				
 			</div>
 			<div v-else class="company-head-wrap">
-				<CompanyStorageCard :disabled="!showDoc"></CompanyStorageCard>
-				<CompanyStorgeDoc></CompanyStorgeDoc>
+				<CompanyStorageCard></CompanyStorageCard>
+				
 			</div>
 </template>
 
 <script>
 //Таблицас данными по сделкам со складами
 
-import CompanyStorageCard from '@/components/cards/Company/CompanyStorageCard.vue';
-import CompanyStorgeDoc from '@/components/cards/Company/CompanyStorgeDoc.vue';
-import { ref } from 'vue';
+import CompanyStorageCard from '@/components/cards/Company/CompanyStorageCard.vue'
+
 
 export default {
 	props:{
@@ -44,14 +37,9 @@ export default {
 	emits: ['update:modelValue'],
 	components:{
 		CompanyStorageCard,
-		CompanyStorgeDoc
 	},
 	setup(){
-		const showDoc = ref(false)
-
-		return {
-			showDoc
-		}
+		
 	}
 }
 </script>

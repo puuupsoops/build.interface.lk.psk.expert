@@ -31,26 +31,21 @@
 			cursor: pointer
 			height: 100%
 			border-radius: 6px
+
+			+prefix(transition, transform 0.5s)
+			+prefix(transform, rotateY(0deg))
+			+prefix(transition-timing-function, cubic-bezier(.175, .885, .32, 1.275))
+			+prefix(transition-duration, .5s)
+			+prefix(transition-property, transform opacity)
+			
+			&.doc
+				+prefix(transform, rotateY(-180deg))
+			>.doc
+				+prefix(transform, rotateY(180deg))
 			
 			&.active
 				border: 2px solid $active-color
-				
-			&:last-child
-				overflow: hidden
-				text-overflow: ellipsis
-				white-space: nowrap
-				margin: 0
-				+prefix(transition, $default-transition)
-				&.disable
-					max-width: 0px
-					min-width: 0px
-					height: 0px
 
-			// .company-card-sale
-			// 	top: 15px
-			// 	right: -5px
-			// 	+prefix(transform, translate(0))
-			
 			&.red
 				.company-card-sale	
 					&-box
@@ -205,17 +200,21 @@
 						line-height: 15px
 		
 		&-list
-			padding: 0px 30px 
+			padding: 10px 0px 
 			list-style-type: none
-			max-height: 251px
+			max-height: 250px
 			overflow: auto
 			overflow-x: hidden
-			
+			+flex
+			+flex-wrap(wrap)
+			+justify-content(space-around)
+
 			&-elem
 				+flex
 				margin:
-					bottom: 10px
+					bottom: 7px
 				+align-items(center)
+				
 
 			&-img
 				display: block
@@ -228,6 +227,17 @@
 				font-size: 12px
 				line-height: 18px
 				color: $font-light-color
+				
+				&:after
+					display: block
+					content: ''
+					border-bottom: solid 1px  $bg-dlight-color
+					transform: scaleX(0)
+					+prefix(transition, $default-transition)
+				&:hover:after
+					+prefix(transform, scaleX(1))
+					
+					+prefix(transition, $default-transition)
 	
 		&-btn
 			display: block
@@ -842,7 +852,7 @@
 				+flex-flow(column)
 				+justify-content(center)
 				z-index: 1
-				+box-shadow(-2px -2px 5px 0px #86140E)
+				
 		
 		&-sale
 			position: relative
@@ -874,7 +884,7 @@
 				+flex-flow(column)
 				+justify-content(center)
 				z-index: 1
-				+box-shadow(-2px -2px 5px 0px #86140E)
+				
 				
 			&-text
 				font-size: 7px
@@ -887,7 +897,8 @@
 				white-space: nowrap
 
 		&-showdoc
-			position: relative
+			position: absolute
+			right: 20px
 			padding: 5px 20px 5px 20px
 			cursor: pointer
 			
@@ -902,7 +913,7 @@
 			
 			&.active
 				& svg
-					+prefix(transform, rotate(-90deg))
+					+prefix(transform, rotate(-180deg))
 					path
 						fill: $accent-color
 					
