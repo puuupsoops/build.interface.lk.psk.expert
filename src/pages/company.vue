@@ -16,9 +16,7 @@
 			</div>
 		</div>
 		<CompanySaleBar :spent="totalSpent"></CompanySaleBar>
-		<!---- Изза того что в тесте у складов одинаковые guid пришлось ставить костыль
-		<CompanyCalendar :data="companyStoragesData.find(x => x.guid === activeStorageUid).documents"></CompanyCalendar>
-		-->
+		
 		<div id="CompanyCalendar">
 			<div class="company-calendar-wrap">
 				<CompanyCalendar :data="activeStorageDocuments"></CompanyCalendar>

@@ -126,7 +126,7 @@
 					
 					</router-link>
 				</div>
-				<div class="sidebar-btn">
+				<!-- <div class="sidebar-btn">
 					<a
 						href="https://psk.expert"
 						title="psk.expert"
@@ -138,7 +138,7 @@
 								/>
 					</svg>
 					</a>
-				</div>
+				</div> -->
 		</aside>  
 	</div>
 	<transition name="fade">

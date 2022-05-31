@@ -19,7 +19,7 @@
 		
 			<div class="company-card-balance">
 				<div class="company-card-balance-box">
-					<div v-if="data.debt>0" class="company-head-info-elem l highlight">Долг: {{data.debt_str.toLocaleString().replace(',','.')}} ₽</div>
+					<div v-if="(data.balance - data.debt)<0" class="company-head-info-elem l highlight">Задолженность: {{(data.balance - data.debt).toLocaleString().replace(',','.').substring(1)}} ₽</div>
 					<div v-else class="company-head-info-elem l highlight">Баланс: {{data.balance.toLocaleString().replace(',','.')}} ₽</div>
 				</div>
 			</div>
@@ -83,7 +83,7 @@
 		
 			<div class="company-card-balance">
 				<div class="company-card-balance-box">
-					<div v-if="data.debt>0" class="company-head-info-elem l highlight">Долг: {{data.debt_str.toLocaleString().replace(',','.')}} ₽</div>
+					<div v-if="(data.balance - data.debt)<0" class="company-head-info-elem l highlight">Задолженность: {{(data.balance - data.debt).toLocaleString().replace(',','.').substring(1)}} ₽</div>
 					<div v-else class="company-head-info-elem l highlight">Баланс: {{data.balance.toLocaleString().replace(',','.')}} ₽</div>
 				</div>
 			</div>
@@ -100,7 +100,7 @@
 							:key="id"
 							>
 						<img class="company-head-list-img" src="@/assets/img/icon/doc.svg" alt="">
-						<a class="company-head-list-link" href="#CompanyCalendar" @click="docDate = document.expires">Cчёт от {{document.date_str}}</a>
+						<a class="company-head-list-link" href="#CompanyCalendar" @click="docDate = document.expires">Cчёт от {{document.date_str}} истекает {{document.expires_str}}</a>
 					</li>
 				</ul>
 			</div>

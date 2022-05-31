@@ -7,8 +7,11 @@
 				<div class="company-card-title">
 					{{data.storages[0].name.replace(/(^|\s)\S/g, s => s.toUpperCase()).replace(/(ООО)|(\")|(\s)|([а-я])/g, '')}}</div>
 				<div class="company-card-info">
-					<div class="company-card-info-row">Долг: <span class="company-card-value">{{ Number(data.storages[0].debt).toLocaleString() }} ₽</span></div>
-					<div class="company-card-info-row">Баланс: <span class="company-card-value">{{ Number(data.storages[0].balance).toLocaleString() }} ₽</span></div>
+					<div class="company-card-info-row">
+						<span v-html="(data.storages[0].balance-data.storages[0].debt) < 0 ? 'Задолженность:':'Баланс:'"></span>
+						<span class="company-card-value">&nbsp;{{ Number(data.storages[0].balance-data.storages[0].debt).toLocaleString().substring(1) }} ₽</span>
+					</div>
+					
 				</div>
 				<div class="company-card-sale small">
 					<div class="company-card-sale-box">
@@ -31,8 +34,10 @@
 				<div class="company-card-title">
 					{{data.storages[1].name.replace(/(^|\s)\S/g, s => s.toUpperCase()).replace(/(ООО)|(\")|(\s)|([а-я])/g, '')}}</div>
 				<div class="company-card-info">
-					<div class="company-card-info-row">Долг: <span class="company-card-value">{{ Number(data.storages[1].debt).toLocaleString() }} ₽</span></div>
-					<div class="company-card-info-row">Баланс: <span class="company-card-value">{{ Number(data.storages[1].balance).toLocaleString() }} ₽</span></div>
+					<div class="company-card-info-row">
+						<span v-html="(data.storages[1].balance-data.storages[1].debt) < 0 ? 'Задолженность:':'Баланс:'"></span>
+						<span class="company-card-value">&nbsp;{{ Number(data.storages[1].balance-data.storages[1].debt).toLocaleString().substring(1) }} ₽</span>
+					</div>
 				</div>
 				<div class="company-card-sale small">
 					<div class="company-card-sale-box"><span class="company-card-sale-text">Скидка</span>

@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-05-31
+
+    #0.2.11
+    1. Изменил логику отображение баланса  на карточках складов
+    2. Убрал ссылку на сайт
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-05-24
 
     #0.2.10
