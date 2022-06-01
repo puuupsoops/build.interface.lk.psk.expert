@@ -2,7 +2,7 @@
   <transition name="fade" >
     <div class="top-line-info" v-if="show">
       <div class="top-line-info-text">
-        Уважаемые клиенты, в связи с короновирусорм склад работает до 15600
+       Доставка товара до транспортной компании осуществляется в течении  2 (двух) рабочих дней, если заявка поступила до 17:00 часов текущего рабочего дня.
       </div>
       <div class="top-line-info-close" @click="show=!show"></div>
     </div>
