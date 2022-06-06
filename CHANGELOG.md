@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-06-06
+
+    #0.2.12
+    1. Размеры карточек складов теперь статические и не меняются
+    2. Работа над разделом help
+    
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-05-31
 
     #0.2.11

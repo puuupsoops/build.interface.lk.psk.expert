@@ -123,6 +123,14 @@ const routes = [
 			}
 	},
 	{
+		path: '/help', 
+		component: () => import('@/pages/help/help.vue'),
+		name: 'Help',
+		meta:{
+				auth: true,
+			}
+	},
+	{
 		path: '/404',
 		component: () => import('@/pages/404.vue'),
 		name: '404',

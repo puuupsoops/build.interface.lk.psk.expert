@@ -9,7 +9,7 @@
 			&:nth-child(1)
 				width: 70%
 				overflow: auto
-				scroll-snap-type: x mandatory
+				
 
 			&:nth-child(2)
 				padding:
@@ -19,13 +19,14 @@
 		&-wrap
 			+flex
 			overflow-y: hidden
-
+			scroll-snap-type: x mandatory
+		
 		&-item
 			// position: relative
 			margin:
 				right: 30px
 				left: 4px
-			min-width: 300px
+			min-width: 400px
 			max-width: 400px
 			scroll-snap-align: start
 			cursor: pointer

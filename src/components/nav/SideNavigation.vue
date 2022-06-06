@@ -175,7 +175,7 @@ export default defineComponent({
 				]},
 				{title: 'Novelty', link: '/Novelty', lock: true, children: null },
 				{title: 'Контакты', link: '/contacts', lock: true, children: null},
-				{title: 'Help', link: '/help', lock: true, children: null},
+				{title: 'Help', link: '/help', lock: false, children: null},
 				{title: 'Выход', link: '/logout', lock: false, children: null},
 			]
 			let arr = [];

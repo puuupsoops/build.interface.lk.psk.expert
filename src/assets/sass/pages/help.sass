@@ -1,0 +1,216 @@
+.help
+	position: fixed
+	left: 0
+	top: 0
+	right: 0
+	bottom: 0
+	z-index: 1001
+	background: rgba(0,0,0,.22)
+	
+	&-box
+		padding: 10px
+		margin: 
+			top: 10px
+		border-radius: 20px
+		border: 2px solid $accent-color
+		max-width: 350px
+		cursor: pointer
+		
+		&:hover
+			transform: translateX(1px)
+		
+		&-title
+			text-align: center
+			font-size: 28px
+			line-height: 51px
+			
+		&-text
+			margin-bottom: 10px
+		
+	&-btn
+		min-width: 100px
+		border-left: 1px solid $bg-color2
+		&-close
+			+flex
+			+align-items(center)
+			+justify-content(space-around)
+
+
+			min-height: 100px
+			text-transform: uppercase
+			color: $font-light-color
+			&:hover
+				background: $bg-dlight-color
+		&-next
+			+flex
+			+align-items(center)
+			+justify-content(space-around)
+			
+			height: 100%
+			cursor: pointer
+			text-transform: uppercase
+			color: $font-light-color
+			
+			&:hover
+				background: $bg-dlight-color
+	
+	&-1
+		+flex
+		&-wrap
+			width: 100%
+			margin:
+				left: 305px
+				top: 50px
+			svg
+				position: fixed		
+				.draw-arrow 
+					stroke-width: 5
+					stroke: $accent-color
+					fill: none
+					visibility: hidden
+					stroke-dasharray: 1000
+
+					animation-duration: 500ms
+					animation-fill-mode: both
+					animation-name: draw
+				
+				@keyframes draw 
+					from
+						visibility: hidden
+						stroke-dashoffset: 1000
+					to
+						visibility: visible
+						stroke-dashoffset: 2000
+
+
+			:nth-child(1)
+				animation: drop-in 1s ease 200ms backwards
+				
+			:nth-child(2)
+				top: 85px
+				left: 21px
+				width: 668px
+				.draw-arrow 
+					animation-delay: 500ms
+				
+			:nth-child(3)
+				animation: drop-in 1s ease 500ms backwards
+				margin:
+					left: 30px
+					
+			:nth-child(4)
+				top: 205px
+				left: 21px
+				width: 697px
+				height: 90px
+				.draw-arrow 
+					animation-delay: 800ms
+					
+			:nth-child(5)
+				animation: drop-in 1s ease 800ms backwards
+				margin:
+					left: 60px
+					
+			:nth-child(6)
+				top: 331px
+				left: 21px
+				width: 727px
+				height: 90px
+				.draw-arrow 
+					animation-delay: 1000ms
+					
+			:nth-child(7)
+				animation: drop-in 1s ease 1000ms backwards
+				margin:
+					left: 90px
+					
+			:nth-child(8)
+				top: 449px
+				left: 21px
+				width: 758px
+				height: 90px
+				.draw-arrow 
+					animation-delay: 1200ms
+					
+			:nth-child(9)
+				animation: drop-in 1s ease 1200ms backwards
+				margin:
+					left: 120px
+					
+			:nth-child(10)
+				top: 568px
+				left: 21px
+				width: 787px
+				height: 90px
+				.draw-arrow 
+					animation-delay: 1500ms
+					
+			:nth-child(11)
+				animation: drop-in 1s ease 1500ms backwards
+				margin:
+					left: 150px
+					
+			:nth-child(12)
+				top: 679px
+				left: 21px
+				width: 850px
+				height: 90px
+				.draw-arrow 
+					animation-delay: 1600ms
+					
+			@keyframes drop-in
+				from
+					opacity: 0
+					transform: translateX(100px)
+				
+				to
+					opacity: 1
+					transform: translate(0px)
+				
+		
+	&-2
+		+flex
+		&-wrap
+			width: 100%
+			.help-box
+				margin: 
+					left: 300px
+					top:200px
+			svg
+				position: fixed		
+				.draw-arrow 
+					stroke-width: 5
+					stroke: $accent-color
+					fill: none
+					visibility: hidden
+					stroke-dasharray: 1000
+
+					animation-duration: 500ms
+					animation-fill-mode: both
+					animation-name: draw
+				
+				@keyframes draw 
+					from
+						visibility: hidden
+						stroke-dashoffset: 1000
+					to
+						visibility: visible
+						stroke-dashoffset: 2000
+			
+			:nth-child(2)
+				animation: drop-in 1s ease 200ms backwards
+			:nth-child(3)
+				top: 293px
+				left: 77px
+				width: 668px
+				.draw-arrow  
+					animation-delay: 500ms
+					
+			:nth-child(4)
+				top: 98px
+				left: 805px
+				height: 331px
+				width: 668px
+				.draw-arrow  
+					animation-delay: 500ms
+		
