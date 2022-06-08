@@ -5,8 +5,12 @@
 	right: 0
 	bottom: 0
 	z-index: 1001
-	background: rgba(0,0,0,.22)
+	background: rgba(0,0,0,1)
 	
+	&-wrap
+		+flex
+		width: 100%
+		
 	&-box
 		padding: 10px
 		margin: 
@@ -15,10 +19,14 @@
 		border: 2px solid $accent-color
 		max-width: 350px
 		cursor: pointer
-		
+		z-index: 1002
 		&:hover
 			transform: translateX(1px)
 		
+		&.noborder
+			border: none
+			max-width: 450px
+			
 		&-title
 			text-align: center
 			font-size: 28px
@@ -26,15 +34,46 @@
 			
 		&-text
 			margin-bottom: 10px
-		
+	
+	&-svg
+		position: fixed	
+		height: 100%
+		svg
+			width: 100%
+			height: 100%
+			.draw-arrow 
+				stroke-width: 5
+				stroke: $accent-color
+				fill: none
+				
+				stroke-dasharray: 1000
+	
+				animation-duration: .5s
+				animation-fill-mode: both
+				animation-name: draw
+				&.tail-1 
+					animation-delay: .5s
+				&.tail-2 
+					animation-delay: .7s
+					
+			@keyframes draw 
+				from
+					stroke-dashoffset: 3000
+				to
+					stroke-dashoffset: 2000
+	
 	&-btn
+		+flex
+		+justify-content(space-between)
+		+flex-direction(column)
 		min-width: 100px
+		min-height: 847px
 		border-left: 1px solid $bg-color2
 		&-close
 			+flex
 			+align-items(center)
 			+justify-content(space-around)
-
+		
 
 			min-height: 100px
 			text-transform: uppercase
@@ -45,7 +84,6 @@
 			+flex
 			+align-items(center)
 			+justify-content(space-around)
-			
 			height: 100%
 			cursor: pointer
 			text-transform: uppercase
@@ -53,35 +91,64 @@
 			
 			&:hover
 				background: $bg-dlight-color
+				
+			&.disabled
+				opacity: 0.3
+				&:hover
+					background: $bg-color
+				
+			
+		&-back
+			+flex
+			+align-items(center)
+			+justify-content(space-around)
+			cursor: pointer
+			min-height: 100px
+			text-transform: uppercase
+			color: $font-light-color
+			&:hover
+				background: $bg-dlight-color
+			&.disabled
+				opacity: 0.3
+				&:hover
+					background: $bg-color
+					
+	&-slider-controls
+		position: absolute
+		
+		left: 50%
+		text-align: center
+		transform: translateX(-50%)
+		transition-timing-function: ease-out
+		z-index: 1002
+		
+		& label 
+			display: inline-block
+			width: 15px
+			height: 15px
+			margin: 0 3px
+			background-color: $font-light-color
+			border: 2px solid $white
+			border-radius: 50%
+			box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.8)
+			transition: background-color 0.2s
+			cursor: pointer
+			
+			&.checked
+				background-color: $bg-default-color
+		
+		& input[type=radio] 
+			display: none
+				
 	
 	&-1
 		+flex
+		width: 100%
 		&-wrap
 			width: 100%
 			margin:
 				left: 305px
 				top: 50px
-			svg
-				position: fixed		
-				.draw-arrow 
-					stroke-width: 5
-					stroke: $accent-color
-					fill: none
-					visibility: hidden
-					stroke-dasharray: 1000
-
-					animation-duration: 500ms
-					animation-fill-mode: both
-					animation-name: draw
-				
-				@keyframes draw 
-					from
-						visibility: hidden
-						stroke-dashoffset: 1000
-					to
-						visibility: visible
-						stroke-dashoffset: 2000
-
 
 			:nth-child(1)
 				animation: drop-in 1s ease 200ms backwards
@@ -92,6 +159,10 @@
 				width: 668px
 				.draw-arrow 
 					animation-delay: 500ms
+					&.tail-1 
+						animation-delay: 1000ms
+					&.tail-2 
+						animation-delay: 1200ms
 				
 			:nth-child(3)
 				animation: drop-in 1s ease 500ms backwards
@@ -105,6 +176,10 @@
 				height: 90px
 				.draw-arrow 
 					animation-delay: 800ms
+					&.tail-1 
+						animation-delay: 1300ms
+					&.tail-2 
+						animation-delay: 1500ms
 					
 			:nth-child(5)
 				animation: drop-in 1s ease 800ms backwards
@@ -118,6 +193,10 @@
 				height: 90px
 				.draw-arrow 
 					animation-delay: 1000ms
+					&.tail-1 
+						animation-delay: 1200ms
+					&.tail-2 
+						animation-delay: 1500ms
 					
 			:nth-child(7)
 				animation: drop-in 1s ease 1000ms backwards
@@ -131,7 +210,10 @@
 				height: 90px
 				.draw-arrow 
 					animation-delay: 1200ms
-					
+					&.tail-1 
+						animation-delay: 1500ms
+					&.tail-2 
+						animation-delay: 1800ms
 			:nth-child(9)
 				animation: drop-in 1s ease 1200ms backwards
 				margin:
@@ -144,6 +226,10 @@
 				height: 90px
 				.draw-arrow 
 					animation-delay: 1500ms
+					&.tail-1 
+						animation-delay: 1800ms
+					&.tail-2 
+						animation-delay: 2000ms
 					
 			:nth-child(11)
 				animation: drop-in 1s ease 1500ms backwards
@@ -157,6 +243,10 @@
 				height: 90px
 				.draw-arrow 
 					animation-delay: 1600ms
+					&.tail-1 
+						animation-delay: 2000ms
+					&.tail-2 
+						animation-delay: 2200ms
 					
 			@keyframes drop-in
 				from
@@ -166,42 +256,23 @@
 				to
 					opacity: 1
 					transform: translate(0px)
-				
 		
 	&-2
 		+flex
+		width: 100%
 		&-wrap
 			width: 100%
 			.help-box
 				margin: 
 					left: 300px
 					top:200px
-			svg
-				position: fixed		
-				.draw-arrow 
-					stroke-width: 5
-					stroke: $accent-color
-					fill: none
-					visibility: hidden
-					stroke-dasharray: 1000
-
-					animation-duration: 500ms
-					animation-fill-mode: both
-					animation-name: draw
-				
-				@keyframes draw 
-					from
-						visibility: hidden
-						stroke-dashoffset: 1000
-					to
-						visibility: visible
-						stroke-dashoffset: 2000
+			
 			
 			:nth-child(2)
 				animation: drop-in 1s ease 200ms backwards
 			:nth-child(3)
-				top: 293px
-				left: 77px
+				top: 164px
+				left: 242px
 				width: 668px
 				.draw-arrow  
 					animation-delay: 500ms
@@ -214,3 +285,91 @@
 				.draw-arrow  
 					animation-delay: 500ms
 		
+	&-3
+		+flex
+		width: 100%
+		&-wrap
+			width: 100%
+			.help-box
+				margin: 
+					left: 300px
+					top:200px
+			
+			:nth-child(2)
+				animation: drop-in 1s ease 200ms backwards
+			:nth-child(3)
+				top: 210px
+				left: 247px
+				width: 668px
+				.draw-arrow  
+					animation-delay: 500ms
+	&-4
+		+flex
+		width: 100%
+		&-wrap
+			width: 100%
+			.help-box
+				margin: 
+					left: 300px
+					top:200px
+			
+			:nth-child(2)
+				animation: drop-in 1s ease 200ms backwards
+			:nth-child(3)
+				top: 259px
+				left: 246px
+				width: 668px
+				.draw-arrow  
+					animation-delay: 500ms
+	&-5
+		+flex
+		width: 100%
+		&-wrap
+			width: 100%
+			.help-box
+				margin: 
+					left: 300px
+					top:200px
+			
+			:nth-child(2)
+				animation: drop-in 1s ease 200ms backwards
+			:nth-child(3)
+				top: 392px
+				left: 246px
+				width: 668px
+				.draw-arrow  
+					animation-delay: 500ms
+	&-6
+		+flex
+		width: 100%
+		&-wrap
+			width: 100%
+			.left
+				position: fixed
+				left: 800px
+				top: 100px
+			:nth-child(1)
+				margin: 0 auto
+			:nth-child(2)
+				margin-left: 20px
+			:nth-child(4)
+				top: 145px
+				left: 1019px
+				width: 363px
+				.draw-arrow  
+					animation-delay: 500ms
+			:nth-child(5)
+				margin:
+					top: 20px
+					left: 350px
+			:nth-child(6)
+				margin:
+					top: 20px
+					left: 150px
+			:nth-child(7)
+				top: 603px
+				left: 116px
+				width: 313px
+				.draw-arrow  
+					animation-delay: 800ms
+			
