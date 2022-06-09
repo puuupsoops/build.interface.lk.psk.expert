@@ -4,7 +4,8 @@
 		
 		<div class="help-2-wrap">
 			<img src="@/assets/img/help/help2_2.png"/>
-			<div class="help-box"> 
+			
+			<div class="help-box el2"> 
 				<div class="help-box-title">Мои компании</div>
 				<div class="help-box-text">Раздел компаний контрагента 
 					кнопоки компании дублируются
@@ -13,7 +14,8 @@
 					состояния
 				</div>
 			</div>
-			<div  class="help-svg" >
+			
+			<div class="help-svg el3" >
 				<svg 
 					xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
 					<line 
@@ -27,7 +29,8 @@
 						d="M 438.136 249.306 L 406.2966666666667 248.87749999999997 C 374.45733333333334 248.44899999999998 310.77866666666665 247.592 268.065 208.703 C 225.35133333333332 169.814 203.60266666666666 92.89300000000001 163.24933333333334 53.96933333333333 C 122.89600000000002 15.045666666666667 63.93800000000001 14.119333333333332 34.458999999999996 13.656166666666666 L 4.98 13.193" data-bx-d="M 438.136 249.306 U 247.1 246.735 U 181.854 15.972 U 4.98 13.193 1@efc388bc"/>
 				</svg>
 			</div>
-			<div  class="help-svg" >
+			
+			<div class="help-svg el4" >
 				<svg
 					xmlns="http://www.w3.org/2000/svg">
 					<line 

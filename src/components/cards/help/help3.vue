@@ -3,8 +3,10 @@
 		<img src="@/assets/img/help/help3_1.png"/>
 		
 		<div class="help-3-wrap">
+		
 			<img src="@/assets/img/help/help3_2.png"/>
-			<div class="help-box"> 
+			
+			<div class="help-box el2"> 
 				<div class="help-box-title">Рабочий стол</div>
 				<div class="help-box-text">
 					
@@ -14,7 +16,7 @@
 				</div>
 			</div>
 
-			<div  class="help-svg" >
+			<div  class="help-svg el3" >
 				<svg
 					xmlns="http://www.w3.org/2000/svg">
 					<line 

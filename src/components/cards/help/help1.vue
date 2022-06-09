@@ -2,11 +2,13 @@
 	<div class="help-1">
 		<img src="@/assets/img/help/help1.png"/>
 		<div class="help-1-wrap">
-			<div class="help-box"> 
+		
+			<div class="help-box el1"> 
 				<div class="help-box-title">Главная страница</div>
 				<div class="help-box-text">Новости, статьи, новинки</div>
 			</div>
-			<div class="help-svg">
+			
+			<div class="help-svg el2">
 				<svg
 					xmlns="http://www.w3.org/2000/svg">
 					<line 
@@ -21,11 +23,12 @@
 				</svg>
 			</div>
 			
-			<div class="help-box "> 
+			<div class="help-box el3"> 
 				<div class="help-box-title">Поиск</div>
 				<div class="help-box-text">Поиск товар</div>
 			</div>
-			<div class="help-svg">
+			
+			<div class="help-svg el4">
 				<svg 
 					xmlns="http://www.w3.org/2000/svg">
 					<line 
@@ -40,11 +43,12 @@
 				</svg>
 			</div>
 			
-			<div class="help-box"> 
+			<div class="help-box el5"> 
 				<div class="help-box-title">Новый заказ</div>
 				<div class="help-box-text">Оформление заказ, черновика</div>
 			</div>
-			<div class="help-svg">
+			
+			<div class="help-svg el6">
 				<svg 
 					xmlns="http://www.w3.org/2000/svg">
 					<line 
@@ -59,11 +63,12 @@
 				</svg>
 			</div>
 			
-			<div class="help-box"> 
+			<div class="help-box el7"> 
 				<div class="help-box-title">Журнал заказов</div>
 				<div class="help-box-text">Отображение всех заказов</div>
 			</div>
-			<div class="help-svg">
+			
+			<div class="help-svg el8">
 				<svg 
 					xmlns="http://www.w3.org/2000/svg">
 					<line 
@@ -78,11 +83,12 @@
 				</svg>
 			</div>
 			
-			<div class="help-box"> 
+			<div class="help-box el9"> 
 				<div class="help-box-title">Журнал претензий</div>
 				<div class="help-box-text">Отображение всех претензий</div>
 			</div>
-			<div class="help-svg">
+			
+			<div class="help-svg el10">
 				<svg
 					xmlns="http://www.w3.org/2000/svg">
 					<line 
@@ -97,11 +103,12 @@
 				</svg>
 			</div>
 			
-			<div class="help-box"> 
+			<div class="help-box el11"> 
 				<div class="help-box-title">Заявка на транспорт</div>
 				<div class="help-box-text">Заявка на транспорт, на отгрузку</div>
 			</div>
-			<div class="help-svg">
+			
+			<div class="help-svg el12">
 				<svg  
 					xmlns="http://www.w3.org/2000/svg" >
 					<line 

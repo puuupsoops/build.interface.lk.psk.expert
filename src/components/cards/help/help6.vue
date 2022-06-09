@@ -2,18 +2,19 @@
 	<div class="help-6">
 		<img src="@/assets/img/help/menu.png"/>
 		<div class="help-6-wrap">
-			<div class="help-box noborder"> 
+			<div class="help-box el1 noborder"> 
 				<div class="help-box-title">Карточка товара</div>
 			</div>
 			
-			<img src="@/assets/img/help/help6_1.png"/>
+			<img class="el2" src="@/assets/img/help/help6_1.png"/>
 		
-			<div class="help-box left">
+			<div class="help-box el3 left">
 				<div class="help-box-text">
 					В карточку товара можно зайти из Электронного каталога	найти необходимый товар и нажать кнопку «К описанию»
 				</div>
 			</div>
-			<div  class="help-svg" >
+			
+			<div class="help-svg el4" >
 				<svg
 					xmlns="http://www.w3.org/2000/svg">
 					<line 
@@ -28,15 +29,15 @@
 				</svg>
 			</div>
 			
-			<div class="help-box ">
+			<div class="help-box el5">
 				<div class="help-box-text">
 					Нажать на искомый товар или клавишу Ввода
 				</div>
 			</div>
 					
-			<img src="@/assets/img/help/help6_2.png"/>
+			<img class="el6" src="@/assets/img/help/help6_2.png"/>
 			
-			<div  class="help-svg" >
+			<div class="help-svg el7" >
 				<svg
 					xmlns="http://www.w3.org/2000/svg">
 					<line 
