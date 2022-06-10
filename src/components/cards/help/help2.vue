@@ -1,11 +1,12 @@
 <template>
 	<div class="help-2">
-		<img src="@/assets/img/help/help2_1.png"/>
 		
 		<div class="help-2-wrap">
-			<img src="@/assets/img/help/help2_2.png"/>
+			<img class="el1" src="@/assets/img/help/help2_1.png"/>
 			
-			<div class="help-box el2"> 
+			<img class="el2" src="@/assets/img/help/help2_2.png"/>
+			
+			<div class="help-box el3"> 
 				<div class="help-box-title">Мои компании</div>
 				<div class="help-box-text">Раздел компаний контрагента 
 					кнопоки компании дублируются
@@ -15,7 +16,7 @@
 				</div>
 			</div>
 			
-			<div class="help-svg el3" >
+			<div class="help-svg el4" >
 				<svg 
 					xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
 					<line 
@@ -30,7 +31,7 @@
 				</svg>
 			</div>
 			
-			<div class="help-svg el4" >
+			<div class="help-svg el5" >
 				<svg
 					xmlns="http://www.w3.org/2000/svg">
 					<line 

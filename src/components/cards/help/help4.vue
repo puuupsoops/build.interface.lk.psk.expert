@@ -1,11 +1,13 @@
 <template>
 	<div class="help-4">
-		<img src="@/assets/img/help/help4_1.png"/>
+		
 		
 		<div class="help-4-wrap">
-			<img src="@/assets/img/help/help3_2.png"/>
+			<img class="el1" src="@/assets/img/help/help4_1.png"/>
 			
-			<div class="help-box el2"> 
+			<img class="el2" src="@/assets/img/help/help3_2.png"/>
+			
+			<div class="help-box el3"> 
 				<div class="help-box-title">Логистика</div>
 				<div class="help-box-text">
 					
@@ -15,7 +17,7 @@
 				</div>
 			</div>
 
-			<div  class="help-svg el3" >
+			<div  class="help-svg el4" >
 				<svg
 					xmlns="http://www.w3.org/2000/svg">
 					<line 

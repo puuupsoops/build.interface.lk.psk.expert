@@ -1,6 +1,7 @@
 <template>
 	<div class="help-1">
-		<img src="@/assets/img/help/help1.png"/>
+		
+		
 		<div class="help-1-wrap">
 		
 			<div class="help-box el1"> 

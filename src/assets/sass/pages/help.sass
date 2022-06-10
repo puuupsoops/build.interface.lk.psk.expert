@@ -5,7 +5,7 @@
 	right: 0
 	bottom: 0
 	z-index: 1001
-	background: rgba(0,0,0,1)
+	// background: rgba(0,0,0,1)
 	
 	&-wrap
 		+flex
@@ -159,7 +159,7 @@
 		&-wrap
 			width: 100%
 			margin:
-				left: 305px
+				left: 687px
 				top: 50px
 			.help-svg
 				height: 90px
@@ -256,21 +256,25 @@
 		width: 100%
 		&-wrap
 			width: 100%
-			.help-box
-				margin: 
-					left: 300px
-					top:200px
-			
+				
+			& .el1
+				margin-left: 70px
 			& .el2
-				animation: drop-in 1s ease 200ms backwards
+				position: absolute
+				top: 0px
 			& .el3
+				position: absolute
+				left: 683px
+				top: 330px
+				animation: drop-in 1s ease 200ms backwards
+			& .el4
 				top: 164px
 				left: 242px
 				width: 446px
 				height: 257px
 				.draw-arrow  
 					animation-delay: 500ms
-			& .el4
+			& .el5
 				top: 98px
 				left: 805px
 				height: 331px
@@ -283,20 +287,21 @@
 		width: 100%
 		&-wrap
 			width: 100%
-			.help-box
-				margin: 
-					left: 300px
-					top: 200px
-			.help-svg
-				height: 230px
-			
+			& .el1
+				margin-left: 70px
 			& .el2
-				animation: drop-in 1s ease 200ms backwards
+				position: absolute
+				top: 0px
 			& .el3
+				position: absolute
+				left: 683px
+				top: 330px
+				animation: drop-in 1s ease 200ms backwards
+			& .el4
 				top: 210px
 				left: 247px
 				width: 668px
-
+				height: 230px
 				.draw-arrow  
 					animation-delay: 500ms
 	
@@ -305,19 +310,21 @@
 		width: 100%
 		&-wrap
 			width: 100%
-			.help-box
-				margin: 
-					left: 300px
-					top:200px
-			.help-svg
-				height: 230px
-				
+			& .el1
+				margin-left: 70px
 			& .el2
-				animation: drop-in 1s ease 200ms backwards
+				position: absolute
+				top: 0px
 			& .el3
+				position: absolute
+				left: 683px
+				top: 330px
+				animation: drop-in 1s ease 200ms backwards
+			& .el4
 				top: 259px
 				left: 246px
 				width: 668px
+				height: 230px
 				.draw-arrow  
 					animation-delay: 500ms
 	
@@ -326,19 +333,21 @@
 		width: 100%
 		&-wrap
 			width: 100%
-			.help-box
-				margin: 
-					left: 300px
-					top:200px
-			.help-svg
-				height: 230px
-
+			& .el1
+				margin-left: 70px
 			& .el2
-				animation: drop-in 1s ease 200ms backwards
+				position: absolute
+				top: 0px
 			& .el3
+				position: absolute
+				left: 683px
+				top: 330px
+				animation: drop-in 1s ease 200ms backwards
+			& .el4
 				top: 392px
 				left: 246px
 				width: 668px
+				height: 230px
 				.draw-arrow  
 					animation-delay: 500ms
 	
@@ -347,24 +356,22 @@
 		width: 100%
 		&-wrap
 			width: 100%
-			.left
+
+			& .el1
+				margin: 0 auto
+				animation: drop-in 1s ease 0ms backwards
+			& .el2
+				margin-left: 90px
+			& .el3
 				position: absolute
 				left: 800px
 				top: 100px
-			.help-svg
-				height: 345px
-				
-			& .el1
-				margin: 0 auto
-				animation: drop-in 1s ease 400ms backwards
-			& .el2
-				margin-left: 20px
-			& .el3
 				animation: drop-in 1s ease 600ms backwards
 			& .el4
 				top: 145px
 				left: 1019px
 				width: 363px
+				height: 345px
 				.draw-arrow  
 					animation-delay: 1000ms
 					&.tail-1 
@@ -374,16 +381,17 @@
 			& .el5
 				margin:
 					top: 20px
-					left: 350px
+					left: 420px
 				animation: drop-in 1s ease 800ms backwards
 			& .el6
 				margin:
-					top: 20px
-					left: 150px
+					top: 15px
+					left: 220px
 			& .el7
 				top: 603px
-				left: 116px
+				left: 114px
 				width: 313px
+				height: 345px
 				.draw-arrow  
 					animation-delay: 1200ms
 					&.tail-1 
@@ -396,13 +404,14 @@
 		width: 100%
 		&-wrap
 			width: 100%
+			& .el1
+				margin-left: 70px
 			& .el2
 				position: absolute
 				top: 0
 				left: 55%
 				text-align: center
-				transform: translateX(-50%)
-				animation: drop-in 1s ease 200ms backwards
+				animation: drop-in 1s ease 000ms backwards
 			& .el3
 				position: absolute
 				top: 300px
@@ -501,3 +510,106 @@
 				width: 422px
 				.draw-arrow  
 					animation-delay: 000ms
+	
+	&-8
+		+flex
+		width: 100%
+		&-wrap
+			width: 100%
+			& .el1
+				margin-left: 70px
+			& .el2
+				position: absolute
+				top: 0
+				left: 55%
+				text-align: center
+				animation: drop-in 1s ease 0ms backwards
+			& .el3
+				position: absolute
+				top: 115px
+				left: 985px
+				animation: drop-in 1s ease 500ms backwards
+			& .el4
+				position: absolute
+				top: 480px
+				left: 1100px
+				animation: drop-in 1s ease 1000ms backwards
+			& .el5
+				position: absolute
+				top: 480px
+				left: 450px
+				animation: drop-in 1s ease 1500ms backwards
+			& .el6
+				top: 199px
+				left: 1266px
+				height: 326px
+				width: 215px
+				.draw-arrow  
+					animation-delay: 1500ms
+					&.tail-1 
+						animation-delay: 1700ms
+					&.tail-2 
+						animation-delay: 1700ms
+			& .el7
+				top: 455px
+				left: 18px
+				height: 326px
+				width: 438px
+				.draw-arrow  
+					animation-delay: 2000ms
+					&.tail-1 
+						animation-delay: 2100ms
+					&.tail-2 
+						animation-delay: 2300ms
+
+	&-9
+		+flex
+		width: 100%
+		&-wrap
+			width: 100%
+			& .el1
+				margin: 0 auto
+				animation: drop-in 1s ease 0ms backwards
+			& .el2
+				margin:
+					left: 90px
+			& .el3
+				position: absolute
+				left: 800px
+				top: 100px
+				animation: drop-in 1s ease 500ms backwards
+			& .el4
+				top: 141px
+				left: 1147px
+				width: 363px
+				height: 356px
+				.draw-arrow  
+					animation-delay: 1000ms
+					&.tail-1 
+						animation-delay: 1300ms
+					&.tail-2 
+						animation-delay: 1700ms
+			& .el5
+				margin:
+					top: 100px
+					left: 170px
+					bottom: 100px
+			& .el6
+				position: absolute
+				left: 300px
+				top: 560px
+				animation: drop-in 1s ease 0ms backwards
+
+			& .el7
+				top: 602px
+				left: 645px
+				height: 585px
+				width: 381px
+				.draw-arrow  
+					animation-delay: 700ms
+					&.tail-1 
+						animation-delay: 1000ms
+					&.tail-2 
+						animation-delay: 1300ms
+
+

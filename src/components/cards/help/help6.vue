@@ -1,6 +1,6 @@
 <template>
 	<div class="help-6">
-		<img src="@/assets/img/help/menu.png"/>
+
 		<div class="help-6-wrap">
 			<div class="help-box el1 noborder"> 
 				<div class="help-box-title">Карточка товара</div>
@@ -8,7 +8,7 @@
 			
 			<img class="el2" src="@/assets/img/help/help6_1.png"/>
 		
-			<div class="help-box el3 left">
+			<div class="help-box el3">
 				<div class="help-box-text">
 					В карточку товара можно зайти из Электронного каталога	найти необходимый товар и нажать кнопку «К описанию»
 				</div>
