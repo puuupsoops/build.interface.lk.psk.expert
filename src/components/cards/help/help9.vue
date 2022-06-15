@@ -80,6 +80,7 @@ export default defineComponent({
 		})
 		onBeforeUnmount(() => { window.removeEventListener("scroll", onScroll)});
 		onMounted(() => {
+				window.scrollTo(0,0)
 				window.addEventListener("scroll", onScroll);
 		})
 		return{

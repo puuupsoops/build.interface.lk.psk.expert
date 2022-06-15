@@ -169,9 +169,16 @@ export default defineComponent({
 			if (data.value.scroll >= 800 ) data.value.scroll800 = true
 			if (data.value.scroll >= 1100 ) data.value.scroll1100 = true
 		})
-		onBeforeUnmount(() => { window.removeEventListener("scroll", onScroll)});
+		onBeforeUnmount(() => { window.removeEventListener("scroll", onScroll)})
 		onMounted(() => {
-				window.addEventListener("scroll", onScroll);
+				window.scrollTo(0,0)
+				window.addEventListener("scroll", onScroll)
+				data.value.scroll100 = false
+				data.value.scroll200 = false
+				data.value.scroll500 = false
+				data.value.scroll800 = false
+				data.value.scroll1100 = false
+
 		})
 		return{
 			data

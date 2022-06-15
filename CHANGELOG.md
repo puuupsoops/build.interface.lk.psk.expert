@@ -1,4 +1,10 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-06-15
+
+    #0.2.16
+    1. Работа над разделом help
+    
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-06-09
 
     #0.2.15
