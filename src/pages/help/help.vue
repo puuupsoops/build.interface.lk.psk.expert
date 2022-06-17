@@ -52,6 +52,7 @@ import help7 from '@/components/cards/Help/help7.vue'
 import help8 from '@/components/cards/Help/help8.vue'
 import help9 from '@/components/cards/Help/help9.vue'
 import help10 from '@/components/cards/Help/help10.vue'
+import help11 from '@/components/cards/Help/help11.vue'
 
 export default defineComponent({
 	components: {
@@ -65,11 +66,12 @@ export default defineComponent({
 		help8,
 		help9,
 		help10,
+		help11,
 	},
 	setup(){
 		const data = ref({
 			card: 1,
-			max_card: 10,
+			max_card: 11,
 		})
 	
 		return{
