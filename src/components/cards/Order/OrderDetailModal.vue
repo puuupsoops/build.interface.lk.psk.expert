@@ -31,8 +31,17 @@
 					<a href="#" @click="$emit('update:repeatOrder', false)">Нет</a>
 				</div>
 			</div>	
-			<div class="order-modal-action" v-else>
+			<div v-if="editOrder" class="shipment-address-list-row-info" >
+				<div>Изменить позиции заказа? (Временно не работает)</div>
+				<div>
+					<!-- <a href="#" @click="setOrderToEdit()">Да</a> -->
+					<a href="#">Да</a>
+					<a href="#" @click="$emit('update:editOrder', false)">Нет</a>
+				</div>
+			</div>	
+			<div class="order-modal-action" v-if="!repeatOrder && !editOrder">
 				<button @click="$emit('update:repeatOrder', true)" class="order-list-btn">Повторить заказ</button>
+				<button @click="$emit('update:editOrder', true)"   class="order-list-btn">Изменить заказ</button>
 			</div>
 		</div>
 	</div>
@@ -73,9 +82,13 @@ export default defineComponent({
 		repeatOrder: {
 			type: Boolean,
 			default: false
+		},
+		editOrder: {
+			type: Boolean,
+			default: false
 		}
 	},
-	emits: ['update:modelValue', 'update:repeatOrder'],
+	emits: ['update:modelValue', 'update:repeatOrder', 'update:editOrder'],
 	setup(props, { emit }){
 		const store = useStore(key)
 		const router = useRouter()
@@ -90,6 +103,7 @@ export default defineComponent({
 		});
 		const close = () => {
 			emit('update:repeatOrder', false)
+			emit('update:editOrder', false)
 			emit('update:modelValue', false)
 		};
 		watch( ()=>props.orderId, ()=>{
@@ -102,6 +116,10 @@ export default defineComponent({
 		
 		const  setOrder = async () => {
 			await store.commit(OrderMutations.CREATE_ORDER_FROM_DETAIL)
+			router.push({name: 'Order'})
+		}
+		const setOrderToEdit = async () => {
+			await store.commit(OrderMutations.EDIT_ORDER)
 			router.push({name: 'Order'})
 		}
 		
@@ -119,6 +137,7 @@ export default defineComponent({
 			//methods
 			close,
 			setOrder,
+			setOrderToEdit,
 		}
 	}
 })

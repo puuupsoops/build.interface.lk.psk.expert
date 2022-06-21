@@ -1,4 +1,10 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-06-21
+
+    #0.2.18
+    1. Добавлен пункт изменить заказ. Временно отключен, ждем появления ендпоинта в бекенде.
+    
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-06-17
 
     #0.2.17

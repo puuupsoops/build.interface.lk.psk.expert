@@ -7,5 +7,6 @@ export const state: OrderState = {
 	partner_id: '',
 	order_drafts: OrderDraftsSaved,
 	order_detail: Object.assign({}, DefaultOrder),
+	order_is_edit: false,
 }
 

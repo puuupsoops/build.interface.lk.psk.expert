@@ -95,8 +95,9 @@
 							<div
 								:class="'orders-list-more-dropdown' +  ( key == active_more ? ' active': '' )"
 							>
-								<a class="orders-list-more-dropdown-link" @click.stop="detailOrderId = item.n; showDetail=true; repeatOrder=true;" >Повторить заказ</a>
 								<a class="orders-list-more-dropdown-link" @click.stop="detailOrderId = item.n; showDetail=true" >Детали заказа</a>
+								<a class="orders-list-more-dropdown-link" @click.stop="detailOrderId = item.n; showDetail=true; editOrder=false;repeatOrder=true;" >Повторить заказ</a>
+								<a class="orders-list-more-dropdown-link" @click.stop="detailOrderId = item.n; showDetail=true; editOrder=true;repeatOrder=false;" >Изменить заказ</a>
 								<a class="orders-list-more-dropdown-link" >Скачать документы</a>
 								<a class="orders-list-more-dropdown-link" >Скачать сертификаты</a>
 								<a class="orders-list-more-dropdown-link" @click.stop="setClaimOrderId(item.n)">Оформить претензию</a>
@@ -229,6 +230,7 @@
 		v-model="showDetail" 
 		:orderId="detailOrderId" 
 		v-model:repeatOrder="repeatOrder"
+		v-model:editOrder="editOrder"
 	></OrderDetailModal>
 </div>
 </template>
@@ -302,6 +304,7 @@ export default defineComponent({
 			{name: 'date', value: '', show: false},
 		])
 		const repeatOrder = ref(false)
+		const editOrder = ref(false)
 		
 		onClickOutside(target, () => {
 			active_more.value = -1
@@ -449,6 +452,7 @@ export default defineComponent({
 			OrdersSatusCode,
 			filter,
 			repeatOrder,
+			editOrder,
 			docLocation: process.env.VUE_APP_DOC_LOCATION,
 			//computed
 			data_filtred,

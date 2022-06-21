@@ -15,6 +15,7 @@ const getCompanyDiscount = (uid: string, guid: string, status: string): number =
 export enum OrderMutations {
 	CREATE_ORDER = "CREATE_ORDER",
 	CREATE_ORDER_FROM_DETAIL = "CREATE_ORDER_FROM_DETAIL",
+	EDIT_ORDER = "EDIT_ORDER",
 	ADD_POSITION = "ADD_POSITION",
 	REMOVE_POSITION = "REMOVE_POSITION",
 	REMOVE_POSITION_PRESAIL = "REMOVE_POSITION_PRESAIL",
@@ -285,6 +286,11 @@ export const mutations: MutationTree<OrderState> = {
 	[OrderMutations.CREATE_ORDER_FROM_DETAIL](state): void{
 		state.order = Object.assign({}, state.order_detail) 
 		state.order.id = (new Date()).getTime()
+		state.error = null;
+		
+	},
+	[OrderMutations.EDIT_ORDER](state): void{
+		state.order = Object.assign({}, state.order_detail)
 		state.error = null;
 		
 	},

@@ -8,6 +8,7 @@ export interface OrderState {
 	error:          string|null;
 	partner_id:     string;
 	order_detail:   OrderStateOrder;
+	order_is_edit:  Boolean;
 }
 
 export interface OrderStateOrder {
