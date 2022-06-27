@@ -1,6 +1,6 @@
 {
   "name": "lk.psk.expert",
-  "version": "0.2.18",
+  "version": "0.2.19",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -17,6 +17,7 @@
     "axios": "^0.21.4",
     "vee-validate": "^4.5.4",
     "vue": "^3.2.37",
+    "vue-native-websocket-vue3": "^3.1.5",
     "vue-router": "^4.0.16",
     "vuex": "^4.0.2",
     "yup": "^0.32.11"

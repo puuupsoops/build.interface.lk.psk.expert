@@ -32,7 +32,7 @@
 						<div class="order-list-elem"> <span v-html = "item.product.NAME"></span></div>		
 						<div class="order-list-elem"></div>
 						<div class="order-list-elem">{{ item.count }}</div>
-						<div class="order-list-elem" v-if="item.total">{{ Number(item.total).toLocaleString() }} ₽</div><div class="order-list-elem" v-else> -- </div>
+						<div class="order-list-elem" v-if="item.total">{{ Number(item.total).toLocaleString('ru') }} ₽</div><div class="order-list-elem" v-else> -- </div>
 
 						<div class="order-list-elem">
 							{{item.characteristics.filter(x => x.select>0).length}}
@@ -47,9 +47,9 @@
 								<div class="order-list-elem"></div>
 								<div class="order-list-elem"></div>
 								<div class="order-list-elem">{{ characteristic.CHARACTERISTIC }}</div>
-								<div class="order-list-elem" v-if="characteristic.PRICE">{{  Number(characteristic.PRICE).toLocaleString() }} ₽</div><div class="order-list-elem" v-else> -- </div>
+								<div class="order-list-elem" v-if="characteristic.PRICE">{{  Number(characteristic.PRICE).toLocaleString('ru') }} ₽</div><div class="order-list-elem" v-else> -- </div>
 								<div class="order-list-elem"> <span>{{characteristic.count}}</span></div>
-								<div class="order-list-elem" v-if="characteristic.PRICE">{{ Number(characteristic.PRICE * characteristic.count).toLocaleString() }} ₽</div><div class="order-list-elem" v-else> -- </div>
+								<div class="order-list-elem" v-if="characteristic.PRICE">{{ Number(characteristic.PRICE * characteristic.count).toLocaleString('ru') }} ₽</div><div class="order-list-elem" v-else> -- </div>
 						
 								<div class="order-list-elem">
 									<amount-input :max="characteristic.count" v-model="characteristic.select" @onInput="upd"></amount-input>

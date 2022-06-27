@@ -47,18 +47,18 @@ export const getters: GetterTree<CompanyState, RootState> = {
 						"contract": val.contract,
 						"deferment": val.deferment,
 						"debt": val.debt,
-						"debt_str": Number(val.debt).toLocaleString(),
+						"debt_str": Number(val.debt).toLocaleString('ru'),
 						"balance": val.balance,
-						"balance_str": Number(val.balance).toLocaleString(),
+						"balance_str": Number(val.balance).toLocaleString('ru'),
 						"discount": val.discount,
-						"date": new Date(Number(val.date) * 1000).toLocaleString().substr(0, 10),
+						"date": new Date(Number(val.date) * 1000).toLocaleString('ru').substr(0, 10),
 						"documents": val.documents.map( doc =>
 							({
-								"date_str": new Date(Number(doc.date) * 1000).toLocaleString().substr(0, 10),
+								"date_str": new Date(Number(doc.date) * 1000).toLocaleString('ru').substr(0, 10),
 								"date": new Date(Number(doc.date) * 1000),
 								"number": doc.number,
 								"debt": doc.debt,
-								"expires_str": new Date(Number(doc.expires) * 1000).toLocaleString().substr(0, 10),
+								"expires_str": new Date(Number(doc.expires) * 1000).toLocaleString('ru').substr(0, 10),
 								"expires": new Date(Number(doc.expires) * 1000),
 							})
 							),

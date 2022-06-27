@@ -23,7 +23,7 @@
 		<div class="content-heading-wrap-elem">
 			<div class="content-heading-price"> 
 			<div class="content-heading-price-text">Оптовая цена: </div>
-			<div class="content-heading-price-value">{{ Number(price ? price : 0 ).toLocaleString() }} ₽</div>
+			<div class="content-heading-price-value">{{ Number(price ? price : 0 ).toLocaleString('ru') }} ₽</div>
 			</div>
 		</div>
 		<div class="content-heading-btn">

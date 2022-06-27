@@ -20,7 +20,7 @@ export const getters: GetterTree<OrdersState, RootState> = {
 			res = unique.map((x, index) => {
 				const start = new Date(parseInt(String(x).substring(3,7)), parseInt(String(x).substring(0,2))-1, 1 );
 				const end = (new Date(start.getFullYear(), start.getMonth()+1, 0));
-				const name = start.toLocaleString().substr(0,10) + ' - ' + end.toLocaleString().substr(0,10)
+				const name = start.toLocaleString('ru').substr(0,10) + ' - ' + end.toLocaleString('ru').substr(0,10)
 				return {
 					id: index+1,
 					name,

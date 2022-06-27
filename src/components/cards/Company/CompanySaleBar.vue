@@ -3,7 +3,7 @@
 	<div class="company-sale sale">
 		<div class="sale-head">
 			<div class="sale-title">Скидка {{discount.discount}} %</div>
-			<div class="sale-lacks" v-if="ostatok != Infinity">Не хватает <span>{{ostatok.toLocaleString().replace(',','.')}}&nbsp;₽</span> до скидки {{discount.next}} %</div>
+			<div class="sale-lacks" v-if="ostatok != Infinity">Не хватает <span>{{ostatok.toLocaleString('ru').replace(',','.')}}&nbsp;₽</span> до скидки {{discount.next}} %</div>
 
 		</div>
 		
@@ -14,7 +14,7 @@
 				<div class="sale-progressbar-line" :style="'width: '+ (progressInPercent) +'%'">
 					<div class="sale-progressbar-val">
 						<div>
-							<span class="sale-progressbar-val-money">({{spent.toLocaleString().replace(',','.')}}&nbsp;₽)</span>
+							<span class="sale-progressbar-val-money">({{spent.toLocaleString('ru').replace(',','.')}}&nbsp;₽)</span>
 							<span class="sale-progressbar-val-percent">{{progressInPercent.toFixed(2)}}%</span>
 						</div>
 					</div>
@@ -23,8 +23,8 @@
 		
 			</div>
 			<div class="sale-progressbar-money">
-				<div class="sale-progressbar-min">{{discount.progressMoneyMin.toLocaleString()}}</div>
-				<div class="sale-progressbar-max">{{discount.progressMoneyMax.toLocaleString()}}</div>
+				<div class="sale-progressbar-min">{{discount.progressMoneyMin.toLocaleString('ru')}}</div>
+				<div class="sale-progressbar-max">{{discount.progressMoneyMax.toLocaleString('ru')}}</div>
 			</div>
 		</div>
 			

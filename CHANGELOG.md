@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-06-27
+
+    #0.2.19
+    1. Добавлена поддержка WebSocket сервера
+    2. Добавлен компонент Notification
+    
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-06-21
 
     #0.2.18

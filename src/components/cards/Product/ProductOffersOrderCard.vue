@@ -19,7 +19,7 @@
 						<div class="table-elem"><span v-html="offer.CHARACTERISTIC"></span></div>
 						<div class="table-elem"><span v-html="offer.RESIDUE"></span></div>
 						<div class="table-elem" v-if="discount"> <span v-html="Number(offer.PRICE-(offer.PRICE/100)*discount ).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.')+ ' ₽'"></span></div>
-						<div class="table-elem" v-else><span v-html="Number(offer.PRICE).toLocaleString() + ' ₽'"></span></div>
+						<div class="table-elem" v-else><span v-html="Number(offer.PRICE).toLocaleString('ru') + ' ₽'"></span></div>
 						<div class="table-elem">
 							<AmountInput 
 								v-model="offer.count" 								

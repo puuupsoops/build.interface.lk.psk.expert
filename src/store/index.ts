@@ -11,7 +11,7 @@ import { orders } from './orders/index'
 import { shipments } from './shipments/index'
 import { claims } from './claims/index'
 import { keys } from './keys/index'
-
+import { wsStore } from '@/plugins/wsStore'
 
 // export default createStore({
 // 	modules:{
@@ -31,7 +31,6 @@ export interface RootState {}
 export const key: InjectionKey<Store<RootState>> = Symbol()
 
 
-
 export const store = createStore<RootState>({
 	state: {},
 	modules:{
@@ -45,6 +44,7 @@ export const store = createStore<RootState>({
 		orders,
 		shipments,
 		claims,
-		keys
+		keys,
+		wsStore,
 	}
 })

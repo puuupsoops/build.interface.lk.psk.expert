@@ -19,8 +19,8 @@
 		
 			<div class="company-card-balance">
 				<div class="company-card-balance-box">
-					<div v-if="(data.balance - data.debt)<0" class="company-head-info-elem l highlight">Задолженность: {{(data.balance - data.debt).toLocaleString().replace(',','.').substring(1)}} ₽</div>
-					<div v-else class="company-head-info-elem l highlight">Баланс: {{data.balance.toLocaleString().replace(',','.')}} ₽</div>
+					<div v-if="(data.balance - data.debt)<0" class="company-head-info-elem l highlight">Задолженность: {{(data.balance - data.debt).toLocaleString('ru').replace(',','.').substring(1)}} ₽</div>
+					<div v-else class="company-head-info-elem l highlight">Баланс: {{data.balance.toLocaleString('ru').replace(',','.')}} ₽</div>
 				</div>
 			</div>
 			
@@ -49,7 +49,7 @@
 		<div class="company-head-sale "  >
 			<div class="sale-val">
 				<span tooltip="Сумма отгрузок по договору" flow="up">
-					<span class="sale-val-money" >{{data.spent.toLocaleString().replace(',','.')}}  ₽</span>
+					<span class="sale-val-money" >{{data.spent.toLocaleString('ru').replace(',','.')}}  ₽</span>
 				</span>
 			</div>
 			<div :class="'company-card-showdoc' + ( showDoc ? ' active' : '')"
@@ -83,8 +83,8 @@
 		
 			<div class="company-card-balance">
 				<div class="company-card-balance-box">
-					<div v-if="(data.balance - data.debt)<0" class="company-head-info-elem l highlight">Задолженность: {{(data.balance - data.debt).toLocaleString().replace(',','.').substring(1)}} ₽</div>
-					<div v-else class="company-head-info-elem l highlight">Баланс: {{data.balance.toLocaleString().replace(',','.')}} ₽</div>
+					<div v-if="(data.balance - data.debt)<0" class="company-head-info-elem l highlight">Задолженность: {{(data.balance - data.debt).toLocaleString('ru').replace(',','.').substring(1)}} ₽</div>
+					<div v-else class="company-head-info-elem l highlight">Баланс: {{data.balance.toLocaleString('ru').replace(',','.')}} ₽</div>
 				</div>
 			</div>
 		
@@ -109,7 +109,7 @@
 		<div class="company-head-sale "  >
 			<div class="sale-val">
 				<span tooltip="Сумма отгрузок по договору" flow="up">
-					<span class="sale-val-money" >{{data.spent.toLocaleString().replace(',','.')}}  ₽</span>
+					<span class="sale-val-money" >{{data.spent.toLocaleString('ru').replace(',','.')}}  ₽</span>
 				</span>
 			</div>
 			<div :class="'company-card-showdoc' + ( showDoc ? ' active' : '')"

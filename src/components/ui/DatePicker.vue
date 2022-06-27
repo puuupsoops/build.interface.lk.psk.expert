@@ -99,7 +99,7 @@ export default defineComponent({
 	
 		onClickOutside(target, () => active.value=false);
 	
-		const dateText = computed(()=>props.modelValue ? props.modelValue.toLocaleString().substr(0, 10) : '');
+		const dateText = computed(()=>props.modelValue ? String(props.modelValue).toLocaleString().substr(0, 10) : '');
 		const genDay = computed( () => {
 			//вернет массив с датами за текущий месяц + дельта
 			let now = new Date();

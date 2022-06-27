@@ -1,7 +1,7 @@
 <template>
 <div>
 		<div class="top-line main-page">
-				
+
 				<Notification />
 				<PersonalBar />
 		</div>
@@ -52,6 +52,8 @@ export default defineComponent({
 	},
 	setup(){
 		const store = useStore(key);
+
+
 		const loading = ref(false);
 		onMounted(() => {
 			if (!store.getters.isCompanysLoad)

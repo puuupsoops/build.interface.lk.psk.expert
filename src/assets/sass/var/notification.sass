@@ -43,3 +43,146 @@
 			opacity: 0.5
 			path
 				fill: orange
+
+.popup
+	+flex
+	+box-shadow(0px 0px 10px rgba(255, 255, 255, 0.9))
+	+align-items(center)
+	padding: 11px 30px 12px 30px
+	margin-bottom: 5px
+	width: 100%
+	max-width: 400px
+	font-size: 16px
+	color: $font-light-color
+	background-color: $bg-default-color
+	border-radius: 6px
+	cursor: pointer
+
+	&.clear-btn
+		+justify-content(space-around)
+		color: $white
+		
+
+	&-wrap
+		position: fixed
+		right: 0
+		top: 100px
+		z-index: 100
+		width: 400px
+		max-height: 80%	
+		
+		// -webkit-backdrop-filter: blur(3px)
+		// backdrop-filter: blur(3px)
+		
+	
+	&-message
+		width: 80%
+		margin:
+			left: 10px
+			right: 10px
+
+	&-text
+		width: 100%
+		overflow: hidden
+		white-space: nowrap
+		text-overflow: ellipsis
+		margin:
+			bottom: 10px
+
+	&-time
+		width: 100%
+		text-align: right
+		color: $white
+		font-size: 12px
+		font-style: italic
+		opacity: 0.8
+	&-close
+		margin:
+			left: 30px
+		min-width: 16px
+		max-width: 16px
+		height: 16px
+		background-image: url('~@/assets/img/icon/cross.svg')
+		background-size: 100% auto
+		background-position: center center
+		background-repeat: no-repeat
+		color: pointer
+		&:hover
+			opacity: 0.5
+	&.drop
+		animation: drop-popup $default-transition linear 
+	&.close
+		animation: close-popup $default-transition linear 
+	&.move
+		animation: move-popup 5s linear 
+
+	@keyframes drop-popup
+		0% 
+			opacity: 0
+			transform: translate3d(-100px, 500px, 0)
+		
+		30%
+			opacity: 1
+			transform: translate3d(0, 400px, 0)
+
+		100%
+			transform: translate3d(0, 0, 0)
+
+	@keyframes close-popup
+		0% 
+			opacity: 1
+			transform: translate3d(0, 0, 0)
+		100%
+			opacity: 0
+			max-width: 0px
+			transform: translate3d(-150px, 0, 0)
+	
+	@keyframes close-move
+		0% 
+			opacity: 1
+			transform: translate3d(0, 0, 0)
+		100%
+			opacity: 0
+			max-width: 0px
+			transform: translate3d(0, -100px, 0)
+
+.notification-bar
+	z-index: 1000
+	position: fixed
+	left: 0
+	right: 0
+
+	top: 0
+	bottom: 0
+	-webkit-backdrop-filter: blur(10px)
+	backdrop-filter: blur(10px)
+	height: 100%
+
+	&-wrap
+		+box-shadow(0px 0px 20px rgba(255, 255, 255, 0.2))
+		position: sticky
+		float: right
+		height: 100%
+		min-height: 100vh
+		right: 0
+		width: 400px
+		background-color: $bg-default-color
+		overflow: hidden
+		+prefix(transition, width $default-transition)
+		animation: open-bar $default-transition linear 
+
+		&.close
+			animation: close-bar $default-transition linear 
+
+		@keyframes open-bar
+			0% 
+				width: 0
+			100%
+				width: 400px
+
+		@keyframes close-bar
+			0% 
+				width: 400px
+			100%
+				width: 0
+

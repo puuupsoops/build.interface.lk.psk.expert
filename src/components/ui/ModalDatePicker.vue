@@ -164,7 +164,7 @@ export default defineComponent({
 			let dt= new Date(year, month, day);
 			
 			delta.value = 0
-			emit('update:modelValue', dt.toLocaleString().substr(0,10));
+			emit('update:modelValue', dt.toLocaleString('ru').substr(0,10));
 			//emit('update:modelValue', dt.toISOString().substr(0,10));
 			emit('onInput');
 			emit('update:show', false ) 

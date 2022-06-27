@@ -32,7 +32,7 @@
 									{{key+1}}
 								</div>
 								<div class="shipment-address-list-elem">
-									Создан {{new Date(item.id).toLocaleString()}}
+									Создан {{new Date(item.id).toLocaleString('ru')}}
 								</div>
 
 								<div :class="'shipment-address-list-elem actions' + (delItem? ' active':'')"
