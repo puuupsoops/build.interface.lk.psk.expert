@@ -1,72 +1,71 @@
 <template>
 
   <div :class="{'popup': true, 'drop': drop_class, 'close': close_class, }"
-    v-if="show && message?.readPopup==false"
-  >
-    <div class="popup-message">
-       <div class="popup-text">{{message?.message}}</div>
-      <div class="popup-time"><b>{{(new Date(message?.time)).toLocaleString('ru').replace(',', '')}}</b></div>
+        v-if="show"
+  > 
+    <div class="popup-message"
+        @click="more_event()">
+       <div class="popup-text" :class="{'more': more | more_show}">{{message?.message}}</div>
+
+       <div class="popup-time"><b>{{(new Date(message?.time)).toLocaleString('ru').replace(',', '')}}</b></div>
     </div>
     <div class="popup-close" @click="close()"></div>
+   
   </div>
   
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+
+
 import { messageType, } from '/src/plugins/wsStore'
-import { defineComponent,  PropType,  ref,  } from 'vue'
+import { PropType,  ref,  } from 'vue'
 
 
-export default defineComponent({
-  props:{
+const props = defineProps({
     message: {
       type: Object as PropType<messageType>
     },
-    position: {
-      type: Number
+    auto_close: {
+      type: Boolean,
+      default: false,
+    },
+    more: {
+      type: Boolean,
+      default: false,
     },
     timeout: {
       type: Number,
-      default: 10000
+      default: 10000,
     }
-  },
-  emits:['close'],
-  setup(props, { emit } ) {
+  })
+const emits = defineEmits(['close'])
 
+const close_class = ref(false)
+const drop_class = ref(true)
+const show = ref(true)
+const more_show = ref(false)
+const lc_timer = ref()
+setTimeout(()=>{drop_class.value=false}, 500 )
 
-    const close_class = ref(false)
-    const drop_class = ref(true)
-    const show = ref(true)
-    setTimeout(()=>{drop_class.value=false}, 500 )
-    
-
-    let close = function(){
-      clearTimeout(lc_timer)
-      close_class.value = true
-      setTimeout(()=>{
-          emit('close')
-        }, 300)
-    }
-
-    const lc_timer = setTimeout(()=>{
-        close_class.value = true
-        setTimeout(()=>{
+const close = function(){
+  close_class.value = true
+  setTimeout(()=>{emits('close')}, 300)
+}
+if (props.auto_close) {
+  lc_timer.value = setTimeout(()=>{
+  close_class.value = true
+  setTimeout(()=>{
             show.value=false
-            emit('close')
+            emits('close')
           },300)
-        }, props.timeout )
+  }, props.timeout )
+} else close_class.value = false
 
-    return {
-      close_class,
-      drop_class,
-      show,
-
-      close
-
-    }
-  }
-
-})
+const more_event = ()=> {
+  more_show.value = !more_show.value
+  clearTimeout(lc_timer.value)
+}
 </script>
 
 <style>

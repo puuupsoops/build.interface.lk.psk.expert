@@ -4,7 +4,7 @@
 			<Bell :amount = "msgCnt" tooltip="Открыть оповещения" @click="showNotificationBar = !showNotificationBar"/>
 			<Avatar :image = "''"/>
 	</div>
-	<div class="popup-wrap">
+	<div class="popup-wrap" v-if="!showNotificationBar">
 		<div v-if="popMsgCnt != 0" class="popup clear-btn" @click="removeAllPopup()">Закрыть все</div> 
 		<Popup 
 			v-for="(msg) in popMsg" 
@@ -12,6 +12,7 @@
 			:key="msg.id"
 			:message="msg"
 			@close="removePopup(msg.id)"
+			auto_close
 		/>
 	</div>
 
@@ -22,7 +23,7 @@
 import Mail   from '/src/components/ui/personal/buttons/Mail.vue'
 import Bell   from '/src/components/ui/personal/buttons/Bell.vue'
 import Avatar from '/src/components/ui/personal/buttons/Avatar.vue'
-import Popup from '/src/components/ui/personal/notifcation/Popup.vue'
+import Popup  from '/src/components/ui/personal/notifcation/Popup.vue'
 
 
 import { computed, inject, ref } from 'vue'
@@ -47,7 +48,7 @@ const removeAllPopup =  ()=>{
 }
 //computed
 const msgCnt = computed(()=> store.getters.getWSMessageCnt)
-const popMsg = computed(()=> store.getters.getWSMessage)
+const popMsg = computed(()=> store.getters.getWSMessagePopup)
 const popMsgCnt = computed(()=> store.getters.getWSMessagePopupCnt)
 
 </script>

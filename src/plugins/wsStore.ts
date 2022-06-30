@@ -22,8 +22,10 @@ export enum wsStoreMutations {
 	SOCKET_RECONNECT = 'SOCKET_RECONNECT',
 	SOCKET_RECONNECT_ERROR = 'SOCKET_RECONNECT_ERROR',
 
-  REMOVE_ALL_POPUP = 'REMOVE_ALL_POPUP',
-  REMOVE_POPUP = 'REMOVE_POPUP',
+  REMOVE_ALL_POPUP = 'WS_REMOVE_ALL_POPUP',
+  REMOVE_POPUP = 'WS_REMOVE_POPUP',
+  REMOVE_ALL_MESSAGE = 'WS_REMOVE_ALL_MESSAGE',
+  REMOVE_MESSAGE = 'WS_REMOVE_MESSAGE',
 }
 
 export enum wsStoreActions {
@@ -50,6 +52,7 @@ export const wsStore: Module<wsRootState, RootState> = {
   },
   getters:{
     getWSMessage: state => state.messages,
+    getWSMessagePopup: state => state.messages.filter((x: messageType) => x.readPopup == false ),
     getWSMessagePopupCnt: state => state.messages.filter((x: messageType) => x.readPopup == false ).length,
     getWSMessageCnt: state => state.messages.length,
   },
@@ -104,10 +107,15 @@ export const wsStore: Module<wsRootState, RootState> = {
     [wsStoreMutations.REMOVE_ALL_POPUP](state){
       state.messages.forEach(x=>x.readPopup=true)
     },
-
     [wsStoreMutations.REMOVE_POPUP] (state, id: number){
       const m = state.messages.find((x)=>x.id == id) 
       if (m) m.readPopup = true
+    },
+    [wsStoreMutations.REMOVE_MESSAGE] (state, id: number){
+      state.messages = state.messages.filter((x)=>x.id != id) 
+    },
+    [wsStoreMutations.REMOVE_ALL_MESSAGE] (state){
+      state.messages = []
     },
   },
   actions: {

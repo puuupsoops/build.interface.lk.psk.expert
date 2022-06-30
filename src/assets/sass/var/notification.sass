@@ -46,11 +46,14 @@
 
 .popup
 	+flex
-	+box-shadow(0px 0px 10px rgba(255, 255, 255, 0.9))
-	+align-items(center)
+	+box-shadow(0px 0px 5px rgba(255, 255, 255, 0.9))
+	+align-items( flex-start)
 	padding: 11px 30px 12px 30px
-	margin-bottom: 5px
-	width: 100%
+	margin:
+		bottom: 5px
+		left: 10px
+		right: 10px
+	
 	max-width: 400px
 	font-size: 16px
 	color: $font-light-color
@@ -60,13 +63,16 @@
 
 	&.clear-btn
 		+justify-content(space-around)
+		margin:
+			top: 20px
+			bottom: 15px
 		color: $white
 		
 
 	&-wrap
-		position: fixed
+		position: absolute
 		right: 0
-		top: 100px
+		top: 130px
 		z-index: 100
 		width: 400px
 		max-height: 80%	
@@ -80,7 +86,6 @@
 		margin:
 			left: 10px
 			right: 10px
-
 	&-text
 		width: 100%
 		overflow: hidden
@@ -88,6 +93,9 @@
 		text-overflow: ellipsis
 		margin:
 			bottom: 10px
+		&.more
+			white-space: break-spaces
+			overflow: unset
 
 	&-time
 		width: 100%
@@ -113,8 +121,7 @@
 		animation: drop-popup $default-transition linear 
 	&.close
 		animation: close-popup $default-transition linear 
-	&.move
-		animation: move-popup 5s linear 
+	
 
 	@keyframes drop-popup
 		0% 
@@ -136,52 +143,35 @@
 			opacity: 0
 			max-width: 0px
 			transform: translate3d(-150px, 0, 0)
-	
-	@keyframes close-move
-		0% 
-			opacity: 1
-			transform: translate3d(0, 0, 0)
-		100%
-			opacity: 0
-			max-width: 0px
-			transform: translate3d(0, -100px, 0)
+
 
 .notification-bar
-	z-index: 99
+	+box-shadow(0px 0px 20px rgba(255, 255, 255, 0.2))
 	position: fixed
-	left: 0
-	right: 0
-	top: 0
-	bottom: 0
+	float: right
 	height: 100%
+	min-height: 100vh
+	right: 0
+	width: 0px
+	background-color: $bg-default-color
+	overflow: hidden
+	+prefix(transition, $default-transition)
+	z-index: 100
+	.popup
+		margin: 15px
 
-
-	&-wrap
-		+box-shadow(0px 0px 20px rgba(255, 255, 255, 0.2))
-		position: sticky
-		float: right
-		height: 100%
-		min-height: 100vh
-		right: 0
+	&.show
 		width: 400px
-		background-color: $bg-default-color
-		overflow: hidden
-		+prefix(transition, width $default-transition)
-		animation: open-bar $default-transition linear 
-		z-index: 100
 
-		&.close
-			animation: close-bar $default-transition linear 
-
-		@keyframes open-bar
-			0% 
-				width: 0
-			100%
-				width: 400px
-
-		@keyframes close-bar
-			0% 
-				width: 400px
-			100%
-				width: 0
-
+	&-empty
+		color: $bg-dlight-color
+		height: 100%
+		width: 100%
+		text-align: center
+		& p
+			margin: 1em auto
+	
+	&-messages
+		overflow: auto
+		padding-top: 10px
+		max-height: 100%
