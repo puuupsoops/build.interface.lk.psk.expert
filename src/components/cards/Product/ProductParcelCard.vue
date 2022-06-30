@@ -58,43 +58,29 @@
 </template>
 
 
-<script>
-import { ref, computed } from 'vue';
-import AmountInput from '@/components/ui/AmountInput.vue';
+<script setup lang="ts">
+import { ref, computed, PropType } from 'vue'
+import AmountInput from '/src/components/ui/AmountInput.vue'
+import { Product } from '/src/models/Product';
 
-export default {
-	props: {
+const props = defineProps({
 		data:{
-			type: Object
+			type: Object as PropType<Product>
 		},
 		discount:{
 			type: Number
 		}
-	},
-	components: {
-		AmountInput
-	},
-	setup(props){
-		let show=ref(true);
-		let count = ref(1);
-		let markup_val = ref(0);
-		let parcel_type = ref('percent')
-		let markup = computed(()=>{
-			//console.log(Number(props.data.PRICE) + Number(markup).value * (Number(props.data.PRICE)/100));
-			if ( props.data.PRICE_OPT ){
-				let price = props.discount ? Number(props.data.PRICE_OPT)-(Number(props.data.PRICE_OPT/100))*props.discount : props.data.PRICE_OPT
-				return parcel_type.value === 'add' ? Number(price)+Number(markup_val.value) : Number(price) + Number(price)/100*Number(markup_val.value)
-			} else return 0
-		})
-		return{
-			show,
-			count,
-			markup,
-			markup_val,
-			parcel_type
-		}
-	}
-}
+	})
+const show=ref(true)
+const count = ref(1)
+const markup_val = ref(0)
+const parcel_type = ref('percent')
+const markup = computed(()=>{
+		if ( props.data?.PRICE_OPT ){
+			let price = props.discount ? Number(props.data.PRICE_OPT)-(Number(props.data.PRICE_OPT/100))*props.discount : props.data.PRICE_OPT
+			return parcel_type.value === 'add' ? Number(price)+Number(markup_val.value) : Number(price) + Number(price)/100*Number(markup_val.value)
+		} else return 0
+	})
 </script>
 
 <style lang="sass" scoped>

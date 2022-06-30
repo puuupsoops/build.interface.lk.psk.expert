@@ -25,9 +25,9 @@
 
 <script lang="ts">
 
-import { key } from '@/store';
-import { AuthActions } from '@/store/auth/actions';
-import { KeysMutations } from '@/store/keys/mutations';
+import { key } from '/src/store';
+import { AuthActions } from '/src/store/auth/actions';
+import { KeysMutations } from '/src/store/keys/mutations';
 import { computed, defineComponent } from 'vue';
 import { useStore } from 'vuex'
 

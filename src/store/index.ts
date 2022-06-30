@@ -11,7 +11,7 @@ import { orders } from './orders/index'
 import { shipments } from './shipments/index'
 import { claims } from './claims/index'
 import { keys } from './keys/index'
-import { wsStore } from '@/plugins/wsStore'
+import { wsStore } from '/src/plugins/wsStore'
 
 // export default createStore({
 // 	modules:{

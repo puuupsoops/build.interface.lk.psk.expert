@@ -1,8 +1,8 @@
 import { MutationTree } from "vuex";
 import { AuthState } from "./types";
 
-import axios from '@/plugins/axios';
-import router from '@/plugins/router';
+import axios from '/src/plugins/axios';
+import router from '/src/plugins/router';
 
 export enum AuthMutations {
 	SET_AUTH = "SET_AUTH",

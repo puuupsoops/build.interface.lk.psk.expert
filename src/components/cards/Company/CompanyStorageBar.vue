@@ -18,10 +18,10 @@
 			</div>
 </template>
 
-<script>
+<script lang="ts">
 //Таблицас данными по сделкам со складами
 
-import CompanyStorageCard from '@/components/cards/Company/CompanyStorageCard.vue'
+import CompanyStorageCard from '/src/components/cards/Company/CompanyStorageCard.vue'
 
 
 export default {

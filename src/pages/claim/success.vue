@@ -9,7 +9,7 @@
 
 						<div v-else class="claim-success-wrap">
 							<div class="claim-succes-img">
-								<img src="@/../public/upload/icon/success.svg" alt="">
+								<img src="/src/../public/upload/icon/success.svg" alt="">
 							</div>
 							<div class="claim-success-text">Спасибо, пртензия <span v-for="i, key in id" :key="key">№{{i}}{{key!=id.length-1 ? ', ':''}}</span> принята к рассмотрению.</div>
 							<div class="order-list-buttons-wrap">
@@ -75,14 +75,14 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 
-import TopNav from "@/components/nav/TopNav";
-import { key } from "@/store";
-import { computed, defineComponent } from "vue";
+import TopNav from '/src/components/nav/TopNav.vue'
+import { key } from '/src/store'
+import { computed, defineComponent } from 'vue'
 import { useStore } from "vuex";
 
-import PreloaderLocal from '@/components/PreloaderLocal.vue'
+import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 
 export default defineComponent({
 	components: {

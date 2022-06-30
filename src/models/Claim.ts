@@ -1,6 +1,6 @@
-import { OrderStateOrder } from "@/store/order/types";
-import { Orders } from "./Orders";
-import { ProductCharacteristic } from "./Product";
+import { OrderStateOrder } from "/src/store/order/types"
+import { Orders } from "./Orders"
+import { ProductCharacteristic } from "./Product"
 
 
 

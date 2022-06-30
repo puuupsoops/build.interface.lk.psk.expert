@@ -1,4 +1,4 @@
-import { CatalogMenu, Catalog } from "@/models/Catalog";
+import { CatalogMenu, Catalog } from "/src/models/Catalog";
 
 export interface CatalogState {
     menu: CatalogMenu|{};

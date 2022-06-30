@@ -1,9 +1,9 @@
-import axios from '@/plugins/axios'
+import axios from '/src/plugins/axios'
 import { ActionTree } from "vuex"
-import { RootState } from "@/store"
+import { RootState } from "/src/store"
 import { AuthState } from "./types"
 import { AuthMutations } from "./mutations"
-import { AuthRequest, Auth, AuthResponse } from '@/models/Auth'
+import { AuthRequest, Auth, AuthResponse } from '/src/models/Auth'
 
 export enum AuthActions {
 	LOGIN = "LOGIN",
@@ -21,6 +21,7 @@ export const actions: ActionTree<AuthState, RootState> =  {
 				if (response.data.error === null) {
 					axios.defaults.headers.common.Authorization = `Bearer ${data.token}`
 					commit(AuthMutations.SET_AUTH, data.token)
+					return Promise.resolve()
 				} else {
 					commit(AuthMutations.CLEAR_ERROR, response.data.error?.message);
 					return Promise.reject('Error')

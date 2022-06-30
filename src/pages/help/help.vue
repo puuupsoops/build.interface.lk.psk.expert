@@ -40,19 +40,19 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import {defineComponent, ref} from 'vue'
-import help1 from '@/components/cards/Help/help1.vue'
-import help2 from '@/components/cards/Help/help2.vue'
-import help3 from '@/components/cards/Help/help3.vue'
-import help4 from '@/components/cards/Help/help4.vue'
-import help5 from '@/components/cards/Help/help5.vue'
-import help6 from '@/components/cards/Help/help6.vue'
-import help7 from '@/components/cards/Help/help7.vue'
-import help8 from '@/components/cards/Help/help8.vue'
-import help9 from '@/components/cards/Help/help9.vue'
-import help10 from '@/components/cards/Help/help10.vue'
-import help11 from '@/components/cards/Help/help11.vue'
+import help1 from '/src/components/cards/Help/help1.vue'
+import help2 from '/src/components/cards/Help/help2.vue'
+import help3 from '/src/components/cards/Help/help3.vue'
+import help4 from '/src/components/cards/Help/help4.vue'
+import help5 from '/src/components/cards/Help/help5.vue'
+import help6 from '/src/components/cards/Help/help6.vue'
+import help7 from '/src/components/cards/Help/help7.vue'
+import help8 from '/src/components/cards/Help/help8.vue'
+import help9 from '/src/components/cards/Help/help9.vue'
+import help10 from '/src/components/cards/Help/help10.vue'
+import help11 from '/src/components/cards/Help/help11.vue'
 
 export default defineComponent({
 	components: {

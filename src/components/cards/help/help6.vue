@@ -6,7 +6,7 @@
 				<div class="help-box-title">Карточка товара</div>
 			</div>
 			
-			<img class="el2" src="@/assets/img/help/help6_1.png"/>
+			<img class="el2" src="/src/assets/img/help/help6_1.png"/>
 		
 			<div class="help-box el3">
 				<div class="help-box-text">
@@ -35,7 +35,7 @@
 				</div>
 			</div>
 					
-			<img class="el6" src="@/assets/img/help/help6_2.png"/>
+			<img class="el6" src="/src/assets/img/help/help6_2.png"/>
 			
 			<div class="help-svg el7" >
 				<svg
@@ -55,7 +55,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import {defineComponent} from 'vue'
 
 export default defineComponent({

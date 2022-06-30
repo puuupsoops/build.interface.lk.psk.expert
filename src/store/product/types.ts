@@ -1,4 +1,4 @@
-import { Found, Offer, Product, ProductFound, ProductArticles, Protect } from "@/models/Product"
+import { Found, Offer, Product, ProductFound, ProductArticles, Protect } from "/src/models/Product"
 
 export interface ProductState {
 	search_product_result: ProductFound[],

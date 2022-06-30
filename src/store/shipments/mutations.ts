@@ -1,7 +1,7 @@
-import { Shipments, ShipmentsAddress } from "@/models/Shipments";
+import { Shipments, ShipmentsAddress } from "/src/models/Shipments";
 import { MutationTree } from "vuex";
 import { ShipmentsState } from "./types";
-import { state as stateOrders } from '@/store/orders/state'
+import { state as stateOrders } from '/src/store/orders/state'
 
 export enum ShipmentsMutations {
 	SET_SHIPMENT = "SET_SHIPMENT",

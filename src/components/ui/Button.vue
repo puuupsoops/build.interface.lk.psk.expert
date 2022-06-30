@@ -6,7 +6,7 @@
 		<div class="">{{name}}</div>
 	</button>	
 </template>
-<script>
+<script lang="ts">
 
 export default{
 	props:{

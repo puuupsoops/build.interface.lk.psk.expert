@@ -53,18 +53,18 @@
 </template>
 
 <script lang="ts">
-import Notification from '@/components/cards/Notification.vue'
-import PersonalBar  from '@/components/cards/PersonalBar.vue'
-import CatalogMenu  from '@/components/cards/Catalog/CatalogMenu.vue'
-import CatalogItem  from '@/components/cards/Catalog/CatalogItem.vue'
-import CatalogPagination  from '@/components/cards/Catalog/CatalogPagination.vue'
-import PreloaderLocal  from '@/components/PreloaderLocal.vue'
+import Notification from '/src/components/cards/Notification.vue'
+import PersonalBar  from '/src/components/cards/PersonalBar.vue'
+import CatalogMenu  from '/src/components/cards/Catalog/CatalogMenu.vue'
+import CatalogItem  from '/src/components/cards/Catalog/CatalogItem.vue'
+import CatalogPagination  from '/src/components/cards/Catalog/CatalogPagination.vue'
+import PreloaderLocal  from '/src/components/PreloaderLocal.vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { ref, computed, onMounted, onBeforeUnmount, watch, defineComponent } from 'vue'
-import { key } from '@/store';
-import { CatalogActions } from '@/store/catalog/actions'
-import { CatalogMutations } from '@/store/catalog/mutations'
+import { key } from '/src/store';
+import { CatalogActions } from '/src/store/catalog/actions'
+import { CatalogMutations } from '/src/store/catalog/mutations'
 
 export default defineComponent({
 		components:{

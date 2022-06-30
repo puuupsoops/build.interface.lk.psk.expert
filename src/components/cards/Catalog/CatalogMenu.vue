@@ -8,8 +8,7 @@
 					{{ !showMenu ? '+' : '-' }}
 				</span>
 		</div>
-			
-		
+
 		
 		<transition name="fade">
 			<div v-if="showMenu">
@@ -24,7 +23,7 @@
 							<div class="catalog-menu-nav-arrow" v-if="item.sub">
 								<img
 									:class="menuOpen.indexOf(item.id) !== -1 ? 'catalog-menu-nav-arrow active': 'catalog-menu-nav-arrow'"
-									src="@/assets/img/icon/arrow-nav-r.svg"
+									src="/src/assets/img/icon/arrow-nav-r.svg"
 									alt=""
 									/>
 							</div>
@@ -61,13 +60,12 @@
 	</div>
 </template>
 
-<script>
-import PreloaderLocal  from '@/components/PreloaderLocal.vue';
+<script setup lang="ts">
+import { ref } from 'vue'
+import PreloaderLocal  from '/src/components/PreloaderLocal.vue'
 
-import { ref } from 'vue';
 
-export default {
-	props: {
+const props = defineProps({
 		data: {
 			type: Object
 		},
@@ -81,23 +79,15 @@ export default {
 		showMenu:{
 			type: Boolean
 		}
-	},
-	emits: ['update:showMenu', 'update:catalogName'],
-	components: {
-		PreloaderLocal
-	},
-	setup() {
-		let menuOpen = ref([]);
+	})
+const emits = defineEmits(['update:showMenu', 'update:catalogName'])
+
+const menuOpen = ref<number[]>([])
 		
-		let push = (id) => {
-			menuOpen.value.indexOf(id) != -1 ? menuOpen.value.splice(menuOpen.value.indexOf(id)) : menuOpen.value.push(id)
-		}
-		return {
-			menuOpen,
-			push
-		}
+const push = (id: number) => {
+		menuOpen.value.indexOf(id) != -1 ? menuOpen.value.splice(menuOpen.value.indexOf(id)) : menuOpen.value.push(id)
 	}
-}
+		
 </script>
 
 <style scoped>

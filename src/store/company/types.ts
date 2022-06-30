@@ -1,5 +1,5 @@
-import { Manager } from "@/models/Manager";
-import { Partner } from "@/models/Partner";
+import { Manager } from "/src/models/Manager";
+import { Partner } from "/src/models/Partner";
 
 export interface CompanyState {
 	companys: Partner[],

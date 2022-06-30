@@ -1,5 +1,5 @@
 import { GetterTree } from "vuex"
-import { RootState } from "@/store"
+import { RootState } from "/src/store"
 import { ClaimState } from "./types"
 
 export const getters: GetterTree<ClaimState, RootState> = {

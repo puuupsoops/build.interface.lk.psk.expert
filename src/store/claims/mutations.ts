@@ -1,8 +1,8 @@
 
 import { MutationTree } from "vuex";
 import { ClaimState, defaultClaim } from "./types";
-import { state as stateOrders } from '@/store/orders/state'
-import { Claim } from "@/models/Claim";
+import { state as stateOrders } from '/src/store/orders/state'
+import { Claim } from "/src/models/Claim";
 
 export enum ClaimMutations {
 	CLEAR_CLAIMS_SUCCESS = 'SET_CLEAR_SUCCESS',

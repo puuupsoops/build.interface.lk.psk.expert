@@ -1,5 +1,5 @@
-import { Claim } from "@/models/Claim";
-import { ProductCharacteristic } from "@/models/Product";
+import { Claim } from "/src/models/Claim";
+import { ProductCharacteristic } from "/src/models/Product";
 
 export interface ClaimState {
 	claims: Claim[],

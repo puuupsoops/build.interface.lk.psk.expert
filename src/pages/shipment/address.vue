@@ -124,20 +124,20 @@
 </template>
 
 <script lang="ts">
-import PersonalBar from '@/components/cards/PersonalBar.vue'
-import Notification from '@/components/cards/Notification.vue'
-import CompanyBarTop from '@/components/cards/Company/CompanyBarTop.vue'
-import ShipmentAddressInputAdd from '@/components/cards/Shipment/ShipmentAddressInputAdd.vue'
-import TopNav from '@/components/nav/TopNav.vue'
-import PreloaderLocal from '@/components/PreloaderLocal.vue'
+import PersonalBar from '/src/components/cards/PersonalBar.vue'
+import Notification from '/src/components/cards/Notification.vue'
+import CompanyBarTop from '/src/components/cards/Company/CompanyBarTop.vue'
+import ShipmentAddressInputAdd from '/src/components/cards/Shipment/ShipmentAddressInputAdd.vue'
+import TopNav from '/src/components/nav/TopNav.vue'
+import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 
 
 import { defineComponent, computed, ref, onMounted } from 'vue'
-import { key } from '@/store'
+import { key } from '/src/store'
 import { useStore } from 'vuex'
-import { CompanyActions } from '@/store/company/actions'
-import { ShipmentsActions } from '@/store/shipments/actions'
-import { ShipmentsAddress } from "@/models/Shipments"
+import { CompanyActions } from '/src/store/company/actions'
+import { ShipmentsActions } from '/src/store/shipments/actions'
+import { ShipmentsAddress } from "/src/models/Shipments"
 import { useRouter } from 'vue-router'
 
 export default defineComponent({

@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { messageType, } from '@/plugins/wsStore'
+import { messageType, } from '/src/plugins/wsStore'
 import { defineComponent,  PropType,  ref,  } from 'vue'
 
 

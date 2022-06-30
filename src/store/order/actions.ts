@@ -1,9 +1,9 @@
-import axios from '@/plugins/axios'
+import axios from '/src/plugins/axios'
 import { ActionTree } from "vuex"
-import { RootState } from "@/store"
+import { RootState } from "/src/store"
 import { OrderState, OrderStatePosition } from "./types"
 import { OrderMutations } from './mutations'
-import { Order } from '@/models/Order'
+import { Order } from '/src/models/Order'
 import { AuthMutations } from '../auth/mutations'
 
 
@@ -59,7 +59,7 @@ export const actions: ActionTree<OrderState, RootState> =  {
 				if (error.response.status == 400 || error.response.status == 404) {
 					commit(OrderMutations.CLEAN_ORDER_ERROR)
 					return Promise.reject(error)
-				}
+				} else return Promise.resolve()
 			})
 	},
 
@@ -67,9 +67,8 @@ export const actions: ActionTree<OrderState, RootState> =  {
 		await axios.get(`/order/print?id=${UUID}&name=Счет`, 
 			{
 				responseType: 'blob',
-				transformRequest: (data, headers) => {
-					delete headers.common['Authorization']
-					return data
+				transformRequest: (_, headers) => {
+					delete headers?.common
 				}
 			})
 			.then(response => {

@@ -55,23 +55,23 @@
 </template>
 
 <script lang="ts">
-import PersonalBar from "@/components/cards/PersonalBar.vue"
-import Notification from "@/components/cards/Notification.vue"
-import CompanyBarTop from "@/components/cards/Company/CompanyBarTop.vue"
-import TopNav from "@/components/nav/TopNav.vue"
-import ClaimsListCard from '@/components/cards/Claim/ClaimsListCard.vue'
-// import OrdersSearchCard from '@/components/cards/Order/OrdersSearchCard.vue'
-import { OrdersSatusCode } from '@/store/orders/types'
+import PersonalBar from "/src/components/cards/PersonalBar.vue"
+import Notification from "/src/components/cards/Notification.vue"
+import CompanyBarTop from "/src/components/cards/Company/CompanyBarTop.vue"
+import TopNav from "/src/components/nav/TopNav.vue"
+import ClaimsListCard from '/src/components/cards/Claim/ClaimsListCard.vue'
+// import OrdersSearchCard from '/src/components/cards/Order/OrdersSearchCard.vue'
+import { OrdersSatusCode } from '/src/store/orders/types'
 
-import SelectInput from '@/components/ui/SelectInput.vue'
+import SelectInput from '/src/components/ui/SelectInput.vue'
 import { useStore } from 'vuex'
-import { key } from '@/store'
-import { SearchData } from '@/models/Components'
+import { key } from '/src/store'
+import { SearchData } from '/src/models/Components'
 import { defineComponent, ref,computed,onMounted } from 'vue'
-import { CompanyActions } from "@/store/company/actions"
-import { ClaimActions } from "@/store/claims/actions"
-import { OrdersActions } from "@/store/orders/actions"
-import { ClaimMutations } from "@/store/claims/mutations"
+import { CompanyActions } from "/src/store/company/actions"
+import { ClaimActions } from "/src/store/claims/actions"
+import { OrdersActions } from "/src/store/orders/actions"
+import { ClaimMutations } from "/src/store/claims/mutations"
 
 export default defineComponent({
 	components: {

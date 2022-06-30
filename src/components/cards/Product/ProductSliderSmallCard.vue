@@ -33,13 +33,13 @@
 
 <script lang="ts">
 
-import { key } from '@/store'
-import { KeysMutations } from '@/store/keys/mutations'
-import ProductSliderFullscreen from '@/components/cards/Product/ProductSliderFullscreen.vue'
-import ProductInfoCard from '@/components/cards/Product/ProductInfoCard.vue'
+import { key } from '/src/store'
+import { KeysMutations } from '/src/store/keys/mutations'
+import ProductSliderFullscreen from '/src/components/cards/Product/ProductSliderFullscreen.vue'
+import ProductInfoCard from '/src/components/cards/Product/ProductInfoCard.vue'
 import { ref, onUpdated, computed, defineComponent } from 'vue'
 import { useStore } from 'vuex'
-import { Sliders } from '@/models/Components'
+import { Sliders } from '/src/models/Components'
 
 
 export default defineComponent({

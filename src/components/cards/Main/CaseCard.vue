@@ -7,7 +7,7 @@
           <div class="case-slider-new-box">
             <img
               class="case-slider-new-img"
-              src="@/assets/img/icon/horn.svg"
+              src="/src/assets/img/icon/horn.svg"
               alt=""
             />
             <div class="case-slider-new-text">Новинка</div>
@@ -37,7 +37,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
     props: {
         data: {

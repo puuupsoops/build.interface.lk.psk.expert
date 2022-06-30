@@ -2,7 +2,7 @@
 	<div class="help-7">
 		<div class="help-7-wrap">
 			
-			<img class="el1" src="@/assets/img/help/help7_1.png"/>
+			<img class="el1" src="/src/assets/img/help/help7_1.png"/>
 			
 			<div class="help-box noborder el2"> 
 				<div class="help-box-title">Карточка товара</div>
@@ -145,7 +145,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import {defineComponent, onBeforeUnmount, onMounted, ref, watch} from 'vue'
 
 export default defineComponent({
@@ -159,8 +159,9 @@ export default defineComponent({
 			scroll800: false,
 			scroll1100: false,
 		})
-		const onScroll = (e) => {
-			data.value.scroll = e.target.documentElement.scrollTop
+		const onScroll = (e: Event) => {
+			const scroll = e.target as Document
+			data.value.scroll = scroll.documentElement.scrollTop
 		}
 		watch(data.value, () => {
 			if (data.value.scroll >= 100 ) data.value.scroll100 = true

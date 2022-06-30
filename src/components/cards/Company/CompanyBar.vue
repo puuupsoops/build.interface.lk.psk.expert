@@ -13,9 +13,9 @@
   </div>
 </template>
 
-<script>
-import CompanyAboutSmallCard from '@/components/cards/Company/CompanyAboutSmallCard';
-import PreloaderLocal from '@/components/PreloaderLocal.vue';
+<script lang="ts">
+import CompanyAboutSmallCard from '/src/components/cards/Company/CompanyAboutSmallCard.vue'
+import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 export default {
   props:{
     data: {

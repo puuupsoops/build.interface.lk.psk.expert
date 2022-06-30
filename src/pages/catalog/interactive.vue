@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import TopNav from "@/components/nav/TopNav.vue"
+import TopNav from "/src/components/nav/TopNav.vue"
 
 import {defineComponent } from 'vue'
 

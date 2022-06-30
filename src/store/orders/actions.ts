@@ -1,10 +1,10 @@
-import axios from '@/plugins/axios'
+import axios from '/src/plugins/axios'
 import { ActionTree } from "vuex"
-import { RootState } from "@/store"
+import { RootState } from "/src/store"
 import { OrdersState } from "./types"
 import { OrdersMutations } from './mutations'
 import { AuthMutations } from '../auth/mutations'
-import { Orders } from '@/models/Orders'
+import { Orders } from '/src/models/Orders'
 
 
 export enum OrdersActions {

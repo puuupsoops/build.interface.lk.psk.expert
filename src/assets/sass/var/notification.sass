@@ -31,7 +31,7 @@
 		min-width: 16px
 		max-width: 16px
 		height: 16px
-		background-image: url('~@/assets/img/icon/cross.svg')
+		background-image: url('/src/assets/img/icon/cross.svg')
 		background-size: 100% auto
 		background-position: center center
 		background-repeat: no-repeat
@@ -102,7 +102,7 @@
 		min-width: 16px
 		max-width: 16px
 		height: 16px
-		background-image: url('~@/assets/img/icon/cross.svg')
+		background-image: url('/src/assets/img/icon/cross.svg')
 		background-size: 100% auto
 		background-position: center center
 		background-repeat: no-repeat
@@ -147,16 +147,14 @@
 			transform: translate3d(0, -100px, 0)
 
 .notification-bar
-	z-index: 1000
+	z-index: 99
 	position: fixed
 	left: 0
 	right: 0
-
 	top: 0
 	bottom: 0
-	-webkit-backdrop-filter: blur(10px)
-	backdrop-filter: blur(10px)
 	height: 100%
+
 
 	&-wrap
 		+box-shadow(0px 0px 20px rgba(255, 255, 255, 0.2))
@@ -170,6 +168,7 @@
 		overflow: hidden
 		+prefix(transition, width $default-transition)
 		animation: open-bar $default-transition linear 
+		z-index: 100
 
 		&.close
 			animation: close-bar $default-transition linear 

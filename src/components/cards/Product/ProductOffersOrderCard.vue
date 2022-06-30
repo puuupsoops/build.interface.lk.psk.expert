@@ -52,125 +52,110 @@
 </template>
 
 
-<script lang="ts">
+<script setup lang="ts">
 
-import AmountInput from '@/components/ui/AmountInput.vue'
-import CheckButton from '@/components/ui/CheckButton.vue'
-import { Offer } from '@/models/Product'
-import { OrderStatePositionOffer } from '@/store/order/types'
+import AmountInput from '/src/components/ui/AmountInput.vue'
+import CheckButton from '/src/components/ui/CheckButton.vue'
+import { Offer } from '/src/models/Product'
+import { OrderStatePositionOffer } from '/src/store/order/types'
 //ProductOffersOrderCard используется для составления заказа
-export interface OrderStateAddPositionItem extends OrderStatePositionOffer{
+
+import { ref, computed, watch, onMounted, defineComponent, PropType } from 'vue'
+
+interface OrderStateAddPositionItem extends OrderStatePositionOffer{
 	check:           boolean;	
 }
 
-
-import { ref, computed, watch, onMounted, defineComponent, PropType } from 'vue'
-export default defineComponent({
-	components: {
-		AmountInput,
-		CheckButton
+const props = defineProps({
+	data: {
+		type: Array as PropType<Offer[]>,
+		required: true,
 	},
-	props:{
-		data: {
-			type: Array as PropType<Offer[]>,
-			required: true,
-		},
-		discount:{
-			type: Number
-		},
-		modelValue:{
-			type: Array as PropType<OrderStatePositionOffer[]>
-		},
+	discount:{
+		type: Number
 	},
-	emits:['update:modelValue', 'onClick'],
-
-	setup(props, { emit }){
-		const characteristicArray = ref<OrderStateAddPositionItem[]> ([]);
-
-		const count = computed(() => characteristicArray.value.filter(x => x.count > 0 ).length)
-		const countPresail = computed(() => characteristicArray.value.filter(x => x.count > x.RESIDUE && x.count != 0).length)
-
-		const onCheck = (offer: OrderStateAddPositionItem) => {
-			if (offer.check) {
-				let cnt = characteristicArray.value.find(x => x.ID == offer.ID)
-				if (cnt) cnt.count = 1;
-			} else {
-				let cnt = characteristicArray.value.find(x => x.ID == offer.ID)
-				if (cnt) cnt.count = 0;
-			}
-		}
-
-		const onInput = (offer: OrderStateAddPositionItem) => {
-			if (offer.count > 0) {
-				let chk = characteristicArray.value.find(x => x.ID == offer.ID)
-				if (chk) chk.check = true
-				
-			} else {
-				let chk = characteristicArray.value.find(x => x.ID == offer.ID)
-				if (chk) chk.check = false
-			}
-			
-		}
-
-		const addToOrder = () => {
-			if (count.value > 0){
-				let charArrPos = <OrderStatePositionOffer[]>[]
-				characteristicArray.value.forEach(x =>{ 
-					if ( x.count > 0 ){
-						charArrPos.push(<OrderStatePositionOffer>{
-									ID: x.ID,
-									CHARACTERISTIC: x.CHARACTERISTIC,
-									count: x.count,
-									PRICE: x.PRICE,
-									RESIDUE: x.RESIDUE,
-									GUID: x.GUID,
-									guid: x.GUID,
-									ORGGUID: x.ORGGUID,
-								})
-					}
-				});
-				emit('update:modelValue', charArrPos);
-				emit('onClick');
-				characteristicArray.value.forEach( c => {
-					c.count = 0;
-					c.check = false;
-				})
-			}
-		}
-
-		const init = () => {
-			characteristicArray.value = props.data.map(item => {
-				return <OrderStateAddPositionItem>{
-					ID: item.ID,
-					CHARACTERISTIC: item.CHARACTERISTIC,
-					RESIDUE: item.RESIDUE,
-					PRICE: item.PRICE,
-					PPDATA: item.PPDATA,
-					GUID: item.GUID,
-					guid: item.GUID,
-					ORGGUID: item.ORGGUID,
-					count: 0,
-					check: false,
-				}
-			});
-		}
-		
-		onMounted(() => {
-			init();
-		})
-
-		watch(() => props.data, () => {
-			init()
-		})
-
-		return {
-			onCheck,
-			onInput,
-			addToOrder,
-			count,
-			countPresail,
-			characteristicArray,
-		}
-	}
+	modelValue:{
+		type: Array as PropType<OrderStatePositionOffer[]>
+	},
 })
+const emit = defineEmits(['update:modelValue', 'onClick'])
+
+const characteristicArray = ref<OrderStateAddPositionItem[]> ([]);
+
+const count = computed(() => characteristicArray.value.filter(x => x.count > 0 ).length)
+const countPresail = computed(() => characteristicArray.value.filter(x => x.count > x.RESIDUE && x.count != 0).length)
+
+const onCheck = (offer: OrderStateAddPositionItem) => {
+	if (offer.check) {
+		let cnt = characteristicArray.value.find(x => x.ID == offer.ID)
+		if (cnt) cnt.count = 1;
+	} else {
+		let cnt = characteristicArray.value.find(x => x.ID == offer.ID)
+		if (cnt) cnt.count = 0;
+	}
+}
+
+const onInput = (offer: OrderStateAddPositionItem) => {
+	if (offer.count > 0) {
+		let chk = characteristicArray.value.find(x => x.ID == offer.ID)
+		if (chk) chk.check = true
+		
+	} else {
+		let chk = characteristicArray.value.find(x => x.ID == offer.ID)
+		if (chk) chk.check = false
+	}
+	
+}
+
+const addToOrder = () => {
+	if (count.value > 0){
+		let charArrPos = <OrderStatePositionOffer[]>[]
+		characteristicArray.value.forEach(x =>{ 
+			if ( x.count > 0 ){
+				charArrPos.push(<OrderStatePositionOffer>{
+							ID: x.ID,
+							CHARACTERISTIC: x.CHARACTERISTIC,
+							count: x.count,
+							PRICE: x.PRICE,
+							RESIDUE: x.RESIDUE,
+							GUID: x.GUID,
+							guid: x.GUID,
+							ORGGUID: x.ORGGUID,
+						})
+			}
+		});
+		emit('update:modelValue', charArrPos);
+		emit('onClick');
+		characteristicArray.value.forEach( c => {
+			c.count = 0;
+			c.check = false;
+		})
+	}
+}
+
+const init = () => {
+	characteristicArray.value = props.data.map(item => {
+		return <OrderStateAddPositionItem>{
+			ID: item.ID,
+			CHARACTERISTIC: item.CHARACTERISTIC,
+			RESIDUE: item.RESIDUE,
+			PRICE: item.PRICE,
+			PPDATA: item.PPDATA,
+			GUID: item.GUID,
+			guid: item.GUID,
+			ORGGUID: item.ORGGUID,
+			count: 0,
+			check: false,
+		}
+	});
+}
+
+onMounted(() => {
+	init();
+})
+
+watch(() => props.data, () => {
+	init()
+})
+
 </script>

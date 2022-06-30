@@ -5,9 +5,9 @@
 				<div class="help-box-title">Оформление заказа</div>
 			</div>
 			
-			<img  class="el2" src="@/assets/img/help/help10_1.png"/>
+			<img  class="el2" src="/src/assets/img/help/help10_1.png"/>
 			
-			<img  class="el3" src="@/assets/img/help/help10_2.png"/>
+			<img  class="el3" src="/src/assets/img/help/help10_2.png"/>
 			
 			<div class="help-box el4">
 				<div class="help-box-text">
@@ -128,7 +128,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import {defineComponent, onBeforeUnmount, onMounted, ref, watch} from 'vue'
 
 export default defineComponent({
@@ -142,8 +142,9 @@ export default defineComponent({
 			scroll800: false,
 			scroll1100: false,
 		})
-		const onScroll = (e) => {
-			data.value.scroll = e.target.documentElement.scrollTop
+		const onScroll = (e: Event) => {
+			const scroll = e.target as Document
+			data.value.scroll = scroll.documentElement.scrollTop
 		}
 		watch(data.value, () => {
 			if (data.value.scroll >= 100 ) data.value.scroll100 = true

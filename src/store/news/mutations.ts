@@ -1,4 +1,4 @@
-import { News } from "@/models/News";
+import { News } from "/src/models/News";
 import { MutationTree } from "vuex";
 import { NewsState } from "./types";
 

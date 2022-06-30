@@ -4,7 +4,7 @@
 	<div class="authorization" v-if="!isAuth">
 		<div class="authorization-body">
 			<div class="authorization-logo">
-				<img src="~@/assets/img/login/logo.png" alt="логотип">
+				<img src="/src/assets/img/login/logo.png" alt="логотип">
 			</div>
 			<Form @submit="onLogin" class="authorization-form">
 
@@ -61,15 +61,15 @@
 <script lang="ts">
 import { ref, computed, defineComponent } from 'vue'
 import { useStore } from 'vuex'
-import { key } from '@/store'
+import { key } from '/src/store'
 import { useRouter } from 'vue-router'
 import { Form, Field, ErrorMessage, defineRule } from 'vee-validate'
-import SnackBar from '@/components/ui/SnackBar.vue'
-import { AuthMutations } from '@/store/auth/mutations'
-import { AuthActions } from '@/store/auth/actions'
-import { KeysMutations } from '@/store/keys/mutations'
-import { AuthRequest } from '@/models/Auth'
-import { CompanyActions } from '@/store/company/actions'
+import SnackBar from '/src/components/ui/SnackBar.vue'
+import { AuthMutations } from '/src/store/auth/mutations'
+import { AuthActions } from '/src/store/auth/actions'
+import { KeysMutations } from '/src/store/keys/mutations'
+import { AuthRequest } from '/src/models/Auth'
+import { CompanyActions } from '/src/store/company/actions'
 
 export default defineComponent({
 	components:{

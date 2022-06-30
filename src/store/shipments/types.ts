@@ -1,4 +1,4 @@
-import { Shipments, ShipmentsAddress } from "@/models/Shipments";
+import { Shipments, ShipmentsAddress } from '/src/models/Shipments'
 
 
 export interface ShipmentsState {

@@ -131,20 +131,20 @@
 
 <script lang="ts">
 
-import SelectInput from '@/components/ui/SelectInput.vue'
-import PreloaderLocal from '@/components/PreloaderLocal.vue'
-import ClaimOrder from '@/components/cards/Claim/ClaimOrder.vue'
+import SelectInput from '/src/components/ui/SelectInput.vue'
+import PreloaderLocal from '/src/components/PreloaderLocal.vue'
+import ClaimOrder from '/src/components/cards/Claim/ClaimOrder.vue'
 
 
-import { key } from '@/store'
+import { key } from '/src/store'
 
 import { computed, defineComponent, PropType, ref, watch } from 'vue'
 import { useStore } from 'vuex'
-import { ProductCharacteristic } from '@/models/Product'
-import { Claim } from "@/models/Claim"
+import { ProductCharacteristic } from '/src/models/Product'
+import { Claim } from '/src/models/Claim'
 
-import { Orders } from '@/models/Orders'
-import { OrderActions } from '@/store/order/actions'
+import { Orders } from '/src/models/Orders'
+import { OrderActions } from '/src/store/order/actions'
 
 export default defineComponent({
 	components: {

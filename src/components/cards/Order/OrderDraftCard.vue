@@ -139,7 +139,7 @@
 <script lang="ts">
 import { ref, defineComponent, PropType } from 'vue'
 
-import { OrderStateOrder } from '@/store/order/types'
+import { OrderStateOrder } from '/src/store/order/types'
 
 export default defineComponent({
 	props: {

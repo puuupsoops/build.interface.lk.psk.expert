@@ -18,7 +18,7 @@
 									v-if="item.lock"
 									class="tooltip"
 								>
-									<img src="@/assets/img/icon/lock.svg"/>
+									<img src="/src/assets/img/icon/lock.svg"/>
 									<span class="tooltiptext">Раздел находится в разработке</span>
 								</span>
 							</router-link>
@@ -131,10 +131,10 @@
 	</nav>
 </template>
 
-<script>
-import { key } from "@/store";
-import { computed, defineComponent } from "vue";
-import { useStore } from "vuex";
+<script lang="ts">
+import { key } from '/src/store'
+import { computed, defineComponent } from 'vue'
+import { useStore } from 'vuex'
 
 export default defineComponent({
 	props:{

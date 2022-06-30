@@ -2,9 +2,9 @@
 	<div class="help-5">
 		
 		<div class="help-5-wrap">
-			<img class="el1" src="@/assets/img/help/help5_1.png"/>
+			<img class="el1" src="/src/assets/img/help/help5_1.png"/>
 			
-			<img class="el2" src="@/assets/img/help/help3_2.png"/>
+			<img class="el2" src="/src/assets/img/help/help3_2.png"/>
 			
 			<div class="help-box el3"> 
 				<div class="help-box-title">Каталог</div>
@@ -34,7 +34,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import {defineComponent} from 'vue'
 
 export default defineComponent({

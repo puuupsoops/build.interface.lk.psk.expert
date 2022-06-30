@@ -1,12 +1,12 @@
-import axios from '@/plugins/axios'
+import axios from '/src/plugins/axios'
 import { ActionTree } from "vuex"
-import { RootState } from "@/store"
+import { RootState } from "/src/store"
 import { NewsState } from "./types"
 import { NewsMutations } from './mutations';
-import { NewsResponse } from '@/models/News';
+import { NewsResponse } from '/src/models/News';
 import { AuthMutations } from '../auth/mutations';
 
-const site_location = process.env.VUE_APP_SITE_LOCATIONL;
+const site_location =import.meta.env.VITE_APP_SITE_LOCATION;
 
 export enum NewsActions {
 	GET_NEWS = "GET_NEWS",

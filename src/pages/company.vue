@@ -28,21 +28,21 @@
 </template>
 
 <script lang="ts">
-import PersonalBar from '@/components/cards/PersonalBar.vue'
-import Notification from '@/components/cards/Notification.vue'
-import CompanyAboutCard from '@/components/cards/Company/CompanyAboutCard.vue'
-import CompanyStorageBar from '@/components/cards/Company/CompanyStorageBar.vue'
-import CompanyBarTop from '@/components/cards/Company/CompanyBarTop.vue'
-import CompanySaleBar from '@/components/cards/Company/CompanySaleBar.vue'
-import CompanyCalendar from '@/components/cards/Company/CompanyCalendar.vue'
-import ManagerCard from '@/components/cards/ManagerCard.vue'
+import PersonalBar from '/src/components/cards/PersonalBar.vue'
+import Notification from '/src/components/cards/Notification.vue'
+import CompanyAboutCard from '/src/components/cards/Company/CompanyAboutCard.vue'
+import CompanyStorageBar from '/src/components/cards/Company/CompanyStorageBar.vue'
+import CompanyBarTop from '/src/components/cards/Company/CompanyBarTop.vue'
+import CompanySaleBar from '/src/components/cards/Company/CompanySaleBar.vue'
+import CompanyCalendar from '/src/components/cards/Company/CompanyCalendar.vue'
+import ManagerCard from '/src/components/cards/ManagerCard.vue'
 
 import { useStore } from 'vuex'
 import { ref, onMounted, computed, watch , provide,  defineComponent} from 'vue'
 import { useRouter } from 'vue-router'
-import { key } from '@/store'
-import { CompanyActions } from '@/store/company/actions'
-import { KeysMutations } from '@/store/keys/mutations'
+import { key } from '/src/store'
+import { CompanyActions } from '/src/store/company/actions'
+import { KeysMutations } from '/src/store/keys/mutations'
 
 export default defineComponent({
 	components: {
@@ -92,7 +92,6 @@ export default defineComponent({
 	
 
 		onMounted(() => {
-			console.log('onMount')
 			if (!store.getters.isCompanysLoad)// || !store.getters.isManagerLoad)
 			{
 				loader.value=true;

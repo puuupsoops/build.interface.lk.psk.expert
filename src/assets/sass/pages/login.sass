@@ -84,7 +84,7 @@
 		height: 120%
 		z-index: 1
 		overflow: hidden
-		background-image: url(~@/assets/img/login/def.jpg)
+		background-image: url(/src/assets/img/login/def.jpg)
 		background-position: center
 		background-repeat: no-repeat
 		background-size: cover
@@ -101,7 +101,7 @@
 		width: calc(100% - 40px)
 		max-width: 320px
 		z-index: 2
-		background: url(~@/assets/img/login/body-bg.png) center/100% 100% no-repeat
+		background: url(/src/assets/img/login/body-bg.png) center/100% 100% no-repeat
 		/* background-color: rgba(21, 23, 28, 0.8)
 		/*border-radius: 50% 50% 45% 45% /* 15% 15% 55% 55% */
 
@@ -210,7 +210,7 @@
 			left: 0
 			width: 100%
 			height: 100%
-			background: url(~@/assets/img/login/check.svg) center/contain no-repeat
+			background: url(/src/assets/img/login/check.svg) center/contain no-repeat
 			-webkit-transform: scale(0)
 			transform: scale(0)
 			+prefix(transition, transform 0.2s ease)
@@ -271,24 +271,24 @@
 
 @media (max-width: 1100px) 
 	.authorization::before 
-		background-image: url(~@/assets/img/login/def-tablet.jpg)
+		background-image: url(/src/assets/img/login/def-tablet.jpg)
 	
 
 	@supports (background-blend-mode: multiply) 
 		.authorization::before 
-			background-image: url(~@/assets/img/login/02-tablet.jpg), url(~@/assets/img/login/01-tablet.jpg)
+			background-image: url(/src/assets/img/login/02-tablet.jpg), url(/src/assets/img/login/01-tablet.jpg)
 		
 	
 
 
 @media (max-width: 767.98px) 
 	.authorization::before 
-		background-image: url(~@/assets/img/login/def-mob.jpg)
+		background-image: url(/src/assets/img/login/def-mob.jpg)
 	
 
 	@supports (background-blend-mode: multiply) 
 		.authorization::before 
-			background-image: url(~@/assets/img/login/02-mob.jpg), url(~@/assets/img/login/01-mob.jpg)
+			background-image: url(/src/assets/img/login/02-mob.jpg), url(/src/assets/img/login/01-mob.jpg)
 		
 	
 
@@ -374,7 +374,7 @@
 
 @supports (background-blend-mode: multiply)
 	.authorization::before
-		background-image: url(~@/assets/img/login/02.jpg), url(~@/assets/img/login/01.jpg)
+		background-image: url(/src/assets/img/login/02.jpg), url(/src/assets/img/login/01.jpg)
 		background-position: 50% 50%, center
 		background-repeat: no-repeat
 		background-size: 150% 150%, cover

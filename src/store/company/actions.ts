@@ -1,11 +1,11 @@
-import axios from '@/plugins/axios'
-import { ActionTree } from "vuex"
-import { RootState } from "@/store"
-import { CompanyState } from "./types"
+import axios from '/src/plugins/axios'
+import { ActionTree } from 'vuex'
+import { RootState } from "/src/store"
+import { CompanyState } from './types'
 import { CompanyMutations } from './mutations'
 import { AuthMutations } from '../auth/mutations'
-import { PartnerResponse } from '@/models/Partner'
-import { ManagerResponse } from '@/models/Manager'
+import { PartnerResponse } from '/src/models/Partner'
+import { ManagerResponse } from '/src/models/Manager'
 
 
 export enum CompanyActions {

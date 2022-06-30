@@ -1,4 +1,4 @@
-import { Orders, OrdersDocStatus } from "@/models/Orders";
+import { Orders, OrdersDocStatus } from "/src/models/Orders";
 import { MutationTree } from "vuex";
 
 import { OrdersState } from "./types";

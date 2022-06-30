@@ -59,22 +59,22 @@
 
 
 <script lang="ts">
-import PersonalBar from '@/components/cards/PersonalBar.vue'
-import Notification from '@/components/cards/Notification.vue'
-import CompanyBarTop from '@/components/cards/Company/CompanyBarTop.vue'
-import TopNav from '@/components/nav/TopNav.vue'
-import SelectInput from '@/components/ui/SelectInput.vue'
-// import OrdersSearchCard from '@/components/cards/Order/OrdersSearchCard.vue'
-import ShipmentsListCard from '@/components/cards/Shipment/ShipmentsListCard.vue'
+import PersonalBar from '/src/components/cards/PersonalBar.vue'
+import Notification from '/src/components/cards/Notification.vue'
+import CompanyBarTop from '/src/components/cards/Company/CompanyBarTop.vue'
+import TopNav from '/src/components/nav/TopNav.vue'
+import SelectInput from '/src/components/ui/SelectInput.vue'
+// import OrdersSearchCard from '/src/components/cards/Order/OrdersSearchCard.vue'
+import ShipmentsListCard from '/src/components/cards/Shipment/ShipmentsListCard.vue'
 
 import { useStore } from 'vuex'
 import { ref, computed, onMounted, defineComponent } from 'vue'
-import { key } from '@/store'
-import { CompanyActions } from '@/store/company/actions'
-import { ShipmentsActions } from '@/store/shipments/actions'
-import { OrdersSatusCode } from '@/store/orders/types'
-import { SearchData } from '@/models/Components'
-import { OrdersActions } from '@/store/orders/actions'
+import { key } from '/src/store'
+import { CompanyActions } from '/src/store/company/actions'
+import { ShipmentsActions } from '/src/store/shipments/actions'
+import { OrdersSatusCode } from '/src/store/orders/types'
+import { SearchData } from '/src/models/Components'
+import { OrdersActions } from '/src/store/orders/actions'
 
 export default defineComponent({
 	components:{

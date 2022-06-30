@@ -16,6 +16,8 @@ $active-color:  #FF9900
 
 $alert-color: #e70c0c
 
+
+
 ::-webkit-scrollbar 
 	width: 5px
 /* Track */
@@ -127,8 +129,12 @@ a
 		left: 175px
 		right: 15px
 		bottom: 30px
+	min-height: 100vh
 	+prefix(transition, $default-transition)
+	
 
+	&.blur
+		+prefix(filter, blur(10px))
 	&-heading-wrap
 		+flex
 		margin:
@@ -494,7 +500,7 @@ a
 		bottom: 10px
 		width: 25px
 		height: 25px
-		background-image: url(~@/assets/img/icon/arrow-n-r.svg)
+		background-image: url(/src/assets/img/icon/arrow-n-r.svg)
 		background-size: 10px 16px
 		background-position: center center
 		background-repeat: no-repeat
@@ -617,7 +623,7 @@ a
 		right: 0
 		width: 7px
 		height: 13px
-		background-image: url(~@/assets/img/icon/arrow-o-r.svg)
+		background-image: url(/src/assets/img/icon/arrow-o-r.svg)
 		background-size: cover
 		background-position: center center
 		background-repeat: no-repeat
@@ -659,7 +665,7 @@ a
 				left: 50%
 				width: 10px
 				height: 10px
-				background-image: url(~@/assets/img/icon/table-checkmark.svg)
+				background-image: url(/src/assets/img/icon/table-checkmark.svg)
 				background-size: 100% auto
 				background-position: center center 
 				background-repeat: no-repeat

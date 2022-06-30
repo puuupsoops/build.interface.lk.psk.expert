@@ -70,13 +70,13 @@
 
 <script lang="ts">
 
-import AmountInput from '@/components/ui/AmountInput.vue'
+import AmountInput from '/src/components/ui/AmountInput.vue'
 
 
 import { ref, defineComponent, PropType,  computed } from 'vue'
 
-import { OrderStateOrder } from '@/store/order/types'
-import { ProductCharacteristic } from '@/models/Product';
+import { OrderStateOrder } from '/src/store/order/types'
+import { ProductCharacteristic } from '/src/models/Product';
 
 
 

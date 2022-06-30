@@ -42,8 +42,8 @@
 
 <script lang="ts">
 
-import SelectInput from '@/components/ui/SelectInput.vue'
-import { SelectInputData } from '@/models/Components'
+import SelectInput from '/src/components/ui/SelectInput.vue'
+import { SelectInputData } from '/src/models/Components'
 
 import { defineComponent, ref, PropType, watch, nextTick } from 'vue'
 

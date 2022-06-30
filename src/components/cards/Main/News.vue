@@ -25,8 +25,8 @@
 
 <script lang="ts">
 
-import { key } from '@/store';
-import { NewsActions } from '@/store/news/actions';
+import { key } from '/src/store';
+import { NewsActions } from '/src/store/news/actions';
 import { ref, computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
 

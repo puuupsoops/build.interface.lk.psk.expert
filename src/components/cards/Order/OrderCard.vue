@@ -210,16 +210,16 @@
 import { ref, computed, defineComponent, PropType } from 'vue'
 import { useStore } from 'vuex'
 
-import AmountInput from '@/components/ui/AmountInput.vue'
-import DeleteButton from '@/components/ui/DeleteButton.vue'
-import EditButton from '@/components/ui/EditButton.vue'
-import SelectInput from '@/components/ui/SelectInput.vue'
-import SnackBar from '@/components/ui/SnackBar.vue'
+import AmountInput from '/src/components/ui/AmountInput.vue'
+import DeleteButton from '/src/components/ui/DeleteButton.vue'
+import EditButton from '/src/components/ui/EditButton.vue'
+import SelectInput from '/src/components/ui/SelectInput.vue'
+import SnackBar from '/src/components/ui/SnackBar.vue'
 
-import { key } from '@/store/index'
-import { OrderMutations } from '@/store/order/mutations'
-import { OrderActions } from '@/store/order/actions'
-import { OrderStateOrder, OrderStatePosition } from '@/store/order/types'
+import { key } from '/src/store/index'
+import { OrderMutations } from '/src/store/order/mutations'
+import { OrderActions } from '/src/store/order/actions'
+import { OrderStateOrder, OrderStatePosition } from '/src/store/order/types'
 import { useRouter } from 'vue-router'
 
 export default defineComponent({

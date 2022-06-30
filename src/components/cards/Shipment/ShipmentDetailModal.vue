@@ -51,9 +51,9 @@
 </template>
 
 <script lang="ts">
-import DeleteButton from '@/components/ui/DeleteButton.vue'
+import DeleteButton from '/src/components/ui/DeleteButton.vue'
 
-import { Shipments } from '@/models/Shipments'
+import { Shipments } from '/src/models/Shipments'
 
 import {computed, defineComponent, PropType, ref} from 'vue'
 import { onClickOutside } from '@vueuse/core'

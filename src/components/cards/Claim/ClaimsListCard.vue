@@ -182,22 +182,22 @@
 </template>
 
 <script lang="ts">
-import PreloaderLocal from '@/components/PreloaderLocal.vue'
-import OrderDetailModal from '@/components/cards/Order/OrderDetailModal.vue'
-import ModalInput from '@/components/ui/ModalInput.vue'
+import PreloaderLocal from '/src/components/PreloaderLocal.vue'
+import OrderDetailModal from '/src/components/cards/Order/OrderDetailModal.vue'
+import ModalInput from '/src/components/ui/ModalInput.vue'
 
 import { ref, PropType, defineComponent, watch, computed } from 'vue'
 import { onClickOutside } from '@vueuse/core'
-import { Claim } from '@/models/Claim'
+import { Claim } from '/src/models/Claim'
 import { useStore } from 'vuex'
-import { key } from '@/store'
-import { OrderActions } from '@/store/order/actions'
-import { Storage } from '@/models/Partner'
-import { OrdersActions } from '@/store/orders/actions'
-import { OrdersSatusCode } from '@/store/orders/types'
+import { key } from '/src/store'
+import { OrderActions } from '/src/store/order/actions'
+import { Storage } from '/src/models/Partner'
+import { OrdersActions } from '/src/store/orders/actions'
+import { OrdersSatusCode } from '/src/store/orders/types'
 
-import { SearchData } from '@/models/Components'
-import { KeysMutations } from '@/store/keys/mutations'
+import { SearchData } from '/src/models/Components'
+import { KeysMutations } from '/src/store/keys/mutations'
 
 
 export default defineComponent({
@@ -253,7 +253,7 @@ export default defineComponent({
 		watch( active, ()=>{
 			//console.log(active)
 			if (active.value!=-1 && data_filtred.value && Array.isArray(data_filtred.value[active.value].order?.checks)) {
-				let promise_arr =data_filtred.value[active.value].order?.checks?.map(x=> {if (!x.doc_status) return store.dispatch(OrdersActions.GET_ORDERS_DOCSTATUS, x.guid)})
+				let promise_arr =data_filtred.value[active.value].order?.checks?.map(x=> !x.doc_status ? store.dispatch(OrdersActions.GET_ORDERS_DOCSTATUS, x.guid): null )
 				if (promise_arr){
 					Promise.all(promise_arr).finally(()=>{})
 				}
@@ -370,7 +370,7 @@ export default defineComponent({
 			detailOrderId,
 			OrdersSatusCode,
 			filter,
-			docLocation: process.env.VUE_APP_DOC_LOCATION,
+			docLocation:import.meta.env.VITE_APP_DOC_LOCATION,
 			//computed
 			data_filtred,
 			//methods

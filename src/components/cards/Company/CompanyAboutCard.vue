@@ -14,7 +14,7 @@
 						>
 							<img
 								class="company-head-about-add-img"
-								src="@/assets/img/icon/doc-add.svg"
+								src="/src/assets/img/icon/doc-add.svg"
 								alt=""
 							/>Добавить заказ
 						</router-link >
@@ -278,7 +278,7 @@
 <script lang="ts">
 import { defineComponent, ref, PropType, watch } from "vue"
 
-import { Partner } from '@/models/Partner'
+import { Partner } from '/src/models/Partner'
 import { Form, Field, ErrorMessage, defineRule } from 'vee-validate'
 import * as yup from 'yup'
 

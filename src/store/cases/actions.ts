@@ -1,11 +1,11 @@
-import axios from '@/plugins/axios'
+import axios from '/src/plugins/axios'
 import { ActionTree } from "vuex"
-import { RootState } from "@/store"
+import { RootState } from "/src/store"
 import { CasesState } from "./types"
-import { CaseResponse } from '@/models/Cases';
+import { CaseResponse } from '/src/models/Cases';
 import { CasesMutations } from './mutations';
 
-const site_location = process.env.VUE_APP_SITE_LOCATIONL;
+const site_location =import.meta.env.VITE_APP_SITE_LOCATION;
 
 export enum CasesActions {
 	GET_CASE = "GET_SHOW_CASE",

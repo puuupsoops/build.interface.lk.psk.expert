@@ -39,8 +39,15 @@ export interface Storage {
 }
 
 export interface Document {
-    expires: string;
-    date:    string;
-    number:  string;
-    debt:    number;
+    expires:      string;
+    expires_str?: string;
+    date:         string;
+    date_str:     string;
+    number:       string;
+    debt:         number;
+}
+
+export interface CompanysList{
+	id: number|string;
+	name: string;
 }

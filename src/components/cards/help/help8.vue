@@ -1,7 +1,7 @@
 <template>
 	<div class="help-8">
 		<div class="help-8-wrap">
-			<img  class="el1" src="@/assets/img/help/help8_1.png"/>
+			<img  class="el1" src="/src/assets/img/help/help8_1.png"/>
 			
 			<div class="help-box noborder el2"> 
 				<div class="help-box-title">Создание и оформление заказа</div>
@@ -58,7 +58,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import {defineComponent} from 'vue'
 
 export default defineComponent({

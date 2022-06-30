@@ -99,7 +99,7 @@
 							v-for="(document, id) in data.documents"
 							:key="id"
 							>
-						<img class="company-head-list-img" src="@/assets/img/icon/doc.svg" alt="">
+						<img class="company-head-list-img" src="/src/assets/img/icon/doc.svg" alt="">
 						<a class="company-head-list-link" href="#CompanyCalendar" @click="docDate = document.expires">Cчёт от {{document.date_str}} истекает {{document.expires_str}}</a>
 					</li>
 				</ul>

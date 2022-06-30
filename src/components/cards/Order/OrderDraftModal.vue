@@ -105,15 +105,15 @@
 
 <script lang="ts">
 
-import DeleteButton from '@/components/ui/DeleteButton.vue'
-import OrderDraftCard from '@/components/cards/Order/OrderDraftCard.vue'
+import DeleteButton from '/src/components/ui/DeleteButton.vue'
+import OrderDraftCard from '/src/components/cards/Order/OrderDraftCard.vue'
 
 import { ref, computed, defineComponent } from 'vue'
 import { useStore } from 'vuex'
 import { onClickOutside } from '@vueuse/core'
 
-import { key } from '@/store'
-import { OrderMutations } from '@/store/order/mutations'
+import { key } from '/src/store'
+import { OrderMutations } from '/src/store/order/mutations'
 
 export default defineComponent({
 	name: 'OrderDraftModal',

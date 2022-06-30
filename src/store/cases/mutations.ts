@@ -1,4 +1,4 @@
-import { Case } from "@/models/Cases";
+import { Case } from "/src/models/Cases";
 import { MutationTree } from "vuex";
 import { CasesState } from "./types";
 

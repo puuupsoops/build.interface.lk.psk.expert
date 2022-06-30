@@ -1,7 +1,7 @@
 import { GetterTree } from "vuex"
-import { RootState } from "@/store"
+import { RootState } from "/src/store"
 import { CompanyState } from "./types"
-import { Partner } from "@/models/Partner"
+import { Partner } from "/src/models/Partner"
 
 export const getters: GetterTree<CompanyState, RootState> = {
 	isCompanysLoad: state => state.companys.length !== 0,
@@ -9,15 +9,17 @@ export const getters: GetterTree<CompanyState, RootState> = {
 		getCompanys: state => state.companys,
 		getCompanysList: state => state.companys.map ( val => ({
 			id: val.uid,
-			name: val.name.replace(/Общество с ограниченной ответственностью/, 'ООО')
-							.replace(/Акционерное общество/, 'АО')
-							.replace(/Индивидуальный Предприниматель/, 'ИП')})),
+			name: val.name
+						.replace(/Общество с ограниченной ответственностью/, 'ООО')
+						.replace(/Акционерное общество/, 'АО')
+						.replace(/Индивидуальный предприниматель/, 'ИП')})),
 		getCompanysListInput: state => {
 			const res = state.companys.map ( val => ({
 				id: val.uid,
-				name: val.name.replace(/Общество с ограниченной ответственностью/, 'ООО')
-								.replace(/Акционерное общество/, 'АО')
-								.replace(/Индивидуальный Предприниматель/, 'ИП')}))
+				name: val.name
+							.replace(/Общество с ограниченной ответственностью/, 'ООО')
+							.replace(/Акционерное общество/, 'АО')
+							.replace(/Индивидуальный предприниматель/, 'ИП')}))
 			res.unshift({id: '', name: "Все"})
 			return res
 		},

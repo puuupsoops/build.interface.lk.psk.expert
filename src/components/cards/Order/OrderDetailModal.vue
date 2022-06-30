@@ -50,18 +50,18 @@
 
 <script lang="ts">
 
-import DeleteButton from '@/components/ui/DeleteButton.vue'
-import PreloaderLocal from '@/components/PreloaderLocal.vue'
-import OrderDraftCard from '@/components/cards/Order/OrderDraftCard.vue'
+import DeleteButton from '/src/components/ui/DeleteButton.vue'
+import PreloaderLocal from '/src/components/PreloaderLocal.vue'
+import OrderDraftCard from '/src/components/cards/Order/OrderDraftCard.vue'
 
 import { ref, computed, defineComponent, watch } from 'vue'
 import { useStore } from 'vuex'
 import { onClickOutside } from '@vueuse/core'
 
-import { key } from '@/store'
-import { OrderActions } from '@/store/order/actions'
+import { key } from '/src/store'
+import { OrderActions } from '/src/store/order/actions'
 import { useRouter } from 'vue-router'
-import { OrderMutations } from '@/store/order/mutations'
+import { OrderMutations } from '/src/store/order/mutations'
 
 
 export default defineComponent({

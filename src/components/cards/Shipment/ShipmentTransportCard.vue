@@ -120,22 +120,22 @@
 
 
 <script lang="ts">
-import DatePicker from '@/components/ui/DatePicker.vue'
-import ShipmentAddressInput from '@/components/cards/Shipment/ShipmentAddressInput.vue'
-import SelectInput from '@/components/ui/SelectInput.vue'
-import PreloaderLocal from '@/components/PreloaderLocal.vue'
+import DatePicker from '/src/components/ui/DatePicker.vue'
+import ShipmentAddressInput from '/src/components/cards/Shipment/ShipmentAddressInput.vue'
+import SelectInput from '/src/components/ui/SelectInput.vue'
+import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 
-import { Orders } from '@/models/Orders';
-import { Partner } from '@/models/Partner';
-import { key } from '@/store';
+import { Orders } from '/src/models/Orders';
+import { Partner } from '/src/models/Partner';
+import { key } from '/src/store';
 
 import { computed, defineComponent, onMounted, PropType, ref }from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { ShipmentsActions } from '@/store/shipments/actions';
-import { SelectInputData } from '@/models/Components';
-import { ShipmentsAddress } from '@/models/Shipments';
-import { ClaimMutations } from '@/store/claims/mutations';
+import { ShipmentsActions } from '/src/store/shipments/actions';
+import { SelectInputData } from '/src/models/Components';
+import { ShipmentsAddress } from '/src/models/Shipments';
+import { ClaimMutations } from '/src/store/claims/mutations';
 
 export default defineComponent({
 		props:{

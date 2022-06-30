@@ -80,22 +80,22 @@
 
 <script lang="ts">
 
-import TopNav from '@/components/nav/TopNav.vue'
-import PreloaderLocal from '@/components/PreloaderLocal.vue'
-import SelectInput from '@/components/ui/SelectInput.vue'
+import TopNav from '/src/components/nav/TopNav.vue'
+import PreloaderLocal from '/src/components/PreloaderLocal.vue'
+import SelectInput from '/src/components/ui/SelectInput.vue'
 
-import ShipmentPickupCard from '@/components/cards/Shipment/ShipmentPickupCard.vue'
-import ShipmentDeliveryCard from '@/components/cards/Shipment/ShipmentDeliveryCard.vue'
-import ShipmentTransportCard from '@/components/cards/Shipment/ShipmentTransportCard.vue'
+import ShipmentPickupCard from '/src/components/cards/Shipment/ShipmentPickupCard.vue'
+import ShipmentDeliveryCard from '/src/components/cards/Shipment/ShipmentDeliveryCard.vue'
+import ShipmentTransportCard from '/src/components/cards/Shipment/ShipmentTransportCard.vue'
 
 import { useStore } from 'vuex'
 import { ref,computed, onMounted, defineComponent } from 'vue'
-import { key } from '@/store'
-import { CompanyActions } from '@/store/company/actions'
-import { OrdersActions } from '@/store/orders/actions'
-import { Orders } from '@/models/Orders'
-import { KeysConst } from '@/store/keys/types'
-import { KeysMutations } from '@/store/keys/mutations'
+import { key } from '/src/store'
+import { CompanyActions } from '/src/store/company/actions'
+import { OrdersActions } from '/src/store/orders/actions'
+import { Orders } from '/src/models/Orders'
+import { KeysConst } from '/src/store/keys/types'
+import { KeysMutations } from '/src/store/keys/mutations'
 
 export default defineComponent({
 	components: {

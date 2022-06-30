@@ -43,9 +43,9 @@
 </div>
 </template>
 
-<script>
-import { ref } from 'vue';
-import ProductPropertiesCard from '@/components/cards/Product/ProductPropertiesCard';
+<script lang="ts">
+import { ref } from 'vue'
+import ProductPropertiesCard from '/src/components/cards/Product/ProductPropertiesCard.vue'
 export default {
 	components: { ProductPropertiesCard },
 	props: {

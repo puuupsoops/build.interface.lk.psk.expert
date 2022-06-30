@@ -1,4 +1,4 @@
-import { Found, ProductArticles } from "@/models/Product";
+import { Found, ProductArticles } from "/src/models/Product";
 import { MutationTree } from "vuex";
 import { ProductState, DEFAULT_PRODUCT } from "./types";
 

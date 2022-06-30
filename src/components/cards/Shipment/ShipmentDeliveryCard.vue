@@ -94,22 +94,22 @@
 
 
 <script lang="ts">
-import DatePicker from '@/components/ui/DatePicker.vue'
-import SelectInput from '@/components/ui/SelectInput.vue'
-import PreloaderLocal from '@/components/PreloaderLocal.vue'
+import DatePicker from '/src/components/ui/DatePicker.vue'
+import SelectInput from '/src/components/ui/SelectInput.vue'
+import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 
-import { SelectInputData } from '@/models/Components'
+import { SelectInputData } from '/src/models/Components'
 
-import { key } from '@/store'
+import { key } from '/src/store'
 import { useStore } from 'vuex'
-import { Orders } from '@/models/Orders'
+import { Orders } from '/src/models/Orders'
 
 import { ref, PropType, defineComponent, computed, onMounted }from 'vue';
-import { ShipmentsAddress } from '@/models/Shipments'
-import { Partner } from '@/models/Partner'
-import { ShipmentsActions } from '@/store/shipments/actions'
+import { ShipmentsAddress } from '/src/models/Shipments'
+import { Partner } from '/src/models/Partner'
+import { ShipmentsActions } from '/src/store/shipments/actions'
 import { useRouter } from 'vue-router'
-import { ClaimMutations } from '@/store/claims/mutations'
+import { ClaimMutations } from '/src/store/claims/mutations'
 
 export default defineComponent({
 		components: {

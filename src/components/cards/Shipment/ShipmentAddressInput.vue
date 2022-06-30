@@ -51,16 +51,16 @@
 </template>
 
 <script lang="ts">
-import PreloaderLocal from '@/components/PreloaderLocal.vue'
+import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 
-import { key } from '@/store'
+import { key } from '/src/store'
 import { useStore } from 'vuex';
 
 
 import { computed, defineComponent, nextTick, onMounted, ref } from 'vue'
 import { onClickOutside } from '@vueuse/core';
-import { ShipmentsActions } from '@/store/shipments/actions';
-import { ShipmentsMutations } from '@/store/shipments/mutations';
+import { ShipmentsActions } from '/src/store/shipments/actions';
+import { ShipmentsMutations } from '/src/store/shipments/mutations';
 
 
 
@@ -85,7 +85,7 @@ export default defineComponent({
 		const store = useStore(key)
 		const search_str = ref('')
 		const loading = ref(false)
-		const debounce = ref<number|undefined>(undefined)
+		const debounce = ref()
 		const target = ref(null)
 		const searchInput = ref<any>(null)
 		const active_item = ref(-1)

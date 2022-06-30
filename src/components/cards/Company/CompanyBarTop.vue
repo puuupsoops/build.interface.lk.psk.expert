@@ -17,31 +17,28 @@
 			</div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { PropType } from 'vue'
 
-export default {
-	props:{
-		data: {
-			type: Array
-		},
-		modelValue: {
-			type: String,
-			required: true
-		}
+import { CompanysList } from '/src/models/Partner'
+
+
+const props = defineProps({
+	data: {
+		type: Array as PropType<CompanysList[]>,
 	},
-	emits: ['update:modelValue'],
-	setup(props){
-		let getClassA = (company) => {
-			return company.id===props.modelValue ?
-					'top-line-card-item orange'
-					:'top-line-card-item green'
-		};
-
-		return {
-				getClassA,
-			}
+	modelValue: {
+		type: String,
+		required: true
 	}
-}
+})
+const emit = defineEmits(['update:modelValue'])
+const getClassA = (company: CompanysList) => 
+	{
+		return company.id===props.modelValue ?	'top-line-card-item orange'	:'top-line-card-item green'
+		}
+
+
 </script>
 
 <style>

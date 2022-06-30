@@ -1,5 +1,5 @@
-import { NewOrder, Order, Position } from "@/models/Order";
-import { Offer, Product } from "@/models/Product";
+import { NewOrder, Order, Position } from "/src/models/Order";
+import { Offer, Product } from "/src/models/Product";
 
 export interface OrderState {
 	order:          OrderStateOrder;

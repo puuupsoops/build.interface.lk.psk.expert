@@ -31,16 +31,16 @@
 </template>
 
 <script lang="ts">
-import Notification from '@/components/cards/Notification.vue'
-import PersonalBar  from '@/components/cards/PersonalBar.vue'
-import CompanyBar   from '@/components/cards/Company/CompanyBar.vue'
-import News         from '@/components/cards/Main/News.vue'
-import ShowCases from '@/components/cards/Main/ShowCases.vue'
+import Notification from '/src/components/cards/Notification.vue'
+import PersonalBar  from '/src/components/cards/PersonalBar.vue'
+import CompanyBar   from '/src/components/cards/Company/CompanyBar.vue'
+import News         from '/src/components/cards/Main/News.vue'
+import ShowCases from '/src/components/cards/Main/ShowCases.vue'
 
 import { useStore } from 'vuex'
 import { computed, defineComponent, onMounted, ref} from 'vue'
-import { key } from '@/store'
-import { CompanyActions } from '@/store/company/actions'
+import { key } from '/src/store'
+import { CompanyActions } from '/src/store/company/actions'
 
 export default defineComponent({
 	components: {

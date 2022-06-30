@@ -1,7 +1,7 @@
 import { GetterTree } from "vuex"
-import { RootState } from "@/store"
+import { RootState } from "/src/store"
 import { CatalogState } from "./types"
-import { CatalogMenu, CatalogMenuItem, CatalogMenuItemSub } from "@/models/Catalog"
+import { CatalogMenu, CatalogMenuItem, CatalogMenuItemSub } from "/src/models/Catalog"
 
 export const getters: GetterTree<CatalogState, RootState> = {
 	isCatalogMenuLoad: state => Object.keys(state.menu).length !== 0,

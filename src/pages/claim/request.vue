@@ -39,22 +39,22 @@
 
 <script lang="ts">
 
-import TopNav from "@/components/nav/TopNav.vue"
-import Preloader from '@/components/Preloader.vue'
-import PreloaderLocal from '@/components/PreloaderLocal.vue'
+import TopNav from "/src/components/nav/TopNav.vue"
+import Preloader from '/src/components/Preloader.vue'
+import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 
-import ClaimCard from '@/components/cards/Claim/ClaimCard.vue'
+import ClaimCard from '/src/components/cards/Claim/ClaimCard.vue'
 
 
 import { useStore } from 'vuex'
-import { key } from '@/store'
+import { key } from '/src/store'
 import { defineComponent, ref,onMounted, computed }from 'vue';
-import { CompanyActions } from "@/store/company/actions"
-import { Claim }  from "@/models/Claim"
-import { OrdersActions } from "@/store/orders/actions"
-import { ClaimActions } from "@/store/claims/actions"
+import { CompanyActions } from "/src/store/company/actions"
+import { Claim }  from "/src/models/Claim"
+import { OrdersActions } from "/src/store/orders/actions"
+import { ClaimActions } from "/src/store/claims/actions"
 import { useRouter } from 'vue-router'
-import { ClaimMutations } from "@/store/claims/mutations"
+import { ClaimMutations } from "/src/store/claims/mutations"
 
 
 

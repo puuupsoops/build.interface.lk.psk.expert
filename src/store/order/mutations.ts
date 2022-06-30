@@ -1,7 +1,7 @@
-import { NewOrder } from "@/models/Order";
+import { NewOrder } from "/src/models/Order";
 import { MutationTree } from "vuex";
 import { DefaultNewOrder, DefaultOrder, OrderState, OrderStateOrder, OrderStatePosition, OrderStatePositionOffer } from "./types";
-import { state as CompanyState} from '@/store/company/state'
+import { state as CompanyState} from '/src/store/company/state'
 
 const getCompanyDiscount = (uid: string, guid: string, status: string): number => {
 	if (status == 'Outlet' || status == 'Discount' || status == 'Activity') return 0

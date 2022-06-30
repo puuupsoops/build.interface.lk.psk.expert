@@ -14,37 +14,33 @@
 
 </template>
 
-<script>
-import { watch } from 'vue'
-
-export default {
-		props: {
-			modelValue: {
-				type: Boolean,
-				required: true
-			},
-			message: {
-				type: String
-			},
-			timeout: {
-				default: 10000,
-				type: Number,
-			},
-			notification: {
-				type: Boolean,
-				default: false
-			},
+<script setup lang="ts">
+	import { watch } from 'vue'
+	const props = defineProps(
+	{
+		modelValue: {
+			type: Boolean,
+			required: true
 		},
-		emits: ['update:modelValue'],
-		setup(props, { emit }){				
-			watch(() => props.modelValue, () => {
-				if (props.modelValue) 
-					setTimeout(()=>{emit('update:modelValue',false)}, props.timeout)
-			})
-			return {
-			}
-		}
-}
+		message: {
+			type: String
+		},
+		timeout: {
+			default: 10000,
+			type: Number,
+		},
+		notification: {
+			type: Boolean,
+			default: false
+		},
+	})
+	const emits = defineEmits(['update:modelValue'])
+			
+	watch(() => props.modelValue, () => {
+		if (props.modelValue) 
+			setTimeout(()=>{emits('update:modelValue',false)}, props.timeout)
+	})
+
 </script>
 
 <style lang="sass">

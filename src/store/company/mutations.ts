@@ -1,4 +1,4 @@
-import { Partner } from "@/models/Partner";
+import { Partner } from "/src/models/Partner";
 import { MutationTree } from "vuex";
 import { CompanyState } from "./types";
 

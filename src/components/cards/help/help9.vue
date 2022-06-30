@@ -5,7 +5,7 @@
 				<div class="help-box-title">Добавление товаров в заказ</div>
 			</div>
 			
-			<img  class="el2" src="@/assets/img/help/help6_1.png"/>
+			<img  class="el2" src="/src/assets/img/help/help6_1.png"/>
 			
 			<div class="help-box el3">
 				<div class="help-box-text">
@@ -28,7 +28,7 @@
 				</svg>
 			</div>
 			
-			<img  class="el5" src="@/assets/img/help/help9_1.png"/>
+			<img  class="el5" src="/src/assets/img/help/help9_1.png"/>
 			
 			<div class="help-box el6" v-if="data.scroll>=200 ||data.scroll200">
 				<div class="help-box-text">
@@ -54,7 +54,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import {defineComponent, onBeforeUnmount, onMounted, ref, watch} from 'vue'
 
 export default defineComponent({
@@ -68,8 +68,9 @@ export default defineComponent({
 			scroll800: false,
 			scroll1100: false,
 		})
-		const onScroll = (e) => {
-			data.value.scroll = e.target.documentElement.scrollTop
+		const onScroll = (e: Event) => {
+			const scroll = e.target as Document
+			data.value.scroll = scroll.documentElement.scrollTop
 		}
 		watch(data.value, () => {
 			if (data.value.scroll >= 100 ) data.value.scroll100 = true

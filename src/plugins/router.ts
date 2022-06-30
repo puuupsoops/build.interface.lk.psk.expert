@@ -1,13 +1,13 @@
 
 import { createRouter, createWebHistory } from 'vue-router';
 //import { useStore } from 'vuex';
-import { store } from '@/store'
-import { AuthActions } from '@/store/auth/actions';
+import { store } from '/src/store/index'
+import { AuthActions } from '/src/store/auth/actions';
 
 const routes = [
 	{
 		path: '/', 
-		component: () => import('@/pages/main.vue'),
+		component: () => import('/src/pages/main.vue'),
 		name: 'Main',
 		meta:{
 				auth: true,
@@ -15,7 +15,7 @@ const routes = [
 	},
 	{
 		path: '/catalog/catalog/:id?',
-		component: () => import('@/pages/catalog/catalog.vue'),
+		component: () => import('/src/pages/catalog/catalog.vue'),
 		name: 'Catalog',
 		props: true,
 		meta:{
@@ -24,7 +24,7 @@ const routes = [
 	},
 	{
 		path: '/catalog/interactive',
-		component: () => import('@/pages/catalog/interactive.vue'),
+		component: () => import('/src/pages/catalog/interactive.vue'),
 		name: 'CatalogInfo',
 		props: true,
 		meta:{
@@ -33,7 +33,7 @@ const routes = [
 	},
 	{
 		path: '/company/:id?', 
-		component: () => import('@/pages/company.vue'),
+		component: () => import('/src/pages/company.vue'),
 		name: 'Company',
 		props: true,
 		meta:{
@@ -42,7 +42,7 @@ const routes = [
 	},
 	{
 		path: '/product/:article?', 
-		component: () => import('@/pages/product.vue'),
+		component: () => import('/src/pages/product.vue'),
 		name: 'Product',
 		props: true,
 		meta:{
@@ -51,7 +51,7 @@ const routes = [
 	},
 	{
 		path: '/order/:article?', 
-		component: () => import('@/pages/order/order.vue'),
+		component: () => import('/src/pages/order/order.vue'),
 		name: 'Order',
 		props: true,
 		meta:{
@@ -60,7 +60,7 @@ const routes = [
 	},
 	{
 		path: '/orders', 
-		component: () => import('@/pages/order/orders.vue'),
+		component: () => import('/src/pages/order/orders.vue'),
 		name: 'Orders',
 		meta:{
 				auth: true,
@@ -68,7 +68,7 @@ const routes = [
 	},
 	{
 		path: '/shipments', 
-		component: () => import('@/pages/shipment/shipments.vue'),
+		component: () => import('/src/pages/shipment/shipments.vue'),
 		name: 'Shipments',
 		meta:{
 				auth: true,
@@ -76,7 +76,7 @@ const routes = [
 	},
 	{
 		path: '/shipments/request', 
-		component: () => import('@/pages/shipment/request.vue'),
+		component: () => import('/src/pages/shipment/request.vue'),
 		name: 'ShipmentsRequest',
 		meta:{
 				auth: true,
@@ -84,7 +84,7 @@ const routes = [
 	},
 	{
 		path: '/shipments/request/success', 
-		component: () => import('@/pages/shipment/success.vue'),
+		component: () => import('/src/pages/shipment/success.vue'),
 		name: 'ShipmentsRequestSuccess',
 		meta:{
 				auth: true,
@@ -92,7 +92,7 @@ const routes = [
 	},
 	{
 		path: '/shipments/address', 
-		component: () => import('@/pages/shipment/address.vue'),
+		component: () => import('/src/pages/shipment/address.vue'),
 		name: 'ShipmentsAdresss',
 		meta:{
 				auth: true,
@@ -100,7 +100,7 @@ const routes = [
 	},
 	{
 		path: '/claims', 
-		component: () => import('@/pages/claim/claims.vue'),
+		component: () => import('/src/pages/claim/claims.vue'),
 		name: 'Claims',
 		meta:{
 				auth: true,
@@ -108,7 +108,7 @@ const routes = [
 	},
 	{
 		path: '/claims/request', 
-		component: () => import('@/pages/claim/request.vue'),
+		component: () => import('/src/pages/claim/request.vue'),
 		name: 'ClaimsRequest',
 		meta:{
 				auth: true,
@@ -116,7 +116,7 @@ const routes = [
 	},
 	{
 		path: '/claims/success', 
-		component: () => import('@/pages/claim/success.vue'),
+		component: () => import('/src/pages/claim/success.vue'),
 		name: 'ClaimsSuccess',
 		meta:{
 				auth: true,
@@ -124,7 +124,7 @@ const routes = [
 	},
 	{
 		path: '/help', 
-		component: () => import('@/pages/help/help.vue'),
+		component: () => import('/src/pages/help/help.vue'),
 		name: 'Help',
 		meta:{
 				auth: true,
@@ -132,7 +132,7 @@ const routes = [
 	},
 	{
 		path: '/404',
-		component: () => import('@/pages/404.vue'),
+		component: () => import('/src/pages/404.vue'),
 		name: '404',
 		meta:{
 				auth: true,
@@ -140,7 +140,7 @@ const routes = [
 	},
 	{
 		path: '/500',
-		component: () => import('@/pages/500.vue'),
+		component: () => import('/src/pages/500.vue'),
 		name: '500',
 		meta:{
 				auth: true,
@@ -148,19 +148,19 @@ const routes = [
 	},
 	// {
 	// 	path: '/personal',
-	// 	component: () => import('@/pages/tmp_personal'),
+	// 	component: () => import('/src/pages/tmp_personal'),
 	// 	name: 'Personal',
 	// 	meta:{
 	// 			auth: true,
 	// 		}
 	// },
-	{
-		path: '/logout',
-		component: () => import('@/pages/login.vue'),
+	{   path: '/logout',
+		name: 'logout',
+		component: () => import('/src/pages/logout.vue'),
 		meta:{
-				auth: true,
-			}
-	},
+			auth: true,
+		}
+ 	},
 	{
 		path: '/:pathMatch(.*)*',
 		redirect: '/404',
@@ -171,9 +171,10 @@ const routes = [
 	
 	{
 		path: '/login', 
-		component: () => import('@/pages/login.vue'),
+		component: () => import('/src/pages/login.vue'),
 		name: 'Login'
 	},
+	
 
 ];
 
@@ -183,19 +184,16 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-	//console.log(to, from)
+	console.log(to, from, store.getters.isAuthenticated, to.path, to.path == '/logout')
 	if (to.path === '/login' && store.getters.isAuthenticated)  {
 		return next({ name: 'Main',  });
 	}
 	if (to.matched.some(m => m.meta.auth) && !store.getters.isAuthenticated) {
-		next({ name: 'Login',  });
+		return next({ name: 'Login',  });
 	}
-	if (to.path === '/logout' && store.getters.isAuthenticated)  {
-		store.dispatch(AuthActions.LOGOUT)
-	}
-	else {
-		next();
-	}
+	
+
+	next();
 });
 
 export default router;

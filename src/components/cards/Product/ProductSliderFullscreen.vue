@@ -60,9 +60,9 @@
 </template>
 
 <script lang="ts">
-import { Sliders } from '@/models/Components'
-import { key } from '@/store'
-import { KeysMutations } from '@/store/keys/mutations'
+import { Sliders } from '/src/models/Components'
+import { key } from '/src/store'
+import { KeysMutations } from '/src/store/keys/mutations'
 import { computed, defineComponent, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { onClickOutside } from '@vueuse/core'

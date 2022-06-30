@@ -27,7 +27,7 @@
 <script lang="ts">
 import { ref, computed, defineComponent, PropType } from 'vue'
 import { onClickOutside } from '@vueuse/core'
-import { SelectInputData } from '@/models/Components'
+import { SelectInputData } from '/src/models/Components'
 
 export default defineComponent({
 	props: {

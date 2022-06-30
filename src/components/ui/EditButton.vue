@@ -8,7 +8,7 @@
 	</svg>
 </div>
 </template>
-<script>
+<script lang="ts">
 export default {
 	emits: ['onClick'],
 	setup(){

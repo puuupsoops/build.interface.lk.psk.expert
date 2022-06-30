@@ -4,7 +4,7 @@
 		@click="menu = !menu"
 	>
 		<div class="top-line-account-img-box">
-			<img class="top-line-account-img" src="@/assets/img/avatar.png" alt="" />
+			<img class="top-line-account-img" src="/src/assets/img/avatar.png" alt="" />
 		</div>
 		<div
 				ref="target"
@@ -12,13 +12,13 @@
 			>
 					<a class="top-line-dropdown-link lock">Профиль
 								<span class="tooltip">
-									<img src="@/assets/img/icon/lock.svg"/>
+									<img src="/src/assets/img/icon/lock.svg"/>
 									<span style="left: -120px;top: -20px" class="tooltiptext">Раздел находится в разработке</span>
 								</span>
 					</a>
 					<a class="top-line-dropdown-link lock">Уведомления
 								<span class="tooltip">
-									<img src="@/assets/img/icon/lock.svg"/>
+									<img src="/src/assets/img/icon/lock.svg"/>
 									<span style="left: -120px;top: -20px" class="tooltiptext">Раздел находится в разработке</span>
 								</span>
 					</a>
@@ -30,11 +30,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue"
+import { defineComponent, ref } from 'vue'
 import { onClickOutside } from '@vueuse/core'
-import { useStore } from "vuex"
-import { key } from "@/store"
-import { AuthActions } from "@/store/auth/actions"
+import { useStore } from 'vuex'
+import { key } from '/src/store'
+import { AuthActions } from '/src/store/auth/actions'
 
 export default defineComponent({
 		props:{

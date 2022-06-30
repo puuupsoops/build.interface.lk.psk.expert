@@ -21,15 +21,15 @@
 
 </template>
 
-<script>
-import CaseCard from '@/components/cards/Main/CaseCard.vue'
-import PreloaderLocal from '@/components/PreloaderLocal.vue'
-import { key } from '@/store';
+<script lang="ts">
+import CaseCard from '/src/components/cards/Main/CaseCard.vue'
+import PreloaderLocal from '/src/components/PreloaderLocal.vue'
+import { key } from '/src/store';
 
 import { ref, computed, onMounted, } from 'vue';
 import { useStore } from 'vuex';
-import { CasesActions } from '@/store/cases/actions';
-import { CasesMutations } from '@/store/cases/mutations';
+import { CasesActions } from '/src/store/cases/actions';
+import { CasesMutations } from '/src/store/cases/mutations';
 
 export default {
 	components: {

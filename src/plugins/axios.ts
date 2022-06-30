@@ -1,11 +1,11 @@
 
-import axios from "axios";
-import { store } from '@/store'
-import { AuthActions } from "@/store/auth/actions";
-import { AuthMutations } from "@/store/auth/mutations";
+import axios from 'axios'
+import { store } from '/src/store'
+import { AuthActions } from '/src/store/auth/actions'
+import { AuthMutations } from '/src/store/auth/mutations'
 
 
-const api_location = process.env.VUE_APP_API_LOCATION + '/api'
+const api_location = import.meta.env.VITE_APP_API_LOCATION + '/api'
 
 const instanse = axios.create({
 	baseURL: api_location,
@@ -30,7 +30,8 @@ instanse.interceptors.response.use(
 			return Promise.reject(error);
 		} catch (e) {
 			
-			store.commit(AuthMutations.SET_ERROR, 'Ошибка ответа сервера: <br>' + e.message)
+			store.commit(AuthMutations.SET_ERROR, 'Ошибка ответа сервера: <br>' + (e as Error).message)
+			return Promise.resolve()
 		}
 	});
 
@@ -40,11 +41,11 @@ export default instanse;
 
 
 export const axios_dadata = axios.create({
-	baseURL: process.env.VUE_APP_DADATA_LOCATION,
+	baseURL: import.meta.env.VITE_APP_DADATA_LOCATION,
 	headers: {
 		"Content-type": "application/json",
 		"Accept": "application/json",
-		"Authorization": "Token " + process.env.VUE_APP_DADATA_TOKEN
+		"Authorization": "Token " + import.meta.env.VITE_APP_DADATA_TOKEN
 	},
 	withCredentials: false
 });

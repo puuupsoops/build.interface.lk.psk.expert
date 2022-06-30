@@ -38,7 +38,7 @@
 				</div>
 			</div>
 				<a class="company-consultant-mail" :title="managerData.email" :href="'mailto:'+managerData.email">
-					<img class="company-consultant-mail-img" src="@/assets/img/icon/mail-send.svg" alt="">Написать
+					<img class="company-consultant-mail-img" src="/src/assets/img/icon/mail-send.svg" alt="">Написать
 				</a>
 		</div>
 	</div>
@@ -46,9 +46,9 @@
 
 <script lang="ts">
 import { useStore } from 'vuex'
-import { key } from '@/store'
+import { key } from '/src/store'
 import { ref, computed, onMounted, defineComponent } from 'vue'
-import { CompanyActions } from '@/store/company/actions'
+import { CompanyActions } from '/src/store/company/actions'
 
 export default defineComponent( {
 	props:{

@@ -51,12 +51,12 @@
 
 <script lang="ts">
 
-import { key } from '@/store'
+import { key } from '/src/store'
 import { ref, onUpdated, computed, defineComponent } from 'vue'
 import { useStore } from 'vuex'
-import { KeysMutations } from '@/store/keys/mutations'
-import { Sliders } from '@/models/Components'
-import ProductSliderFullscreen from '@/components/cards/Product/ProductSliderFullscreen.vue'
+import { KeysMutations } from '/src/store/keys/mutations'
+import { Sliders } from '/src/models/Components'
+import ProductSliderFullscreen from '/src/components/cards/Product/ProductSliderFullscreen.vue'
 
 export default defineComponent({
 	props:{

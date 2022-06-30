@@ -1,11 +1,11 @@
-import axios from '@/plugins/axios'
+import axios from '/src/plugins/axios'
 import { ActionTree } from "vuex"
-import { RootState } from "@/store"
+import { RootState } from "/src/store"
 import { ClaimState, defaultClaim } from "./types"
 import { AuthMutations } from '../auth/mutations'
 import { ClaimMutations } from './mutations'
 import { OrderActions } from '../order/actions'
-import { Orders } from '@/models/Orders'
+import { Orders } from '/src/models/Orders'
 
 
 export enum ClaimActions {

@@ -133,15 +133,15 @@
 
 <script lang="ts">
 
-import Button from '@/components/ui/Button.vue'
-import DeleteButton from '@/components/ui/DeleteButton.vue'
+import Button from '/src/components/ui/Button.vue'
+import DeleteButton from '/src/components/ui/DeleteButton.vue'
 
 import { ref, computed, defineComponent } from 'vue'
 import { useStore } from 'vuex'
 import { onClickOutside } from '@vueuse/core'
 import { useRouter } from 'vue-router'
-import { key } from '@/store'
-import { OrderMutations } from '@/store/order/mutations'
+import { key } from '/src/store'
+import { OrderMutations } from '/src/store/order/mutations'
 
 export default defineComponent({
 	components:{

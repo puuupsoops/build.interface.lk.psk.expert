@@ -1,4 +1,4 @@
-import { Catalog, CatalogMenu } from "@/models/Catalog"
+import { Catalog, CatalogMenu } from "/src/models/Catalog"
 import { MutationTree } from "vuex"
 import { CatalogState } from "./types"
 

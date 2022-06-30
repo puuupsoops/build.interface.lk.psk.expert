@@ -1,6 +1,5 @@
-import { Module } from "vuex"
-import { RootState } from "@/store"
-import {app} from '@/main'
+import { Module } from 'vuex'
+import { RootState } from '/src/store'
 
 export interface wsRootState {
     socket: any;
@@ -31,6 +30,8 @@ export enum wsStoreActions {
 
 }
 
+
+
 export const wsStore: Module<wsRootState, RootState> = {
   state: {
     socket: {
@@ -54,17 +55,18 @@ export const wsStore: Module<wsRootState, RootState> = {
   },
   mutations: {
     // Connection open
-   [wsStoreMutations.SOCKET_ONOPEN] (state, event) {
-      app.config.globalProperties.$socket = event.currentTarget;
+    [wsStoreMutations.SOCKET_ONOPEN] (state, event) {
+
+      // globalProperties.$socket = event.currentTarget;
       state.socket.isConnected = true;
       // When the connection is successful, start sending heartbeat messages regularly to avoid being disconnected by the server
       state.socket.heartBeatTimer = setInterval(() => {
         const message = "Heartbeat message";
-        state.socket.isConnected &&
-          app.config.globalProperties.$socket.send(JSON.stringify({
-            code: 200,
-            msg: message
-          }));
+      //   state.socket.isConnected &&
+      //     globalProperties.$socket.send(JSON.stringify({
+      //       code: 200,
+      //       msg: message
+      //     }));
       }, state.socket.heartBeatInterval);
     },
 

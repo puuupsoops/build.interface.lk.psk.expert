@@ -187,19 +187,19 @@
 
 <script lang="ts">
 
-import DatePicker from '@/components/ui/DatePicker.vue'
-import DeleteButton from '@/components/ui/DeleteButton.vue'
+import DatePicker from '/src/components/ui/DatePicker.vue'
+import DeleteButton from '/src/components/ui/DeleteButton.vue'
 
 
 import { computed, defineComponent, PropType, ref }from 'vue'
-import { key } from '@/store'
+import { key } from '/src/store'
 import { useStore } from 'vuex'
 
-import { ShipmentsActions } from '@/store/shipments/actions'
+import { ShipmentsActions } from '/src/store/shipments/actions'
 import { useRouter } from 'vue-router'
-import { Partner } from '@/models/Partner'
-import { Orders } from '@/models/Orders'
-import { ClaimMutations } from '@/store/claims/mutations'
+import { Partner } from '/src/models/Partner'
+import { Orders } from '/src/models/Orders'
+import { ClaimMutations } from '/src/store/claims/mutations'
 
 
 

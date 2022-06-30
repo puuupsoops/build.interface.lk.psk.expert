@@ -58,7 +58,7 @@
 		<div class="company-card-more">Подробнее</div>
 	</router-link>
 </template>
-<script>
+<script lang="ts">
 export default {
 	props:[ 'data'],
 	setup(){

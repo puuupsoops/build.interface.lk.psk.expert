@@ -1,12 +1,14 @@
+
 <template>
 
-<Preloader v-if="loader"></Preloader>
-<div v-if="isAuth">
-	<SideMenu ></SideMenu>
+	<Preloader v-if="loader"></Preloader>
+	<div v-if="isAuth">
+		<SideMenu v-model="showMenu" :orderPositionLength="orderPositionLength"></SideMenu>
+		<NotificationBar v-model="showNotificationBar"></NotificationBar>
+		<div class="content"
+			:class="{'blur': showMenu | showNotificationBar}"
+		>
 
-	<div :class="collapsed? 'sidebarOpen' :''">
-		<div class="content" @click="collapsed=false">
-			<Debug></Debug>
 			<router-view v-slot= "{ Component }">
 				<transition name="show" mode="out-in">
 					<component :is="Component"/>
@@ -14,71 +16,49 @@
 			</router-view>
 			<SnackBar v-model="error" :message="errorMsg"></SnackBar>
 		</div>
+
 	</div>
-</div>
-<router-view v-else></router-view>
+	<router-view v-else></router-view>
 </template>
 
-<script lang="ts">
-import { useStore } from 'vuex'
-import { key } from './store'
-import { computed, defineComponent } from 'vue'
-import SideMenu from '@/components/nav/SideMenu.vue'
-import Preloader from '@/components/Preloader.vue'
-import Debug from '@/components/nav/Debug.vue'
-import SnackBar from '@/components/ui/SnackBar.vue'
-import { AuthActions } from './store/auth/actions'
-import { AuthMutations } from './store/auth/mutations'
-import { KeysMutations } from './store/keys/mutations'
+<script setup lang="ts">
+	import SideMenu from './components/nav/SideMenu.vue'
+	import Preloader from './components/Preloader.vue'
+	import NotificationBar from './components/cards/NotificationBar.vue'
+	import SnackBar from './components/ui/SnackBar.vue'
 
-//Composition API = On
-export default defineComponent({
-	name: 'App',
-	components: {
-		SideMenu,
-		Preloader,
-		Debug,
-		SnackBar
-	},
-
-	setup() {
-		let store = useStore(key)
-		store.dispatch(AuthActions.CHECK_AUTH)
-
-		const loader = computed<boolean>({
-			get: () => store.getters.getLoader,
-			set: (val: boolean) => store.commit(KeysMutations.SET_LOADER, val)
-		})
-		const isDebug = computed<boolean>({
-			get: () => store.getters.getIsDebug,
-			set: (val: boolean) => store.commit(KeysMutations.SET_COLLAPSED, val)
-		})
-		const collapsed = computed<boolean>({
-			get: () => store.getters.getCollapsed,
-			set: (val: boolean) => store.commit(KeysMutations.SET_COLLAPSED, val)
-		})
+	import { useStore } from 'vuex'
+	import { key } from './store'
+	import { computed, provide, ref } from 'vue'
+	import { AuthActions } from './store/auth/actions'
+	import { AuthMutations } from './store/auth/mutations'
+	import { KeysMutations } from './store/keys/mutations'
 
 
-		
-		const error  = computed({
-			get: () => store.getters.getError,
-			set: () => store.commit(AuthMutations.CLEAR_ERROR)
-		})
-		return {
-			//возвращаем данные
-			isAuth: computed(() => store.getters.isAuthenticated),
-			loader,
-			collapsed,
-			isDebug,
-			error,
-			errorMsg: computed(() => store.getters.getErrorMsg),
-		}
-	}
-})
+	let store = useStore(key)
+	store.dispatch(AuthActions.CHECK_AUTH)
+
+	const loader = computed<boolean>({
+		get: () => store.getters.getLoader,
+		set: (val: boolean) => store.commit(KeysMutations.SET_LOADER, val)
+	})
+
+	const showMenu =ref(false)
+	const showNotificationBar =ref(false)
+	provide('showNotificationBar', showNotificationBar ) //Открыть из другого копонента
+
+	const error  = computed({
+		get: () => store.getters.getError,
+		set: () => store.commit(AuthMutations.CLEAR_ERROR)
+	})
+	const isAuth = computed(() => store.getters.isAuthenticated)
+	const errorMsg = computed(() => store.getters.getErrorMsg)
+	const orderPositionLength = computed(() => store.getters.getOrderPositionLength)
+	
 </script>
 
 <style lang="sass">
-@import "@/assets/sass/main.sass"
+@import "./assets/sass/main.sass"
 
 .show-enter-active, .show-leave-active 
   transition: all .2s ease
