@@ -3,14 +3,16 @@
   <div :class="{'popup': true, 'drop': drop_class, 'close': close_class, }"
         v-if="show"
   > 
-    <div class="popup-message"
-        @click="more_event()">
-       <div class="popup-text" :class="{'more': more | more_show}">{{message?.message}}</div>
+    <div class="popup-box">
+      <div class="popup-message" @click="more_event()">
+        <div class="popup-text" :class="{'more': more | more_show}">{{message?.message}}</div>
 
-       <div class="popup-time"><b>{{(new Date(message?.time)).toLocaleString('ru').replace(',', '')}}</b></div>
+        <div class="popup-time"><b>{{(new Date(message?.time)).toLocaleString('ru').replace(',', '')}}</b></div>
+      </div>
+      <div class="popup-close" @click="close()"></div>
     </div>
-    <div class="popup-close" @click="close()"></div>
-   
+  
+    <div class="popup-bar" v-if="auto_close && more_show==false"></div>
   </div>
   
 </template>
@@ -54,17 +56,22 @@ const close = function(){
 }
 if (props.auto_close) {
   lc_timer.value = setTimeout(()=>{
-  close_class.value = true
-  setTimeout(()=>{
-            show.value=false
-            emits('close')
-          },300)
+    close_class.value = true
+    setTimeout(()=>{ show.value=false; emits('close')},300)
   }, props.timeout )
 } else close_class.value = false
 
 const more_event = ()=> {
-  more_show.value = !more_show.value
-  clearTimeout(lc_timer.value)
+  if (more_show.value == false) {
+    more_show.value = true
+    clearTimeout(lc_timer.value)
+  } else {
+      more_show.value = false
+      lc_timer.value = setTimeout(()=>{
+        close_class.value = true
+        setTimeout(()=>{ show.value=false; emits('close')},300)
+       }, props.timeout )
+  }
 }
 </script>
 

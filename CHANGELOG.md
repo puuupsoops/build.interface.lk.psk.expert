@@ -1,4 +1,10 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-07-01
+
+    #0.2.21
+    1. Добавлен прогрессбар времени до закрытия Popup оповещения.
+    
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-06-30
 
     #0.2.21
