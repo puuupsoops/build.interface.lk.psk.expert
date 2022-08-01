@@ -1,4 +1,10 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-08-01
+
+    #0.2.22
+    1. Большая правка css под мобильную версию.
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-07-01
 
     #0.2.21

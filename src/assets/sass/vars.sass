@@ -49,6 +49,7 @@ html, body
 
 html
 	scroll-behavior: smooth
+	scrollbar-width: thin
 
 body 
 	position: relative
@@ -130,11 +131,14 @@ a
 		right: 15px
 		bottom: 30px
 	min-height: 100vh
+	
 	+prefix(transition, $default-transition)
 	
-
 	&.blur
 		+prefix(filter, blur(10px))
+	
+			
+		
 	&-heading-wrap
 		+flex
 		margin:
@@ -419,7 +423,7 @@ a
 		+flex
 		+align-items(center)
 		list-style-type: none
-		+flex-wrap(wrap)
+		+flex-wrap(nowrap)
 
 		li
 			&.active

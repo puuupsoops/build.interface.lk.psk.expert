@@ -99,6 +99,7 @@
 				
 				&.default
 					min-height: 100px
+					padding: 10px
 					+prefix(transition, $default-transition)
 					color: $font-light-color
 					+flex
@@ -110,7 +111,7 @@
 					color: #fff
 					text-transform: capitalize
 					width: 100%
-					height: 30px
+					// height: 30px
 					padding: 0 15px
 					line-height: 30px
 					cursor: pointer
@@ -153,12 +154,15 @@
 					
 					& .article
 						color: $font-light-color
-						width: 100px
+						// width: 100px
+						padding-right: 8px
 						
 						
 					& .name
 						color: $white
-						
+						white-space: nowrap
+						overflow: hidden
+						text-overflow: ellipsis
 				
 
 		&-clear
@@ -199,8 +203,8 @@
 			position: relative
 			overflow-y: auto
 			
-		&-table
-			min-width: 435px 
+		// &-table
+		// 	min-width: 435px 
 	
 		&-btn
 			+flex
@@ -248,13 +252,13 @@
 		padding: 30px
 			bottom: 0
 		+align-items(center)
-		+flex-wrap(nowrap)
+		// +flex-wrap(nowrap)
 		//max-height: 570px
 		
 	&-slider
 		+flex
-		
-		+flex-wrap(nowrap)
+		flex-basis: 80%
+		// +flex-wrap(nowrap)
 		+justify-content(flex-start)
 		+align-items(flex-start)
 		overflow: hidden
@@ -329,6 +333,7 @@
 			min-width: 30px
 			height: 30px
 			z-index: 5
+			flex-basis: 5%
 			&.prev
 				left: -18px
 				background-image: url(/src/assets/img/icon/arrow-s-l.svg)
@@ -505,7 +510,7 @@
 		top: 0
 		right: 0
 		bottom: 0
-		z-index: 20		
+		z-index: 120		
 		background: rgba(0,0,0,.8)
 		
 	&-parcel

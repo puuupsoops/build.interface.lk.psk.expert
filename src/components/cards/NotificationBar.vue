@@ -1,6 +1,8 @@
 <template>
 <div class="notification-bar-wrap">
     <div class="notification-bar" :class="{'show': modelValue}" ref="targetModal" >
+        
+        <div class="notification-bar-close" @click="$emit('update:modelValue', false)">Закрыть</div>
         <div v-if="popMsg.length != 0" class="popup clear-btn" @click="removeAllMessages()">Удалить всё ({{popMsg.length}})</div> 
         <div v-else class="notification-bar-empty"><p>Уведомления отсутствуют</p></div>
         <div class="notification-bar-messages">

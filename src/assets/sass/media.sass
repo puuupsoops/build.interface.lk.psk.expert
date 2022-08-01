@@ -349,11 +349,16 @@
 	.company
 		&-head
 			+flex-wrap(wrap)
+			&-wrap
+				padding:
+					left: 15px
 		
 			&-elem
 				&:nth-child(1)
 					width: 100%
 					order: 2
+					overflow: hidden
+			
 
 				&:nth-child(2)
 					padding: 0
@@ -701,30 +706,18 @@
 	.company
 		&-head
 			&-wrap
-				margin: 0 -15px
 				+flex-wrap(nowrap)
-			
-			&-item
-				margin: 0
-				padding: 0 15px
-				width: 50%
 
-				&:nth-child(3)
-					padding:
-						top: 30px
-					width: 100%
-			
-				.company-card-sale
-					right: 9px
 
 			&-list
 				+flex
 				margin: 0 -5px
 				+flex-wrap(wrap)
+				+justify-content(center)
 
 				&-elem
 					padding: 0 5px
-					width: 33.33%
+					width: 100%
 
 	.content-wrap
 		&.content-main-wrap
@@ -782,28 +775,32 @@
 						.orders-heading-item
 							padding: 5px 0
 
-@media screen and (min-width: 991px)
-	.sidebar
-		display: block !important
+
 
 @media screen and (max-width: 991px)
 	.sidebar
-		display: none
+		//display: none
+		+flex-flow(row)
+		max-width: none
+		width: 100vw
+		height: auto
+		padding: 0px 
 
-		.mCSB_inside 
-			.mCSB_container
-				padding: 0 15px
-
-		&-menu-btn
-			display: none
+		&-menu
+			+box-shadow(0px 0px 0px rgba(255, 255, 255, 0))			
 		
 		&-btn
 			margin:
-				bottom: 40px
-
-			&:nth-child(2)
+				left: auto
+				right: auto
+				bottom: 20px
+				top: 20px
+			&:last-child
 				margin:
-					top: 40px
+					bottom: 20px
+		
+	.notification-bar
+		padding-top: 70px
 	
 	.top-line
 		padding:
@@ -816,6 +813,8 @@
 			&-item
 				padding: 10px
 
+		&-button
+			width: 100%
 		&.main-page
 			+flex-wrap(wrap)
 
@@ -858,14 +857,32 @@
 				width: 100%
 				max-width: 100%
 
+	.nav
+
+		&-link
+			display: none
+			&.active
+				display: inline-block
+			&.last
+				display: inline-block
+
+
 	.main-page
 		.sidebar
 			&-menu
-				display: none
+				padding:
+					left: 15px
+					top: 70px
+				&.show
+					max-width: none
+				
+	.company-head-item
+		min-width: 360px
 
 	.content
 		padding:
 			left: 15px !important
+			top: 70px
 	
 	.content-wrap
 		&.content-product-wrap
@@ -881,7 +898,12 @@
 						top: 30px
 		
 	.product
+	
 		&-search
+			+align-items(flex-end)
+			+flex-direction(column-reverse)
+			&-btn
+				margin-bottom: 10px
 			&-top
 				padding: 20px 15px
 
@@ -1123,14 +1145,16 @@
 			font-size: 26px
 
 	.product
-		&-slider-wrap
-			+flex-wrap(wrap)
+		// &-slider-wrap
+		// 	+flex-wrap(wrap)
 		
 		&-slider
 			margin: 0
 			width: 100%
 			max-width: 100%
-		
+			
+			&-small
+				display: none
 			&-nav
 				margin:
 					top: 15px
@@ -1143,16 +1167,6 @@
 					width: 100%
 					max-width: 100%
 
-	.company
-		&-head
-			&-item
-				padding:
-					top: 30px
-				width: 100%
-
-				&:nth-child(1)
-					padding:
-						top: 0
 
 	.shipment
 		&-form
@@ -1198,6 +1212,16 @@
 						max-width: 100%
 
 @media screen and (max-width: 600px)
+	.notification-bar
+		&-close
+			display: block
+
+		&.show
+			width: 100%
+		& .popup 
+			margin:
+				left: auto
+				right: auto
 	.orders
 		&-heading
 			&-search

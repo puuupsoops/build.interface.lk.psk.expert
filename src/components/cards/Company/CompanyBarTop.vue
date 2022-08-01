@@ -1,7 +1,7 @@
 <template>
 
 		<div class="top-line-card scroll-elem">
-						<div class="top-line-card-more-info active"></div>
+						<!-- <div class="top-line-card-more-info active"></div> -->
 						<div class="top-line-card-wrap">
 							<a 
 									v-for="(company, i) in data" 
