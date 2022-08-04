@@ -554,18 +554,6 @@
 
 @media screen and (max-width: 1230px)
 	.product
-		&-search
-			&-top
-				+flex-wrap(wrap)
-
-				&-elem
-					&:first-child
-						max-width: 100%
-					
-					&:last-child
-						padding:
-							left: 0
-							top: 30px
 
 		&-info
 			.content-elem
@@ -799,6 +787,15 @@
 				margin:
 					bottom: 20px
 		
+		&.show
+			+prefix(transform, translateY(0px))
+			+prefix(transition, transform .5s ease-out)
+		
+		&.hide
+			+prefix(transform, translateY(-100px))
+			+prefix(transition, transform .5s ease-out)
+
+		
 	.notification-bar
 		padding-top: 70px
 	
@@ -880,6 +877,7 @@
 		min-width: 360px
 
 	.content
+		min-height: 150vh
 		padding:
 			left: 15px !important
 			top: 70px
@@ -892,7 +890,8 @@
 				&:last-child,
 				&:first-child
 					width: 100%
-				
+					margin-right: 0px
+					
 				&:last-child
 					margin:
 						top: 30px
@@ -906,11 +905,6 @@
 				margin-bottom: 10px
 			&-top
 				padding: 20px 15px
-
-				&-elem
-					&:last-child
-						padding:
-							top: 15px
 
 			&-clear
 				margin:
@@ -1167,6 +1161,24 @@
 					width: 100%
 					max-width: 100%
 
+		&-more-info-table-wrap
+			.table
+				.table-row
+					.table-elem
+						white-space: nowrap
+						overflow: hidden
+						text-overflow: ellipsis
+
+						
+						&:nth-child(1)					
+							width: 100%
+						&:nth-child(3)					
+							width: 50%
+						&:nth-child(4)					
+							display: none
+				.table-heading
+					.table-elem
+						overflow: unset !important
 
 	.shipment
 		&-form

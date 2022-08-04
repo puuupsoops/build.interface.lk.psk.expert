@@ -28,7 +28,6 @@
 						@click="$emit('update:modelValue', product.ID); $emit('onClick', $event)"
 						
 					> 
-						<i style="display: none">{{ product.ID }}</i>
 						<div class="table-elem">{{ product.ARTICLE }}</div>
 						<div class="table-elem">{{ product.NAME }}</div>
 					</a>

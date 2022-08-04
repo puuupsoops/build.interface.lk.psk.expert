@@ -2,7 +2,7 @@
 	<div>
 
 
-	<aside class="sidebar" >
+	<aside :class="'sidebar '+scroll_class"  >
 		<div class="sidebar-btn sidebar-menu-btn"  @click="$emit('update:modelValue', !modelValue)">
 				
 			<svg class="sidebar-btn-img" width="30" height="20" viewBox="0 0 30 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -152,6 +152,7 @@
 </template>
 
 <script setup lang="ts">
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 import SideNavigation from '/src/components/nav/SideNavigation.vue'
 
 
@@ -163,6 +164,27 @@ const props = defineProps({
 	orderPositionLength: Number,
 })
 const emits = defineEmits(['update:modelValue'])
+const scroll_class = ref('show')
+const scroll = ref(0)
+let scroll_last = 0
+const onScroll = (e: Event) => {
+			const scr = e.target as Document
+			scroll.value = scr.documentElement.scrollTop
+
+			if (scroll_last < scroll.value && scroll.value > 100) {
+				scroll_class.value ='hide'
+			} else if (scroll_last > scroll.value) {
+				scroll_class.value ='show'
+			}
+
+			scroll_last = scroll.value
+		}
+
+onBeforeUnmount(() => { window.removeEventListener("scroll", onScroll)})
+onMounted(() => {
+				window.scrollTo(0,0)
+				window.addEventListener("scroll", onScroll)
+		})
 
 
 
@@ -170,12 +192,6 @@ const emits = defineEmits(['update:modelValue'])
 
 
 <style lang="sass" scoped>
-.fade-enter-active, .fade-leave-active 
-  transition: all 0.5s ease
-
-.fade-enter-from, .fade-leave-to 
-  transform: translateX(-350px)
-
 
 
 </style>

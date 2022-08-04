@@ -1,7 +1,6 @@
 <template>
     <div class="content-elem ">
         <div class="product-more-info-table-wrap scroll-elem">
-            <div class="table-more-info-arrow"></div>
             <div class="table more-info-table">
                 <div class="table-row table-heading">
                     <div class="table-elem">Характеристика</div>
