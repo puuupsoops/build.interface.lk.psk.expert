@@ -13,6 +13,8 @@ export interface OrderResponse{
 
 export interface Order {
 	id:               number;
+	edit:			  Boolean;
+	reserved:		  Boolean;
 	total:            number;
 	count:            number;
 	partner_id:       string;

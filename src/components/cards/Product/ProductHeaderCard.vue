@@ -11,7 +11,7 @@
 		<div class="content-heading-wrap-elem tooltip"  >
 			<div class="content-heading-price" v-if="discount"> 
 				<div class="content-heading-price-text">Ваша цена: </div>
-				<div class="content-heading-price-value" v-if="discount">{{ Number(price ? price-(price/100)*discount : 0 ).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
+				<div class="content-heading-price-value" v-if="discount">{{ Number(price ? price-(price/100)*discount : 0 ).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
 
 				<div class="tooltiptext" style="	transform: translate3d(-10px, -30px, 0) ">
 					<div class="content-heading-info-elem" v-if="discount"> скидка: {{discount}}%</div>

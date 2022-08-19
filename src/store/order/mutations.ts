@@ -248,10 +248,11 @@ export const mutations: MutationTree<OrderState> = {
 								PRICE: c.price,
 								guid: c.guid,
 								count: c.quantity,
+								orgguid: c.orgguid,
 							}
 						})
 					}
-				})
+			})
 				
 			if (data.position_presail)
 				state.order_detail.position_presail = data.position_presail.map( (x: any ) => {
@@ -274,6 +275,8 @@ export const mutations: MutationTree<OrderState> = {
 								CHARACTERISTIC: c.title,
 								PRICE: c.price,
 								count: c.quantity,
+								guid: c.guid,
+								orgguid: c.orgguid,
 							}
 						})
 					}
@@ -289,8 +292,11 @@ export const mutations: MutationTree<OrderState> = {
 		state.error = null;
 		
 	},
-	[OrderMutations.EDIT_ORDER](state): void{
+	[OrderMutations.EDIT_ORDER](state, data): void{
 		state.order = Object.assign({}, state.order_detail)
+		state.order.id = data.n
+		state.order.date = data.date
+		state.order.edit = true
 		state.error = null;
 		
 	},

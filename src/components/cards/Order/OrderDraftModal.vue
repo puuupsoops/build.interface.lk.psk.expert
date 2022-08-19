@@ -17,7 +17,7 @@
 				<div v-if="orderDraft.length ==0" >		
 						Черновики отсутсвуют
 				</div>
-				<div v-else class="shipment-address-list">
+				<div v-else class="order-draft-list">
 					<div class="shipment-address-list-wrap" >
 						
 						<div 

@@ -198,7 +198,10 @@ a
 			&-img
 				margin:
 					right: 11px
-				
+				&.active
+					color: $accent-color
+					path
+						fill: $accent-color
 				path,
 				rect,
 				circle
@@ -206,7 +209,8 @@ a
 			
 			&.active
 				color: $accent-color
-
+				path
+					fill: $accent-color
 				.content-heading-btn-img
 					.fill
 						fill: $accent-color

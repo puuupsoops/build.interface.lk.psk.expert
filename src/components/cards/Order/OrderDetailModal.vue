@@ -14,7 +14,7 @@
 					<DeleteButton @onClick="close()"/>
 			</div>
 			<div class="order-modal-body draft">
-				{{order.name}}
+				{{order.name}} 
 				<br>
 				<br>
 				<div v-if="loading" style="display: flex; justify-content: center">
@@ -32,10 +32,9 @@
 				</div>
 			</div>	
 			<div v-if="editOrder" class="shipment-address-list-row-info" >
-				<div>Изменить позиции заказа? (Временно не работает)</div>
+				<div>Изменить позиции заказа?</div>
 				<div>
-					<!-- <a href="#" @click="setOrderToEdit()">Да</a> -->
-					<a href="#">Да</a>
+					<a href="#" @click="setOrderToEdit()">Да</a>
 					<a href="#" @click="$emit('update:editOrder', false)">Нет</a>
 				</div>
 			</div>	
@@ -112,14 +111,16 @@ export default defineComponent({
 				store.dispatch(OrderActions.GET_ORDER_DETAIL, props.orderId ).finally(()=>{loading.value = false})
 			}
 		})
-		
+		const order = computed(() => store.getters.getOrdersByID(props.orderId))
 		
 		const  setOrder = async () => {
 			await store.commit(OrderMutations.CREATE_ORDER_FROM_DETAIL)
 			router.push({name: 'Order'})
 		}
 		const setOrderToEdit = async () => {
-			await store.commit(OrderMutations.EDIT_ORDER)
+			await store.commit(OrderMutations.EDIT_ORDER, order.value)
+			await store.commit(OrderMutations.CALC_ORDER)
+			
 			router.push({name: 'Order'})
 		}
 		
@@ -132,7 +133,7 @@ export default defineComponent({
 
 			//computed
 			order_detail: computed(() => store.getters.getOrderDetail),
-			order: computed(() => store.getters.getOrdersByID(props.orderId)),
+			order,
 
 			//methods
 			close,

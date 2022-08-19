@@ -13,6 +13,9 @@ export interface OrderState {
 
 export interface OrderStateOrder {
 	id:               number;
+	date?:		      Date;
+	edit:			  boolean;
+	reserved:       boolean;
 	total:            number;
 	total_discount?:  number;
 	count:            number;
@@ -42,12 +45,14 @@ export interface OrderStatePositionOffer extends Offer {
 
 
 export const DefaultOrder: OrderStateOrder = {
-	id: 0,				// Идентификатор заказа, генерируется отметкой времени, на стороне личного кабинета
-	total: 0,				// Общая стоимость заказа
-	count: 0,				// количество позиций в заказе ()
-	partner_id: '', 		// GUID контрагента, к которому привязан заказа
-	position: [],			// массив с позициями товара
-	position_presail: [],	// массив с позициями товара для предзаказа
+	id: 0,
+	edit: false,
+	reserved: false,
+	total: 0,
+	count: 0,
+	partner_id: '',
+	position: [],
+	position_presail: [],
 	total_count: 0,
 	total_valume: 0,
 	total_weight: 0,

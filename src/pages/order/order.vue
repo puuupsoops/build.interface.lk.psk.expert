@@ -68,7 +68,8 @@
 				:data="order"
 				:companys="companyBarTopData"
 				v-model="activeCompanyUid"
-				@onClick="addOrder"
+				@onClickAdd="addOrder"
+				@onClickEdit="editOrder"
 			/>
 		</div>
 		<div class="content-wrap-elem" v-if="isProduct"> 
@@ -177,6 +178,21 @@ export default defineComponent({
 			}
 
 		}
+		const editOrder = () => {
+			console.log(store.getters.getOrderToEdit)
+				showModal.value=true;
+				store.commit(OrderMutations.ADD_ORDER_PARTNER_ID, activeCompanyUid.value)
+				setTimeout(() => {
+					store.dispatch(OrderActions.EDIT_ORDER_ACTION, store.getters.getOrderToEdit).catch(()=>{
+						showModal.value=false
+						error.value = true
+						setTimeout(() => {error.value=false;}, 5000)
+						errorMsg.value = 'Ошибка создания заказа. Повторите позже.'
+					});
+				}, 3000)
+			
+
+		}
 		
 
 		watch( ()=>props.article, (new_val) => {
@@ -263,6 +279,7 @@ export default defineComponent({
 			//method
 			addToOrder,
 			addOrder,
+			editOrder,
 			loadProduct,
 			
 		}

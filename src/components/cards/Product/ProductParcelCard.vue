@@ -22,7 +22,7 @@
 						</div>
 						<div class="product-parcel-row">
 							<div class="product-parcel-text">Цена с наценкой: </div>
-							<div class="product-parcel-value">{{ Number( markup ).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
+							<div class="product-parcel-value">{{ Number( markup ).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
 						</div>
 					</div>
 				</transition>
@@ -37,7 +37,7 @@
 						</div>
 						<div class="product-parcel-row">
 							<div class="product-parcel-text">Сумма: </div>
-							<div class="product-parcel-value">{{ Number(markup * count).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
+							<div class="product-parcel-value">{{ Number(markup * count).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
 						</div>
 						<div class="product-parcel-row">
 							<div class="product-parcel-text">Средний вес: </div>

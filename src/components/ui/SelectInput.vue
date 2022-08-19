@@ -1,9 +1,8 @@
 <template>
 	<div class="select-input-container" ref="target">
-
 		<button 
 			:class="btn_class"
-			@click="input_active = !input_active"
+			@click="readOnly ? false : input_active = !input_active"
 		>
 			{{ active_name}}
 		</button>
@@ -36,6 +35,10 @@ export default defineComponent({
 			require: true
 		},
 		error: {
+			type: Boolean,
+			default: false,
+		},
+		readOnly: {
 			type: Boolean,
 			default: false,
 		},

@@ -18,6 +18,7 @@ export enum OrderActions {
 	GET_BILL_FILE = "GET_BILL_FILE",
 	GET_BILL_FILE_SAVE = "GET_BILL_FILE_SAVE",
 	GET_ORDER_DETAIL = "GET_ORDER_DETAIL",
+	EDIT_ORDER_ACTION = "EDIT_ORDER_ACTION",
 }
 
 export const actions: ActionTree<OrderState, RootState> =  {
@@ -98,5 +99,18 @@ export const actions: ActionTree<OrderState, RootState> =  {
 			.catch( error => {
 				commit(AuthMutations.SET_ERROR, 'Request GET_ORDER_DETAIL error:<br>'+error)
 			})
-	}
+	},
+	async [OrderActions.EDIT_ORDER_ACTION] ({ commit }, data: Order) {
+		await axios.post(`/order/${data.id}/edit`, data)
+			.then(response => {
+				commit(OrderMutations.ADD_ORDER, response.data.response)
+			})
+			.catch(error => {
+				if (error.response.status == 400 || error.response.status == 404) {
+					commit(OrderMutations.CLEAN_ORDER_ERROR)
+					return Promise.reject(error)
+				} else return Promise.resolve()
+			})
+	},
+
 }
