@@ -21,4 +21,9 @@ export const OrdersSatusCode =  [
     {id: 4, name: 'Передан на склад.'},
     {id: 5, name: 'Собран.'},
     {id: 6, name: 'Отгружен.'},
-] //https://polshakov.atlassian.net/wiki/spaces/LKPSKEXPERT/pages/65791
+    {id: 7, name: 'В резерве.'},
+    {id: 8, name: 'Истек.'},
+    {id: 9, name: 'Отменен.'},
+    {id: 10, name: 'Закрыт.'},
+] //https://polshakov.atlassian.net/wiki/spaces/LKPSKEXPERT/pages/65791 -- deprecated
+  //https://psk-expert.atlassian.net/wiki/spaces/PSKEXPERT/pages/295169

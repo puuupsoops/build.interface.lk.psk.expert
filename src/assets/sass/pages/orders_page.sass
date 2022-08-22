@@ -122,7 +122,7 @@
 				text-transform: uppercase
 			
 		&-main-row
-			background-color: #292C32
+			background-color: $bg-color2
 			+prefix(transition, $default-transition)
 			cursor: pointer
 			
@@ -218,6 +218,12 @@
 				.orders-list-sublist
 					.order-list-row
 						background-color: transparent
+				
+				.orders-list-main-row
+					background-color: $bg-dlight-color
+			&.reserved
+				.orders-list-main-row
+					background-color: #303030
 
 			&:last-child
 				margin: 0

@@ -22,6 +22,7 @@ export interface Orders {
     status_code:  number; // код статуса заказа
     n:            number; // идентификатор общего заказа в таблице заказов Битрикс
     checks:       Check[] | null; //массив со счетами 
+    reserved:     Boolean; // Признак того что заказ в резерве
 }
 
 export interface Check {

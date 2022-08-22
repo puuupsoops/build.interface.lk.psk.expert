@@ -69,12 +69,12 @@
 			<div 
 				v-for="(item, key) in data_filtred"
 				:key="key"
-				:class="'orders-list-item' + ( key == active ? ' active': '' )"
+				class="orders-list-item"
+				:class="{'active': key==active,'reserved': item.reserved}"
 				>
-				<!-- <div v-if=">
-				<div v-if="checkStatus(item)">
-				<div v-if="checkPeriod(item.date) && filtred(item)"> -->
+				
 					<div class="orders-list-row orders-list-main-row"
+
 						@click="key === active ? active = -1 : active = key; active_more =  -1"
 					>
 
@@ -86,7 +86,7 @@
 						<div class="orders-list-elem">{{ item.partner_name }}</div>
 						<div class="orders-list-elem">{{ item.n }}</div>
 						<div class="orders-list-elem">{{ item.date }}</div>
-						<div class="orders-list-elem"> </div>
+						<div class="orders-list-elem"> {{ item.reserved ? 'Резерв':''}}</div>
 						<div class="orders-list-elem" > 
 							<button
 								class="orders-list-more"
