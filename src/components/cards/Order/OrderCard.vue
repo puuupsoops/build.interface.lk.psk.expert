@@ -18,7 +18,7 @@
 					</svg>
 					Добавить печатный каталог
 				</div>
-				<div class="order-list-btn"
+				<!-- <div class="order-list-btn"
 					 tooltip="Резервирование товаров позволяет закрепить товар за клиентом."
 					 flow="up"
 					 @click="$emit('update:data', data.reserved = !data.reserved)"
@@ -31,7 +31,7 @@
 					</svg>
 					Резерв
 
-				</div>
+				</div> -->
 				<div
 					to="#"
 					:class="'content-heading-btn' +(isOrderInDraft ? ' active':'')"
@@ -220,6 +220,12 @@
 			
 		>
 			<button 
+				class="order-list-submit gradient-btn disabled" 
+				@click="delOrder()"
+			> 
+				<div class="gradient-btn-text">Отменить</div>
+			</button>			
+			<button 
 				class="order-list-submit gradient-btn"
 				v-if="data.edit" 
 				@click="onClickEdit()"
@@ -233,12 +239,7 @@
 			> 
 				<div class="gradient-btn-text">Оформить заказ</div>
 			</button>
-			<button 
-				class="order-list-submit gradient-btn" 
-				@click="delOrder()"
-			> 
-				<div class="gradient-btn-text">Отменить</div>
-			</button>			
+			
 		</div>
 
 	<SnackBar v-model="snack" :message="snackMsg" :timeout="2000" notification ></SnackBar>

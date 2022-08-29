@@ -15,7 +15,7 @@ export interface OrderStateOrder {
 	id:               number;
 	date?:		      Date;
 	edit:			  boolean;
-	reserved:       boolean;
+	reserved:         boolean;
 	total:            number;
 	total_discount?:  number;
 	count:            number;
@@ -47,7 +47,7 @@ export interface OrderStatePositionOffer extends Offer {
 export const DefaultOrder: OrderStateOrder = {
 	id: 0,
 	edit: false,
-	reserved: false,
+	reserved: true,
 	total: 0,
 	count: 0,
 	partner_id: '',

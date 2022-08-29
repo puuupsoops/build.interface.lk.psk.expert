@@ -16,7 +16,7 @@ export const DefaultDocStatus: OrdersDocStatus = {
 export const OrdersSatusCode =  [
     {id: 0, name: 'Все'},
     {id: 1, name: 'Создан.'},
-    {id: 2, name: 'В ожидании.'},
+    {id: 2, name: 'Предзаказ'}, 
     {id: 3, name: 'Подтвержден.'},
     {id: 4, name: 'Передан на склад.'},
     {id: 5, name: 'Собран.'},

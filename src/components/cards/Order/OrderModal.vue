@@ -11,7 +11,7 @@
 			<div class="order-modal-header">
 				<h3 class="order-modal-header-title">Создание заказа</h3>
 			
-					<DeleteButton @onClick="close()"/>
+					<DeleteButton v-if="isAddNewOrder" @onClick="close()"/>
 				
 			</div>
 			<div class="order-modal-body">
@@ -164,6 +164,7 @@ export default defineComponent({
 			setTimeout(() => {shake.value=false;}, 500);
 		});
 		const close = () => {
+			store.commit(OrderMutations.CLEAN_ORDER);
 			store.commit(OrderMutations.CLEAN_ORDER_ERROR);
 			store.commit(OrderMutations.CLEAN_ADD_ORDER);
 			emit('update:modelValue', false);

@@ -97,7 +97,7 @@
 							>
 								<a class="orders-list-more-dropdown-link" @click.stop="detailOrderId = item.n; showDetail=true" >Детали заказа</a>
 								<a class="orders-list-more-dropdown-link" @click.stop="detailOrderId = item.n; showDetail=true; editOrder=false;repeatOrder=true;" >Повторить заказ</a>
-								<a class="orders-list-more-dropdown-link" @click.stop="detailOrderId = item.n; showDetail=true; editOrder=true;repeatOrder=false;" >Изменить заказ</a>
+								<a class="orders-list-more-dropdown-link" v-if="item.reserved" @click.stop="detailOrderId = item.n; showDetail=true; editOrder=true;repeatOrder=false;" >Изменить заказ</a>
 								<a class="orders-list-more-dropdown-link" >Скачать документы</a>
 								<a class="orders-list-more-dropdown-link" >Скачать сертификаты</a>
 								<a class="orders-list-more-dropdown-link" @click.stop="setClaimOrderId(item.n)">Оформить претензию</a>

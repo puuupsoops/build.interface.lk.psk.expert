@@ -28,7 +28,8 @@ export const actions: ActionTree<OrdersState, RootState> =  {
 				commit(OrdersMutations.SET_ORDERS_DOCSTATUS, response.data[0].response[0])
 			})
 			.catch(error => {
-				commit(AuthMutations.SET_ERROR, 'Request ADD_ORDERS error:<br>'+error)
+				commit(OrdersMutations.SET_ORDERS_DOCSTATUS_ERROR)
+				commit(AuthMutations.SET_ERROR, 'Request GET_ORDERS_DOCSTATUS error:<br>'+error)
 			})
 	},
 }

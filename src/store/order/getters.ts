@@ -28,7 +28,7 @@ export const getters: GetterTree<OrderState, RootState> = {
 				})),
 			})),
 			position_presail: state.order.position_presail.map((x) => ({
-				guid: x.product.UID,
+				guid: x.guid,
 				characteristics: x.characteristics.map((c) => ({
 					guid: c.GUID,
 					orgguid: c.ORGGUID,

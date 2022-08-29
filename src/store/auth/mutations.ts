@@ -38,7 +38,9 @@ export const mutations: MutationTree<AuthState> = {
 	[AuthMutations.SET_ERROR] (state, data: string) {
 		state.error = true;
 		state.error_msg = data;
-		router.push('/500');
+		//router.push('/500');
+		state.error_login = true;
+		state.error_login_msg = data;
 	},
 	[AuthMutations.SET_LOGIN_ERROR] (state, data: string) {
 		state.error_login = true;

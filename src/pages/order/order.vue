@@ -61,7 +61,7 @@
 		</div>
 		
 	</div>
-	<div :class="isProduct ? 'content-wrap content-order-wrap' : ''">
+	<div class="content-wrap content-order-wrap">
 		<div class="content-wrap-elem">
 			<OrderCard 
 				v-if="isOrder"
@@ -72,8 +72,9 @@
 				@onClickEdit="editOrder"
 			/>
 		</div>
-		<div class="content-wrap-elem" v-if="isProduct"> 
-				<ProductSliderSmallCard 
+		<div class="content-wrap-elem" > 
+				<ProductSliderSmallCard
+					v-if="isProduct" 
 					:data="productImages"
 				/>
 			

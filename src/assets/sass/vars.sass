@@ -82,7 +82,7 @@ a
 	color: $white
 	text-align: center
 	border-radius: 60px
-	border: 0
+	background-color: $bg-color
 	cursor: pointer
 	+prefix(transition, $default-transition)
 	overflow: hidden
@@ -97,6 +97,7 @@ a
 		width: 100% 
 		height: 100%
 		border-radius: 60px
+		
 		+prefix(transition, $default-transition)
 		z-index: 0
 	
@@ -104,6 +105,12 @@ a
 		background: -webkit-gradient(linear, left top, right top, from(#B995FE), to(#8444FC))
 		background: -o-linear-gradient(left, #B995FE 0%, #8444FC 100%)
 		background: linear-gradient(90deg, #B995FE 0%, #8444FC 100%)
+	&.disabled
+		&:before
+			background: -webkit-gradient(linear, left top, right top, from($bg-default-color), to(#1a1b1b))
+			background: -o-linear-gradient(left, $bg-default-color 0%, #1a1b1b 100%)
+			background: linear-gradient(90deg, $bg-default-color 0%, #1a1b1b 100%)
+
 
 	&:after
 		background: -webkit-gradient(linear, left top, right top, from(#8444FC), to(#8444FC))

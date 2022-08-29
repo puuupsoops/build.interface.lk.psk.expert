@@ -246,9 +246,10 @@ export const mutations: MutationTree<OrderState> = {
 							return {
 								CHARACTERISTIC: c.title,
 								PRICE: c.price,
-								guid: c.guid,
+								RESIDUE: c.available,
+								GUID: c.guid,
 								count: c.quantity,
-								orgguid: c.orgguid,
+								ORGGUID: c.orgguid,
 							}
 						})
 					}
@@ -275,8 +276,8 @@ export const mutations: MutationTree<OrderState> = {
 								CHARACTERISTIC: c.title,
 								PRICE: c.price,
 								count: c.quantity,
-								guid: c.guid,
-								orgguid: c.orgguid,
+								GUID: c.guid,
+								ORGGUID: c.orgguid,
 							}
 						})
 					}

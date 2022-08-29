@@ -39,8 +39,9 @@
 				</div>
 			</div>	
 			<div class="order-modal-action" v-if="!repeatOrder && !editOrder">
+			
 				<button @click="$emit('update:repeatOrder', true)" class="order-list-btn">Повторить заказ</button>
-				<button @click="$emit('update:editOrder', true)"   class="order-list-btn">Изменить заказ</button>
+				<button v-if="order.reserved" @click="$emit('update:editOrder', true)"   class="order-list-btn">Изменить заказ</button>
 			</div>
 		</div>
 	</div>
@@ -115,6 +116,7 @@ export default defineComponent({
 		
 		const  setOrder = async () => {
 			await store.commit(OrderMutations.CREATE_ORDER_FROM_DETAIL)
+			await store.commit(OrderMutations.CALC_ORDER)
 			router.push({name: 'Order'})
 		}
 		const setOrderToEdit = async () => {
