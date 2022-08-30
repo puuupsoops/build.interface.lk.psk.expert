@@ -1,4 +1,10 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-08-30
+
+    #0.2.26
+    1. В списке заказов счет скачать можно только если проставлен статус check.doc_status?.StatusSchet
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-08-29
 
     #0.2.25

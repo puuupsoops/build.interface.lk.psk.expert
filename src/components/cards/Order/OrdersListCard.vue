@@ -125,7 +125,8 @@
 							>
 								<div class="orders-list-info-elem">{{getStorageName(item.partner_guid, check.organization_id)}}</div>
 								<div class="orders-list-info-elem"  > 
-									<div class="orders-list-info-about tooltip" v-if="check.status >= 2">
+									
+									<div class="orders-list-info-about tooltip" v-if="check.doc_status?.StatusSchet">
 										<div
 											class="orders-list-info-download "
 											
@@ -155,7 +156,7 @@
 								<div class="orders-list-info-elem orders-list-info-doc-wrap" v-else>
 									
 									<a
-										v-if="check.doc_status?.StatusSchet  && check.status >= 2"
+										v-if="check.doc_status?.StatusSchet "
 										class="orders-list-info-doc sc" 
 										:href="`${docLocation}/api/order/print?id=${check.guid}&name=Счет`"
 										target="_blank"
