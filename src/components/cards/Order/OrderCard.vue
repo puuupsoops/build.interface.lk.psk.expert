@@ -265,11 +265,12 @@
 		{
 			data: {
 				type: Object as PropType<OrderStateOrder>,
+				required: true
 			},
 			companys:{
 				type: Array,
 			},
-		modelValue: {
+			modelValue: {
 				type: String,
 				required: true
 			}
@@ -312,10 +313,6 @@
 		emits('onClickAdd');
 	}
 	const onClickEdit = () => {
-		if (props.modelValue == '') {
-			error.value = true;
-			setTimeout(() => {error.value=false;}, 5000);
-		}
 		emits('onClickEdit');
 	}
 	const delOrder = () => {

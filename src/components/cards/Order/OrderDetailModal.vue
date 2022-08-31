@@ -27,21 +27,21 @@
 			<div v-if="repeatOrder" class="shipment-address-list-row-info" >
 				<div>Использовать позиции заказа для оформления нового заказа?</div>
 				<div>
-					<a href="#" @click="setOrder()">Да</a>
-					<a href="#" @click="$emit('update:repeatOrder', false)">Нет</a>
+					<span @click.stop="setOrder()">Да</span>
+					<span @click.stop="$emit('update:repeatOrder', false)">Нет</span>
 				</div>
 			</div>	
 			<div v-if="editOrder" class="shipment-address-list-row-info" >
 				<div>Изменить позиции заказа?</div>
 				<div>
-					<a href="#" @click="setOrderToEdit()">Да</a>
-					<a href="#" @click="$emit('update:editOrder', false)">Нет</a>
+					<span @click.stop="setOrderToEdit()">Да</span>
+					<span @click.stop="$emit('update:editOrder', false)">Нет</span>
 				</div>
 			</div>	
 			<div class="order-modal-action" v-if="!repeatOrder && !editOrder">
 			
-				<button @click="$emit('update:repeatOrder', true)" class="order-list-btn">Повторить заказ</button>
-				<button v-if="order.reserved" @click="$emit('update:editOrder', true)"   class="order-list-btn">Изменить заказ</button>
+				<button @click.stop="$emit('update:repeatOrder', true)" class="order-list-btn">Повторить заказ</button>
+				<button v-if="order.reserved" @click.stop="$emit('update:editOrder', true)"   class="order-list-btn">Изменить заказ</button>
 			</div>
 		</div>
 	</div>

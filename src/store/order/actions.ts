@@ -57,10 +57,10 @@ export const actions: ActionTree<OrderState, RootState> =  {
 				commit(OrderMutations.ADD_ORDER, response.data.response)
 			})
 			.catch(error => {
-				if (error.response.status == 400 || error.response.status == 404) {
+				
 					commit(OrderMutations.CLEAN_ORDER_ERROR)
 					return Promise.reject(error)
-				} else return Promise.resolve()
+				
 			})
 	},
 
@@ -106,10 +106,10 @@ export const actions: ActionTree<OrderState, RootState> =  {
 				commit(OrderMutations.ADD_ORDER, response.data.response)
 			})
 			.catch(error => {
-				if (error.response.status == 400 || error.response.status == 404) {
+				
 					commit(OrderMutations.CLEAN_ORDER_ERROR)
 					return Promise.reject(error)
-				} else return Promise.resolve()
+				
 			})
 	},
 

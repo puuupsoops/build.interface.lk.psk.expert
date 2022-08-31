@@ -9,7 +9,7 @@
 		<div class="order-modal-content" >
 			
 			<div class="order-modal-header">
-				<h3 class="order-modal-header-title">Создание заказа</h3>
+				<h3 class="order-modal-header-title">{{ order.edit? 'Изменение заказа №'+order.id: 'Создание заказа'}}</h3>
 			
 					<DeleteButton v-if="isAddNewOrder" @onClick="close()"/>
 				
@@ -18,8 +18,9 @@
 			
 				<div v-if="!error">
 					<div v-if="!isAddNewOrder">
-						<span class="loading">Ваш заказ регистрируется!
+						<span class="loading" v-if="!order.edit"> Ваш заказ регистрируется!
 						<br> Подождите минутку<span>.</span><span>.</span><span>.</span></span>
+						<span class="loading" v-else> Подождите минутку<span>.</span><span>.</span><span>.</span></span>
 
 						<svg  width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<rect class="fill" x="0.0802612" y="2.04846" width="4.25606" height="2.07613" rx="1.03806" fill="#A5A7A9"></rect>
@@ -131,7 +132,7 @@
 </div>
 </template>
 
-<script lang="ts">
+<script setup  lang="ts">
 
 import Button from '/src/components/ui/Button.vue'
 import DeleteButton from '/src/components/ui/DeleteButton.vue'
@@ -143,57 +144,47 @@ import { useRouter } from 'vue-router'
 import { key } from '/src/store'
 import { OrderMutations } from '/src/store/order/mutations'
 
-export default defineComponent({
-	components:{
-		Button,
-		DeleteButton,
-	},
-	props:{
+
+	const props = defineProps(
+		{
 		modelValue:{
 			type: Boolean
 		}
-	},
-	emits: ['update:modelValue'],
-	setup(props, { emit }){
-		const store = useStore(key);
-		const router = useRouter();
-		const shake = ref(false);
-		const target_modal = ref(null);
-		onClickOutside(target_modal, () => {
-			shake.value = true;
-			setTimeout(() => {shake.value=false;}, 500);
-		});
-		const close = () => {
-			store.commit(OrderMutations.CLEAN_ORDER);
-			store.commit(OrderMutations.CLEAN_ORDER_ERROR);
-			store.commit(OrderMutations.CLEAN_ADD_ORDER);
-			emit('update:modelValue', false);
-		};
-		const delOrder = () => {
-			store.commit(OrderMutations.CLEAN_ORDER);
-			store.commit(OrderMutations.CLEAN_ORDER_ERROR);
-			store.commit(OrderMutations.CLEAN_ADD_ORDER);
-			emit('update:modelValue', false);
-		}
-		const toOrders = () => {
-			store.commit(OrderMutations.CLEAN_ORDER);
-			store.commit(OrderMutations.CLEAN_ADD_ORDER);
-			emit('update:modelValue', false);
-			router.push({name: 'Orders'});
-		};
-		
-		return {
-			close,
-			delOrder,
-			toOrders,
-			shake,
-			target_modal,
-			error: computed(() => store.getters.getOrderError),
-			errorMsg: computed(() => store.getters.getOrderErrorMsg),
-			isAddNewOrder: computed(() => store.getters.isOrderAddNew),
-			// isAddNewOrder: true,
-			newOrder: computed(() => store.getters.getOrderAddNew),
-		}
+	})
+	const emits =  defineEmits(['update:modelValue'])
+
+	const store = useStore(key);
+	const router = useRouter();
+	const shake = ref(false);
+	const target_modal = ref(null);
+	onClickOutside(target_modal, () => {
+		shake.value = true;
+		setTimeout(() => {shake.value=false;}, 500);
+	});
+	const close = () => {
+		store.commit(OrderMutations.CLEAN_ORDER);
+		store.commit(OrderMutations.CLEAN_ORDER_ERROR);
+		store.commit(OrderMutations.CLEAN_ADD_ORDER);
+		emits('update:modelValue', false);
+	};
+	const delOrder = () => {
+		store.commit(OrderMutations.CLEAN_ORDER);
+		store.commit(OrderMutations.CLEAN_ORDER_ERROR);
+		store.commit(OrderMutations.CLEAN_ADD_ORDER);
+		emits('update:modelValue', false);
 	}
-})
+	const toOrders = () => {
+		store.commit(OrderMutations.CLEAN_ORDER);
+		store.commit(OrderMutations.CLEAN_ADD_ORDER);
+		emits('update:modelValue', false);
+		router.push({name: 'Orders'});
+	};
+
+	const error = computed(() => store.getters.getOrderError)
+	const errorMsg = computed(() => store.getters.getOrderErrorMsg)
+	const isAddNewOrder = computed(() => store.getters.isOrderAddNew)
+	const newOrder = computed(() => store.getters.getOrderAddNew)
+	const order = computed(() => store.getters.getOrder)
+		
+	
 </script>

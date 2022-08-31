@@ -174,25 +174,23 @@ export default defineComponent({
 						error.value = true
 						setTimeout(() => {error.value=false;}, 5000)
 						errorMsg.value = 'Ошибка создания заказа. Повторите позже.'
-					});
+					})
 				}, 3000)
 			}
 
 		}
 		const editOrder = () => {
-			console.log(store.getters.getOrderToEdit)
-				showModal.value=true;
-				store.commit(OrderMutations.ADD_ORDER_PARTNER_ID, activeCompanyUid.value)
-				setTimeout(() => {
-					store.dispatch(OrderActions.EDIT_ORDER_ACTION, store.getters.getOrderToEdit).catch(()=>{
-						showModal.value=false
-						error.value = true
-						setTimeout(() => {error.value=false;}, 5000)
-						errorMsg.value = 'Ошибка создания заказа. Повторите позже.'
-					});
-				}, 3000)
-			
-
+			console.log(activeCompanyUid.value)
+			showModal.value=true;
+			store.commit(OrderMutations.ADD_ORDER_PARTNER_ID, activeCompanyUid.value)
+			setTimeout(() => {
+				store.dispatch(OrderActions.EDIT_ORDER_ACTION, store.getters.getOrderToAdd).catch(()=>{
+					showModal.value=false
+					error.value = true
+					setTimeout(() => {error.value=false;}, 5000)
+					errorMsg.value = 'Ошибка редактирования заказа. Повторите позже.'
+				});
+			}, 3000)
 		}
 		
 

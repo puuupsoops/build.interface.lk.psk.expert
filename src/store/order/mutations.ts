@@ -82,8 +82,8 @@ export const mutations: MutationTree<OrderState> = {
 						}
 					} else { //добавить новый продукт
 						const new_pos = <OrderStatePosition>{
-							guid: pos.product.UID,
-							article: pos.product.ARTICLE,
+							guid: pos.guid,
+							article: pos.article,
 							product: pos.product,
 							characteristics: []
 						}
@@ -104,13 +104,13 @@ export const mutations: MutationTree<OrderState> = {
 	[OrderMutations.REMOVE_CHARACTERISTIC] (state, data: OrderStatePosition): void{
 		state.order.position.forEach(pos => {
 			if (data.guid == pos.guid)
-				pos.characteristics = pos.characteristics.filter(x=> x.guid !== data.characteristics[0].guid)
+				pos.characteristics = pos.characteristics.filter(x=> x.GUID !== data.characteristics[0].GUID )
 		});
 	},
 	[OrderMutations.REMOVE_CHARACTERISTIC_PRESAIL] (state, data: OrderStatePosition): void{
 		state.order.position_presail.forEach(pos => {
 			if (data.guid == pos.guid)
-				pos.characteristics = pos.characteristics.filter(x=> x.guid !== data.characteristics[0].guid)
+				pos.characteristics = pos.characteristics.filter(x=> x.GUID !== data.characteristics[0].GUID)
 		});
 	},
 	[OrderMutations.CALC_ORDER] (state): void{
@@ -177,7 +177,11 @@ export const mutations: MutationTree<OrderState> = {
 		state.order.total_valume = Number(total_valume.toFixed(3));
 		state.order.total_weight = Number(total_weight.toFixed(3));
 		
-		if (total == 0 && state.order.position_presail.length == 0 ) state.order.id = 0;
+		if (total == 0 && state.order.position_presail.length == 0 ) {
+			state.order = Object.assign({}, DefaultOrder)
+			state.order.position = []
+			state.order.position_presail = []
+		}
 	},
 	[OrderMutations.ADD_ORDER] (state, data: NewOrder): void{
 		state.new_order = data;

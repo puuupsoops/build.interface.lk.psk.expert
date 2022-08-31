@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-08-31
+
+    #0.2.27
+    1. BagFix: Изменение заказа приведено в соответствии  с бекендом.
+
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-08-30
 
     #0.2.26
