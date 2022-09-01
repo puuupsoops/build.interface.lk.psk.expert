@@ -1,4 +1,10 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-09-01
+
+    #0.2.28
+    1. Изменена модель создания заказа.
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-08-31
 
     #0.2.27

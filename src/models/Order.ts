@@ -28,6 +28,9 @@ export interface Position {
 }
 
 export interface Characteristic {
+	discount:        number;
+	fullprice:       number;
+	price:           number;
 	guid:            string;
 	orgguid:         string;
 	quantity:        number;

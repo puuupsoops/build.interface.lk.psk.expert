@@ -23,6 +23,9 @@ export const getters: GetterTree<OrderState, RootState> = {
 			position: state.order.position.map((x) => ({
 				guid: x.guid,
 				characteristics: x.characteristics.map((c) => ({
+					discount: c.discount ? Number(c.discount/100): 0,
+					fullprice: c.PRICE,
+					price: c.price_discount ? c.price_discount : c.PRICE,
 					guid: c.GUID,
 					orgguid: c.ORGGUID,
 					quantity: c.count,
@@ -31,6 +34,9 @@ export const getters: GetterTree<OrderState, RootState> = {
 			position_presail: state.order.position_presail.map((x) => ({
 				guid: x.guid,
 				characteristics: x.characteristics.map((c) => ({
+					discount: c.discount ? Number(c.discount/100): 0,
+					fullprice: c.PRICE,
+					price: c.price_discount ? c.price_discount : c.PRICE,
 					guid: c.GUID,
 					orgguid: c.ORGGUID,
 					quantity: c.count,
