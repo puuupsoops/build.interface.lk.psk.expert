@@ -1,6 +1,7 @@
 
 // API response /partners
 
+import { normalizeClass } from "vue";
 import { ResponseError } from "./Error";
 
 // Output Data
@@ -50,4 +51,8 @@ export interface Document {
 export interface CompanysList{
 	id: number|string;
 	name: string;
+}
+
+export function normalizeCompanyName(name: string):string {
+    return name ? name.replace(/Общество с ограниченной ответственностью/, 'ООО').replace(/Акционерное общество/, 'АО') :''
 }

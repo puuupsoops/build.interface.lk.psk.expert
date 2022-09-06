@@ -1,6 +1,7 @@
 import { GetterTree } from "vuex"
 import { RootState } from "/src/store"
 import { OrdersState } from "./types"
+import { normalizeCompanyName } from "/src/models/Partner"
 
 export const getters: GetterTree<OrdersState, RootState> = {
 	isOrders: state => state.orders.length != 0,
@@ -9,7 +10,10 @@ export const getters: GetterTree<OrdersState, RootState> = {
 	getOrdersMaxId: state => Math.max(...state.orders.map(x => x.n)),
 	getCompanyFromOrders: state => {
 		const unique = <Object[]>[...new Set(state.orders.map(item => item.partner_guid))]
-		const res = unique.map(id => ({id, name:  state.orders.find(x => x.partner_guid ==id)?.partner_name}))
+		const res = unique.map(id => {
+			let name =  state.orders.find(x => x.partner_guid ==id)?.partner_name
+			return {id, name: name ? normalizeCompanyName(name):''}
+		})
 		res.unshift({id: '', name: "Все"})
 		return res
 	},

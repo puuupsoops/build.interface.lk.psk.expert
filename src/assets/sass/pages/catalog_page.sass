@@ -192,7 +192,41 @@
 			+justify-content(flex-end)
 			+align-items(center)
 			width: 100%
-		
+			margin: 5px
+			font-size: 12px
+			line-height: 25px
+			color: $font-light-color
+
+			&-maxpage
+				cursor: pointer
+				text-decoration: underline $font-light-color dotted
+				
+				&-wrap
+					+flex
+					+align-items(center)
+					+flex-direction(column)
+					position: absolute
+					visibility: hidden
+					z-index: 120
+					
+					background: $bg-color2
+					border-radius: 2px
+					+box-shadow(0px 0px 30px rgba(0, 0, 0, 1))
+					width: 50px
+				
+					&.show
+						visibility: visible						
+						+prefix(transition, $default-transition)
+					& div 
+						cursor: pointer
+					
+					& div:hover
+						text-decoration: underline $active-color solid
+
+					& div.active
+						text-decoration: underline $active-color solid
+						color: $active-color
+
 		&-text
 			color: $font-light-color
 

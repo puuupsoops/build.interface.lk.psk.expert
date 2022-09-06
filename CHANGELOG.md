@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-09-06
+
+    #0.2.29
+    1. Добавил pagination в таблицу с заказами с разбивкой на 10,25,50,все
+    2. Добавил кнопку обновить на страницу с заказами
+ 
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-09-01
 
     #0.2.28

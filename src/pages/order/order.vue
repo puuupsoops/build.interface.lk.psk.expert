@@ -209,7 +209,8 @@ export default defineComponent({
 			}
 		});
 		watch(activeCompanyUid, () => {
-			store.commit(OrderMutations.ADD_ORDER_PARTNER_ID, activeCompanyUid.value)
+			if (!store.getters.getOrder.edit)
+				store.commit(OrderMutations.ADD_ORDER_PARTNER_ID, activeCompanyUid.value)
 			store.commit(OrderMutations.CALC_ORDER)
 		})
 

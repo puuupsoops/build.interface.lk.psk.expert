@@ -100,11 +100,17 @@
 				max-width: 245px
 		
 		&-info
-			margin: 5px
-			font-size: 12px
-			line-height: 25px
-			color: $font-light-color
-	
+			+flex
+			+align-items(center)
+			+justify-content(space-between)
+			width: 100%
+
+			&-text
+				margin: 5px
+				font-size: 12px
+				line-height: 25px
+				color: $font-light-color
+				
 	&-list
 		width: 100%
 		margin: 0px
