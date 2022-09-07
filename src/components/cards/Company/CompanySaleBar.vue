@@ -1,5 +1,5 @@
 <template>
-	<div class="tooltip">
+
 	<div class="company-sale sale">
 		<div class="sale-head">
 			<div class="sale-title">Скидка {{discount.discount}} %</div>
@@ -9,7 +9,6 @@
 		
 		<div class="sale-progressbar-wrap">
 			<div class="sale-progressbar tooltip">
-				
 					
 				<div class="sale-progressbar-line" :style="'width: '+ (progressInPercent) +'%'">
 					<div class="sale-progressbar-val">
@@ -28,21 +27,37 @@
 			</div>
 		</div>
 			
+		
+		<div class="company-sale-card">
+			<div class="table">
+				<div class="table-row table-heading">
+					<div class="table-elem" >Сумма заказа,руб</div>
+					<div class="table-elem" >Сумма заказа,руб</div>
+					<div class="table-elem" > Скидка,% </div>
+				</div>
+
+				<div class="table-row"
+					v-for="(discount, key) in discountList"
+					:key="key"
+				>
+					<div class="table-elem" v-if="key!=0 && discount.next!=0" >От {{discount.progressMoneyMin.toLocaleString('ru')}}</div>
+					<div class="table-elem" v-if="key!=0 && discount.next!=0" >до {{discount.progressMoneyMax.toLocaleString('ru')}}</div>
+					<div class="table-elem" v-if="key!=0 && discount.next!=0" >{{discount.discount}}</div>
+
+					<div class="table-elem last" v-if="discount.next==0" ></div>
+					<div class="table-elem last" v-if="discount.next==0" >Более {{discount.progressMoneyMin.toLocaleString('ru')}}</div>
+					<div class="table-elem" v-if="discount.next==0" >{{discount.discount}}</div>
+				</div>
+					
+					
+			</div>
 		</div>
-					<span class="tooltiptext">
-						<table>
-							<tr><th>Сумма заказа,руб</th><th>Скидка,%</th></tr>
-							<tr><td>От 3 до 5 млн.</td><td>12.5</td></tr>
-							<tr><td>От 5 до 8 млн.</td><td>13.5</td></tr>
-							<tr><td>От 8 до 15 млн.</td><td>14.4</td></tr>
-							<tr><td>Более 15 млн.</td><td>16.3</td></tr>
-						</table>
-					</span>
 	</div>
+
 </template>
 
-<script lang="ts">
-import { computed, defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
 
 interface DiscountList {
 
@@ -53,69 +68,105 @@ interface DiscountList {
 		
 }
 
-export default defineComponent({
-	props:{
+
+const props = defineProps({
 		spent: { //Потраченно для определения скидки
 			type: Number,
 			required: true,
 		}
-	},
-	setup(props){
+	})
 		
-		const discountList = <DiscountList[]> [
-			{
-				progressMoneyMin: 0,	// минимальный прого потраченных средств
-				progressMoneyMax: 3000000,	// максимальный порог потраченных средств
-				discount: 0,				// процент скидки
-				next: 12.5					// следующая скидка
-			
-			},
-			{
-				progressMoneyMin: 3000000,	// минимальный прого потраченных средств
-				progressMoneyMax: 5000000,	// максимальный порог потраченных средств
-				discount: 12.5,				// процент скидки
-				next: 13.5					// следующая скидка
-			},
-			{
-				progressMoneyMin: 5000000,	// минимальный прого потраченных средств
-				progressMoneyMax: 8000000,	// максимальный порог потраченных средств
-				discount: 13.5,				// процент скидки
-				next: 14.4					// следующая скидка
-			},
-			{
-				progressMoneyMin: 8000000,	// минимальный прого потраченных средств
-				progressMoneyMax: 15000000,	// максимальный порог потраченных средств
-				discount: 14.4,				// процент скидки
-				next: 16.3					// следующая скидка
-			},
-			{
-				progressMoneyMin: 15000000,	// минимальный прого потраченных средств
-				progressMoneyMax: Infinity,	// максимальный порог потраченных средств
-				discount: 16.3,				// процент скидки
-				next: 0					// следующая скидка
-			}
-		]
-
-
-		let discount = computed<DiscountList>(() => {
-			
-			let d = discountList.filter(v =>  props.spent >= v.progressMoneyMin 
-													&&  props.spent < v.progressMoneyMax);
-			return d.length > 0 ? d[0] : discountList[0];
-		})
-	
-		let progressInPercent =  computed(() => {
-			if (discount.value.progressMoneyMax != Infinity)
-				return (props.spent/discount.value.progressMoneyMax) * 100// прогресс в процентах
-			else return 100
-		})
-		return{
-			discount,
-			progressInPercent,
-			ostatok: computed(() => ((discount.value.progressMoneyMax - props.spent))),
+	const discountList = <DiscountList[]> [
+		{
+			progressMoneyMin: 0,	// минимальный прого потраченных средств
+			progressMoneyMax: 50000,	// максимальный порог потраченных средств
+			discount: 0,				// процент скидки
+			next: 2					// следующая скидка
+		
+		},
+		{
+			progressMoneyMin: 50000,	
+			progressMoneyMax: 99000,	
+			discount: 2,				
+			next: 3					
+		},
+		{
+			progressMoneyMin: 100000,	
+			progressMoneyMax: 199999,	
+			discount: 3,				
+			next: 4					
+		},
+		{
+			progressMoneyMin: 200000,	
+			progressMoneyMax: 399999,	
+			discount: 4,				
+			next: 6					
+		},
+		{
+			progressMoneyMin: 400000,	
+			progressMoneyMax: 599999,	
+			discount: 6,				
+			next: 8					
+		},
+		{
+			progressMoneyMin: 600000,	
+			progressMoneyMax: 799999,	
+			discount: 8,				
+			next: 9					
+		},
+		{
+			progressMoneyMin: 800000,	
+			progressMoneyMax: 999999,	
+			discount: 9,				
+			next: 10				
+		},
+		{
+			progressMoneyMin: 1000000,	
+			progressMoneyMax: 5999999,	
+			discount: 10,				
+			next: 15				
+		},
+		{
+			progressMoneyMin: 6000000,	
+			progressMoneyMax: 9999999,	
+			discount: 15,				
+			next: 17				
+		},
+		{
+			progressMoneyMin: 10000000,	
+			progressMoneyMax: 19999999,	
+			discount: 17,				
+			next: 18
+		},
+		{
+			progressMoneyMin: 20000000,	
+			progressMoneyMax: 29999999,	
+			discount: 18,				
+			next: 20
+		},
+		{
+			progressMoneyMin: 30000000,	// минимальный прого потраченных средств
+			progressMoneyMax: Infinity,	// максимальный порог потраченных средств
+			discount: 20,				// процент скидки
+			next: 0					// следующая скидка
 		}
-	}
-})
+	]
+
+
+	let discount = computed<DiscountList>(() => {
+		
+		let d = discountList.filter(v =>  props.spent >= v.progressMoneyMin 
+												&&  props.spent < v.progressMoneyMax);
+		return d.length > 0 ? d[0] : discountList[0];
+	})
+
+	let progressInPercent =  computed(() => {
+		if (discount.value.progressMoneyMax != Infinity)
+			return (props.spent/discount.value.progressMoneyMax) * 100// прогресс в процентах
+		else return 100
+	})
+
+	const ostatok = computed(() => ((discount.value.progressMoneyMax - props.spent)))
 
 </script>
 

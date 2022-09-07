@@ -412,6 +412,7 @@
 					opacity: $default-opacity
 
 	&-sale
+		cursor: pointer
 		margin:
 			top: 30px
 		
@@ -419,6 +420,45 @@
 			&-progressbar
 				&-line
 					width: 73%
+
+		&-card
+			visibility: hidden
+			background-color: black
+			color: #fff
+			text-align: center
+			border-radius: 6px
+			padding: 10px 10px
+			position: absolute
+			z-index: 1000
+			opacity: 0
+			+prefix(transition, $default-transition)
+
+			.table-elem
+				white-space: nowrap
+				+justify-content(center)
+					
+				padding: 
+					top: 2px
+					left: 10px
+					right: 10px
+					bottom: 7px
+				&:nth-child(1)
+					width: 40%
+				&:nth-child(1).last
+					width: 0%					
+				&:nth-child(2)
+					width: 40%
+				&:nth-child(2).last
+					width: 80%	
+				&:nth-child(3)
+					
+					width: 20%
+				
+		&:hover .company-sale-card
+			+prefix(transition, $default-transition)
+			opacity: 1
+			visibility: visible
+
 
 	&-calendar
 		width: 100%
@@ -962,6 +1002,4 @@
 				
 				line-height: 15px
 				color: $font-light-color
-			
-
 

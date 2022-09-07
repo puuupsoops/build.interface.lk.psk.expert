@@ -1,4 +1,10 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-09-07
+
+    #0.2.30
+    1. Обновил таблицу со скидками
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-09-06
 
     #0.2.29
