@@ -21,7 +21,7 @@
 
 
 import { messageType, } from '/src/plugins/wsStore'
-import { PropType,  ref,  } from 'vue'
+import { PropType,  ref} from 'vue'
 
 
 const props = defineProps({

@@ -85,6 +85,7 @@
 				<div class="orders-list-row orders-list-main-row"
 					v-if="paginationShow(key)"
 					@click="key == active ? active = -1 : active = key"
+					
 				>
 
 					<div class="orders-list-elem">{{ key+1}}	<div class="table-arrow"></div>	</div>
@@ -92,7 +93,7 @@
 					<div class="orders-list-elem">{{ normalizeCompanyName(item.partner_name) }}</div>
 					<div class="orders-list-elem">{{ item.n }}</div>
 					<div class="orders-list-elem">{{ item.date }}</div>
-					<div class="orders-list-elem"> {{ item.reserved ? 'Резерв':''}}</div>
+					<div class="orders-list-elem"> <div v-if="item.reserved" tooltip="В позициях заказа присутсвует резерв" flow="down" style="width:100%"></div> </div>
 					<div class="orders-list-elem" > 
 						<button
 							class="orders-list-more"
@@ -253,7 +254,7 @@
 	import ModalDatePicker from '/src/components/ui/ModalDatePicker.vue'
 	import CatalogPagination from '/src/components/cards/Catalog/CatalogPagination.vue'
 
-	import { ref, PropType, defineProps, watch, computed } from 'vue'
+	import { ref, PropType, watch, computed } from 'vue'
 	import { onClickOutside } from '@vueuse/core'
 	import { Orders } from '/src/models/Orders'
 	import { normalizeCompanyName } from '/src/models/Partner'

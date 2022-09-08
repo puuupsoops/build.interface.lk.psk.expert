@@ -137,7 +137,7 @@
 import Button from '/src/components/ui/Button.vue'
 import DeleteButton from '/src/components/ui/DeleteButton.vue'
 
-import { ref, computed, defineComponent } from 'vue'
+import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { onClickOutside } from '@vueuse/core'
 import { useRouter } from 'vue-router'

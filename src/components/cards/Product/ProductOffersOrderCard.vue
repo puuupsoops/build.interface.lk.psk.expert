@@ -60,7 +60,7 @@ import { Offer } from '/src/models/Product'
 import { OrderStatePositionOffer } from '/src/store/order/types'
 //ProductOffersOrderCard используется для составления заказа
 
-import { ref, computed, watch, onMounted, defineComponent, PropType } from 'vue'
+import { ref, computed, watch, onMounted, PropType } from 'vue'
 
 interface OrderStateAddPositionItem extends OrderStatePositionOffer{
 	check:           boolean;	

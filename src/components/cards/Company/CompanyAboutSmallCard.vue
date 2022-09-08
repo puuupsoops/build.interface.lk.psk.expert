@@ -59,8 +59,9 @@
 	</router-link>
 </template>
 <script setup lang="ts">
-import  {normalizeCompanyName, Partner } from '/src/models/Partner'
-import { defineProps, PropType } from 'vue'
+	import  {normalizeCompanyName, Partner } from '/src/models/Partner'
+	import { PropType } from 'vue'
+	
 	const props = defineProps({data: {type: Object as PropType<Partner>,}})
 </script>
 
