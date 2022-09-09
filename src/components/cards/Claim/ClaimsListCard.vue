@@ -1,14 +1,23 @@
 <template>
 <div class="orders-list-wrap">
-	<div
-			:style=" data_filtred.length != data.length ? 'visibility: visible': 'visibility: hidden'"
-			class="orders-heading-info"
-		>
-				Показано {{data_filtred.length}} из {{data.length}}
+	<div class="orders-heading-info">
+		<div class="orders-heading-pagination">
+
+			<CatalogPagination
+				:maxPage = "page.maxItemOnPage != -1 ? Math.ceil(data_filtred.length / page.maxItemOnPage): 1"
+				v-model:currentPage="page.currentPage"
+				v-model:maxItemOnPage="page.maxItemOnPage"
+				
+			/>
+		</div>
+		<div class="orders-heading-info-text"
+				:style=" data_filtred.length != data.length ? 'visibility: visible': 'visibility: hidden'"
+			>
+					Показано {{data_filtred.length}} из {{data.length}}
+		</div>
 	</div>
 
-
-	<div class="orders-list " ref="target">
+	<div class="orders-list " >
 			<div class="orders-list-row orders-list-heading">
 				<div class="orders-list-elem">№</div>
 				<div :class="'orders-list-elem' + (search.search !='' && search.id == 1 ? ' active': '') + (filter[1].value != '' ? ' active': '')">
@@ -41,7 +50,8 @@
 			>
 				
 					<div class="orders-list-row orders-list-main-row"
-						@click="key === active ? active = -1 : active = key; active_more =  -1"
+						@click="key === active ? active = -1 : active = key"
+						v-if="paginationShow(key)"
 					>
 
 						<div class="orders-list-elem">
@@ -57,7 +67,11 @@
 						
 					</div>
 					
-					<div :class="'orders-list-info'   + ( key == active ? ' active': '' )" @click="active_more =  -1" >
+					<div class="orders-list-info" 
+						:class="{'active': key == active }"
+						@click="active_more =  -1" 
+						v-if="paginationShow(key)"
+					>
 						
 						<div v-if="item.order && Array.isArray(item.order.checks) ">
 							<div
@@ -181,27 +195,26 @@
 </div>
 </template>
 
-<script lang="ts">
-import PreloaderLocal from '/src/components/PreloaderLocal.vue'
-import OrderDetailModal from '/src/components/cards/Order/OrderDetailModal.vue'
-import ModalInput from '/src/components/ui/ModalInput.vue'
+<script setup lang="ts">
+	import PreloaderLocal from '/src/components/PreloaderLocal.vue'
+	import OrderDetailModal from '/src/components/cards/Order/OrderDetailModal.vue'
+	import ModalInput from '/src/components/ui/ModalInput.vue'
+	import CatalogPagination from '/src/components/cards/Catalog/CatalogPagination.vue'
 
-import { ref, PropType, defineComponent, watch, computed } from 'vue'
-import { onClickOutside } from '@vueuse/core'
-import { Claim } from '/src/models/Claim'
-import { useStore } from 'vuex'
-import { key } from '/src/store'
-import { OrderActions } from '/src/store/order/actions'
-import { Storage } from '/src/models/Partner'
-import { OrdersActions } from '/src/store/orders/actions'
-import { OrdersSatusCode } from '/src/store/orders/types'
+	import { ref, PropType, defineComponent, watch, computed } from 'vue'
+	import { onClickOutside } from '@vueuse/core'
+	import { Claim } from '/src/models/Claim'
+	import { useStore } from 'vuex'
+	import { key } from '/src/store'
+	import { OrderActions } from '/src/store/order/actions'
+	import { Storage } from '/src/models/Partner'
+	import { OrdersActions } from '/src/store/orders/actions'
+	import { OrdersSatusCode } from '/src/store/orders/types'
 
-import { SearchData } from '/src/models/Components'
-import { KeysMutations } from '/src/store/keys/mutations'
+	import { SearchData } from '/src/models/Components'
+	import { KeysMutations } from '/src/store/keys/mutations'
 
-
-export default defineComponent({
-	props: {
+const props = defineProps({
 		data: {
 			type: Array as PropType<Claim[]>,
 			required: true
@@ -223,165 +236,148 @@ export default defineComponent({
 			type: Object as PropType<SearchData>,
 			required: true
 		}
-	},
-	components: {
-		PreloaderLocal,
-		OrderDetailModal,
-		ModalInput,
-	},
-	setup(props) {
-		const store = useStore(key)
-		const active = ref(-1)
-		const active_more = ref(-1)
-		const target = ref(null)
-		const showDetail = ref(false)
-		const loading_bill = ref<string[]>([])
-		const detailOrderId = ref(-1)
-		const filter = ref([
-			{name: 'id', value: '', show: false},
-			{name: 'name', value: '', show: false},
-			{name: 'id', value: '', show: false},
-			{name: 'id', value: '', show: false},
-			{name: 'id', value: '', show: false},
-			{name: 'id', value: '', show: false},
-		])
-		
-		onClickOutside(target, () => {
-			active_more.value = -1
-		});
-		
-		watch( active, ()=>{
-			//console.log(active)
-			if (active.value!=-1 && data_filtred.value && Array.isArray(data_filtred.value[active.value].order?.checks)) {
-				let promise_arr =data_filtred.value[active.value].order?.checks?.map(x=> !x.doc_status ? store.dispatch(OrdersActions.GET_ORDERS_DOCSTATUS, x.guid): null )
-				if (promise_arr){
-					Promise.all(promise_arr).finally(()=>{})
-				}
-			}
-		})
-		watch( () => props.status, ()=>{
-			active.value=-1
-		})
-		watch( () => props.contrAgent, ()=>{
-			active.value=-1
-		})
-		watch( () => props.search, ()=>{
-			active.value=-1
-		})
-		watch( () => props.period, ()=>{
-			active.value=-1
-		})
-		
-		const data_filtred = computed( () => {
-			//фильтр по контрагенту
-			
-			let data =  props.data.filter((x: Claim) => props.contrAgent =='' || x.partner_guid == props.contrAgent)
-			
-			//фильтр по периоду
-			data = data.filter((x: Claim) => checkPeriod(x.date_create))
-			
-			//фильтр по статусу
-			data = data.filter((x: Claim) => checkStatus(x))
-			
-			//фильтр по поиску по полю
-			data = data.filter((x: Claim) => search(x))
-			
-			if (filter.value[1].value !=''){
-				data = data.filter((x: Claim) => `Претензия № ${x.bitrix_id} от ${x.date_create.substring(0, 10)}`.indexOf(filter.value[1].value)!=-1)
-			}
-			
-			return data	
-		})
-		
-		const search = (item: Claim) => {
-			if (props.search.search == '') return true
-			switch (props.search.id){
-				case 1: 
-					return `Претензия № ${item.bitrix_id} от ${item.date_create.substring(0, 10)}`.toUpperCase().indexOf(props.search.search.toUpperCase()) != -1
-				case 2: 
-					return item.date_create.toUpperCase().indexOf(props.search.search.toUpperCase()) != -1
-				case 3: 
-					return item.order ? String(item.order.n).toUpperCase().indexOf(props.search.search.toUpperCase()) != -1 : false
-				case 4: 
-					return item.case ? String(item.case).toUpperCase().indexOf(props.search.search.toUpperCase()) != -1 : false
-				default:
-					return true
-			}
-			
-		}
-		
-		const checkPeriod = (date: string|undefined) => {
-			if (!date) return false
-			if (props.period == 'Все') {
-				return true
-			} else {
-				const start = props.period?.split(' - ')[0]
-				const year = start?.substring(6,10)
-				const month = start?.substring(3,5)
-				return year == date.substring(6,10) && month == date.substring(3,5)
+	})
+	const page = ref({maxItemOnPage: 10, currentPage: 1})
+	const store = useStore(key)
+	const active = ref(-1)
+	const active_more = ref(-1)
+	const target = ref(null)
+	const showDetail = ref(false)
+	const loading_bill = ref<string[]>([])
+	const detailOrderId = ref(-1)
+	const docLocation = import.meta.env.VITE_APP_DOC_LOCATION
+	const filter = ref([
+		{name: 'id', value: '', show: false},
+		{name: 'name', value: '', show: false},
+		{name: 'id', value: '', show: false},
+		{name: 'id', value: '', show: false},
+		{name: 'id', value: '', show: false},
+		{name: 'id', value: '', show: false},
+	])
+	
+	onClickOutside(target, () => {
+		active_more.value = -1
+	})
+	
+	watch( active, ()=>{
+		//console.log(active)
+		if (active.value!=-1 && data_filtred.value && Array.isArray(data_filtred.value[active.value].order?.checks)) {
+			let promise_arr =data_filtred.value[active.value].order?.checks?.map(x=> !x.doc_status ? store.dispatch(OrdersActions.GET_ORDERS_DOCSTATUS, x.guid): null )
+			if (promise_arr){
+				Promise.all(promise_arr).finally(()=>{})
 			}
 		}
+	})
+	watch( () => props.status, ()=>{
+		page.value.currentPage = 1
+		active.value=-1
+	})
+	watch( () => props.contrAgent, ()=>{
+		page.value.currentPage = 1
+		active.value=-1
+	})
+	watch( () => props.search, ()=>{
+		page.value.currentPage = 1
+		active.value=-1
+	})
+	watch( () => props.period, ()=>{
+		page.value.currentPage = 1
+		active.value=-1
+	})
+	
+	const data_filtred = computed( () => {
+		//фильтр по контрагенту
 		
-		const checkStatus = (item: Claim) => {
-			
-			if (props.status == 'Все'){
-				return true
-			} else {
-				if (!item.order) return false
-				if (Array.isArray(item.order.checks)){
-					return item.order.checks.findIndex( x => OrdersSatusCode[parseInt(x.status+1)] ? props.status == OrdersSatusCode[parseInt(x.status+1)].name : false) !=-1
-				}
-				else 
-					return false
-			}
+		let data =  props.data.filter((x: Claim) => props.contrAgent =='' || x.partner_guid == props.contrAgent)
+		
+		//фильтр по периоду
+		data = data.filter((x: Claim) => checkPeriod(x.date_create))
+		
+		//фильтр по статусу
+		data = data.filter((x: Claim) => checkStatus(x))
+		
+		//фильтр по поиску по полю
+		data = data.filter((x: Claim) => search(x))
+		
+		if (filter.value[1].value !=''){
+			data = data.filter((x: Claim) => `Претензия № ${x.bitrix_id} от ${x.date_create.substring(0, 10)}`.indexOf(filter.value[1].value)!=-1)
 		}
 		
-		const downloadBill = (uuid: string): void=>{
-			loading_bill.value.push(uuid)
-			store.dispatch(OrderActions.GET_BILL_FILE_SAVE, uuid)
-				.finally( () => { loading_bill.value = loading_bill.value.filter(item => item !== uuid)})
-		}
+		return data	
+	})
+	
+	const paginationShow = (key: number): boolean => {
+		if (page.value.maxItemOnPage != -1){
+			return key >= ((page.value.currentPage-1)*page.value.maxItemOnPage) && key < (page.value.currentPage*page.value.maxItemOnPage)
+		} else return true	
+	}
 
-		const getStorageName = (partner_guid: string, organization_id: string): string=>{
-			const storages = <Storage[]>store.getters.getCompanyStoragesData(partner_guid)
-			const storage = storages.find(x  => x.guid == organization_id)
-			return storage ? storage.name.replace(/(^|\s)\S/g, s => s.toUpperCase()).replace(/(ООО)|(")|(\s)|([а-я])/g, '') : 'Склад'
+	const search = (item: Claim) => {
+		if (props.search.search == '') return true
+		switch (props.search.id){
+			case 1: 
+				return `Претензия № ${item.bitrix_id} от ${item.date_create.substring(0, 10)}`.toUpperCase().indexOf(props.search.search.toUpperCase()) != -1
+			case 2: 
+				return item.date_create.toUpperCase().indexOf(props.search.search.toUpperCase()) != -1
+			case 3: 
+				return item.order ? String(item.order.n).toUpperCase().indexOf(props.search.search.toUpperCase()) != -1 : false
+			case 4: 
+				return item.case ? String(item.case).toUpperCase().indexOf(props.search.search.toUpperCase()) != -1 : false
+			default:
+				return true
 		}
 		
-		const setOrderId = (id: number) => {
-			store.commit(KeysMutations.SET_CURRENT_ORDER, id)
+	}
+	
+	const checkPeriod = (date: string|undefined) => {
+		if (!date) return false
+		if (props.period == 'Все') {
+			return true
+		} else {
+			const start = props.period?.split(' - ')[0]
+			const year = start?.substring(6,10)
+			const month = start?.substring(3,5)
+			return year == date.substring(6,10) && month == date.substring(3,5)
 		}
+	}
+	
+	const checkStatus = (item: Claim) => {
 		
-		const filtred = ( item: Claim) => {
-			let show = false
-			if (filter.value[1].value !=''){
-				if (item.title.indexOf(filter.value[1].value)!=-1) show=true
-			} else show = true
-			return  show
+		if (props.status == 'Все'){
+			return true
+		} else {
+			if (!item.order) return false
+			if (Array.isArray(item.order.checks)){
+				return item.order.checks.findIndex( x => OrdersSatusCode[parseInt(x.status+1)] ? props.status == OrdersSatusCode[parseInt(x.status+1)].name : false) !=-1
+			}
+			else 
+				return false
 		}
+	}
+	
+	const downloadBill = (uuid: string): void=>{
+		loading_bill.value.push(uuid)
+		store.dispatch(OrderActions.GET_BILL_FILE_SAVE, uuid)
+			.finally( () => { loading_bill.value = loading_bill.value.filter(item => item !== uuid)})
+	}
 
-		return {
-			//data
-			target,
-			active,
-			active_more,
-			loading_bill,
-			showDetail,
-			detailOrderId,
-			OrdersSatusCode,
-			filter,
-			docLocation:import.meta.env.VITE_APP_DOC_LOCATION,
-			//computed
-			data_filtred,
-			//methods
-			
-			checkStatus,
-			downloadBill,
-			getStorageName,
-			setOrderId,
-			filtred,
-			
-		}
-	},
-})
+	const getStorageName = (partner_guid: string, organization_id: string): string=>{
+		const storages = <Storage[]>store.getters.getCompanyStoragesData(partner_guid)
+		const storage = storages.find(x  => x.guid == organization_id)
+		return storage ? storage.name.replace(/(^|\s)\S/g, s => s.toUpperCase()).replace(/(ООО)|(")|(\s)|([а-я])/g, '') : 'Склад'
+	}
+	
+	const setOrderId = (id: number) => {
+		store.commit(KeysMutations.SET_CURRENT_ORDER, id)
+	}
+	
+	const filtred = ( item: Claim) => {
+		let show = false
+		if (filter.value[1].value !=''){
+			if (item.title.indexOf(filter.value[1].value)!=-1) show=true
+		} else show = true
+		return  show
+	}
+
+	
 </script>

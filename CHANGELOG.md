@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-09-09
+
+    #0.2.31
+    1. Меню nav со ссылками на страницы Поиск товара Новый заказ Заказы Отгрузки Претензии теперь при прокрутки вниз прилипает к верху 
+    2. Добавил pagination на страницы отгрузки и претензии
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-09-07
 
     #0.2.30

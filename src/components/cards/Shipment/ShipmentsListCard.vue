@@ -1,12 +1,22 @@
 <template>
 <div class="orders-list-wrap">
-	<div
-			:style=" data_filtred.length != data.length ? 'visibility: visible': 'visibility: hidden'"
-			class="orders-heading-info"
-		>
-				Показано {{data_filtred.length}} из {{data.length}}
+	<div class="orders-heading-info">
+		<div class="orders-heading-pagination">
+
+			<CatalogPagination
+				:maxPage = "page.maxItemOnPage != -1 ? Math.ceil(data_filtred.length / page.maxItemOnPage): 1"
+				v-model:currentPage="page.currentPage"
+				v-model:maxItemOnPage="page.maxItemOnPage"
+				
+			/>
+		</div>
+		<div class="orders-heading-info-text"
+				:style=" data_filtred.length != data.length ? 'visibility: visible': 'visibility: hidden'"
+			>
+					Показано {{data_filtred.length}} из {{data.length}}
+		</div>
 	</div>
-	<div class="orders-list " ref="target">
+	<div class="orders-list">
 			<div class="orders-list-row orders-list-heading">
 				<div class="orders-list-elem">№</div>
 				<div :class="'orders-list-elem' + (search.search !='' && search.id == 1 ? ' active': '') + (filter[1].value != '' ? ' active': '')">
@@ -40,7 +50,8 @@
 				<div v-if="checkStatus(item)">
 				<div v-if="checkPeriod(item.date) && filtred(item)"> -->
 					<div class="orders-list-row orders-list-main-row"
-						@click="key === active ? active = -1 : active = key; active_more =  -1"
+						@click="key === active ? active = -1 : active = key"
+						v-if="paginationShow(key)"
 					>
 
 						<div class="orders-list-elem">
@@ -58,10 +69,7 @@
 								class="orders-list-more"
 								@click.stop="active_more = key"
 							>Подробно</button>
-							<div
-								
-								:class="'orders-list-more-dropdown' +  ( key == active_more ? ' active': '' )"
-							>
+							<div :class="'orders-list-more-dropdown' +  ( key == active_more ? ' active': '' )"  ref="target">
 								<a class="orders-list-more-dropdown-link" @click.stop="detailOrderId = item.order.n; showDetailOrder=true; repeatOrder=true;">Повторить заказ</a>
 								<a class="orders-list-more-dropdown-link" @click.stop="detailOrderId = item.order.n; showDetailOrder=true" >Детали заказа</a>
 								<a class="orders-list-more-dropdown-link" @click.stop="detailShipmentId = key; showDetailShipment=true">Заявка на отгрузку</a>
@@ -71,8 +79,11 @@
 						</div>
 					</div>
 
-					<div :class="'orders-list-info'   + ( key == active ? ' active': '' )" @click="active_more =  -1" >
-						
+					<div class="orders-list-info" 
+						:class="{'active': key == active }"
+						@click="active_more =  -1" 
+						v-if="paginationShow(key)"
+					>
 						<div v-if="item.order && Array.isArray(item.order.checks) ">
 							<div
 								class="orders-list-info-row"
@@ -204,28 +215,28 @@
 </div>
 </template>
 
-<script lang="ts">
-import PreloaderLocal from '/src/components/PreloaderLocal.vue'
-import OrderDetailModal from '/src/components/cards/Order/OrderDetailModal.vue'
-import ModalInput from '/src/components/ui/ModalInput.vue'
-import ShipmentDetailModal from '/src/components/cards/Shipment/ShipmentDetailModal.vue'
+<script setup lang="ts">
+	import PreloaderLocal from '/src/components/PreloaderLocal.vue'
+	import OrderDetailModal from '/src/components/cards/Order/OrderDetailModal.vue'
+	import ModalInput from '/src/components/ui/ModalInput.vue'
+	import ShipmentDetailModal from '/src/components/cards/Shipment/ShipmentDetailModal.vue'
+	import CatalogPagination from '/src/components/cards/Catalog/CatalogPagination.vue'
 
-import { ref, PropType, defineComponent, watch, computed } from 'vue'
-import { onClickOutside } from '@vueuse/core'
-import { Shipments } from '/src/models/Shipments'
-import { useStore } from 'vuex'
-import { key } from '/src/store'
-import { OrderActions } from '/src/store/order/actions'
-import { Storage } from '/src/models/Partner'
-import { OrdersActions } from '/src/store/orders/actions'
-import { OrdersSatusCode } from '/src/store/orders/types'
+	import { ref, PropType, defineComponent, watch, computed } from 'vue'
+	import { onClickOutside } from '@vueuse/core'
+	import { Shipments } from '/src/models/Shipments'
+	import { useStore } from 'vuex'
+	import { key } from '/src/store'
+	import { OrderActions } from '/src/store/order/actions'
+	import { Storage } from '/src/models/Partner'
+	import { OrdersActions } from '/src/store/orders/actions'
+	import { OrdersSatusCode } from '/src/store/orders/types'
 
-import { SearchData } from '/src/models/Components'
-import { KeysMutations } from '/src/store/keys/mutations'
+	import { SearchData } from '/src/models/Components'
+	import { KeysMutations } from '/src/store/keys/mutations'
 
 
-export default defineComponent({
-	props: {
+	const props = defineProps({
 		data: {
 			type: Array as PropType<Shipments[]>,
 			required: true
@@ -247,172 +258,151 @@ export default defineComponent({
 			type: Object as PropType<SearchData>,
 			required: true
 		}
-	},
-	components: {
-		PreloaderLocal,
-		OrderDetailModal,
-		ShipmentDetailModal,
-		ModalInput,
-	},
-	setup(props) {
-		const store = useStore(key)
-		const active = ref(-1)
-		const active_more = ref(-1)
-		const target = ref(null)
-		const loading_bill = ref<string[]>([])
-		const detailOrderId = ref(-1)
-		const showDetailOrder = ref(false)
-		const repeatOrder = ref(false)
-		
-		const detailShipmentId = ref(-1)
-		const showDetailShipment = ref(false)
-		
-		const filter = ref([
-			{name: 'id', value: '', show: false},
-			{name: 'name', value: '', show: false},
-			{name: 'id', value: '', show: false},
-			{name: 'id', value: '', show: false},
-			{name: 'id', value: '', show: false},
-			{name: 'id', value: '', show: false},
-		])
-		
-		onClickOutside(target, () => {
-			active_more.value = -1
-		});
-		
-		watch( active, ()=>{
-			//console.log(active)
-			if (active.value!=-1 && data_filtred.value && Array.isArray(data_filtred.value[active.value].order?.checks)) {
-				let promise_arr =data_filtred.value[active.value].order?.checks?.map(x=> !x.doc_status ? store.dispatch(OrdersActions.GET_ORDERS_DOCSTATUS, x.guid) : null)
-				if (promise_arr){
-					Promise.all(promise_arr).finally(()=>{})
-				}
+	})
+	
+	const store = useStore(key)
+	const active = ref(-1)
+	const active_more = ref(-1)
+	const target = ref(null)
+	const loading_bill = ref<string[]>([])
+	const detailOrderId = ref(-1)
+	const showDetailOrder = ref(false)
+	const repeatOrder = ref(false)
+	const page = ref({maxItemOnPage: 10, currentPage: 1})
+	const detailShipmentId = ref(-1)
+	const showDetailShipment = ref(false)
+	const docLocation = import.meta.env.VITE_APP_DOC_LOCATION
+	const filter = ref([
+		{name: 'id', value: '', show: false},
+		{name: 'name', value: '', show: false},
+		{name: 'id', value: '', show: false},
+		{name: 'id', value: '', show: false},
+		{name: 'id', value: '', show: false},
+		{name: 'id', value: '', show: false},
+	])
+	const isOrders = computed(() => store.getters.isOrders)
+
+	onClickOutside(target, () => {
+		active_more.value = -1
+	})
+	
+	watch( active, ()=>{
+		//console.log(active)
+		if (active.value!=-1 && data_filtred.value && Array.isArray(data_filtred.value[active.value].order?.checks)) {
+			let promise_arr =data_filtred.value[active.value].order?.checks?.map(x=> !x.doc_status ? store.dispatch(OrdersActions.GET_ORDERS_DOCSTATUS, x.guid) : null)
+			if (promise_arr){
+				Promise.all(promise_arr).finally(()=>{})
 			}
-		})
-		watch( () => props.status, ()=>{
-			active.value=-1
-		})
-		watch( () => props.contrAgent, ()=>{
-			active.value=-1
-		})
-		watch( () => props.search, ()=>{
-			active.value=-1
-		})
-		watch( () => props.period, ()=>{
-			active.value=-1
-		})
+		}
+	})
+	watch( () => props.status, ()=>{
+		page.value.currentPage = 1
+		active.value=-1
+	})
+	watch( () => props.contrAgent, ()=>{
+		page.value.currentPage = 1
+		active.value=-1
+	})
+	watch( () => props.search, ()=>{
+		page.value.currentPage = 1
+		active.value=-1
+	})
+	watch( () => props.period, ()=>{
+		page.value.currentPage = 1
+		active.value=-1
+	})
+	
+	const data_filtred = computed( () => {
+		//фильтр по контрагенту
 		
-		const data_filtred = computed( () => {
-			//фильтр по контрагенту
-			
-			let data =  props.data.filter((x: Shipments) => props.contrAgent =='' || x.partner_guid == props.contrAgent)
-			
-			//фильтр по периоду
-			data = data.filter((x: Shipments) => checkPeriod(x.date))
-			
-			//фильтр по статусу
-			data = data.filter((x: Shipments) => checkStatus(x))
-			
-			//фильтр по поиску по полю
-			data = data.filter((x: Shipments) => search(x))
-			
-			if (filter.value[1].value !=''){
-				data = data.filter((x: Shipments) => `Заявка № ${x.bitrix_id} от ${x.date_create.substring(0, 10)}`.indexOf(filter.value[1].value)!=-1)
-			}
-			
-			return data	
-		})
+		let data =  props.data.filter((x: Shipments) => props.contrAgent =='' || x.partner_guid == props.contrAgent)
 		
-		const search = (item: Shipments) => {
-			if (props.search.search == '') return true
-			switch (props.search.id){
-				case 1: 
-					return `Заявка № ${item.bitrix_id} от ${item.date_create.substring(0, 10)}`.toUpperCase().indexOf(props.search.search.toUpperCase()) != -1
-				case 2: 
-					return item.date.toUpperCase().indexOf(props.search.search.toUpperCase()) != -1
-				case 3: 
-					return item.order ? String(item.order.n).toUpperCase().indexOf(props.search.search.toUpperCase()) != -1 : false
-				default:
-					return true
-			}
-			
+		//фильтр по периоду
+		data = data.filter((x: Shipments) => checkPeriod(x.date))
+		
+		//фильтр по статусу
+		data = data.filter((x: Shipments) => checkStatus(x))
+		
+		//фильтр по поиску по полю
+		data = data.filter((x: Shipments) => search(x))
+		
+		if (filter.value[1].value !=''){
+			data = data.filter((x: Shipments) => `Заявка № ${x.bitrix_id} от ${x.date_create.substring(0, 10)}`.indexOf(filter.value[1].value)!=-1)
 		}
 		
-		const checkPeriod = (date: string) => {
-			if (props.period == 'Все') {
+		return data	
+	})
+
+	const paginationShow = (key: number): boolean => {
+		if (page.value.maxItemOnPage != -1){
+			return key >= ((page.value.currentPage-1)*page.value.maxItemOnPage) && key < (page.value.currentPage*page.value.maxItemOnPage)
+		} else return true	
+	}
+
+	
+	const search = (item: Shipments) => {
+		if (props.search.search == '') return true
+		switch (props.search.id){
+			case 1: 
+				return `Заявка № ${item.bitrix_id} от ${item.date_create.substring(0, 10)}`.toUpperCase().indexOf(props.search.search.toUpperCase()) != -1
+			case 2: 
+				return item.date.toUpperCase().indexOf(props.search.search.toUpperCase()) != -1
+			case 3: 
+				return item.order ? String(item.order.n).toUpperCase().indexOf(props.search.search.toUpperCase()) != -1 : false
+			default:
 				return true
-			} else {
-				const start = props.period?.split(' - ')[0]
-				const year = start?.substring(6,10)
-				const month = start?.substring(3,5)
-				return year == date.substring(6,10) && month == date.substring(3,5)
-			}
 		}
 		
-		const checkStatus = (item: Shipments) => {
-			
-			// if (props.status == 'Все'){
-			// 	return true
-			// } else {
-			// 	if (Array.isArray(item.checks)){
-			// 		return item.checks.findIndex( x => OrdersSatusCode[parseInt(x.status+1)] ? props.status == OrdersSatusCode[parseInt(x.status+1)].name : false) !=-1
-			// 	}
-			// 	else 
-			// 		return false
-			// }
-				return item
+	}
+	
+	const checkPeriod = (date: string) => {
+		if (props.period == 'Все') {
+			return true
+		} else {
+			const start = props.period?.split(' - ')[0]
+			const year = start?.substring(6,10)
+			const month = start?.substring(3,5)
+			return year == date.substring(6,10) && month == date.substring(3,5)
 		}
+	}
+	
+	const checkStatus = (item: Shipments) => {
 		
-		const downloadBill = (uuid: string): void=>{
-			loading_bill.value.push(uuid)
-			store.dispatch(OrderActions.GET_BILL_FILE_SAVE, uuid)
-				.finally( () => { loading_bill.value = loading_bill.value.filter(item => item !== uuid)})
-		}
+		// if (props.status == 'Все'){
+		// 	return true
+		// } else {
+		// 	if (Array.isArray(item.checks)){
+		// 		return item.checks.findIndex( x => OrdersSatusCode[parseInt(x.status+1)] ? props.status == OrdersSatusCode[parseInt(x.status+1)].name : false) !=-1
+		// 	}
+		// 	else 
+		// 		return false
+		// }
+			return item
+	}
+	
+	const downloadBill = (uuid: string): void=>{
+		loading_bill.value.push(uuid)
+		store.dispatch(OrderActions.GET_BILL_FILE_SAVE, uuid)
+			.finally( () => { loading_bill.value = loading_bill.value.filter(item => item !== uuid)})
+	}
 
-		const getStorageName = (partner_guid: string, organization_id: string): string=>{
-			const storages = <Storage[]>store.getters.getCompanyStoragesData(partner_guid)
-			const storage = storages.find(x  => x.guid == organization_id)
-			return storage ? storage.name.replace(/(^|\s)\S/g, s => s.toUpperCase()).replace(/(ООО)|(")|(\s)|([а-я])/g, '') : 'Склад'
-		}
-		
-		const setOrderId = (id: number) => {
-			store.commit(KeysMutations.SET_CURRENT_ORDER, id)
-		}
-		
-		const filtred = ( item: Shipments) => {
-			let show = false
-			if (filter.value[1].value !=''){
-				if (item.title.indexOf(filter.value[1].value)!=-1) show=true
-			} else show = true
-			return  show
-		}
+	const getStorageName = (partner_guid: string, organization_id: string): string=>{
+		const storages = <Storage[]>store.getters.getCompanyStoragesData(partner_guid)
+		const storage = storages.find(x  => x.guid == organization_id)
+		return storage ? storage.name.replace(/(^|\s)\S/g, s => s.toUpperCase()).replace(/(ООО)|(")|(\s)|([а-я])/g, '') : 'Склад'
+	}
+	
+	const setOrderId = (id: number) => {
+		store.commit(KeysMutations.SET_CURRENT_ORDER, id)
+	}
+	
+	const filtred = ( item: Shipments) => {
+		let show = false
+		if (filter.value[1].value !=''){
+			if (item.title.indexOf(filter.value[1].value)!=-1) show=true
+		} else show = true
+		return  show
+	}
 
-		return {
-			//data
-			target,
-			active,
-			active_more,
-			loading_bill,
-			showDetailOrder,
-			detailOrderId,
-			repeatOrder,
-			OrdersSatusCode,
-			filter,
-			detailShipmentId,
-			showDetailShipment,
-			docLocation:import.meta.env.VITE_APP_DOC_LOCATION,
-			//computed
-			data_filtred,
-			isOrders: computed(() => store.getters.isOrders),
-			//methods
-			
-			checkStatus,
-			downloadBill,
-			getStorageName,
-			setOrderId,
-			filtred,
-			
-		}
-	},
-})
+		
 </script>
