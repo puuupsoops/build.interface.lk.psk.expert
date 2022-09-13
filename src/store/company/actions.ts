@@ -25,8 +25,8 @@ export const actions: ActionTree<CompanyState, RootState> =  {
 			})
 			
 	},
-	async [CompanyActions.GET_MANAGER] ({commit}) {
-		await axios.get<ManagerResponse>('/manager')
+	async [CompanyActions.GET_MANAGER] ({commit} ,id: string) {
+		await axios.get<ManagerResponse>('/manager', { params: { id } })
 			.then(response => {
 					commit(CompanyMutations.SET_MANAGER, response.data.response)
 			})

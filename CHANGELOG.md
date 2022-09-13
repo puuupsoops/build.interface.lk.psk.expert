@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-09-13
+
+    #0.2.32
+    1. Изменил карту с информацией о менеджере. подгружается автоматически по uid и если не удалось подгрузить картинку - ставит заглушку
+    
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-09-09
 
     #0.2.31
