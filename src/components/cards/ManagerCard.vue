@@ -52,6 +52,7 @@
 	import { ref, PropType, watch } from 'vue'
 	import { Manager } from '/src/models/Manager'
 	import axios from 'axios'
+	
 
 	const props = defineProps({
 		manager: {
@@ -69,13 +70,13 @@
 			axios({
 				method: 'get',
 				timeout: 1000 * 3,
-				// url: props.manager.image,
 				url: props.manager.image,
+				responseType: 'arraybuffer',
 				headers: {'Content-type': 'image/jpeg'}
 			}).then(response => { 
 				loadImage.value = true
 				loadingImage.value=false
-				image.value = 'data:image/jpg;base64,'.concat(image.value.concat(response.data))
+				image.value = `data:${response.headers['content-type']};base64,${btoa(String.fromCharCode(...new Uint8Array(response.data)))}`
 			}).catch(()=>{
 				loadingImage.value=false
 				console.log('fail load img', props.manager?.image)
