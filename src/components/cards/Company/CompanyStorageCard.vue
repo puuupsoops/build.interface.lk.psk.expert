@@ -189,7 +189,6 @@ export default defineComponent({
 				active:{
 					type: Boolean 
 				},
-
 		},
 		emits: ['onClick'],
 

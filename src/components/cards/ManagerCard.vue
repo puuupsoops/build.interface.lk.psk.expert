@@ -79,7 +79,6 @@
 				image.value = `data:${response.headers['content-type']};base64,${btoa(String.fromCharCode(...new Uint8Array(response.data)))}`
 			}).catch(()=>{
 				loadingImage.value=false
-				console.log('fail load img', props.manager?.image)
 			})
   		}
 		

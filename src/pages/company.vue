@@ -8,7 +8,13 @@
 		
 		<div class="company-head">
 			<div class="company-head-elem">
-				<CompanyStorageBar :data="companyStoragesData" v-model="activeStorageUid"></CompanyStorageBar>
+				
+				<CompanyStorageBar 
+					:data="companyStoragesData"
+					v-model="activeStorageUid"
+					@next="nextStorage()"
+					@prev="prevStorage()"
+				></CompanyStorageBar>
 			</div>
 		
 			<div class="company-head-elem">
@@ -43,7 +49,8 @@ import { useRouter } from 'vue-router'
 import { key } from '/src/store'
 import { CompanyActions } from '/src/store/company/actions'
 import { KeysMutations } from '/src/store/keys/mutations'
-import { CompanyMutations } from '../store/company/mutations'
+import { CompanyMutations } from '/src/store/company/mutations'
+import { Storage } from '/src/models/Partner'
 
 	const props = defineProps (['id'])
  	const store = useStore(key)
@@ -55,7 +62,7 @@ import { CompanyMutations } from '../store/company/mutations'
 	const docDate = ref('')
 
 	const aboutCompanyData =	computed(() => store.getters.getCompanyData(activeCompanyUid.value))
-	const companyStoragesData =	computed(() => store.getters.getCompanyStoragesData(activeCompanyUid.value))
+	const companyStoragesData =	computed<Storage[]>(() => store.getters.getCompanyStoragesData(activeCompanyUid.value))
 	const companyBarTopData =	computed(() => store.getters.getCompanysList)
 	const totalSpent =			computed(() => store.getters.getCompanySpent(activeCompanyUid.value))
 	const managerUid =			computed(() => store.getters.getManagerUid(activeCompanyUid.value))
@@ -115,6 +122,17 @@ import { CompanyMutations } from '../store/company/mutations'
 	})
 
 	provide('docDate', docDate ) //фича для обмена данными между компонентами. Связь между компонентом CompanyStorageDoc и CompanyCalendar
+
+
+	const nextStorage = () => {
+		if (activeStorageUid.value != null && activeStorageUid.value < companyStoragesData.value.length-1) 
+			activeStorageUid.value = activeStorageUid.value + 1
+	}
+
+	const prevStorage = () => {
+		if (activeStorageUid.value && activeStorageUid.value > 0) 
+			activeStorageUid.value = activeStorageUid.value - 1
+	}
 </script>
 
 <style>

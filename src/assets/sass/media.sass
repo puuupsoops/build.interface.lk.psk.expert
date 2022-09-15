@@ -347,9 +347,9 @@
 	.company
 		&-head
 			+flex-wrap(wrap)
-			&-wrap
-				padding:
-					left: 15px
+			// &-wrap
+			// 	padding:
+			// 		left: 15px
 		
 			&-elem
 				&:nth-child(1)
@@ -877,7 +877,10 @@
 					max-width: none
 				
 	.company-head-item
-		min-width: 360px
+		min-width: 300px
+		
+		&:nth-child(2)
+			margin-left: -15px
 
 	.content
 		min-height: 150vh
@@ -1001,7 +1004,8 @@
 					padding: 
 						left: 15px
 						right: 15px
-
+			&-info-elem.l
+				white-space: normal
 		&-calendar-box
 			padding: 15px
 		
@@ -1012,6 +1016,11 @@
 		&-sale-card
 			max-width: 360px
 			margin-left: 0px
+		&-card-balance-box
+			white-space: normal
+			max-width: 200px
+
+			
 	.claim
 		&-success
 			height: 100%
