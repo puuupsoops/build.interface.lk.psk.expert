@@ -46,8 +46,8 @@ import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 import ClaimCard from '/src/components/cards/Claim/ClaimCard.vue'
 
 
-import { useStore } from 'vuex'
-import { key } from '/src/store'
+import { useStore } from '/src/store'
+
 import { defineComponent, ref,onMounted, computed }from 'vue';
 import { CompanyActions } from "/src/store/company/actions"
 import { Claim }  from "/src/models/Claim"
@@ -66,7 +66,7 @@ export default defineComponent({
 		ClaimCard,
 	},
 	setup() {    
-		const store = useStore(key)
+		const store = useStore()
 		const router = useRouter()
 
 		const loading = ref(false)

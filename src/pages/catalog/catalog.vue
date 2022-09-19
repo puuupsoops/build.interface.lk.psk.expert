@@ -59,10 +59,10 @@ import CatalogMenu  from '/src/components/cards/Catalog/CatalogMenu.vue'
 import CatalogItem  from '/src/components/cards/Catalog/CatalogItem.vue'
 import CatalogPagination  from '/src/components/cards/Catalog/CatalogPagination.vue'
 import PreloaderLocal  from '/src/components/PreloaderLocal.vue'
-import { useStore } from 'vuex'
+import { useStore } from '/src/store'
 import { useRouter } from 'vue-router'
 import { ref, computed, onMounted, onBeforeUnmount, watch, defineComponent } from 'vue'
-import { key } from '/src/store';
+;
 import { CatalogActions } from '/src/store/catalog/actions'
 import { CatalogMutations } from '/src/store/catalog/mutations'
 
@@ -77,7 +77,7 @@ export default defineComponent({
 		},
 		props: ['id'],
 		setup(props){
-			const store = useStore(key);
+			const store = useStore();
 			const router = useRouter();
 			const loaderMenu = ref(false);
 			const loaderCatalog = ref(false);

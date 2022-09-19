@@ -44,12 +44,12 @@
 </template>
 <script lang="ts">
 import PreloaderLocal from '/src/components/PreloaderLocal.vue'
-import { key } from '/src/store';
+;
 import { ProductActions } from '/src/store/product/actions';
 import { ProductMutations } from '/src/store/product/mutations';
 import { computed, defineComponent, ref, watch, nextTick} from 'vue'
 import { onClickOutside } from '@vueuse/core'
-import { useStore } from 'vuex';
+import { useStore } from '/src/store';
 
 
 
@@ -64,7 +64,7 @@ export default defineComponent({
 		PreloaderLocal
 	},
 	setup(props, { emit }) {
-		const store = useStore(key)
+		const store = useStore()
 		const search_str = ref('')
 		const loading = ref(false)
 		const debounce = ref()

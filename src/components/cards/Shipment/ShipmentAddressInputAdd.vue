@@ -102,8 +102,8 @@
 <script lang="ts">
 import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 
-import { key } from '/src/store'
-import { useStore } from 'vuex';
+
+import { useStore } from '/src/store';
 
 
 import { computed, defineComponent, nextTick, ref, watch } from 'vue'
@@ -139,7 +139,7 @@ export default defineComponent({
 	},
 
 	setup(props, { emit }) {
-		const store = useStore(key)
+		const store = useStore()
 		const search_str = ref('')
 		const loading = ref(false)
 		const debounce = ref()

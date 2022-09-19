@@ -24,10 +24,10 @@
 <script lang="ts">
 import CaseCard from '/src/components/cards/Main/CaseCard.vue'
 import PreloaderLocal from '/src/components/PreloaderLocal.vue'
-import { key } from '/src/store';
+;
 
 import { ref, computed, onMounted, } from 'vue';
-import { useStore } from 'vuex';
+import { useStore } from '/src/store';
 import { CasesActions } from '/src/store/cases/actions';
 import { CasesMutations } from '/src/store/cases/mutations';
 
@@ -37,7 +37,7 @@ export default {
 		PreloaderLocal,
 	},
 	setup(){
-		const store = useStore(key);
+		const store = useStore();
 		let loading = ref(false);
 		
 		onMounted( () =>

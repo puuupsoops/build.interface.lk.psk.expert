@@ -67,9 +67,9 @@ import SelectInput from '/src/components/ui/SelectInput.vue'
 // import OrdersSearchCard from '/src/components/cards/Order/OrdersSearchCard.vue'
 import ShipmentsListCard from '/src/components/cards/Shipment/ShipmentsListCard.vue'
 
-import { useStore } from 'vuex'
+import { useStore } from '/src/store'
 import { ref, computed, onMounted, defineComponent } from 'vue'
-import { key } from '/src/store'
+
 import { CompanyActions } from '/src/store/company/actions'
 import { ShipmentsActions } from '/src/store/shipments/actions'
 import { OrdersSatusCode } from '/src/store/orders/types'
@@ -87,7 +87,7 @@ export default defineComponent({
 		ShipmentsListCard,
 	},
 	setup(){
-		const store = useStore(key);
+		const store = useStore();
 		const loading = ref(true)
 		const filterCompanyUid = ref('');
 		const filterPeriod = ref(0)

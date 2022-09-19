@@ -20,11 +20,11 @@
 	import TopNav from '/src/components/nav/TopNav.vue'
 	import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 
-	import { useStore } from 'vuex'
-	import { key } from '/src/store'
+	import { useStore } from '/src/store'
+	
 	import { computed  }from 'vue'
 
-	const store = useStore(key)
+	const store = useStore()
 	const id = computed(() => store.getters.getShipmentsSuccess)
 		
 </script>

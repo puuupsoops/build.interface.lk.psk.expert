@@ -133,8 +133,8 @@ import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 
 
 import { defineComponent, computed, ref, onMounted } from 'vue'
-import { key } from '/src/store'
-import { useStore } from 'vuex'
+
+import { useStore } from '/src/store'
 import { CompanyActions } from '/src/store/company/actions'
 import { ShipmentsActions } from '/src/store/shipments/actions'
 import { ShipmentsAddress } from "/src/models/Shipments"
@@ -151,7 +151,7 @@ export default defineComponent({
 		PreloaderLocal,
 	},
 	setup() {
-		const store = useStore(key);
+		const store = useStore();
 		const activeCompanyUid = ref('');
 		const router = useRouter()
 		const currentAddr = ref(0)

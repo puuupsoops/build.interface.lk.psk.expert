@@ -55,10 +55,10 @@ import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 import OrderDraftCard from '/src/components/cards/Order/OrderDraftCard.vue'
 
 import { ref, computed, defineComponent, watch } from 'vue'
-import { useStore } from 'vuex'
+import { useStore } from '/src/store'
 import { onClickOutside } from '@vueuse/core'
 
-import { key } from '/src/store'
+
 import { OrderActions } from '/src/store/order/actions'
 import { useRouter } from 'vue-router'
 import { OrderMutations } from '/src/store/order/mutations'
@@ -90,7 +90,7 @@ export default defineComponent({
 	},
 	emits: ['update:modelValue', 'update:repeatOrder', 'update:editOrder'],
 	setup(props, { emit }){
-		const store = useStore(key)
+		const store = useStore()
 		const router = useRouter()
 		const shake = ref(false)
 		const targetModal = ref(null)

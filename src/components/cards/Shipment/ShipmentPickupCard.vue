@@ -192,8 +192,8 @@ import DeleteButton from '/src/components/ui/DeleteButton.vue'
 
 
 import { computed, defineComponent, PropType, ref }from 'vue'
-import { key } from '/src/store'
-import { useStore } from 'vuex'
+
+import { useStore } from '/src/store'
 
 import { ShipmentsActions } from '/src/store/shipments/actions'
 import { useRouter } from 'vue-router'
@@ -219,7 +219,7 @@ export default defineComponent({
 			},
 		},
 		setup(props) {
-			const store = useStore(key)
+			const store = useStore()
 			const router = useRouter()
 			const loading = ref(false)
 			const showMap = ref(false)

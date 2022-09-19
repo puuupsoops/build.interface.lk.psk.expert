@@ -64,8 +64,8 @@ import ClaimsListCard from '/src/components/cards/Claim/ClaimsListCard.vue'
 import { OrdersSatusCode } from '/src/store/orders/types'
 
 import SelectInput from '/src/components/ui/SelectInput.vue'
-import { useStore } from 'vuex'
-import { key } from '/src/store'
+import { useStore } from '/src/store'
+
 import { SearchData } from '/src/models/Components'
 import { defineComponent, ref,computed,onMounted } from 'vue'
 import { CompanyActions } from "/src/store/company/actions"
@@ -84,7 +84,7 @@ export default defineComponent({
 		ClaimsListCard,
 	},
 	setup() {
-		const store = useStore(key)
+		const store = useStore()
 		const loading = ref(false)
 		const filterCompanyUid = ref('');
 		const filterPeriod = ref(0)

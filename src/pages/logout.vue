@@ -8,10 +8,10 @@
 
 <script setup lang="ts">
 
-import { useStore } from 'vuex'
+import { useStore } from '/src/store'
 import { AuthActions } from '../store/auth/actions'
-import { key } from '/src/store'
-const store = useStore(key);
+
+const store = useStore();
 store.dispatch(AuthActions.LOGOUT)
 </script>
 

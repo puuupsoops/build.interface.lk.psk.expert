@@ -136,10 +136,10 @@ import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 import ClaimOrder from '/src/components/cards/Claim/ClaimOrder.vue'
 
 
-import { key } from '/src/store'
+
 
 import { computed, defineComponent, PropType, ref, watch } from 'vue'
-import { useStore } from 'vuex'
+import { useStore } from '/src/store'
 import { ProductCharacteristic } from '/src/models/Product'
 import { Claim } from '/src/models/Claim'
 
@@ -164,7 +164,7 @@ export default defineComponent({
 	},
 	emits:['update:modelValue', 'update:files','close'],
 	setup(props, { emit }) {
-		const store = useStore(key)
+		const store = useStore()
 		
 		const data = ref<Claim>({
 			date_create:'',

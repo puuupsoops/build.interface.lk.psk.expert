@@ -78,7 +78,7 @@
 <script lang="ts">
 
 import TopNav from '/src/components/nav/TopNav.vue'
-import { key } from '/src/store'
+
 import { computed, defineComponent } from 'vue'
 import { useStore } from "vuex";
 
@@ -90,7 +90,7 @@ export default defineComponent({
 		PreloaderLocal,
 	},
 	setup() {
-		const store = useStore(key)
+		const store = useStore()
 		
 
 		return {

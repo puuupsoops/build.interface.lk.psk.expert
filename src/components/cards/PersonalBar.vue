@@ -26,12 +26,13 @@ import Avatar from '/src/components/ui/personal/buttons/Avatar.vue'
 import Popup  from '/src/components/ui/personal/notifcation/Popup.vue'
 
 
-import { computed, inject, ref } from 'vue'
-import { useStore } from 'vuex'
-import { key } from '/src/store'
-import { wsStoreMutations } from '/src/plugins/wsStore'
+import { computed, inject, onMounted, ref } from 'vue'
+import { useStore } from '/src/store'
 
-const store = useStore(key)
+import { wsStoreMutations } from '/src/plugins/wsStore'
+import { ProfileActions } from '/src/store/profile/actions'
+
+const store = useStore()
 const remove_all_popap_class =ref(false)
 const showNotificationBar = ref(inject<boolean>('showNotificationBar') ?? false)
 
@@ -50,6 +51,13 @@ const removeAllPopup =  ()=>{
 const msgCnt = computed(()=> store.getters.getWSMessageCnt)
 const popMsg = computed(()=> store.getters.getWSMessagePopup)
 const popMsgCnt = computed(()=> store.getters.getWSMessagePopupCnt)
+
+
+onMounted (()=>{
+	if (!store.getters.isProfileLoad)
+			store.dispatch(ProfileActions.GET_PROFILE)
+			
+})
 
 </script>
 

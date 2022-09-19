@@ -138,9 +138,9 @@
 </template>
 
 <script setup lang="ts">
-	import { key } from '/src/store'
+	
 	import { computed, onMounted, ref, onBeforeUnmount, nextTick } from 'vue'
-	import { useStore } from 'vuex'
+	import { useStore } from '/src/store'
 
 
 	const props = defineProps({
@@ -187,7 +187,7 @@
 			{title: 'Договоры', link: '/agreements', lock: true},
 			{title: 'Взаиморасчеты', link: '/settlements', lock: true},
 		];
-	const store = useStore(key)
+	const store = useStore()
 	const orderPositionLength =  computed(() => store.getters.getOrderPositionLength)
 
 	const nav_class_top = ref(false)

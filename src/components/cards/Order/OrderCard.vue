@@ -247,7 +247,7 @@
 
 <script setup lang="ts">
 	import { ref, computed, PropType } from 'vue'
-	import { useStore } from 'vuex'
+	import { useStore } from '/src/store'
 
 	import AmountInput from '/src/components/ui/AmountInput.vue'
 	import DeleteButton from '/src/components/ui/DeleteButton.vue'
@@ -276,7 +276,7 @@
 			}
 		})
 	const emits =  defineEmits(['update:modelValue', 'update:data','onClickAdd', 'onClickEdit'])
-	const store = useStore(key)
+	const store = useStore()
 	const router = useRouter()
 	const open = ref([])
 	const open_presail = ref([])

@@ -100,8 +100,8 @@ import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 
 import { SelectInputData } from '/src/models/Components'
 
-import { key } from '/src/store'
-import { useStore } from 'vuex'
+
+import { useStore } from '/src/store'
 import { Orders } from '/src/models/Orders'
 
 import { ref, PropType, defineComponent, computed, onMounted }from 'vue';
@@ -128,7 +128,7 @@ export default defineComponent({
 			},
 		},
 		setup(props) {
-		const store = useStore(key)
+		const store = useStore()
 		const router = useRouter()
 		const loading = ref(false)
 		const data = ref({

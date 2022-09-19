@@ -72,16 +72,15 @@
 	import OrdersListCard from '/src/components/cards/Order/OrdersListCard.vue'
 	import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 
-	import { useStore } from 'vuex'
+	import { useStore } from '/src/store'
 	import { ref, computed, defineComponent, onMounted } from 'vue'
-	import { key } from '/src/store'
+	
 	import { CompanyActions } from '/src/store/company/actions'
 	import { OrdersSatusCode } from '/src/store/orders/types'
 	import { OrdersActions } from '/src/store/orders/actions'
 	import { SearchData } from '/src/models/Components'
 
-
-	const store = useStore(key);
+	const store = useStore();
 	const loading = ref(true)
 	const search = ref<SearchData|null>({id: 1, search: ''})
 	const companyBarTopData = computed(() => store.getters.getCompanysList)

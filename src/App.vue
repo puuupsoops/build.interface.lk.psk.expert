@@ -27,15 +27,14 @@
 	import NotificationBar from './components/cards/NotificationBar.vue'
 	import SnackBar from './components/ui/SnackBar.vue'
 
-	import { useStore } from 'vuex'
-	import { key } from './store'
+	import { useStore } from '/src/store'
 	import { computed, provide, ref } from 'vue'
 	import { AuthActions } from './store/auth/actions'
 	import { AuthMutations } from './store/auth/mutations'
 	import { KeysMutations } from './store/keys/mutations'
 
 
-	let store = useStore(key)
+	let store = useStore()
 	store.dispatch(AuthActions.CHECK_AUTH)
 
 	const loader = computed<boolean>({

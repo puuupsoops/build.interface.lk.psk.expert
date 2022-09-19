@@ -88,9 +88,9 @@ import ShipmentPickupCard from '/src/components/cards/Shipment/ShipmentPickupCar
 import ShipmentDeliveryCard from '/src/components/cards/Shipment/ShipmentDeliveryCard.vue'
 import ShipmentTransportCard from '/src/components/cards/Shipment/ShipmentTransportCard.vue'
 
-import { useStore } from 'vuex'
+import { useStore } from '/src/store'
 import { ref,computed, onMounted, defineComponent } from 'vue'
-import { key } from '/src/store'
+
 import { CompanyActions } from '/src/store/company/actions'
 import { OrdersActions } from '/src/store/orders/actions'
 import { Orders } from '/src/models/Orders'
@@ -108,7 +108,7 @@ export default defineComponent({
 	},
 	
 	setup(){
-		const store = useStore(key)
+		const store = useStore()
 		const partner_guid = ref('')
 		const loading = ref(false)
 		const oderVal = ref<number>(-1)

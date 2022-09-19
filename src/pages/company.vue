@@ -43,17 +43,17 @@ import CompanySaleBar from '/src/components/cards/Company/CompanySaleBar.vue'
 import CompanyCalendar from '/src/components/cards/Company/CompanyCalendar.vue'
 import ManagerCard from '/src/components/cards/ManagerCard.vue'
 
-import { useStore } from 'vuex'
+import { useStore } from '/src/store'
 import { ref, onMounted, computed, watch , provide,  defineComponent} from 'vue'
 import { useRouter } from 'vue-router'
-import { key } from '/src/store'
+
 import { CompanyActions } from '/src/store/company/actions'
 import { KeysMutations } from '/src/store/keys/mutations'
 import { CompanyMutations } from '/src/store/company/mutations'
 import { Storage } from '/src/models/Partner'
 
 	const props = defineProps (['id'])
- 	const store = useStore(key)
+ 	const store = useStore()
 	const router = useRouter()
 
 	const isLoad = ref(false)

@@ -26,8 +26,8 @@ import Popup  from '/src/components/ui/personal/notifcation/Popup.vue'
 
 import { ref, computed } from 'vue'
 import { onClickOutside } from '@vueuse/core'
-import { useStore } from 'vuex'
-import { key } from '/src/store'
+import { useStore } from '/src/store'
+
 import { wsStoreMutations } from '/src/plugins/wsStore'
 
 const props = defineProps({
@@ -37,7 +37,7 @@ const props = defineProps({
 		},
 	})
 const emits = defineEmits(['update:modelValue'])
-const store = useStore(key)
+const store = useStore()
 
 const targetModal = ref(null)
 const remove_all_messages_class =ref(false)

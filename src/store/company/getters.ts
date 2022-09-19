@@ -1,7 +1,7 @@
 import { GetterTree } from "vuex"
 import { RootState } from "/src/store"
 import { CompanyState } from "./types"
-import { Partner } from "/src/models/Partner"
+import { normalizeCompanyName, Partner } from "/src/models/Partner"
 
 export const getters: GetterTree<CompanyState, RootState> = {
 	isCompanysLoad: state => state.companys.length !== 0,
@@ -9,24 +9,19 @@ export const getters: GetterTree<CompanyState, RootState> = {
 		getCompanys: state => state.companys,
 		getCompanysList: state => state.companys.map ( val => ({
 			id: val.uid,
-			name: val.name
-						.replace(/Общество с ограниченной ответственностью/, 'ООО')
-						.replace(/Акционерное общество/, 'АО')
-						.replace(/Индивидуальный предприниматель/, 'ИП')})),
+			name: normalizeCompanyName(val.name)})),
 		getCompanysListInput: state => {
 			const res = state.companys.map ( val => ({
 				id: val.uid,
-				name: val.name
-							.replace(/Общество с ограниченной ответственностью/, 'ООО')
-							.replace(/Акционерное общество/, 'АО')
-							.replace(/Индивидуальный предприниматель/, 'ИП')}))
+				name: normalizeCompanyName(val.name)}))
+							
 			res.unshift({id: '', name: "Все"})
 			return res
 		},
 		getCompanyData : state => (uid: string): Partner|{} => {
 			const company = state.companys.find(x => x.uid === uid)
 			return company ? ({
-				"name": company.name,
+				"name": normalizeCompanyName(company.name),
 				"inn": company.inn,
 				"payment": company.payment,
 				"bik": company.bik,

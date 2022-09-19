@@ -61,10 +61,10 @@
 
 <script lang="ts">
 import { Sliders } from '/src/models/Components'
-import { key } from '/src/store'
+
 import { KeysMutations } from '/src/store/keys/mutations'
 import { computed, defineComponent, ref, watch } from 'vue'
-import { useStore } from 'vuex'
+import { useStore } from '/src/store'
 import { onClickOutside } from '@vueuse/core'
 
 export default defineComponent({
@@ -80,7 +80,7 @@ export default defineComponent({
 	emits: ['update:modelValue'],
 	setup(props, { emit }) {
 		let slides = ref<Sliders[]>([])
-		const store = useStore(key)
+		const store = useStore()
 		const loader = computed<boolean>({
 			get: () => store.getters.getLoader,
 			set: (val: boolean) => store.commit(KeysMutations.SET_LOADER, val)

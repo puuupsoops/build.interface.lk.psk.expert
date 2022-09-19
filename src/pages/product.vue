@@ -68,10 +68,10 @@ import ProductInfoCard from '/src/components/cards/Product/ProductInfoCard.vue'
 import ProductSearchInput from '/src/components/cards/Product/ProductSearchInput.vue'
 import TopNav from '/src/components/nav/TopNav.vue'
 
-import { useStore } from 'vuex'
+import { useStore } from '/src/store'
 import { useRouter } from 'vue-router'
 import { ref, onMounted, computed, defineComponent } from 'vue'
-import { key } from '/src/store'
+
 import { KeysMutations } from '/src/store/keys/mutations'
 import { CompanyActions } from '/src/store/company/actions'
 import { ProductActions } from '/src/store/product/actions'
@@ -94,7 +94,7 @@ export default defineComponent({
 	},
 	props: ['article'],
 	setup(props) {
-		const store = useStore(key);
+		const store = useStore();
 		const router = useRouter();
 		const loader = computed<boolean>({
 			get: () => store.getters.getLoader,

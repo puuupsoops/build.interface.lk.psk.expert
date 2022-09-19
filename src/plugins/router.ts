@@ -1,6 +1,6 @@
 
 import { createRouter, createWebHistory } from 'vue-router';
-//import { useStore } from 'vuex';
+//import { useStore } from '/src/store';
 import { store } from '/src/store/index'
 import { AuthActions } from '/src/store/auth/actions';
 
@@ -126,6 +126,14 @@ const routes = [
 		path: '/help', 
 		component: () => import('/src/pages/help/help.vue'),
 		name: 'Help',
+		meta:{
+				auth: true,
+			}
+	},
+	{
+		path: '/profile', 
+		component: () => import('/src/pages/profile.vue'),
+		name: 'Profile',
 		meta:{
 				auth: true,
 			}

@@ -1,6 +1,10 @@
 <template>
 <div>
-	<top-nav></top-nav>
+	<div class="top-line main-page">
+		<Notification />
+		<PersonalBar />
+	</div>
+	<TopNav/>
 	<div class="not-found">
 		<h2>
 			<div class="title">404 Not found</div>
@@ -12,19 +16,10 @@
 </div>
 </template>
 
-<script lang="ts">
-import TopNav from '/src/components/nav/TopNav.vue'
-
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-	components:{
-		TopNav
-	},
-	setup() {
-		
-	},
-})
+<script setup lang="ts">
+	import TopNav		from '/src/components/nav/TopNav.vue'
+	import Notification	from '/src/components/cards/Notification.vue'
+	import PersonalBar	from '/src/components/cards/PersonalBar.vue'
 </script>
 
 <style lang="sass" scoped>

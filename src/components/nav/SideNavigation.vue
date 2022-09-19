@@ -107,10 +107,11 @@
 </template>
 
 <script  setup lang="ts">
-import { key } from '/src/store'
+
 import { computed, ref } from 'vue'
-import { useStore } from 'vuex'
+import { useStore } from '/src/store'
 import { CompanyActions } from '/src/store/company/actions'
+import { normalizeCompanyName } from '/src/models/Partner';
 
 
 
@@ -121,7 +122,7 @@ const props = defineProps({
 		}
 	})
 const emits = defineEmits(['update:modelValue', 'close'])
-const store = useStore(key);
+const store = useStore();
 const version = APP_VERSION
 const active_item = ref(0)
 
@@ -174,9 +175,7 @@ const menu = computed(() => {
 			store.dispatch(CompanyActions.GET_COMPANYS);
 		}
 		store.getters.getCompanys.forEach((element: { name: string; uid: string; }) => {
-			arr.push({title: element.name
-										.replace(/Общество с ограниченной ответственностью/, 'ООО')
-										.replace(/Акционерное общество/, 'АО'),
+			arr.push({title: normalizeCompanyName(element.name),
 					link: '/company/'+element.uid,
 					lock: false,
 					collapsed: false,

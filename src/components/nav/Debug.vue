@@ -25,16 +25,16 @@
 
 <script lang="ts">
 
-import { key } from '/src/store';
+;
 import { AuthActions } from '/src/store/auth/actions';
 import { KeysMutations } from '/src/store/keys/mutations';
 import { computed, defineComponent } from 'vue';
-import { useStore } from 'vuex'
+import { useStore } from '/src/store'
 
 export default defineComponent({
 	
 	setup(){
-		const store = useStore(key)
+		const store = useStore()
 		const isDebug = computed<boolean>({
 			get: () => store.getters.getIsDebug,
 			set: (val: boolean) => store.commit(KeysMutations.SET_IS_DEBUG, val)

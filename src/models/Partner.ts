@@ -54,5 +54,8 @@ export interface CompanysList{
 }
 
 export function normalizeCompanyName(name: string):string {
-    return name ? name.replace(/Общество с ограниченной ответственностью/, 'ООО').replace(/Акционерное общество/, 'АО') :''
+    return name ? name
+                    .replace(/Общество с ограниченной ответственностью/, 'ООО')
+                    .replace(/Акционерное общество/, 'АО')
+                    .replace(/Индивидуальный предприниматель/, 'ИП') :''
 }

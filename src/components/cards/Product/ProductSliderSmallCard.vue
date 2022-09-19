@@ -33,12 +33,12 @@
 
 <script lang="ts">
 
-import { key } from '/src/store'
+
 import { KeysMutations } from '/src/store/keys/mutations'
 import ProductSliderFullscreen from '/src/components/cards/Product/ProductSliderFullscreen.vue'
 import ProductInfoCard from '/src/components/cards/Product/ProductInfoCard.vue'
 import { ref, onUpdated, computed, defineComponent } from 'vue'
-import { useStore } from 'vuex'
+import { useStore } from '/src/store'
 import { Sliders } from '/src/models/Components'
 
 
@@ -55,7 +55,7 @@ export default defineComponent({
 	},
 	setup(props){
 		let slides = ref<Sliders[]>([])
-		let store = useStore(key)
+		let store = useStore()
 		const loader = computed<boolean>({
 			get: () => store.getters.getLoader,
 			set: (val: boolean) => store.commit(KeysMutations.SET_LOADER, val)

@@ -1,5 +1,5 @@
 import { InjectionKey } from 'vue'
-import { createStore, Store } from 'vuex'
+import { createStore, Store, useStore as baseUseStore } from 'vuex'
 import { auth } from './auth/index'
 import { company } from './company/index'
 import { news } from './news/index'
@@ -11,6 +11,7 @@ import { orders } from './orders/index'
 import { shipments } from './shipments/index'
 import { claims } from './claims/index'
 import { keys } from './keys/index'
+import { profile } from './profile/index'
 import { wsStore } from '/src/plugins/wsStore'
 
 // export default createStore({
@@ -45,6 +46,11 @@ export const store = createStore<RootState>({
 		shipments,
 		claims,
 		keys,
+		profile,
 		wsStore,
 	}
 })
+
+export function useStore () {
+	return baseUseStore(key)
+  }

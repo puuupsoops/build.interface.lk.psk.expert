@@ -109,10 +109,10 @@ import DeleteButton from '/src/components/ui/DeleteButton.vue'
 import OrderDraftCard from '/src/components/cards/Order/OrderDraftCard.vue'
 
 import { ref, computed, defineComponent } from 'vue'
-import { useStore } from 'vuex'
+import { useStore } from '/src/store'
 import { onClickOutside } from '@vueuse/core'
 
-import { key } from '/src/store'
+
 import { OrderMutations } from '/src/store/order/mutations'
 
 export default defineComponent({
@@ -128,7 +128,7 @@ export default defineComponent({
 	},
 	emits: ['update:modelValue'],
 	setup(props, { emit }){
-		const store = useStore(key)
+		const store = useStore()
 		const delItem = ref(false)
 		const delAll = ref(false)
 		const useDraft = ref(false)

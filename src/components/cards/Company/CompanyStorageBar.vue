@@ -27,9 +27,9 @@
 <script setup lang="ts">
 //Таблицас данными по сделкам со складами
 
-import { PropType } from 'vue';
+import { PropType } from 'vue'
 import CompanyStorageCard from '/src/components/cards/Company/CompanyStorageCard.vue'
-import { Storage } from '/src/models/Partner';
+import { Storage } from '/src/models/Partner'
 
 const props = defineProps({
 		data: {
@@ -38,7 +38,6 @@ const props = defineProps({
 		},
 		modelValue: {
 			type: Number,
-			required: true
 		}
 	})
 const emits = defineEmits(['update:modelValue', 'prev', 'next'])

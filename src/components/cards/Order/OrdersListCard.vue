@@ -258,8 +258,8 @@
 	import { onClickOutside } from '@vueuse/core'
 	import { Orders } from '/src/models/Orders'
 	import { normalizeCompanyName } from '/src/models/Partner'
-	import { useStore } from 'vuex'
-	import { key } from '/src/store'
+	import { useStore } from '/src/store'
+	
 	import { OrderActions } from '/src/store/order/actions'
 	import { Storage } from '/src/models/Partner'
 	import { OrdersActions } from '/src/store/orders/actions'
@@ -299,7 +299,7 @@
 	})
 
 
-	const store = useStore(key)
+	const store = useStore()
 	const router = useRouter()
 	const loading_global = ref(false)
 	const active = ref(-1)

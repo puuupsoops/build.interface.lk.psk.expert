@@ -104,10 +104,10 @@ import OrderModal from '/src/components/cards/Order/OrderModal.vue'
 import OrderDraftModal from '/src/components/cards/Order/OrderDraftModal.vue'
 import SnackBar from '/src/components/ui/SnackBar.vue'
 
-import { useStore } from 'vuex'
+import { useStore } from '/src/store'
 import { useRouter } from 'vue-router'
 import { ref, computed, onMounted, defineComponent, watch } from 'vue'
-import { key } from '/src/store'
+
 import { KeysMutations } from '/src/store/keys/mutations'
 import { OrderActions } from '/src/store/order/actions'
 import { OrderMutations } from '/src/store/order/mutations'
@@ -135,7 +135,7 @@ export default defineComponent({
 	},
 	props: ['article'],
 	setup(props) {
-		const store = useStore(key)
+		const store = useStore()
 		const router = useRouter()
 		const loader = computed<boolean>({
 			get: () => store.getters.getLoader,

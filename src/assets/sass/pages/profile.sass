@@ -1,0 +1,165 @@
+.profile
+    min-height: inherit
+    
+    &-wrap
+        +flex
+        +justify-content(center)
+        margin: 
+            top: 50px
+
+    &-personal-wrap
+        width: 100%
+        max-width: 290px
+    
+        +prefix(transition, transform 0.5s)
+        +prefix(transform, rotateY(0deg))
+        +prefix(transition-timing-function, cubic-bezier(.175, .885, .32, 1.275))
+        +prefix(transition-duration, .5s)
+        +prefix(transition-property, transform opacity)
+        
+        
+        &.edit
+            +prefix(transform, rotateY(-180deg))
+        .edit
+            +prefix(transform, rotateY(180deg))
+    
+    &-personal
+        +flex
+        &-box
+            padding: 30px
+        &-img-box
+            position: relative
+            margin: 0 auto
+            padding:
+                bottom: 83%
+            width: 100%
+            max-width: 190px
+            border-radius: 300px
+            overflow: hidden
+            &:hover
+                .profile-personal-img
+                    transform: scale(1.1)
+                .profile-personal-img-hover
+                    +prefix(transform, translateY(0))
+                    
+        &-img
+            position: absolute
+            top: 0
+            left: 0
+            right: 0
+            bottom: 0
+            width: 100%
+            margin: auto
+            +prefix(transition, $default-transition)
+           
+            &-hover
+                position: absolute
+                background-color: $bg-color
+                cursor: pointer
+                width: 100%
+                opacity: $default-opacity
+                text-align: center
+                padding:
+                    top: 30px
+                    bottom: 10px
+                margin: auto
+                +prefix(transform, translateY(-60px))
+                +prefix(transition, $default-transition)    
+                
+                & input
+                    border: none
+                    display: none
+                   
+
+        &-info-box
+            margin:
+                bottom: 20px        
+                top: 50px
+        &-info
+            &-name
+                margin:
+                    bottom: 15px
+                font-size: 22px
+                line-height: 32px
+                text-align: center
+
+                &-position
+                    margin:
+                        bottom: 19px
+                    font-size: 12px
+                    line-height: 18px
+                    color: $font-light-color
+                    text-align: center
+            
+            &-item
+                display: block
+                position: relative
+                margin: 0 auto
+                padding: 6px 0
+                    left: 33px
+                max-width: 160px
+                min-height: 25px
+                font-size: 16px
+                line-height: 25px
+                color: $white
+                +prefix(transition, $default-transition)
+
+                &:hover
+                    opacity: $default-opacity
+                &-edit
+                    width: 100%                   
+                    padding: 12px 0
+                    font-size: 16px
+                    line-height: 25px
+                    color: $white
+                    +prefix(transition, $default-transition)
+
+                &.phone
+                    &::before
+                        content: ''
+                        display: block
+                        position: absolute
+                        margin:
+                            top: -10px
+                        top: 50%
+                        left: 0
+                        width: 20px
+                        height: 20px
+                        background-image: url(/src/assets/img/icon/phone.svg)
+                        background-size: cover
+                        background-position: center center
+                        background-repeat: no-repeat
+                &.email
+                    &::before
+                        content: ''
+                        display: block
+                        position: absolute
+                        margin:
+                            top: -10px
+                        top: 50%
+                        left: 0
+                        width: 26px
+                        height: 20px
+                        background-image: url(/src/assets/img/icon/mail.svg)
+                        background-size: cover
+                        background-position: center center
+                        background-repeat: no-repeat
+        
+        &-edit-box
+            +flex
+        &-edit
+            +flex
+            padding: 15px 10px
+            font-size: 18px
+            line-height: 28px
+            color: $font-light-color
+            background-color: #292C32
+            +justify-content(center)
+            +align-items(center)
+            +prefix(transition, $default-transition)
+            cursor: pointer
+            width: 100%
+
+            &:hover
+                opacity: $default-opacity
+            

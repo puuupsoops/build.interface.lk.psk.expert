@@ -60,8 +60,8 @@
 
 <script lang="ts">
 import { ref, computed, defineComponent } from 'vue'
-import { useStore } from 'vuex'
-import { key } from '/src/store'
+import { useStore } from '/src/store'
+
 import { useRouter } from 'vue-router'
 import { Form, Field, ErrorMessage, defineRule } from 'vee-validate'
 import SnackBar from '/src/components/ui/SnackBar.vue'
@@ -70,6 +70,7 @@ import { AuthActions } from '/src/store/auth/actions'
 import { KeysMutations } from '/src/store/keys/mutations'
 import { AuthRequest } from '/src/models/Auth'
 import { CompanyActions } from '/src/store/company/actions'
+import { ProfileActions } from '../store/profile/actions'
 
 export default defineComponent({
 	components:{
@@ -79,7 +80,7 @@ export default defineComponent({
 		SnackBar
 	},	
 	setup(){
-		const store = useStore(key);
+		const store = useStore();
 		const router = useRouter();
 		const authData = ref<AuthRequest>({
 			login: '',
@@ -123,7 +124,8 @@ export default defineComponent({
 							store.commit(AuthMutations.SET_AUTH_LOGIN,authData.value.login)
 							Promise.all([
 								store.dispatch(CompanyActions.GET_COMPANYS),
-								store.dispatch(CompanyActions.GET_MANAGER)
+								store.dispatch(CompanyActions.GET_MANAGER),
+								store.dispatch(ProfileActions.GET_PROFILE)
 							])
 							.catch(()=>{
 								authData.value.password = '';

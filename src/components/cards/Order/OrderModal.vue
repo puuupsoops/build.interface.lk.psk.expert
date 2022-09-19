@@ -138,10 +138,10 @@ import Button from '/src/components/ui/Button.vue'
 import DeleteButton from '/src/components/ui/DeleteButton.vue'
 
 import { ref, computed } from 'vue'
-import { useStore } from 'vuex'
+import { useStore } from '/src/store'
 import { onClickOutside } from '@vueuse/core'
 import { useRouter } from 'vue-router'
-import { key } from '/src/store'
+
 import { OrderMutations } from '/src/store/order/mutations'
 
 
@@ -153,7 +153,7 @@ import { OrderMutations } from '/src/store/order/mutations'
 	})
 	const emits =  defineEmits(['update:modelValue'])
 
-	const store = useStore(key);
+	const store = useStore();
 	const router = useRouter();
 	const shake = ref(false);
 	const target_modal = ref(null);

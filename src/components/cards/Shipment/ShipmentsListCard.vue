@@ -225,8 +225,8 @@
 	import { ref, PropType, defineComponent, watch, computed } from 'vue'
 	import { onClickOutside } from '@vueuse/core'
 	import { Shipments } from '/src/models/Shipments'
-	import { useStore } from 'vuex'
-	import { key } from '/src/store'
+	import { useStore } from '/src/store'
+	
 	import { OrderActions } from '/src/store/order/actions'
 	import { Storage } from '/src/models/Partner'
 	import { OrdersActions } from '/src/store/orders/actions'
@@ -260,7 +260,7 @@
 		}
 	})
 	
-	const store = useStore(key)
+	const store = useStore()
 	const active = ref(-1)
 	const active_more = ref(-1)
 	const target = ref(null)

@@ -25,14 +25,14 @@
 
 <script lang="ts">
 
-import { key } from '/src/store';
+;
 import { NewsActions } from '/src/store/news/actions';
 import { ref, computed, onMounted } from 'vue';
-import { useStore } from 'vuex';
+import { useStore } from '/src/store';
 
 export default {
 	setup() {
-		const store = useStore(key);
+		const store = useStore();
 		const loader = ref(false);
 		
 		onMounted(() => {
