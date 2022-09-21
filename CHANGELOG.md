@@ -1,6 +1,14 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-09-19
 
+    #0.2.35
+    1. Добавлен аватар и фио в панель PersonalBar
+    2. Редактирование и сохранение персональной информации
+
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-09-19
+
     #0.2.34
     1. Ссылка на редактирование профиля. 
     2. Редактирование Store, оптимизация.

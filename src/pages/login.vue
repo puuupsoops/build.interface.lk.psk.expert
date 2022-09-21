@@ -124,7 +124,6 @@ export default defineComponent({
 							store.commit(AuthMutations.SET_AUTH_LOGIN,authData.value.login)
 							Promise.all([
 								store.dispatch(CompanyActions.GET_COMPANYS),
-								store.dispatch(CompanyActions.GET_MANAGER),
 								store.dispatch(ProfileActions.GET_PROFILE)
 							])
 							.catch(()=>{
