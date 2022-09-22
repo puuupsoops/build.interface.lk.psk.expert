@@ -1,177 +1,178 @@
 <template>
-    <div class="profile-personal-wrap content-elem"
-        :class="{'edit': edit}"
-    >
-    <div :class="edit ? ' edit':''">
-        <div class="profile-personal-box" v-if="!edit">
-            <PreloaderLocal style="margin: auto" v-if="loadingImage"/>
-            <div class="profile-personal-img-box" @click="edit=!edit" v-else>
-                <img class="profile-personal-img" :src="image"/>
-                
-                <div class="profile-personal-img-hover">
-                    Редактировать
-                </div>
-                
-            </div>
-            <div class="profile-personal-info-box">
-                <div class="profile-personal-info-name">
-                    {{profile.lastname}} {{profile.name}} {{profile.patronymic}}
-                    <div class="profile-personal-info-name-position">Профиль</div>
-                </div>
-                <div class="profile-personal-info-item phone">{{profile.phone}}</div>
-                <div class="profile-personal-info-item email">{{profile.email}}</div>
-                
-            </div>  
-        </div>
-        <div class="profile-personal-edit-box" v-if="!edit">
-            <div class="profile-personal-edit" @click="edit=!edit">
-                Редактировать
-            </div>
-        </div>
-        <Form v-else  validateOnMount v-slot="{errors}" @submit="onSave()" :validation-schema="schema" ref="formPersonal"  >
-            
-            <div class="profile-personal-box">
-                <div class="profile-personal-img-box" >
-                    <img class="profile-personal-img" :src="image" />
-                    <label class="profile-personal-img-hover" for="file-upload">
-                            Выбрать фото
-                        <input @change="handleFileUpload( $event )" id="file-upload" type="file" accept="image/*">
-                    </label>
+    
+        <div class="profile-personal-wrap content-elem"
+            :class="{'edit': edit}"
+        >
+        <div :class="edit ? ' edit':''">
+            <div class="profile-personal-box" v-if="!edit">
+                <PreloaderLocal style="margin: auto" v-if="loading"/>
+                <div class="profile-personal-img-box" @click="edit=!edit" v-else>
+                    <img class="profile-personal-img" :src="image"/>
                     
-                            
+                    <div class="profile-personal-img-hover">
+                        Редактировать
+                    </div>
+                    
                 </div>
                 <div class="profile-personal-info-box">
-                    <div class="profile-personal-info-item-edit">
-                        <div class="input-textfield">
-                            <Field 
-                                name="lastname"
-                                validateOnInput
-                                placeholder=" "
-                                autocomplete="off"
-                                v-slot="{ field, errors }"
-                                v-model="editProfile.lastname"
-                            >
-                                <input
-                                    v-bind="field"
-                                    type="text" 
-                                    placeholder=" "
-                                    :class="errors.length == 0 ? '' : 'error'"
-                                >
-                                <label>Фамилия</label>
-                                <ErrorMessage name="lastname" class="validationBox"/>
-                            </Field>
-                        </div>
+                    <div class="profile-personal-info-name">
+                        {{profile.lastname}} {{profile.name}} {{profile.patronymic}}
+                        <div class="profile-personal-info-name-position">Профиль</div>
                     </div>
-                    <div class="profile-personal-info-item-edit">
-                        <div class="input-textfield">
-                            <Field 
-                                name="name"
-                                validateOnInput
-                                placeholder=" "
-                                autocomplete="off"
-                                v-slot="{ field, errors }"
-                                v-model="editProfile.name"
-                            >
-                                <input
-                                    v-bind="field"
-                                    type="text" 
-                                    placeholder=" "
-                                    :class="errors.length == 0 ? '' : 'error'"
-                                >
-                                <label>Имя</label>
-                                <ErrorMessage name="name" class="validationBox"/>
-                            </Field>
-                        </div>
-                
+                    <div class="profile-personal-info-item phone">{{profile.phone}}</div>
+                    <div class="profile-personal-info-item email">{{profile.email}}</div>
                     
-                    </div>
-                    <div class="profile-personal-info-item-edit">
-                        <div class="input-textfield">
-                            <Field 
-                                name="patronymic"
-                                validateOnInput
-                                placeholder=" "
-                                autocomplete="off"
-                                v-slot="{ field, errors }"
-                                v-model="editProfile.patronymic"
-                            >
-                                <input
-                                    v-bind="field"
-                                    type="text" 
-                                    placeholder=" "
-                                    :class="errors.length == 0 ? '' : 'error'"
-                                >
-                                <label>Отчество</label>
-                                <ErrorMessage name="patronymic" class="validationBox"/>
-                            </Field>
-                        </div> 
-                    </div>
-                    <div class="profile-personal-info-item-edit">
-                        <div class="input-textfield">
-                            <Field 
-                                name="phone"
-                                validateOnInput
-                                placeholder=" "
-                                autocomplete="off"
-                                v-slot="{ field, errors }"
-                                v-model="editProfile.phone"
-                            >
-                                <input
-                                    v-bind="field"
-                                    type="text" 
-                                    placeholder=""
-                                    
-                                    :class="errors.length == 0 ? '' : 'error'"
-                                >
-                                <label>Телефон</label>
-                                <ErrorMessage name="phone" class="validationBox"/>
-                            </Field>
-                        </div>
-                    </div>
-                    <div class="profile-personal-info-item-edit">
-                        <div class="input-textfield">
-                            <Field 
-                                name="email"
-                                validateOnInput
-                                placeholder=" "
-                                autocomplete="off"
-                                v-slot="{ field, errors }"
-                                v-model="editProfile.email"
-                            >
-                                <input
-                                    v-bind="field"
-                                    type="text" 
-                                    placeholder=" "
-                                    :class="errors.length == 0 ? '' : 'error'"
-                                >
-                                <label>email</label>
-                                <ErrorMessage name="email" class="validationBox"/>
-                            </Field>
-                        </div>
-                    </div>
+                </div>  
+            </div>
+            <div class="profile-personal-edit-box" v-if="!edit">
+                <div class="profile-personal-edit" @click="edit=!edit">
+                    Редактировать
                 </div>
             </div>
-            <div class="profile-personal-edit-box">
-                <div class="profile-personal-edit" v-if="updating">
-                    <PreloaderLocal small style="margin: auto"/>
+            <Form v-else  validateOnMount v-slot="{errors}" @submit="onSave()" :validation-schema="schema" ref="formPersonal"  >
+                
+                <div class="profile-personal-box">
+                    <div class="profile-personal-img-box" >
+                        <img class="profile-personal-img" :src="image" />
+                        <label class="profile-personal-img-hover" for="file-upload">
+                                Выбрать фото
+                            <input @change="handleFileUpload( $event )" id="file-upload" type="file" accept="image/*">
+                        </label>
+                        
+                                
+                    </div>
+                    <div class="profile-personal-info-box">
+                        <div class="profile-personal-info-item-edit">
+                            <div class="input-textfield">
+                                <Field 
+                                    name="lastname"
+                                    validateOnInput
+                                    placeholder=" "
+                                    autocomplete="off"
+                                    v-slot="{ field, errors }"
+                                    v-model="editProfile.lastname"
+                                >
+                                    <input
+                                        v-bind="field"
+                                        type="text" 
+                                        placeholder=" "
+                                        :class="errors.length == 0 ? '' : 'error'"
+                                    >
+                                    <label>Фамилия</label>
+                                    <ErrorMessage name="lastname" class="validationBox"/>
+                                </Field>
+                            </div>
+                        </div>
+                        <div class="profile-personal-info-item-edit">
+                            <div class="input-textfield">
+                                <Field 
+                                    name="name"
+                                    validateOnInput
+                                    placeholder=" "
+                                    autocomplete="off"
+                                    v-slot="{ field, errors }"
+                                    v-model="editProfile.name"
+                                >
+                                    <input
+                                        v-bind="field"
+                                        type="text" 
+                                        placeholder=" "
+                                        :class="errors.length == 0 ? '' : 'error'"
+                                    >
+                                    <label>Имя</label>
+                                    <ErrorMessage name="name" class="validationBox"/>
+                                </Field>
+                            </div>
+                    
+                        
+                        </div>
+                        <div class="profile-personal-info-item-edit">
+                            <div class="input-textfield">
+                                <Field 
+                                    name="patronymic"
+                                    validateOnInput
+                                    placeholder=" "
+                                    autocomplete="off"
+                                    v-slot="{ field, errors }"
+                                    v-model="editProfile.patronymic"
+                                >
+                                    <input
+                                        v-bind="field"
+                                        type="text" 
+                                        placeholder=" "
+                                        :class="errors.length == 0 ? '' : 'error'"
+                                    >
+                                    <label>Отчество</label>
+                                    <ErrorMessage name="patronymic" class="validationBox"/>
+                                </Field>
+                            </div> 
+                        </div>
+                        <div class="profile-personal-info-item-edit">
+                            <div class="input-textfield">
+                                <Field 
+                                    name="phone"
+                                    validateOnInput
+                                    placeholder=" "
+                                    autocomplete="off"
+                                    v-slot="{ field, errors }"
+                                    v-model="editProfile.phone"
+                                >
+                                    <input
+                                        v-bind="field"
+                                        type="text" 
+                                        placeholder=""
+                                        
+                                        :class="errors.length == 0 ? '' : 'error'"
+                                    >
+                                    <label>Телефон</label>
+                                    <ErrorMessage name="phone" class="validationBox"/>
+                                </Field>
+                            </div>
+                        </div>
+                        <div class="profile-personal-info-item-edit">
+                            <div class="input-textfield">
+                                <Field 
+                                    name="email"
+                                    validateOnInput
+                                    placeholder=" "
+                                    autocomplete="off"
+                                    v-slot="{ field, errors }"
+                                    v-model="editProfile.email"
+                                >
+                                    <input
+                                        v-bind="field"
+                                        type="text" 
+                                        placeholder=" "
+                                        :class="errors.length == 0 ? '' : 'error'"
+                                    >
+                                    <label>email</label>
+                                    <ErrorMessage name="email" class="validationBox"/>
+                                </Field>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="profile-personal-edit"
-                    :class="{'disabled': Object.keys(errors).length !=0}"
-                    v-else  
-                    @click="Object.keys(errors).length ==0 ? save(): null"
-                >
-                    Сохранить
+                <div class="profile-personal-edit-box">
+                    <div class="profile-personal-edit" v-if="updating">
+                        <PreloaderLocal small style="margin: auto"/>
+                    </div>
+                    <div class="profile-personal-edit"
+                        :class="{'disabled': Object.keys(errors).length !=0}"
+                        v-else  
+                        @click="Object.keys(errors).length ==0 ? save(): null"
+                    >
+                        Сохранить
+                    </div>
+                    <div class="profile-personal-edit"  @click="disable()">
+                        Отмена
+                    </div>
                 </div>
-                <div class="profile-personal-edit"  @click="disable()">
-                    Отмена
-                </div>
-            </div>
-        </Form>
+            </Form>
 
+            
+        </div>
         
-    </div>
-    
-    </div>
+        </div>
 </template>
 
 <script setup lang="ts">
@@ -192,6 +193,9 @@
         profile: {
             type: Object as PropType<ProfilePersonal>,
             required: true            
+        },
+        loading: {
+            type: Boolean
         }
     })
     const emits = defineEmits(['save'])
@@ -216,7 +220,7 @@
 			});
 
     const image = computed(() => store.getters.getProfileImage)
-    const loadingImage = computed(() => store.getters.isProfileLoading)
+    
     watch(()=> props.profile, ()=>{
         editProfile.value = Object.assign({}, props.profile)
 	})

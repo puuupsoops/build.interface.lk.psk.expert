@@ -4,13 +4,7 @@ import { ResponseError } from "./Error";
 export interface ProfileResponse{
 	response: {
         personal: ProfilePersonal,
-        notifications:{
-            order:
-                {
-                    email: ProfileNotifications,
-                    lk:    ProfileNotifications
-                },
-            }
+        notifications: ProfileNotificationsList
         },
 	error: ResponseError|null
 }
@@ -27,4 +21,18 @@ export interface ProfileNotifications {
     created:   boolean,
     changed:   boolean,
     states:    boolean
+}
+
+
+export interface ProfileNotificationsList  { 
+	order:
+		{
+			email: ProfileNotifications,
+			lk:    ProfileNotifications
+		},
+	}
+export interface ProfileNotifications{
+	changed: boolean,
+	created: boolean,
+	states: boolean
 }

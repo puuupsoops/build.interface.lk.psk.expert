@@ -1,5 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
-Date:   2022-09-19
+Date:   2022-09-22
+
+    #0.2.36
+    1. На страницу /profile добавлена карта с редактированием настроек оповещения 
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-09-20
 
     #0.2.35
     1. Добавлен аватар и фио в панель PersonalBar

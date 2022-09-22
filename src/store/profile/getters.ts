@@ -7,5 +7,6 @@ export const getters: GetterTree<ProfileState, RootState> = {
     isProfileLoading: state => state.loading,
     getProfilePersonal: state => state.personal,
     getProfileImage: state => state.image,
+    getProfileNotifications: state => state.notifications,
 	
 }
