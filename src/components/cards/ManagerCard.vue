@@ -80,7 +80,7 @@
 			}).catch(()=>{
 				loadingImage.value=false
 			})
-  		}
+  		} else loadingImage.value=false
 		
 	})
 </script>
