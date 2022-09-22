@@ -45,20 +45,23 @@ export const actions: ActionTree<ProfileState, RootState> =  {
 				commit(AuthMutations.SET_ERROR, 'Request UPD_PERSONAL error:<br>'+error)
 			});
 	},
-	async [ProfileActions.GET_IMAGE] ({commit, state}) {
-		commit(ProfileMutations.SET_LOADING, true)
-		await axios.get(state.personal.image, {
-				timeout: 1000 * 3,
-				responseType: 'arraybuffer',
-				headers: {'Content-type': 'image/jpeg'}
-			})
-			.then(response => { 
-				commit(ProfileMutations.SET_IMAGE, `data:${response.headers['content-type']};base64,${btoa(String.fromCharCode(...new Uint8Array(response.data)))}`)
-				commit(ProfileMutations.SET_LOADING, false)
-			})
-			.catch(()=>{
-				commit(ProfileMutations.SET_LOADING, false)
-			})
+	[ProfileActions.GET_IMAGE] ({commit, state}) {
+		// commit(ProfileMutations.SET_LOADING, true)
+		// await axios.get(state.personal.image, {
+		// 		timeout: 1000 * 3,
+		// 		responseType: 'arraybuffer',
+		// 		headers: {'Content-type': 'image/jpeg'}
+		// 	})
+		// 	.then(response => { 
+		// 		//commit(ProfileMutations.SET_IMAGE, `data:${response.headers['content-type']};base64,${btoa(String.fromCharCode(...new Uint8Array(response.data)))}`)
+		// 		commit(ProfileMutations.SET_IMAGE, state.personal.image)
+		// 		commit(ProfileMutations.SET_LOADING, false)
+		// 	})
+		// 	.catch(()=>{
+		// 		commit(ProfileMutations.SET_IMAGE, state.personal.image)
+		// 		commit(ProfileMutations.SET_LOADING, false)
+		// 	})
+		commit(ProfileMutations.SET_IMAGE, state.personal.image)
 	},
 	async [ProfileActions.UPD_NOTIFICATION] ({commit}, data: ProfileNotificationsList) {
 		await axios.post( '/user/settings/notifications/update', data)
