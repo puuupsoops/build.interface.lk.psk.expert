@@ -93,7 +93,9 @@
 					<div class="orders-list-elem">{{ normalizeCompanyName(item.partner_name) }}</div>
 					<div class="orders-list-elem">{{ item.n }}</div>
 					<div class="orders-list-elem">{{ item.date }}</div>
-					<div class="orders-list-elem"> <div v-if="item.reserved" tooltip="В позициях заказа присутсвует резерв" flow="down" style="width:100%"></div> </div>
+					<div class="orders-list-elem"> {{ item.status}}
+							<!-- <div v-if="item.reserved" tooltip="В позициях заказа присутсвует резерв" flow="down" style="width:100%"></div>  -->
+					</div>
 					<div class="orders-list-elem" > 
 						<button
 							class="orders-list-more"
@@ -127,12 +129,12 @@
 				>
 
 					
-					<div v-if="Array.isArray(item.checks) && item.checks.length>0">
+					<div v-if="Array.isArray(item.checks) && item.checks.length>0 && item.status_code != '7' && item.status_code != '9'">
 						<div
 							class="orders-list-info-row"
 							v-for="(check, key1) in item.checks"
 							:key="key1"
-						>
+						> 
 							<div class="orders-list-info-elem">{{getStorageName(item.partner_guid, check.organization_id)}}</div>
 							<div class="orders-list-info-elem"  > 
 								

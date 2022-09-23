@@ -15,10 +15,10 @@ export const mutations: MutationTree<OrdersState> = {
 	[OrdersMutations.SET_ORDERS](state, data: Orders[]){
 		state.orders = data
 		state.orders.forEach(x => {
-			let reserved = false // заменяем флаг резерва на те заказы у которых есть счета со статусом  1 - Предзаказ и  6 - В резерве.
+			let reserved = true // заменяем флаг резерва на те заказы у которых есть счета со статусом  1 - Предзаказ и  6 - В резерве.
 			if (x.checks && Array.isArray(x.checks)){
-				if (x.checks.filter(check => check.status == '1'||check.status == '6').length > 0 ){
-					reserved = true
+				if (x.checks.filter(check => check.status != '1' && check.status != '6').length > 0 ){
+					reserved = false
 				}
 			}
 			x.reserved = reserved
