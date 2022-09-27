@@ -93,10 +93,14 @@
 					<div class="orders-list-elem">{{ normalizeCompanyName(item.partner_name) }}</div>
 					<div class="orders-list-elem">{{ item.n }}</div>
 					<div class="orders-list-elem">{{ item.date }}</div>
-					<div class="orders-list-elem" 
-						:tooltip="item.status" flow="left"
-					> 
-						<div v-if="item.status_code" :class="'orders-list-elem-status ' + OrdersSatusCodeClass[item.status_code].class">
+					<div class="orders-list-elem" >
+
+						<div v-for="(check, key) in item.checks" 
+							:class="'orders-list-elem-status ' + OrdersSatusCodeClass[check.status].class"
+							:tooltip="OrdersSatusCodeClass[check.status].name"
+							flow="up"
+							:key="key"
+						>
 							
 						</div>
 					</div>
@@ -202,7 +206,15 @@
 								</a>
 							</div>
 							<div class="orders-list-info-elem"> 
-								{{ OrdersSatusCode[check.status+1] ? OrdersSatusCode[check.status+1].name : ''}}
+								{{ OrdersSatusCodeClass[check.status] ? OrdersSatusCodeClass[check.status].name : ''}}	
+								<div  
+									v-if="OrdersSatusCodeClass[check.status]"
+									:class="'orders-list-elem-status small ' + OrdersSatusCodeClass[check.status].class"
+									:tooltip="OrdersSatusCodeClass[check.status].name"
+									flow="up"
+								>
+								
+								</div>
 							</div>
 							<div class="orders-list-info-elem"> 
 								

@@ -144,7 +144,7 @@ export const mutations: MutationTree<OrderState> = {
 			pos.total_discount = total_discount_pos
 			pos.count = total_count_pos
 
-			total = total + total_pos;
+			total = total + total_pos
 			total_discount = total_discount + total_discount_pos
 			total_count = total_count + total_count_pos
 			total_valume = total_valume_pos * total_count_pos
@@ -156,7 +156,8 @@ export const mutations: MutationTree<OrderState> = {
 			let total_discount_pos = 0
 			let total_count_pos = 0
 			
-			
+			const total_valume_pos = pos.product.VALUME
+			const total_weigth_pos = pos.product.WEIGHT
 			pos.characteristics.forEach( c => {
 				total_pos = total_pos + c.PRICE * c.count
 				c.discount = getCompanyDiscount(state.partner_id, c.ORGGUID, pos.product.STATUS)
@@ -168,6 +169,12 @@ export const mutations: MutationTree<OrderState> = {
 			pos.total = total_pos
 			pos.total_discount= total_discount_pos
 			pos.count = total_count_pos
+
+			total = total + total_pos
+			total_discount = total_discount + total_discount_pos
+			total_count = total_count + total_count_pos
+			total_valume = total_valume_pos * total_count_pos
+			total_weight = total_weigth_pos * total_count_pos
 		});
 
 		state.order.count = state.order.position.length;
@@ -229,7 +236,7 @@ export const mutations: MutationTree<OrderState> = {
 			state.order_detail.partner_id = data.partner_id
 			
 			state.order_detail.total = data.total
-			
+			let total_discount= 0
 			if (data.position)
 				state.order_detail.position = data.position.map( (x: any ) => {
 					let total_price = 0
@@ -239,7 +246,7 @@ export const mutations: MutationTree<OrderState> = {
 						total_count = total_count + Number(c.quantity);
 					});
 					
-					
+					total_discount = total_discount + total_price
 					return {
 						product:{ NAME: x.name, PRICE: 0},
 						count: total_count, 
@@ -254,6 +261,7 @@ export const mutations: MutationTree<OrderState> = {
 								GUID: c.guid,
 								count: c.quantity,
 								ORGGUID: c.orgguid,
+								fullprice: c.fullprice
 							}
 						})
 					}
@@ -268,7 +276,7 @@ export const mutations: MutationTree<OrderState> = {
 						total_count = total_count + Number(c.quantity);
 					});
 					
-					
+					total_discount = total_discount + total_price
 					return {
 						product:{ NAME: x.name, PRICE: 0},
 						count: total_count, 
@@ -282,10 +290,12 @@ export const mutations: MutationTree<OrderState> = {
 								count: c.quantity,
 								GUID: c.guid,
 								ORGGUID: c.orgguid,
+								fullprice: c.fullprice
 							}
 						})
 					}
 				})
+			state.order_detail.total_discount = total_discount
 		}
 	},
 	[OrderMutations.CLEAN_ORDER_DETAIL] (state): void {
@@ -293,12 +303,23 @@ export const mutations: MutationTree<OrderState> = {
 	},
 	[OrderMutations.CREATE_ORDER_FROM_DETAIL](state): void{
 		state.order = Object.assign({}, state.order_detail) 
+		state.order.position.forEach(x => {
+			x.characteristics.forEach(c => {
+				if (c.fullprice) c.PRICE = c.fullprice
+			})
+		})
+		state.order.position_presail.forEach(x => {
+			x.characteristics.forEach(c => {
+				if (c.fullprice) c.PRICE = c.fullprice
+			})
+		})
 		state.order.id = (new Date()).getTime()
 		state.error = null;
 		
 	},
 	[OrderMutations.EDIT_ORDER](state, data): void{
 		state.order = Object.assign({}, state.order_detail)
+		
 		state.order.id = data.n
 		state.order.date = data.date
 		state.order.edit = true

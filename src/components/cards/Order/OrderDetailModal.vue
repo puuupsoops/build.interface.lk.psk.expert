@@ -15,7 +15,24 @@
 			</div>
 			<div class="order-modal-body draft">
 				{{order.name}} 
-				<br>
+
+
+				<div class="content-heading-wrap proudct-heading-wrap" style="justify-content: flex-end; padding-right: 20px;">
+					
+					
+						<div class="content-heading-price"> 
+							<div class="content-heading-price" v-if="order_detail "> 
+								<div class="content-heading-price-text">Сумма заказа: </div>
+								<div class="content-heading-price-value" v-if="order_detail.total != order_detail.total_discount">
+									<span class="strikethrough">{{ Number(order_detail.total).toLocaleString('ru')}} ₽</span>
+									{{ Number(order_detail.total_discount).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽
+									
+								</div>
+								<div class="content-heading-price-value" v-else>{{Number(order_detail.total).toLocaleString('ru')}} ₽</div>
+							</div>
+						</div>
+				
+				</div>
 				<br>
 				<div v-if="loading" style="display: flex; justify-content: center">
 					<PreloaderLocal ></PreloaderLocal>
@@ -48,7 +65,7 @@
 </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 
 import DeleteButton from '/src/components/ui/DeleteButton.vue'
 import PreloaderLocal from '/src/components/PreloaderLocal.vue'
@@ -64,14 +81,7 @@ import { useRouter } from 'vue-router'
 import { OrderMutations } from '/src/store/order/mutations'
 
 
-export default defineComponent({
-	name: 'OrderDetailModal',
-	components:{
-		DeleteButton,
-		PreloaderLocal,
-		OrderDraftCard,
-	},
-	props:{
+	const props = defineProps({
 		modelValue:{
 			type: Boolean
 		},
@@ -87,61 +97,47 @@ export default defineComponent({
 			type: Boolean,
 			default: false
 		}
-	},
-	emits: ['update:modelValue', 'update:repeatOrder', 'update:editOrder'],
-	setup(props, { emit }){
-		const store = useStore()
-		const router = useRouter()
-		const shake = ref(false)
-		const targetModal = ref(null)
-		const loading = ref(false)
-		const useRepeat = ref(false)
-		
-		onClickOutside(targetModal, () => {
-			shake.value = true
-			setTimeout(() => {shake.value=false;}, 500)
-		});
-		const close = () => {
-			emit('update:repeatOrder', false)
-			emit('update:editOrder', false)
-			emit('update:modelValue', false)
-		};
-		watch( ()=>props.orderId, ()=>{
-			if (props.orderId!=-1){
-				loading.value=true
-				store.dispatch(OrderActions.GET_ORDER_DETAIL, props.orderId ).finally(()=>{loading.value = false})
-			}
-		})
-		const order = computed(() => store.getters.getOrdersByID(props.orderId))
-		
-		const  setOrder = async () => {
-			await store.commit(OrderMutations.CREATE_ORDER_FROM_DETAIL)
-			await store.commit(OrderMutations.CALC_ORDER)
-			router.push({name: 'Order'})
-		}
-		const setOrderToEdit = async () => {
-			await store.commit(OrderMutations.EDIT_ORDER, order.value)
-			await store.commit(OrderMutations.CALC_ORDER)
-			
-			router.push({name: 'Order'})
-		}
-		
-		return {
-			//data
-			shake,
-			targetModal,
-			loading,
-			useRepeat,
+	})
+	const emits = defineEmits(['update:modelValue', 'update:repeatOrder', 'update:editOrder'])
+	const store = useStore()
+	const router = useRouter()
+	const shake = ref(false)
+	const targetModal = ref(null)
+	const loading = ref(false)
+	const useRepeat = ref(false)
+	
+	const order_detail = computed(() => store.getters.getOrderDetail)
 
-			//computed
-			order_detail: computed(() => store.getters.getOrderDetail),
-			order,
+	onClickOutside(targetModal, () => {
+		shake.value = true
+		setTimeout(() => {shake.value=false;}, 500)
+	})
 
-			//methods
-			close,
-			setOrder,
-			setOrderToEdit,
-		}
+	const close = () => {
+		emits('update:repeatOrder', false)
+		emits('update:editOrder', false)
+		emits('update:modelValue', false)
 	}
-})
+
+	watch( ()=>props.orderId, ()=>{
+		if (props.orderId!=-1){
+			loading.value=true
+			store.dispatch(OrderActions.GET_ORDER_DETAIL, props.orderId ).finally(()=>{loading.value = false})
+		}
+	})
+	const order = computed(() => store.getters.getOrdersByID(props.orderId))
+	
+	const  setOrder = async () => {
+		await store.commit(OrderMutations.CREATE_ORDER_FROM_DETAIL)
+		await store.commit(OrderMutations.CALC_ORDER)
+		router.push({name: 'Order'})
+	}
+	const setOrderToEdit = async () => {
+		await store.commit(OrderMutations.EDIT_ORDER, order.value)
+		await store.commit(OrderMutations.CALC_ORDER)
+		
+		router.push({name: 'Order'})
+	}
+		
+
 </script>

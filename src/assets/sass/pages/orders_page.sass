@@ -193,12 +193,15 @@
 			&-status
 				height: 32px
 				width: 32px
+				margin-right: 5px
 				background-size: 100% auto
 				background-position: center center
 				background-repeat: no-repeat
+				cursor: pointer
 				+prefix(transition, $default-transition)
+
 				&:hover
-					transform: scale(2)
+					transform: scale(1.2)
 				&.registred
 					background-image: url(/src/assets/img/icon/aorder-registred.svg)		
 					&:hover
@@ -225,6 +228,10 @@
 				&.closed    
 					background-image: url(/src/assets/img/icon/order-closed.svg)		
 
+				&.small
+					height: 24px
+					width: 24px
+					margin-right: 0px
 		&-wrap
 			margin:
 				top: 30px
@@ -358,6 +365,10 @@
 					width: 19.77%
 				
 				&:nth-child(4)
+					display: flex
+					width: 10%
+					gap: 10px
+					align-items: center
 					width: 10%
 					
 				&:nth-child(5)
