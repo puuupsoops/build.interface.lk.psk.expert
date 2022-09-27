@@ -1,8 +1,16 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-09-27
+
+    #0.2.37
+    1. В таблицу Заказы добавлены иконки для статуса заказа
+
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-09-22
 
     #0.2.36
     1. На страницу /profile добавлена карта с редактированием настроек оповещения 
+
 
 Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-09-20

@@ -190,6 +190,40 @@
 				color: $active-color
 				font-weight: bold
 
+			&-status
+				height: 32px
+				width: 32px
+				background-size: 100% auto
+				background-position: center center
+				background-repeat: no-repeat
+				+prefix(transition, $default-transition)
+				&:hover
+					transform: scale(2)
+				&.registred
+					background-image: url(/src/assets/img/icon/aorder-registred.svg)		
+					&:hover
+						.fill
+							fill: $accent-color
+						.stroke
+							stroke: $accent-color 
+				&.presail     
+					background-image: url(/src/assets/img/icon/order-presail.svg)		
+				&.accepted    
+					background-image: url(/src/assets/img/icon/order-accepted.svg)		
+				&.tostore    
+					background-image: url(/src/assets/img/icon/order-tostore.svg)		
+				&.assembled    
+					background-image: url(/src/assets/img/icon/order-assembled.svg)		
+				&.shipped    
+					background-image: url(/src/assets/img/icon/order-shipped.svg)		
+				&.created    
+					background-image: url(/src/assets/img/icon/order-created.svg)		
+				&.expired    
+					background-image: url(/src/assets/img/icon/order-expired.svg)		
+				&.canceled    
+					background-image: url(/src/assets/img/icon/order-canceled.svg)		
+				&.closed    
+					background-image: url(/src/assets/img/icon/order-closed.svg)		
 
 		&-wrap
 			margin:

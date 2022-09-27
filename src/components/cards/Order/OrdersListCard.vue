@@ -93,8 +93,12 @@
 					<div class="orders-list-elem">{{ normalizeCompanyName(item.partner_name) }}</div>
 					<div class="orders-list-elem">{{ item.n }}</div>
 					<div class="orders-list-elem">{{ item.date }}</div>
-					<div class="orders-list-elem"> {{ item.status}}
-							<!-- <div v-if="item.reserved" tooltip="В позициях заказа присутсвует резерв" flow="down" style="width:100%"></div>  -->
+					<div class="orders-list-elem" 
+						:tooltip="item.status" flow="left"
+					> 
+						<div v-if="item.status_code" :class="'orders-list-elem-status ' + OrdersSatusCodeClass[item.status_code].class">
+							
+						</div>
 					</div>
 					<div class="orders-list-elem" > 
 						<button
@@ -265,7 +269,7 @@
 	import { OrderActions } from '/src/store/order/actions'
 	import { Storage } from '/src/models/Partner'
 	import { OrdersActions } from '/src/store/orders/actions'
-	import { OrdersSatusCode } from '/src/store/orders/types'
+	import { OrdersSatusCode, OrdersSatusCodeClass } from '/src/store/orders/types'
 
 	import { SearchData } from '/src/models/Components'
 	import { KeysMutations } from '/src/store/keys/mutations'
