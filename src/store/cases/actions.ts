@@ -4,6 +4,7 @@ import { RootState } from "/src/store"
 import { CasesState } from "./types"
 import { CaseResponse } from '/src/models/Cases';
 import { CasesMutations } from './mutations';
+import { AuthMutations } from '../auth/mutations';
 
 const site_location =import.meta.env.VITE_APP_SITE_LOCATION;
 
@@ -18,7 +19,7 @@ export const actions: ActionTree<CasesState, RootState> =  {
 				commit(CasesMutations.SET_CASE, response.data)
 			})
 			.catch( error => {
-				commit('setError', 'Request GET_CASE error:<br>'+error)
+				commit(AuthMutations.SET_ERROR, 'Request GET_CASE error:<br>'+error)
 			})
 
 	},

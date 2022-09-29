@@ -20,8 +20,9 @@
                         <div class="profile-personal-info-name-position">Профиль</div>
                     </div>
                     <div class="profile-personal-info-item phone">{{profile.phone}}</div>
-                    <div class="profile-personal-info-item email">{{profile.email}}</div>
-                    
+                    <div :tooltip="profile.email" flow="up">
+                    <div class="profile-personal-info-item email" >{{profile.email}}</div>
+                    </div>
                 </div>  
             </div>
             <div class="profile-personal-edit-box" v-if="!edit">

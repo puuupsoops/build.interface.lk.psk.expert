@@ -2,10 +2,24 @@
 
 	<div class="order-list content-elem">
 		
+	
 			<div class="order-list-bottom scroll-elem">
 				
 				<div class="order-list-bottom-wrap"> 
-					
+					<div class="content-heading-wrap order-draft"  v-if="data.total">
+						<div class="content-heading-price"> 
+							<div class="content-heading-price" > 
+								<div class="content-heading-price-text">Сумма заказа: </div>
+								<div class="content-heading-price-value" v-if="data.total !== data.total_discount">
+									<span class="strikethrough">{{ Number(data.total).toLocaleString('ru', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.')}} ₽</span>
+									{{ Number(data.total_discount).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽
+									
+								</div>
+								<div class="content-heading-price-value" v-else>{{Number(data.total).toLocaleString('ru', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.')}} ₽</div>
+							</div>
+						</div>
+					</div>
+
 					<div class="order-list-row order-list-heading" v-if="data.position.length>0">
 						<div class="order-list-elem">№</div>
 						<div class="order-list-elem">Артикул</div>
@@ -67,10 +81,23 @@
 					
 				</div>
 				<div class="order-list-bottom-wrap" v-if="data.position_presail.length > 0"> 
+
 					<div class="order-list-row order-list-subheading">
 						<div>Позиции для предзаказа</div>
 					</div>
-					
+					<div class="content-heading-wrap order-draft"  v-if="data.total_presail">
+						<div class="content-heading-price"> 
+							<div class="content-heading-price" > 
+								<div class="content-heading-price-text">Сумма заказа: </div>
+								<div class="content-heading-price-value" v-if="data.total_presail !== data.total_presail_discount">
+									<span class="strikethrough">{{ Number(data.total_presail).toLocaleString('ru', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.')}} ₽</span>
+									{{ Number(data.total_presail_discount).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽
+									
+								</div>
+								<div class="content-heading-price-value" v-else>{{Number(data.total_presail).toLocaleString('ru', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.')}} ₽</div>
+							</div>
+						</div>
+					</div>
 					<div class="order-list-row order-list-heading">
 						<div class="order-list-elem">№</div>
 						<div class="order-list-elem">Артикул</div>
@@ -131,36 +158,22 @@
 					
 				</div>
 			</div>
-		</div>
+	</div>
 		
 
 </template>
 
-<script lang="ts">
-import { ref, defineComponent, PropType } from 'vue'
+<script setup lang="ts">
+import { ref, PropType } from 'vue'
 
 import { OrderStateOrder } from '/src/store/order/types'
 
-export default defineComponent({
-	props: {
+const props = defineProps( {
 		data: {
 			type: Object as PropType<OrderStateOrder>,
 		},
-    },
-	setup() {
-		
+    })
 		const open = ref([]);
 		const open_presail = ref([]);
-		
-
-
-		return {
-			
-			open,
-			open_presail,
-			
-		}
-	},
-})
 </script>
 

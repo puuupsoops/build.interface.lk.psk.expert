@@ -54,8 +54,8 @@ export const actions: ActionTree<ProfileState, RootState> =  {
 				headers: {'Content-type': 'image/jpeg'}
 			})
 			.then(response => { 
-				//commit(ProfileMutations.SET_IMAGE, `data:${response.headers['content-type']};base64,${btoa(String.fromCharCode(...new Uint8Array(response.data)))}`)
-				commit(ProfileMutations.SET_IMAGE, state.personal.image)
+				commit(ProfileMutations.SET_IMAGE, `data:${response.headers['content-type']};base64,${btoa(String.fromCharCode(...new Uint8Array(response.data)))}`)
+				//commit(ProfileMutations.SET_IMAGE, state.personal.image)
 				commit(ProfileMutations.SET_LOADING, false)
 			})
 			.catch(()=>{

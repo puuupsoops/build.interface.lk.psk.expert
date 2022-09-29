@@ -235,13 +235,16 @@ export const mutations: MutationTree<OrderState> = {
 			state.order_detail.count = data.count
 			state.order_detail.partner_id = data.partner_id
 			
-			state.order_detail.total = data.total
+			let total = 0
 			let total_discount= 0
+			let total_presail = 0
+			let total_presail_discount= 0
 			if (data.position)
 				state.order_detail.position = data.position.map( (x: any ) => {
 					let total_price = 0
 					let total_count = 0
 					x.characteristics.forEach( (c: any) => {
+						total = total + c.fullprice * Number(c.quantity)
 						total_price = total_price + c.price * Number(c.quantity);
 						total_count = total_count + Number(c.quantity);
 					});
@@ -272,11 +275,12 @@ export const mutations: MutationTree<OrderState> = {
 					let total_price = 0
 					let total_count = 0
 					x.characteristics.forEach( (c: any) => {
+						total_presail = total_presail + c.fullprice * Number(c.quantity)
 						total_price = total_price + c.price * Number(c.quantity);
 						total_count = total_count + Number(c.quantity);
 					});
 					
-					total_discount = total_discount + total_price
+					total_presail_discount = total_presail_discount + total_price
 					return {
 						product:{ NAME: x.name, PRICE: 0},
 						count: total_count, 
@@ -294,8 +298,12 @@ export const mutations: MutationTree<OrderState> = {
 							}
 						})
 					}
-				})
+			})
+			state.order_detail.total = total
 			state.order_detail.total_discount = total_discount
+			state.order_detail.total_presail = total_presail
+			state.order_detail.total_presail_discount = total_presail_discount
+	
 		}
 	},
 	[OrderMutations.CLEAN_ORDER_DETAIL] (state): void {

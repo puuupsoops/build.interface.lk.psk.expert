@@ -16,24 +16,6 @@
 			<div class="order-modal-body draft">
 				{{order.name}} 
 
-
-				<div class="content-heading-wrap proudct-heading-wrap" style="justify-content: flex-end; padding-right: 20px;">
-					
-					
-						<div class="content-heading-price"> 
-							<div class="content-heading-price" v-if="order_detail "> 
-								<div class="content-heading-price-text">Сумма заказа: </div>
-								<div class="content-heading-price-value" v-if="order_detail.total != order_detail.total_discount">
-									<span class="strikethrough">{{ Number(order_detail.total).toLocaleString('ru')}} ₽</span>
-									{{ Number(order_detail.total_discount).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽
-									
-								</div>
-								<div class="content-heading-price-value" v-else>{{Number(order_detail.total).toLocaleString('ru')}} ₽</div>
-							</div>
-						</div>
-				
-				</div>
-				<br>
 				<div v-if="loading" style="display: flex; justify-content: center">
 					<PreloaderLocal ></PreloaderLocal>
 				</div>

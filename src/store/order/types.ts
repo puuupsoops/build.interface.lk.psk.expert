@@ -18,6 +18,8 @@ export interface OrderStateOrder {
 	reserved:         boolean;
 	total:            number;
 	total_discount?:  number;
+	total_presail?:   number;
+	total_presail_discount?:   number;
 	count:            number;
 	partner_id:       string;
 	position:         OrderStatePosition[];
