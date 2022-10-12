@@ -1,4 +1,4 @@
-import { Orders, OrdersDocStatus } from "/src/models/Orders";
+import { Check, Orders, OrdersDocStatus } from "/src/models/Orders";
 
 export interface OrdersState {
     orders: Orders[];
@@ -25,6 +25,7 @@ export const OrdersSatusCode =  [
     {id: 8, name: 'Истек'},
     {id: 9, name: 'Отменен'},
     {id: 10, name: 'Закрыт'},
+    {id: 11, name: 'Запрос счета'},
 ] //https://polshakov.atlassian.net/wiki/spaces/LKPSKEXPERT/pages/65791 -- deprecated
   //https://psk-expert.atlassian.net/wiki/spaces/PSKEXPERT/pages/295169
 
@@ -39,4 +40,10 @@ export const OrdersSatusCode =  [
     {id: 7, name: 'Истек', class: 'expired'},
     {id: 8, name: 'Отменен', class: 'canceled'},
     {id: 9, name: 'Закрыт', class: 'closed'},
+    {id: 10, name: 'Запрос счета', class: 'billrequest'},
   ]
+
+  export interface GetOrderBillRequestData {
+    id:    number;
+    check: Check;
+  }

@@ -227,11 +227,31 @@
 					background-image: url(/src/assets/img/icon/order-canceled.svg)		
 				&.closed    
 					background-image: url(/src/assets/img/icon/order-closed.svg)		
+				&.billrequest    
+					background-image: url(/src/assets/img/icon/order-billrequest.svg)		
 
 				&.small
 					height: 24px
 					width: 24px
-					margin-right: 0px
+					margin-right: 10px
+
+			&-request-bill
+				+flex
+				+justify-content(center)
+				+align-items(center)
+				font-size: 14px
+				line-height: 20px
+				white-space: nowrap
+				+prefix(transition, $default-transition)
+				cursor:  pointer
+				
+				&:hover
+					color: $accent-color
+				span
+					border-bottom: 1px dotted $white
+					background-color: transparent
+
+
 		&-wrap
 			margin:
 				top: 30px
@@ -283,6 +303,7 @@
 			border: 0
 			border-bottom: 1px dotted $white
 			background-color: transparent
+			
 			+prefix(transition, $default-transition)
 			cursor:  pointer
 

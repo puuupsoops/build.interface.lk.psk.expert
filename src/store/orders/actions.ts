@@ -1,15 +1,16 @@
 import axios from '/src/plugins/axios'
 import { ActionTree } from "vuex"
 import { RootState } from "/src/store"
-import { OrdersState } from "./types"
+import { GetOrderBillRequestData, OrdersState } from "./types"
 import { OrdersMutations } from './mutations'
 import { AuthMutations } from '../auth/mutations'
-import { Orders } from '/src/models/Orders'
+import {  Orders } from '/src/models/Orders'
 
 
 export enum OrdersActions {
 	GET_ORDERS = "GET_ORDERS_ACTION",
 	GET_ORDERS_DOCSTATUS = "GET_ORDERS_DOCSTATUS",
+	GET_ORDERS_BILL_REQUEST = "GET_ORDERS_BILL_REQUEST",
 }
 
 export const actions: ActionTree<OrdersState, RootState> =  {
@@ -32,4 +33,14 @@ export const actions: ActionTree<OrdersState, RootState> =  {
 				commit(AuthMutations.SET_ERROR, 'Request GET_ORDERS_DOCSTATUS error:<br>'+error)
 			})
 	},
+
+	async [OrdersActions.GET_ORDERS_BILL_REQUEST] ({commit}, data: GetOrderBillRequestData) {
+		await axios.post('/user/request/check/'+data.id, data.check)
+		.then(response => {
+			commit(OrdersMutations.SET_ORDERS_BILL_REQUEST, {id: data.id, check: response.data.response[0]})
+		})
+		.catch(error => {
+			commit(AuthMutations.SET_ERROR, 'Request GET_ORDERS_BILL_REQUEST error:<br>'+error)
+		})
+	}
 }

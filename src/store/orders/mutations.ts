@@ -1,13 +1,14 @@
 import { Orders, OrdersDocStatus } from "/src/models/Orders";
 import { MutationTree } from "vuex";
 
-import { OrdersState } from "./types";
+import { GetOrderBillRequestData, OrdersState } from "./types";
 
 
 export enum OrdersMutations {
 	SET_ORDERS = "SET_ORDERS",
 	SET_ORDERS_DOCSTATUS = "SET_ORDERS_DOCSTATUS",
 	SET_ORDERS_DOCSTATUS_ERROR = "SET_ORDERS_DOCSTATUS_ERROR",
+	SET_ORDERS_BILL_REQUEST = "SET_ORDERS_BILL_REQUEST",
 }
 
 export const mutations: MutationTree<OrdersState> = {
@@ -37,6 +38,15 @@ export const mutations: MutationTree<OrdersState> = {
 		state.orders.forEach( order => {
 			if (Array.isArray(order.checks) )
 				order.checks.forEach(check => {check.doc_status = {id: '0', StatusSchet: false, StatusSF:false, StatusUPD: false, StatusUPK: false}	})
+		})
+	},
+	[OrdersMutations.SET_ORDERS_BILL_REQUEST](state, data: GetOrderBillRequestData){
+		state.orders.forEach( order => {
+			if (order.n == data.id && order.checks )
+				order.checks.forEach(check => {
+					if (check.id == data.check.id)
+						check.status = data.check.status
+					})
 		})
 	},
 	

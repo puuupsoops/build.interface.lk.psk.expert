@@ -1,9 +1,15 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-09-29
 
+    #0.2.39
+    1. Добавлена ссылка на запрос счета
+
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-09-29
+
     #0.2.38
     1. На карту OrderDetail отдельно подсчитывается общая сумма заказа и отдельно общая сумма предзаказа
-    2. Исправил баг - при повторении заказа цены из order_detail брались с учетом скидки 
     
 
 Author: Vadim Zaboturin <vadimzab@gmail.com>

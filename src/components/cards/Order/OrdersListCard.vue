@@ -210,14 +210,20 @@
 								<div  
 									v-if="OrdersSatusCodeClass[check.status]"
 									:class="'orders-list-elem-status small ' + OrdersSatusCodeClass[check.status].class"
-									:tooltip="OrdersSatusCodeClass[check.status].name"
+									
 									flow="up"
 								>
 								
 								</div>
 							</div>
 							<div class="orders-list-info-elem"> 
-								
+								<div class="orders-list-elem-request-bill"
+									v-if="check.status != 10">
+
+									<preloader-local small v-if="billRequestLoadingState == check.id"/>
+									
+									<span v-else @click="billRequestLoading(item.n, check)">Запросить счет</span>
+								</div>
 							</div>
 							<!-- <div class="orders-list-info-elem">
 								<a class="orders-list-info-link" href="">Сертификаты</a>
@@ -274,7 +280,7 @@
 
 	import { ref, PropType, watch, computed } from 'vue'
 	import { onClickOutside } from '@vueuse/core'
-	import { Orders } from '/src/models/Orders'
+	import { Check, Orders } from '/src/models/Orders'
 	import { normalizeCompanyName } from '/src/models/Partner'
 	import { useStore } from '/src/store'
 	
@@ -335,6 +341,8 @@
 	const editOrder = ref(false)
 	const docLocation = import.meta.env.VITE_APP_DOC_LOCATION
 	const page = ref({maxItemOnPage: 10, currentPage: 1})
+	const billRequestLoadingState = ref(-1) //Переменная для прелоадера с загрузкой запроса счета
+
 	onClickOutside(target, () => {
 		active_more.value = -1
 	});
@@ -487,4 +495,19 @@
 		return  show
 	}
 		
+	const billRequestLoading = (id: number, check: Check) => {
+		if (billRequestLoadingState.value == -1) {
+			billRequestLoadingState.value = check.id
+			const check_data = Object.assign({},<Check>{
+				guid: check.guid,
+				id: check.id,
+				n: check.n,
+				organization_id: check.organization_id,
+				status: check.status,
+			})
+			store.dispatch(OrdersActions.GET_ORDERS_BILL_REQUEST, {id, check: check_data})
+				.then(()=>{billRequestLoadingState.value = -1})
+				.catch(()=>{billRequestLoadingState.value = -1})
+		}
+	}
 </script>
