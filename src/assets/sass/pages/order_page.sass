@@ -421,7 +421,42 @@
 		&-submit
 			position: relative
 			max-width: 290px
-	
+
+		
+
+	&-comment
+		&-form
+			overflow: hidden
+			margin:
+				top: 30px
+			+prefix(transition, $default-transition)
+			max-height: 0
+			&.show
+				max-height: 150px
+
+		&-textarea
+			width: 100%
+			padding: 10px 19px
+			min-height: 100px
+			border-radius: 6px
+			resize: vertical
+			font-size: 16px
+			font-weight: 400
+			line-height: 24px
+			color: #ffffff
+			background-color: #292c33
+			border: 0
+
+		&-title
+			+flex
+			margin:
+				bottom: 8px
+			font-size: 14px
+			font-weight: 400
+			line-height: 20px
+			text-transform: uppercase
+			color: $font-light-color
+
 	&-product
 		&-prev
 			margin:

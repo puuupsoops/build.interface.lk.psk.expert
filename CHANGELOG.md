@@ -1,6 +1,12 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-09-29
 
+    #0.2.40
+    1. Добавлено поле комментарий при создании заказа.
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-09-29
+
     #0.2.39
     1. Добавлена ссылка на запрос счета
 

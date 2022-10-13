@@ -12,11 +12,19 @@
 				/>
 			</div>
 			<div class="order-list-top-elem">
-				<div class="order-list-btn ">
-					<svg class="content-heading-btn-img active" width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+				<div class="order-list-btn"
+					tooltip="Добавить комментарий к заказу"
+					flow="up"
+					@click=" showComment = !showComment"
+				>
+					<svg  v-if="!showComment" class="content-heading-btn-img " width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+						<path  class="fill stroke"  fill="#A5A7A9"  d="M 4.5 17 q -0.625 0 -1.062 -0.438 Q 3 16.125 3 15.5 v -11 q 0 -0.625 0.438 -1.062 Q 3.875 3 4.5 3 h 11 q 0.625 0 1.062 0.438 Q 17 3.875 17 4.5 v 11 q 0 0.625 -0.438 1.062 Q 16.125 17 15.5 17 Z m 0 -1.5 h 11 v -11 h -11 v 11 Z"/>
+					</svg>
+					<svg  v-else class="content-heading-btn-img active" width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 						<path  class="fill stroke"  fill="#A5A7A9"  d="m 8.938 13 l 4.958 -4.938 L 12.833 7 l -3.895 3.875 l -1.771 -1.75 l -1.063 1.063 Z M 4.5 17 q -0.625 0 -1.062 -0.438 Q 3 16.125 3 15.5 v -11 q 0 -0.625 0.438 -1.062 Q 3.875 3 4.5 3 h 11 q 0.625 0 1.062 0.438 Q 17 3.875 17 4.5 v 11 q 0 0.625 -0.438 1.062 Q 16.125 17 15.5 17 Z m 0 -1.5 h 11 v -11 h -11 v 11 Z m 0 -11 v 11 v -11 Z"/>
 					</svg>
-					Добавить печатный каталог
+					Комментарий
+
 				</div>
 				<!-- <div class="order-list-btn"
 					 tooltip="Резервирование товаров позволяет закрепить товар за клиентом."
@@ -216,6 +224,13 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="order-comment-form" 
+			:class="{show: showComment}">
+			<div class="order-comment-title"><span>Комментраий</span></div>
+			<textarea class="order-comment-textarea" name=""  ></textarea>
+		</div>
+		
 		<div class="order-list-buttons"
 			
 		>
@@ -284,6 +299,7 @@
 	const error = ref(false)
 	const snack = ref(false)
 	const snackMsg = ref('')
+	const showComment = ref(false)
 // Computed
 	const selectCompany = computed( {
 			get: () => props.data?.edit ? props.data.partner_id: props.modelValue,
