@@ -2,64 +2,79 @@
 
 	<div class="order-list content-elem">
 			<div class="order-list-top">
-			<div class="order-list-top-elem">
-				<div class="product-search-text">Контрагент:</div>
-				<SelectInput 
-					:data="companys"
-					:error="error"
-					:read-only="data.edit"
-					v-model="selectCompany"
-				/>
-			</div>
-			<div class="order-list-top-elem">
-				<div class="order-list-btn"
-					tooltip="Добавить комментарий к заказу"
-					flow="up"
-					@click=" showComment = !showComment"
-				>
-					<svg  v-if="!showComment" class="content-heading-btn-img " width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-						<path  class="fill stroke"  fill="#A5A7A9"  d="M 4.5 17 q -0.625 0 -1.062 -0.438 Q 3 16.125 3 15.5 v -11 q 0 -0.625 0.438 -1.062 Q 3.875 3 4.5 3 h 11 q 0.625 0 1.062 0.438 Q 17 3.875 17 4.5 v 11 q 0 0.625 -0.438 1.062 Q 16.125 17 15.5 17 Z m 0 -1.5 h 11 v -11 h -11 v 11 Z"/>
-					</svg>
-					<svg  v-else class="content-heading-btn-img active" width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-						<path  class="fill stroke"  fill="#A5A7A9"  d="m 8.938 13 l 4.958 -4.938 L 12.833 7 l -3.895 3.875 l -1.771 -1.75 l -1.063 1.063 Z M 4.5 17 q -0.625 0 -1.062 -0.438 Q 3 16.125 3 15.5 v -11 q 0 -0.625 0.438 -1.062 Q 3.875 3 4.5 3 h 11 q 0.625 0 1.062 0.438 Q 17 3.875 17 4.5 v 11 q 0 0.625 -0.438 1.062 Q 16.125 17 15.5 17 Z m 0 -1.5 h 11 v -11 h -11 v 11 Z m 0 -11 v 11 v -11 Z"/>
-					</svg>
-					Комментарий
-
+				<div class="order-list-top-elem">
+					<div class="order-list-top-wrap">
+						<div class="order-list-elem">Контрагент</div>
+						<SelectInput 
+							:data="companys"
+							:error="error"
+							:read-only="data.edit"
+							v-model="selectCompany"
+						/>
+					</div>
 				</div>
-				<!-- <div class="order-list-btn"
-					 tooltip="Резервирование товаров позволяет закрепить товар за клиентом."
-					 flow="up"
-					 @click="$emit('update:data', data.reserved = !data.reserved)"
-				>
-					<svg  v-if="!data.reserved" class="content-heading-btn-img " width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-						<path  class="fill stroke"  fill="#A5A7A9"  d="M 4.5 17 q -0.625 0 -1.062 -0.438 Q 3 16.125 3 15.5 v -11 q 0 -0.625 0.438 -1.062 Q 3.875 3 4.5 3 h 11 q 0.625 0 1.062 0.438 Q 17 3.875 17 4.5 v 11 q 0 0.625 -0.438 1.062 Q 16.125 17 15.5 17 Z m 0 -1.5 h 11 v -11 h -11 v 11 Z"/>
-					</svg>
-					<svg  v-else class="content-heading-btn-img active" width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-						<path  class="fill stroke"  fill="#A5A7A9"  d="m 8.938 13 l 4.958 -4.938 L 12.833 7 l -3.895 3.875 l -1.771 -1.75 l -1.063 1.063 Z M 4.5 17 q -0.625 0 -1.062 -0.438 Q 3 16.125 3 15.5 v -11 q 0 -0.625 0.438 -1.062 Q 3.875 3 4.5 3 h 11 q 0.625 0 1.062 0.438 Q 17 3.875 17 4.5 v 11 q 0 0.625 -0.438 1.062 Q 16.125 17 15.5 17 Z m 0 -1.5 h 11 v -11 h -11 v 11 Z m 0 -11 v 11 v -11 Z"/>
-					</svg>
-					Резерв
+				<div class="order-list-top-elem">
+					<div class="order-list-top-wrap">
+						<div class="order-list-elem">Условия получения</div>
+							<SelectInput 
+								:data="DeliveryName"
+								:error="error"
+								v-model="selectDelivery"
+								@onInput="addDelivery()"
+							/>
+					</div>
+				</div>
+				<div class="order-list-top-elem">
+					<div class="order-list-btn"
+						tooltip="Добавить сертификаты к заказу"
+						flow="up"
+						@click="addSert()"
+					>
+						<svg  v-if="!data.request_certificate" class="content-heading-btn-img " width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+							<path  class="fill stroke"  fill="#A5A7A9"  d="M 4.5 17 q -0.625 0 -1.062 -0.438 Q 3 16.125 3 15.5 v -11 q 0 -0.625 0.438 -1.062 Q 3.875 3 4.5 3 h 11 q 0.625 0 1.062 0.438 Q 17 3.875 17 4.5 v 11 q 0 0.625 -0.438 1.062 Q 16.125 17 15.5 17 Z m 0 -1.5 h 11 v -11 h -11 v 11 Z"/>
+						</svg>
+						<svg  v-else class="content-heading-btn-img active" width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+							<path  class="fill stroke"  fill="#A5A7A9"  d="m 8.938 13 l 4.958 -4.938 L 12.833 7 l -3.895 3.875 l -1.771 -1.75 l -1.063 1.063 Z M 4.5 17 q -0.625 0 -1.062 -0.438 Q 3 16.125 3 15.5 v -11 q 0 -0.625 0.438 -1.062 Q 3.875 3 4.5 3 h 11 q 0.625 0 1.062 0.438 Q 17 3.875 17 4.5 v 11 q 0 0.625 -0.438 1.062 Q 16.125 17 15.5 17 Z m 0 -1.5 h 11 v -11 h -11 v 11 Z m 0 -11 v 11 v -11 Z"/>
+						</svg>
+						Сертификаты
 
-				</div> -->
-				<div
-					to="#"
-					:class="'content-heading-btn' +(isOrderInDraft ? ' active':'')"
-					@click="addToDraft()"
-				    :tooltip="isOrderInDraft ? 'Удалить из черновика': 'Сохранить в черновик'" flow="up"
-					
-				>
+					</div>
+					<div class="content-heading-btn"
+						to="#"
+						:class="{'active': showComment}"
+						@click=" showComment = !showComment"
+						tooltip="Добавить комментарий к заказу" flow="up"
+						
+					>
 					<svg class="content-heading-btn-img" width="30" height="29" viewBox="0 0 30 29" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path class="fill stroke" d="M23.3935 26.1033L23.3938 26.1031C25.1061 24.6558 26.5848 23.406 27.6138 22.1745M23.3935 26.1033L20.9256 14.8664C21.2129 14.4998 21.5321 14.1811 21.8798 13.9144C22.6709 13.3077 23.5695 13 24.5508 13C25.8637 13 27.0713 13.5213 27.9513 14.4679C28.821 15.4035 29.2998 16.6816 29.2998 18.0669C29.2998 19.4928 28.7641 20.798 27.6138 22.1745M23.3935 26.1033C22.8083 26.5978 22.1452 27.1584 21.4569 27.7553C21.2752 27.913 21.0417 28 20.7998 28C20.5578 28 20.3245 27.913 20.1426 27.7551M23.3935 26.1033L20.1426 27.7551M27.6138 22.1745L27.7673 22.3028C27.7673 22.3028 27.7673 22.3028 27.7673 22.3028M27.6138 22.1745L27.7673 22.3028M27.7673 22.3028C26.7272 23.5475 25.2376 24.8066 23.5348 26.2458L23.5226 26.2561L23.5226 26.2561C22.9374 26.7506 22.2752 27.3104 21.588 27.9064L21.4575 27.7561L21.5879 27.9064C21.3696 28.0958 21.0896 28.2 20.7998 28.2C20.5099 28.2 20.2299 28.0958 20.0115 27.9061C19.3259 27.3115 18.6647 26.7527 18.0805 26.2589L18.0789 26.2576L18.079 26.2576L18.0775 26.2563L18.076 26.255L18.0667 26.2472C16.3631 24.8074 14.8728 23.5479 13.8324 22.3029L13.8324 22.3029C12.66 20.8998 12.0998 19.5508 12.0998 18.0669C12.0998 16.6357 12.5949 15.3076 13.5019 14.3318L13.5019 14.3318C14.4205 13.3437 15.6814 12.8 17.0489 12.8C18.075 12.8 19.0163 13.1227 19.8416 13.7557L19.8417 13.7558C20.1907 14.0235 20.5111 14.3407 20.7998 14.703C21.0886 14.3408 21.409 14.0235 21.7581 13.7557C22.5834 13.1227 23.5248 12.8 24.5508 12.8C25.9183 12.8 27.1793 13.3437 28.0978 14.3318L28.0978 14.3318C29.0049 15.3076 29.4998 16.6357 29.4998 18.0669C29.4998 19.5508 28.9397 20.8998 27.7673 22.3028ZM14.906 21.4162L14.906 21.4162C15.8662 22.5653 17.2989 23.7771 18.9807 25.1986C18.9809 25.1988 18.9812 25.199 18.9815 25.1992L18.9829 25.2004L18.9846 25.2018C19.5339 25.6661 20.1528 26.1893 20.7986 26.7476C21.448 26.1882 22.068 25.6641 22.6186 25.199C24.3006 23.7772 25.7334 22.5655 26.6937 21.4162C27.6806 20.2351 28.1041 19.2064 28.1041 18.0669C28.1041 16.9751 27.7341 15.9851 27.0727 15.2735C26.4221 14.5737 25.5279 14.1876 24.5508 14.1876C23.8402 14.1876 23.1891 14.4107 22.6106 14.8543C22.0919 15.2523 21.7269 15.7588 21.5111 16.1175C21.36 16.3685 21.093 16.5186 20.7998 16.5186C20.5066 16.5186 20.2396 16.3685 20.0885 16.1175L20.0885 16.1174C19.8728 15.7588 19.5078 15.2523 18.989 14.8543C18.4105 14.4107 17.7594 14.1876 17.0489 14.1876C16.0718 14.1876 15.1776 14.5736 14.5269 15.2735L14.906 21.4162ZM14.906 21.4162C13.919 20.2351 13.4955 19.2064 13.4955 18.0669C13.4955 16.9751 13.8655 15.9851 14.5269 15.2735L14.906 21.4162ZM20.1426 27.7551C19.4559 27.1595 18.7937 26.5998 18.2096 26.1062L20.1426 27.7551Z" fill="#A5A7A9" stroke="#A5A7A9" stroke-width="0.4"/>
-						<path class="fill" fill-rule="evenodd" clip-rule="evenodd" d="M3 2H18.75C19.3023 2 19.75 2.44772 19.75 3V15H21.75V3C21.75 1.34315 20.4069 0 18.75 0H3C1.34315 0 0 1.34315 0 3V21.8571C0 23.514 1.34315 24.8571 3 24.8571H16.4846C16.1942 24.6822 16 24.3638 16 24V22.8571H3C2.44772 22.8571 2 22.4094 2 21.8571V3C2 2.44772 2.44772 2 3 2Z" fill="#A5A7A9"/>
-						<rect class="fill" x="17.6074" y="5.17871" width="1.7" height="13.4643" rx="0.85" transform="rotate(90 17.6074 5.17871)" fill="#A5A7A9"/>
-						<rect class="fill" x="10" y="13" width="1.7" height="6" rx="0.85" transform="rotate(90 10 13)" fill="#A5A7A9"/>
-						<rect class="fill" x="14" y="9" width="1.7" height="10" rx="0.85" transform="rotate(90 14 9)" fill="#A5A7A9"/>
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M 3 0 C 1.3431517 0 0 1.3431517 0 3 L 0 21.857422 C 0 23.51432 1.3431517 24.857422 3 24.857422 L 18.839844 24.857422 C 18.838033 24.856331 18.837663 24.854627 18.835938 24.853516 C 20.446409 24.808069 21.739623 23.494068 21.75 21.875 C 21.750042 21.86846 21.75 21.862019 21.75 21.855469 L 21.75 3 C 21.75 1.3431517 20.406898 0 18.75 0 L 3 0 z M 3 2 L 18.75 2 C 19.302299 2 19.75 2.4477206 19.75 3 L 19.75 21.855469 L 19.75 21.863281 C 19.74573 22.411922 19.299628 22.855469 18.75 22.855469 L 18.75 22.857422 L 3 22.857422 C 2.4477206 22.857422 2 22.409721 2 21.857422 L 2 3 C 2 2.4477206 2.4477206 2 3 2 z " fill="#A5A7A9"/>
+						<rect x="17.6071" y="5.17856" width="1.7" height="13.4643" rx="0.85" transform="rotate(90 17.6071 5.17856)" fill="#A5A7A9"/>
+						<rect x="10" y="13" width="1.7" height="6" rx="0.85" transform="rotate(90 10 13)" fill="#A5A7A9"/>
+						<rect x="14" y="9" width="1.7" height="10" rx="0.85" transform="rotate(90 14 9)" fill="#A5A7A9"/>
 					</svg>
 
+						
+					</div>
+					<div class="content-heading-btn"
+						to="#"
+						:class="{'active': isOrderInDraft}"
+						@click="addToDraft()"
+						:tooltip="isOrderInDraft ? 'Удалить из черновика': 'Сохранить в черновик'" flow="up"
+						
+					>
+						<svg class="content-heading-btn-img" width="30" height="29" viewBox="0 0 30 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path fill-rule="evenodd" clip-rule="evenodd" d="M3 2H18.75C19.3023 2 19.75 2.44772 19.75 3V15H21.75V3C21.75 1.34315 20.4069 0 18.75 0H3C1.34315 0 0 1.34315 0 3V21.8571C0 23.514 1.34315 24.8571 3 24.8571H16.4846C16.1942 24.6822 16 24.3638 16 24V22.8571H3C2.44772 22.8571 2 22.4094 2 21.8571V3C2 2.44772 2.44772 2 3 2Z" fill="#A5A7A9"/>
+							<path d="M27.614 22.1745C26.585 23.406 25.1063 24.6558 23.394 26.1031L23.3937 26.1033C22.8085 26.5978 22.1454 27.1584 21.457 27.7553M27.614 22.1745L27.7675 22.3028M27.614 22.1745L27.7675 22.3028C27.7675 22.3028 27.7675 22.3028 27.7675 22.3028M27.614 22.1745C28.7643 20.798 29.3 19.4928 29.3 18.0669C29.3 16.6816 28.8211 15.4035 27.9515 14.4679C27.0715 13.5213 25.8639 13 24.551 13C23.5697 13 22.671 13.3077 21.88 13.9144L20.8 14.703M27.7675 22.3028C26.7274 23.5476 25.2378 24.8066 23.5349 26.2458L23.5228 26.2561L23.5228 26.2561C22.9375 26.7506 22.2753 27.3104 21.5881 27.9064L21.457 27.7553M27.7675 22.3028C28.9399 20.8998 29.5 19.5508 29.5 18.0669C29.5 16.6357 29.0051 15.3076 28.098 14.3318L28.098 14.3318C27.1795 13.3437 25.9184 12.8 24.551 12.8C23.525 12.8 22.5836 13.1227 21.7583 13.7557C21.4091 14.0235 21.0888 14.3408 20.8 14.703M21.457 27.7553L21.5881 27.9064M21.457 27.7553C21.2753 27.913 21.0419 28 20.8 28C20.558 28 20.3246 27.913 20.1428 27.7551C19.456 27.1595 18.7939 26.5998 18.2098 26.1062L18.2068 26.1036C16.4941 24.6561 15.0151 23.406 13.9861 22.1747C12.8358 20.798 12.3 19.4928 12.3 18.0669C12.3 16.6816 12.779 15.4035 13.6486 14.4679C14.5286 13.5213 15.7361 13 17.0491 13C18.0304 13 18.9291 13.3077 19.7201 13.9144C20.0677 14.1811 20.387 14.4998 20.6742 14.8663L21.5881 27.9064M21.5881 27.9064C21.3698 28.0958 21.0898 28.2 20.8 28.2C20.5101 28.2 20.2301 28.0958 20.0117 27.9061C19.3261 27.3115 18.6649 26.7527 18.0807 26.2589L18.0791 26.2576L18.0791 26.2576L18.0777 26.2563L18.0761 26.255L18.0669 26.2472C16.3632 24.8074 14.873 23.5479 13.8326 22.3029L13.8326 22.3029C12.6602 20.8998 12.1 19.5508 12.1 18.0669C12.1 16.6357 12.595 15.3076 13.5021 14.3318L13.5021 14.3318C14.4206 13.3437 15.6815 12.8 17.0491 12.8C18.0752 12.8 19.0165 13.1227 19.8418 13.7557L19.8418 13.7558C20.1908 14.0235 20.5113 14.3407 20.8 14.703M21.5881 27.9064L20.8 14.703M14.9062 21.4162L14.9062 21.4162C15.8663 22.5653 17.299 23.777 18.9807 25.1985C18.9811 25.1987 18.9814 25.199 18.9817 25.1992L18.9831 25.2004L18.9848 25.2018C19.5341 25.6661 20.153 26.1893 20.7988 26.7476C21.4482 26.1882 22.0682 25.6641 22.6187 25.199M14.9062 21.4162L14.5271 15.2735C15.1778 14.5736 16.072 14.1876 17.0491 14.1876C17.7595 14.1876 18.4107 14.4107 18.9892 14.8543C19.508 15.2523 19.873 15.7588 20.0887 16.1174L20.0887 16.1175C20.2397 16.3685 20.5068 16.5186 20.8 16.5186C21.0932 16.5186 21.3602 16.3685 21.5113 16.1175C21.7271 15.7588 22.0921 15.2523 22.6108 14.8543C23.1892 14.4107 23.8404 14.1876 24.551 14.1876C25.528 14.1876 26.4223 14.5737 27.0729 15.2735C27.7343 15.9851 28.1043 16.9751 28.1043 18.0669C28.1043 19.2064 27.6808 20.2351 26.6939 21.4162C25.7336 22.5655 24.3008 23.7772 22.6187 25.199M14.9062 21.4162C13.9192 20.2351 13.4957 19.2064 13.4957 18.0669C13.4957 16.9751 13.8657 15.9851 14.5271 15.2735L14.9062 21.4162ZM22.6187 25.199L22.7478 25.3517L22.6187 25.199Z" fill="#A5A7A9" stroke="#A5A7A9" stroke-width="0.4"/>
+							<rect x="17.6071" y="5.17856" width="1.7" height="13.4643" rx="0.85" transform="rotate(90 17.6071 5.17856)" fill="#A5A7A9"/>
+							<rect x="10" y="13" width="1.7" height="6" rx="0.85" transform="rotate(90 10 13)" fill="#A5A7A9"/>
+							<rect x="14" y="9" width="1.7" height="10" rx="0.85" transform="rotate(90 14 9)" fill="#A5A7A9"/>
+						</svg>
+
+						
+					</div>
+					
 					
 				</div>
-				
-				
-			</div>
 			</div>
 			<div class="scroll-elem">
 				
@@ -227,8 +242,8 @@
 
 		<div class="order-comment-form" 
 			:class="{show: showComment}">
-			<div class="order-comment-title"><span>Комментраий</span></div>
-			<textarea class="order-comment-textarea" name=""  ></textarea>
+			<div class="order-comment-title"><span>Комментарий</span></div>
+			<textarea class="order-comment-textarea" v-model="comment" @input="addComment()" name=""  ></textarea>
 		</div>
 		
 		<div class="order-list-buttons"
@@ -261,7 +276,7 @@
 </template>
 
 <script setup lang="ts">
-	import { ref, computed, PropType } from 'vue'
+	import { ref, computed, PropType, onMounted } from 'vue'
 	import { useStore } from '/src/store'
 
 	import AmountInput from '/src/components/ui/AmountInput.vue'
@@ -270,7 +285,7 @@
 	import SelectInput from '/src/components/ui/SelectInput.vue'
 	import SnackBar from '/src/components/ui/SnackBar.vue'
 
-	import { key } from '/src/store/index'
+	import { DeliveryCode, DeliveryName } from '/src/store/shipments/types'
 	import { OrderMutations } from '/src/store/order/mutations'
 	import { OrderActions } from '/src/store/order/actions'
 	import { OrderStateOrder, OrderStatePosition } from '/src/store/order/types'
@@ -284,6 +299,7 @@
 			},
 			companys:{
 				type: Array,
+				required: true
 			},
 			modelValue: {
 				type: String,
@@ -300,6 +316,9 @@
 	const snack = ref(false)
 	const snackMsg = ref('')
 	const showComment = ref(false)
+	const comment = ref('')
+	const selectDelivery = ref(0)
+	
 // Computed
 	const selectCompany = computed( {
 			get: () => props.data?.edit ? props.data.partner_id: props.modelValue,
@@ -322,6 +341,7 @@
 			store.dispatch(OrderActions.REMOVE_CHARACTERISTIC, CHAR)
 	}
 	const onClickAdd = () => {
+		if (!showComment.value)	store.commit(OrderMutations.SET_ORDER_COMMENT, '')
 		if (props.modelValue == '') {
 			error.value = true;
 			setTimeout(() => {error.value=false;}, 5000);
@@ -329,6 +349,7 @@
 		emits('onClickAdd');
 	}
 	const onClickEdit = () => {
+		if (!showComment.value)	store.commit(OrderMutations.SET_ORDER_COMMENT, '')
 		emits('onClickEdit');
 	}
 	const delOrder = () => {
@@ -348,6 +369,20 @@
 	const goTo = (to: string) =>{
 		router.push('/order/'+to)
 	}
-
+	const addSert = () => {
+		store.commit(OrderMutations.SET_ORDER_REQUEST_SERT, !props.data.request_certificate)
+	}
+	const addComment= () => {
+		store.commit(OrderMutations.SET_ORDER_COMMENT, comment.value)
+	}
+	const addDelivery= () => {
+		store.commit(OrderMutations.SET_ORDER_DELIVERY, DeliveryCode[selectDelivery.value].code)
+	}
+	onMounted( () => {
+		if (props.data.comment.length > 0) {
+			showComment.value = true
+			comment.value = props.data.comment
+		}
+	})
 </script>
 

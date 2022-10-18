@@ -35,6 +35,9 @@ export enum OrderMutations {
 	USE_DRAFT = "USE_DRAFT",
 	ADD_ORDER_DETAIL = "ADD_ORDER_DETAIL",
 	CLEAN_ORDER_DETAIL = "CLEAN_ORDER_DETAIL",
+	SET_ORDER_REQUEST_SERT = "SET_ORDER_REQUEST_SERT",
+	SET_ORDER_COMMENT = "SET_ORDER_COMMENT",
+	SET_ORDER_DELIVERY = "SET_ORDER_DELIVERY",
 }
 
 export const mutations: MutationTree<OrderState> = {
@@ -322,7 +325,7 @@ export const mutations: MutationTree<OrderState> = {
 			})
 		})
 		state.order.id = (new Date()).getTime()
-		state.error = null;
+		state.error = null
 		
 	},
 	[OrderMutations.EDIT_ORDER](state, data): void{
@@ -331,7 +334,16 @@ export const mutations: MutationTree<OrderState> = {
 		state.order.id = data.n
 		state.order.date = data.date
 		state.order.edit = true
-		state.error = null;
+		state.error = null
 		
 	},
+	[OrderMutations.SET_ORDER_REQUEST_SERT] (state, data: boolean){
+		state.order.request_certificate = data
+	},
+	[OrderMutations.SET_ORDER_COMMENT] (state, data: string){
+		state.order.comment = data
+	},
+	[OrderMutations.SET_ORDER_DELIVERY] (state, data: string){
+		state.order.delivery = data
+	}
 }

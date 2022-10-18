@@ -12,14 +12,17 @@ export interface OrderResponse{
 }
 
 export interface Order {
-	id:               number;
-	edit:			  Boolean;
-	reserved:		  Boolean;
-	total:            number;
-	count:            number;
-	partner_id:       string;
-	position:         Position[];
-	position_presail: Position[];
+	id:                  number;
+	edit:			     Boolean;
+	reserved:		     Boolean;
+	total:               number;
+	count:               number;
+	comment:             string;
+    delivery:            string;
+    request_certificate: boolean;
+	partner_id:          string;
+	position:            Position[];
+	position_presail:    Position[];
 }
 
 export interface Position {

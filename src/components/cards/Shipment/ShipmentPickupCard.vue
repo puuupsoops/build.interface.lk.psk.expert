@@ -59,7 +59,7 @@
 	<div class="shipment-form-body shipment-form-wrap">
 		<div class="shipment-form-elem">
 			<div class="shipment-form-item">
-				<div class="shipment-form-elem-title"><span>Комментраий</span></div>
+				<div class="shipment-form-elem-title"><span>Комментарий</span></div>
 				<textarea class="shipment-form-textarea" v-model="data.comment"></textarea>
 			</div>
 			<div class="shipment-form-item">

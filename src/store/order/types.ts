@@ -12,21 +12,24 @@ export interface OrderState {
 }
 
 export interface OrderStateOrder {
-	id:               number;
-	date?:		      Date;
-	edit:			  boolean;
-	reserved:         boolean;
-	total:            number;
-	total_discount?:  number;
-	total_presail?:   number;
-	total_presail_discount?:   number;
-	count:            number;
-	partner_id:       string;
-	position:         OrderStatePosition[];
-	position_presail: OrderStatePosition[];
-	total_count:      number;
-	total_valume:     number;
-	total_weight:     number;
+	id:                       number;
+	date?:		              Date;
+	edit:			          boolean;
+	reserved:                 boolean;
+	total:                    number;
+	total_discount?:          number;
+	total_presail?:           number;
+	total_presail_discount?:  number;
+	count:                    number;
+	partner_id:               string;
+	position:                 OrderStatePosition[];
+	position_presail:         OrderStatePosition[];
+	total_count:              number;
+	total_valume:             number;
+	total_weight:             number;
+	comment:                  string;
+	request_certificate:      boolean;
+	delivery:                 string;
 }
 
 export interface OrderStatePosition {
@@ -59,6 +62,9 @@ export const DefaultOrder: OrderStateOrder = {
 	total_count: 0,
 	total_valume: 0,
 	total_weight: 0,
+	comment: '',
+	delivery: 'pek',
+	request_certificate: false,
 }
 
 export const DefaultNewOrder = {
