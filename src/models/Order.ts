@@ -1,3 +1,4 @@
+import { OrderStateDelivery } from "../store/order/types";
 import { ResponseError } from "./Error";
 
 // Input Data
@@ -18,7 +19,7 @@ export interface Order {
 	total:               number;
 	count:               number;
 	comment:             string;
-    delivery:            string;
+    delivery:            OrderStateDelivery;
     request_certificate: boolean;
 	partner_id:          string;
 	position:            Position[];

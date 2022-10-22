@@ -253,16 +253,16 @@
 						line-height: 15px
 		
 		&-list
-			padding: 10px 0px 
+			padding: 10px 50px 
 			list-style-type: none
 			max-height: 250px
 			overflow: auto
 			overflow-x: hidden
-
+			+flex
+			+flex-direction(column)
+			+flex-wrap(nowrap)
 			&-elem
 				+flex
-				+justify-content(center)
-				+align-items(center)
 				margin:
 					bottom: 7px
 				

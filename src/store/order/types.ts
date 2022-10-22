@@ -29,7 +29,7 @@ export interface OrderStateOrder {
 	total_weight:             number;
 	comment:                  string;
 	request_certificate:      boolean;
-	delivery:                 string;
+	delivery:                 OrderStateDelivery;
 }
 
 export interface OrderStatePosition {
@@ -49,6 +49,12 @@ export interface OrderStatePositionOffer extends Offer {
 	fullprice?:      number;
 }
 
+export interface OrderStateDelivery {
+	case:      string,// "pek", // <String> это код, который DeliveryCode
+	date:      number, // это дата, на какой день. в <Integer> timestamp милисекунды
+	address:   string, //  <String> это адрес, из списка адресов, (если самовывоз, то пустая строка)
+	extra:     number[] // Array<Int> Дополнительное условие к доставке, если есть. [1 - Жесткая упаковка, 2 - Ополечивание], перечисление через массив. или пустой параметр
+}
 
 export const DefaultOrder: OrderStateOrder = {
 	id: 0,
@@ -63,9 +69,16 @@ export const DefaultOrder: OrderStateOrder = {
 	total_valume: 0,
 	total_weight: 0,
 	comment: '',
-	delivery: 'pek',
+	delivery: {
+		address: '',
+		case: '',
+		date: 0,
+		extra: []
+	},
 	request_certificate: false,
 }
+
+
 
 export const DefaultNewOrder = {
 	id: 0,

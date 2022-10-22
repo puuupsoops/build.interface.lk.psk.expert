@@ -142,14 +142,7 @@ export default defineComponent({
 						accept: false,
 				});
 	
-		const addressList = computed<SelectInputData[]>(() => {
-			return <SelectInputData[]>store.getters.getShipmentsAddress.map((x: ShipmentsAddress) => {
-				return {
-						id: x.index,
-						name: x.label
-					}
-			})
-		})
+		const addressList = computed( () => store.getters.getShipmentsAddressInputData)
 		const company = computed(() => { 
 			let c = store.getters.getCompanys.find( (x: Partner) =>x.uid == props.partner_guid)
 			return c ? c.name : ''

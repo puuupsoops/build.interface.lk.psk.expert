@@ -1,6 +1,8 @@
 import { GetterTree } from "vuex"
 import { RootState } from "/src/store"
 import { ShipmentsState } from "./types"
+import { SelectInputData } from "/src/models/Components"
+import { ShipmentsAddress } from "/src/models/Shipments"
 
 export const getters: GetterTree<ShipmentsState, RootState> = {
 	isShipments: state => state.shipments.length == 0,
@@ -15,4 +17,10 @@ export const getters: GetterTree<ShipmentsState, RootState> = {
 			res.unshift({id: '', name: "Все"})
 			return res
 		},
+		getShipmentsAddressInputData: state => <SelectInputData[]>state.address.map((x: ShipmentsAddress) => {
+				return {
+						id: x.index,
+						name: x.label
+					}
+			})
 }

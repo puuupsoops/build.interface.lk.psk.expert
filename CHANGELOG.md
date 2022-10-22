@@ -1,11 +1,18 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
-Date:   2022-09-29
+Date:   2022-10-22
+
+    #0.2.42
+    1. При создании заказа можно выбирать адреса и дату для доставки
+    2. Изменил название документов на карточке CompanyStorageCard
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-10-13
 
     #0.2.41
     1. Обновлена модель при создании заказа. Добавлены поля комментарий, запрос сертификатов и доставка.
 
 Author: Vadim Zaboturin <vadimzab@gmail.com>
-Date:   2022-09-29
+Date:   2022-12-12
 
     #0.2.39
     1. Добавлена ссылка на запрос счета

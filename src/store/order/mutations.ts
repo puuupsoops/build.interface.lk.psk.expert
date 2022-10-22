@@ -1,6 +1,6 @@
 import { NewOrder } from "/src/models/Order";
 import { MutationTree } from "vuex";
-import { DefaultNewOrder, DefaultOrder, OrderState, OrderStateOrder, OrderStatePosition, OrderStatePositionOffer } from "./types";
+import { DefaultNewOrder, DefaultOrder, OrderState, OrderStateDelivery, OrderStateOrder, OrderStatePosition, OrderStatePositionOffer } from "./types";
 import { state as CompanyState} from '/src/store/company/state'
 
 const getCompanyDiscount = (uid: string, guid: string, status: string): number => {
@@ -343,7 +343,7 @@ export const mutations: MutationTree<OrderState> = {
 	[OrderMutations.SET_ORDER_COMMENT] (state, data: string){
 		state.order.comment = data
 	},
-	[OrderMutations.SET_ORDER_DELIVERY] (state, data: string){
+	[OrderMutations.SET_ORDER_DELIVERY] (state, data: OrderStateDelivery){
 		state.order.delivery = data
 	}
 }

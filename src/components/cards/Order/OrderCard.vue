@@ -18,9 +18,8 @@
 						<div class="order-list-elem">Условия получения</div>
 							<SelectInput 
 								:data="DeliveryName"
-								:error="error"
 								v-model="selectDelivery"
-								@onInput="addDelivery()"
+								
 							/>
 					</div>
 				</div>
@@ -75,6 +74,25 @@
 					
 					
 				</div>
+			</div>
+			<div class="order-list-delivery">
+				<ShipmentPickupAddressCard v-if="selectDelivery == 0" v-model:date="deliveryDate" v-model:errorDate="deliveryDateError" />
+
+				<ShipmentDeliveryAddressCard v-else-if="selectDelivery == 4"
+					v-model:date="deliveryDate" 
+					v-model:addressId="deliveryAddress" 
+					v-model:errorDate="deliveryDateError" 
+					v-model:errorAddress="deliveryAddressError" 
+				/>
+				<ShipmentTransportAddressCard v-else
+					v-model:date="deliveryDate" 
+					v-model:addressId="deliveryAddress" 
+					v-model:errorDate="deliveryDateError" 
+					v-model:errorAddress="deliveryAddressError" 
+					v-model:extra="deliveryExtra"
+				/>
+				
+				
 			</div>
 			<div class="scroll-elem">
 				
@@ -246,9 +264,7 @@
 			<textarea class="order-comment-textarea" v-model="comment" @input="addComment()" name=""  ></textarea>
 		</div>
 		
-		<div class="order-list-buttons"
-			
-		>
+		<div class="order-list-buttons">
 			<button 
 				class="order-list-submit gradient-btn disabled" 
 				@click="delOrder()"
@@ -284,11 +300,14 @@
 	import EditButton from '/src/components/ui/EditButton.vue'
 	import SelectInput from '/src/components/ui/SelectInput.vue'
 	import SnackBar from '/src/components/ui/SnackBar.vue'
-
+	import ShipmentPickupAddressCard from '/src/components/cards/Shipment/ShipmentPickupAddressCard.vue'
+	import ShipmentDeliveryAddressCard from '/src/components/cards/Shipment/ShipmentDeliveryAddressCard.vue'
+	import ShipmentTransportAddressCard from '/src/components/cards/Shipment/ShipmentTransportAddressCard.vue'
+	
 	import { DeliveryCode, DeliveryName } from '/src/store/shipments/types'
 	import { OrderMutations } from '/src/store/order/mutations'
 	import { OrderActions } from '/src/store/order/actions'
-	import { OrderStateOrder, OrderStatePosition } from '/src/store/order/types'
+	import { OrderStateDelivery, OrderStateOrder, OrderStatePosition } from '/src/store/order/types'
 	import { useRouter } from 'vue-router'
 
 	const props = defineProps(
@@ -317,6 +336,12 @@
 	const snackMsg = ref('')
 	const showComment = ref(false)
 	const comment = ref('')
+	const deliveryDate = ref('')
+	const deliveryDateError = ref(false)
+	const deliveryAddress = ref(-1)
+	const deliveryAddressError = ref(false)
+	const deliveryExtra = ref<number[]>([])
+
 	const selectDelivery = ref(0)
 	
 // Computed
@@ -341,12 +366,33 @@
 			store.dispatch(OrderActions.REMOVE_CHARACTERISTIC, CHAR)
 	}
 	const onClickAdd = () => {
+		let valid = true
 		if (!showComment.value)	store.commit(OrderMutations.SET_ORDER_COMMENT, '')
 		if (props.modelValue == '') {
 			error.value = true;
 			setTimeout(() => {error.value=false;}, 5000);
 		}
-		emits('onClickAdd');
+		if (deliveryDate.value == '') {
+			deliveryDateError.value = true;
+			setTimeout(() => {deliveryDateError.value=false;}, 5000);
+			valid=false
+		}
+		if (selectDelivery.value > 0 && deliveryAddress.value == -1) {
+			deliveryAddressError.value = true;
+			setTimeout(() => {deliveryAddressError.value=false;}, 5000);
+			valid=false
+		}
+	
+		if (valid){
+			let delivery = <OrderStateDelivery>{
+					address: selectDelivery.value == 0 ? '' : store.getters.getShipmentsAddress[deliveryAddress.value].address,
+					case: DeliveryCode[selectDelivery.value].code,
+					date: (new Date(deliveryDate.value)).getTime(),
+					extra: deliveryExtra.value,
+			}				
+			store.commit(OrderMutations.SET_ORDER_DELIVERY, delivery)
+			emits('onClickAdd')
+		}
 	}
 	const onClickEdit = () => {
 		if (!showComment.value)	store.commit(OrderMutations.SET_ORDER_COMMENT, '')
@@ -374,9 +420,6 @@
 	}
 	const addComment= () => {
 		store.commit(OrderMutations.SET_ORDER_COMMENT, comment.value)
-	}
-	const addDelivery= () => {
-		store.commit(OrderMutations.SET_ORDER_DELIVERY, DeliveryCode[selectDelivery.value].code)
 	}
 	onMounted( () => {
 		if (props.data.comment.length > 0) {

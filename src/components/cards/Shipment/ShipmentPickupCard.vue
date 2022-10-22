@@ -7,7 +7,7 @@
 				<div class="shipment-form-elem-title">
 					
 					<span>Адрес Самовывоза</span>
-					<span class="shipment-form-elem-title-time">с 8.00 до 18.00 (пн-пт) сб,вс-вых.</span>
+					<span class="shipment-form-elem-title-time">{{ PSKWorkTime }}</span>
 				</div>
 				<div class="shipment-form-row">
 					<div class="shipment-form-input-wrap shipment-datalist" id="shipment-datalist">
@@ -185,13 +185,13 @@
 </template>
 
 
-<script lang="ts">
+<script setup lang="ts">
 
 import DatePicker from '/src/components/ui/DatePicker.vue'
 import DeleteButton from '/src/components/ui/DeleteButton.vue'
 
 
-import { computed, defineComponent, PropType, ref }from 'vue'
+import { computed, PropType, ref }from 'vue'
 
 import { useStore } from '/src/store'
 
@@ -200,15 +200,11 @@ import { useRouter } from 'vue-router'
 import { Partner } from '/src/models/Partner'
 import { Orders } from '/src/models/Orders'
 import { ClaimMutations } from '/src/store/claims/mutations'
+import { PSKWorkTime, PSKAddress } from '/src/store/shipments/types'
 
 
 
-export default defineComponent({
-		components: {
-			DatePicker,
-			DeleteButton,
-		},
-		props:{
+const props = defineProps({
 			order:{
 				type: Object as PropType<Orders>,
 				//required: true
@@ -217,110 +213,94 @@ export default defineComponent({
 				type: String,
 				required: true
 			},
-		},
-		setup(props) {
-			const store = useStore()
-			const router = useRouter()
-			const loading = ref(false)
-			const showMap = ref(false)
+		})
+
+const store = useStore()
+const router = useRouter()
+const loading = ref(false)
+const showMap = ref(false)
+
+const data = ref({
+			date: '',
+			dateError: false,
+			address: PSKAddress,
+			addressError: false,
+			comment: '',
+			fio: '',
+			doc: 'Паспорт',
+			serial: '',
+			num: '',
+			when: '',
+			who: '',
+			car: '',
+			gosnum: '',
+			quick: false,
+			accept: false,
+			files: <any>[],
+	});
 			
-			const data = ref({
-						date: '',
-						dateError: false,
-						address: 'Россия, 141580, Московская область, Солнечногорский район, сельское поселение Лунёвское, в районе деревни Дубровки, ул. Аэропортовская, строение 6, корпус 1.',
-						addressError: false,
-						comment: '',
-						fio: '',
-						doc: 'Паспорт',
-						serial: '',
-						num: '',
-						when: '',
-						who: '',
-						car: '',
-						gosnum: '',
-						quick: false,
-						accept: false,
-						files: <any>[],
-				});
+	
+	const company = computed(() => { 
+		let c = store.getters.getCompanys.find( (x: Partner) =>x.uid == props.partner_guid)
+		return c ? c.name : ''
+		})
+	const view_message = computed(()=>{
+		let res = <String[]>[]
+		res.push( (props.order ? props.order.name: ''))
+		res.push( 'Контрагент: ' + company.value)
+		if (data.value.date != '') res.push( 'Желаемая дата отгрузки: ' +data.value.date)
+		res.push( 'Адрес самовывоза: ' + data.value.address)
+		if (data.value.accept) res.push( 'Подтвердить: да')
+		res.push( 'Комментрий: '+ ( data.value.comment.trim() == '' ? 'Нет' : data.value.comment))
+		res.push( 'Данные: ' + data.value.fio )
+		res.push( `Документ: ${data.value.doc} Серия ${data.value.serial} №${data.value.num}`)
+		res.push( `Выдан ${data.value.when} ${data.value.who}`)
+		if (data.value.car !== '') res.push( `Машина: ${data.value.car} ${data.value.gosnum}`)
+		return res
+	})
+	
+	const send = ()=>{
+
+		let ok = true
+		if (data.value.date == '') {
+			data.value.dateError = true
+			ok = false
+			setTimeout(()=>{data.value.dateError = false}, 3000)
+		}
+		if (ok) {
+			loading.value = true
 			
+			let formData = new FormData();
 			
-			const company = computed(() => { 
-				let c = store.getters.getCompanys.find( (x: Partner) =>x.uid == props.partner_guid)
-				return c ? c.name : ''
-				})
-			const view_message = computed(()=>{
-				let res = <String[]>[]
-				res.push( (props.order ? props.order.name: ''))
-				res.push( 'Контрагент: ' + company.value)
-				if (data.value.date != '') res.push( 'Желаемая дата отгрузки: ' +data.value.date)
-				res.push( 'Адрес самовывоза: ' + data.value.address)
-				if (data.value.accept) res.push( 'Подтвердить: да')
-				res.push( 'Комментрий: '+ ( data.value.comment.trim() == '' ? 'Нет' : data.value.comment))
-				res.push( 'Данные: ' + data.value.fio )
-				res.push( `Документ: ${data.value.doc} Серия ${data.value.serial} №${data.value.num}`)
-				res.push( `Выдан ${data.value.when} ${data.value.who}`)
-				if (data.value.car !== '') res.push( `Машина: ${data.value.car} ${data.value.gosnum}`)
-				return res
+			data.value.files.forEach((x:any, index:number) => {formData.append('files['+index+']',x)})
+			
+			formData.append('title', props.order? props.order?.name : '')
+			formData.append('partner_name', company.value)
+			formData.append('partner_guid',  props.partner_guid)
+			formData.append('id', String(props.order ? props.order.n: ''))
+			formData.append('case', '0')
+			formData.append('message', JSON.stringify(view_message.value))
+			formData.append('amount', '')
+			formData.append('weight', '')
+			formData.append('volume', '')
+			formData.append('carriers', '')
+			formData.append('date', String((new Date(data.value.date ? data.value.date : '')).getTime()))
+			formData.append('address', data.value.address)
+			formData.append('comment', data.value.comment)
+			formData.append('extra', '')
+			store.commit(ClaimMutations.CLEAR_CLAIMS_SUCCESS)
+			store.dispatch(ShipmentsActions.ADD_SHIPMENTS, formData).then(() => {
+				router.push({name: 'ShipmentsRequestSuccess'})
+				loading.value = false
 			})
 			
-			const send = ()=>{
-
-				let ok = true
-				if (data.value.date == '') {
-					data.value.dateError = true
-					ok = false
-					setTimeout(()=>{data.value.dateError = false}, 3000)
-				}
-				if (ok) {
-					loading.value = true
-					
-					let formData = new FormData();
-					
-					data.value.files.forEach((x:any, index:number) => {formData.append('files['+index+']',x)})
-					
-					formData.append('title', props.order? props.order?.name : '')
-					formData.append('partner_name', company.value)
-					formData.append('partner_guid',  props.partner_guid)
-					formData.append('id', String(props.order ? props.order.n: ''))
-					formData.append('case', '0')
-					formData.append('message', JSON.stringify(view_message.value))
-					formData.append('amount', '')
-					formData.append('weight', '')
-					formData.append('volume', '')
-					formData.append('carriers', '')
-					formData.append('date', String((new Date(data.value.date ? data.value.date : '')).getTime()))
-					formData.append('address', data.value.address)
-					formData.append('comment', data.value.comment)
-					formData.append('extra', '')
-					store.commit(ClaimMutations.CLEAR_CLAIMS_SUCCESS)
-					store.dispatch(ShipmentsActions.ADD_SHIPMENTS, formData).then(() => {
-						router.push({name: 'ShipmentsRequestSuccess'})
-						loading.value = false
-					})
-					
-				}
-			}
-			const handleFileUpload = ( event: any) =>{
-				data.value.files.push(event.target.files[0]);
-			}
-			const delFile = (id:number) => {
-				data.value.files.splice(id, 1)
-			}
-			
-			return {
-				data, 
-				loading,
-				showMap,
-				view_message,
-				
-				//computed
-				company,
-				//methods
-				handleFileUpload,
-				delFile,
-				send,
-				
-			}
 		}
-})
+	}
+	const handleFileUpload = ( event: any) =>{
+		data.value.files.push(event.target.files[0]);
+	}
+	const delFile = (id:number) => {
+		data.value.files.splice(id, 1)
+	}
+
 </script>

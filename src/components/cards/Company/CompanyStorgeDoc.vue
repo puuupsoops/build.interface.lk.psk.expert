@@ -10,7 +10,8 @@
 							:key="id"
 							
 							>
-						<img class="company-head-list-img" src="/src/assets/img/icon/doc.svg" alt="">
+							{{document}}
+						<img class="company-head-list-img" src="/src/assets/img/icon/doc.svg" alt="">{{}}
 						<a class="company-head-list-link" href="#CompanyCalendar" @click="docDate = document.expires">Cчёт от {{document.date_str}}</a>
 					</li>
 				</ul>
