@@ -212,9 +212,9 @@
 			nextTick(() => {
 				pos.value = nav.value.getBoundingClientRect().y
 				height.value = nav.value.clientHeight
+				setTimeout(()=>{window.addEventListener("scroll", onScroll)}, 500)
+				window.scrollTo(0,0)
 			});
-					window.scrollTo(0,0)
-					window.addEventListener("scroll", onScroll)
 			})
 
 

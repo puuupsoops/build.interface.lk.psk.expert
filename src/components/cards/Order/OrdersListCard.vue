@@ -96,8 +96,8 @@
 					<div class="orders-list-elem" >
 
 						<div v-for="(check, key) in item.checks" 
-							:class="'orders-list-elem-status ' + OrdersSatusCodeClass[check.status].class"
-							:tooltip="OrdersSatusCodeClass[check.status].name"
+							:class="'orders-list-elem-status ' + (parseInt(check.status) >= 0 && parseInt(check.status) < OrdersSatusCodeClass.length ? OrdersSatusCodeClass[parseInt(check.status)].class: '')"
+							:tooltip="(parseInt(check.status) >= 0 && parseInt(check.status) < OrdersSatusCodeClass.length ? OrdersSatusCodeClass[parseInt(check.status)].name: '')"
 							flow="up"
 							:key="key"
 						>
@@ -206,10 +206,11 @@
 								</a>
 							</div>
 							<div class="orders-list-info-elem"> 
+							
 								{{ OrdersSatusCodeClass[check.status] ? OrdersSatusCodeClass[check.status].name : ''}}	
 								<div  
 									v-if="OrdersSatusCodeClass[check.status]"
-									:class="'orders-list-elem-status small ' + OrdersSatusCodeClass[check.status].class"
+									:class="'orders-list-elem-status small ' + (parseInt(check.status) >= 0 && parseInt(check.status) < OrdersSatusCodeClass.length ? OrdersSatusCodeClass[parseInt(check.status)].class: '')"
 									
 									flow="up"
 								>
@@ -285,7 +286,7 @@
 	import { useStore } from '/src/store'
 	
 	import { OrderActions } from '/src/store/order/actions'
-	import { Storage } from '/src/models/Partner'
+	import { StorageCompany } from '/src/models/Partner'
 	import { OrdersActions } from '/src/store/orders/actions'
 	import { OrdersSatusCode, OrdersSatusCodeClass } from '/src/store/orders/types'
 
@@ -466,7 +467,7 @@
 	}
 
 	const getStorageName = (partner_guid: string, organization_id: string): string=>{
-		const storages = <Storage[]>store.getters.getCompanyStoragesData(partner_guid)
+		const storages = <StorageCompany[]>store.getters.getCompanyStoragesData(partner_guid)
 		const storage = storages.find(x  => x.guid == organization_id)
 		return storage ? storage.name.replace(/(^|\s)\S/g, s => s.toUpperCase()).replace(/(ООО)|(")|(\s)|([а-я])/g, '') : 'Склад'
 	}

@@ -328,7 +328,7 @@
 	const emits =  defineEmits(['update:modelValue', 'update:data','onClickAdd', 'onClickEdit'])
 	const store = useStore()
 	const router = useRouter()
-	const open = ref([])
+	const open = ref<number[]>([])
 	const open_presail = ref([])
 
 	const error = ref(false)

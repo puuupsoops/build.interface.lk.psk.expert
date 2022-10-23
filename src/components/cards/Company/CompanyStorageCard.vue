@@ -27,13 +27,14 @@
 			<div class="company-head-info">			
 				<div class="company-head-info-row">
 					<div class="company-head-info-elem l">
-						<span class="company-head-info-title">Отстрочка</span>
-						<span class="company-head-info-val" v-if="data.deferment>0">{{data.deferment}} {{getDay(data.deferment)}}</span>
-						<span class="company-head-info-val" v-else>Предоплата</span>
+						<span class="company-head-info-title">{{data.case}}</span>
+						<span class="company-head-info-val" v-if="data.case==='отсрочка'">{{data.deferment}} {{getDay(data.deferment)}}</span>
+						<span class="company-head-info-val" v-if="data.case==='предоплата'">{{data.percent}}%</span>
+					
 					</div>
-					<div class="company-head-info-elem r">
+					<div class="company-head-info-elem r" v-if="data.case!=='предоплата'">
 						<span class="company-head-info-title">Дата погашения</span>
-						<span class="company-head-info-val" >{{ data.debt>0 ? data.date : '--.--.--'}}</span>
+						<span class="company-head-info-val" >{{ data.date }}</span>
 					</div>
 				</div>
 			</div>
@@ -42,6 +43,10 @@
 				<div class="company-head-info-elem l">
 					<span class="company-head-info-title">Договор</span>
 					<span class="company-head-info-val">{{data.contract}}</span>
+				</div>
+				<div class="company-head-info-elem к">
+					<span class="company-head-info-title">Лимит</span>
+					<span class="company-head-info-val">{{Number(data.limit).toLocaleString('ru').replace(',','.')}} ₽</span>
 				</div>
 			</div>
 		</div>
@@ -100,7 +105,7 @@
 							:key="id"
 							>
 						<img class="company-head-list-img" src="/src/assets/img/icon/doc.svg" alt="">
-						<a class="company-head-list-link" href="#CompanyCalendar" @click="docDate = document.expires">{{document.debt.toLocaleString('ru').replace(',','.').substring(1)}} ₽ оплатить до {{document.expires_str}}</a>
+						<a class="company-head-list-link" href="#CompanyCalendar" @click="docDate = document.expires">{{document.debt.toLocaleString('ru').replace(',','.').substring(1)}} ₽ оплатить до {{document.expires}}</a>
 					</li>
 				</ul>
 			</div>
@@ -153,7 +158,7 @@
 		<div class="company-head-info">
 			<div class="company-head-info-row">
 				<div class="company-head-info-elem l">
-					<span class="company-head-info-title">Отстрочка</span>
+					<span class="company-head-info-title">Отсрочка</span>
 					<span class="company-head-info-val">0 дней</span>
 					
 				</div>
@@ -175,60 +180,47 @@
 
 </template>
 
-<script lang="ts">
-import { defineComponent, inject, ref } from "vue"
+<script setup lang="ts">
+import { inject, PropType, ref } from "vue"
+import { StorageCompany } from "/src/models/Partner";
 
 
 
-export default defineComponent({
-		props:{
+const props = defineProps({
 				data:{
-					type: Object,
-					
+					type: Object as PropType<StorageCompany>,				
 				},
 				active:{
 					type: Boolean 
 				},
-		},
-		emits: ['onClick'],
+		})
+const emits = defineEmits(['onClick'])
 
-		setup(){
+	const showDoc = ref(false)
+	let docDate = inject('docDate');
+	
+	let getDay = function (number: number){
+		let dayMeterings = [ 'дней', 'день', 'дня' ]
 
-			const showDoc = ref(false)
-			let docDate = inject('docDate');
-			
-			let getDay = function (number: number){
-				let dayMeterings = [ 'дней', 'день', 'дня' ]
-
-				let lastDigits = number % 100;
-				lastDigits = lastDigits >= 20 ? lastDigits % 10 : lastDigits;
-				
-				let metering = 0;
+		let lastDigits = number % 100;
+		lastDigits = lastDigits >= 20 ? lastDigits % 10 : lastDigits;
+		
+		let metering = 0;
 
 // В зависимости от значения единичного разряда пишем правильное слово.
-				if ( lastDigits === 0 || lastDigits >= 5 && lastDigits <= 20 ) {
-					metering = 0;
-				} else if ( lastDigits == 1 ) 
-				{
-					metering = 1
-				} else {
-					metering = 2
-				}
-				return dayMeterings[metering]
-			}
-			
-
-		return {
-			//data
-			showDoc,
-			docDate,
-			
-			//method
-			getDay,
-			
+		if ( lastDigits === 0 || lastDigits >= 5 && lastDigits <= 20 ) {
+			metering = 0;
+		} else if ( lastDigits == 1 ) 
+		{
+			metering = 1
+		} else {
+			metering = 2
 		}
+		return dayMeterings[metering]
 	}
-});
+	
+
+
 </script>
 
 <style>

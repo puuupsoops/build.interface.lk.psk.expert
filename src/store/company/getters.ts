@@ -1,7 +1,7 @@
 import { GetterTree } from "vuex"
 import { RootState } from "/src/store"
 import { CompanyState } from "./types"
-import { normalizeCompanyName, Partner } from "/src/models/Partner"
+import { Document, normalizeCompanyName, Partner, StorageCompany } from "/src/models/Partner"
 
 export const getters: GetterTree<CompanyState, RootState> = {
 	isCompanysLoad: state => state.companys.length !== 0,
@@ -33,32 +33,32 @@ export const getters: GetterTree<CompanyState, RootState> = {
 				"uid": company.uid,
 			}) : {}
 		},
-		getCompanyStoragesData: state => (uid: string) => {
+		getCompanyStoragesData: state => (uid: string): StorageCompany[] => {
 			const company = state.companys.find(x => x.uid === uid)
+			
 			return (company && company.storages) ?
-				company.storages.map ( val =>
-					({
+				company.storages.map ( val => 
+					<StorageCompany>({
 						"guid": val.guid,
 						"name": val.name,
 						"spent": val.spent,
 						"contract": val.contract,
 						"deferment": val.deferment,
 						"debt": val.debt,
-						"debt_str": Number(val.debt).toLocaleString('ru'),
 						"balance": val.balance,
-						"balance_str": Number(val.balance).toLocaleString('ru'),
 						"discount": val.discount,
+						"case": val.case,
+						"limit": val.limit,
+						"percent": val.percent,
 						"date": new Date(Number(val.date) * 1000).toLocaleString('ru').substr(0, 10),
-						"documents": val.documents.map( doc =>
-							({
-								"date_str": new Date(Number(doc.date) * 1000).toLocaleString('ru').substr(0, 10),
-								"date": new Date(Number(doc.date) * 1000),
+						"documents": val.documents.map( doc => {
+							return <Document>{
+								"date": new Date(Number(doc.date) * 1000).toLocaleString('ru').substr(0, 10),
 								"number": doc.number,
 								"debt": doc.debt,
-								"expires_str": new Date(Number(doc.expires) * 1000).toLocaleString('ru').substr(0, 10),
-								"expires": new Date(Number(doc.expires) * 1000),
-							})
-							),
+								"expires": new Date(Number(doc.expires) * 1000).toLocaleString('ru').substr(0, 10),
+								"expires_date": new Date(Number(doc.expires) * 1000),
+							}}),
 					})) : []
 		},
 		getCompanySpent: state => (uid: string) => {

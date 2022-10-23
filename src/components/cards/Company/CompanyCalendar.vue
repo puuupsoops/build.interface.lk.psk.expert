@@ -54,14 +54,15 @@ let calendarOptions = computed( () => ({
 		initialView: 'dayGridMonth',
 		duration: { days: 3 },
 		locale: ruLocale,
-		events: eventsArr.value ? eventsArr.value.map(doc => ({
-												"title": `Счёт от ${doc.date_str} на ${doc.debt}₽`,
-												"start": doc.expires,
-												"backgroundColor": '#378006',
-												"allDay": true,
-												"display": 'block',
+		events: eventsArr.value ? eventsArr.value.map(doc => {
+												return {
+													"title": `Счёт от ${doc.date} на ${doc.debt}₽`,
+													"start": doc.expires_date,
+													"backgroundColor": '#378006',
+													"allDay": true,
+													"display": 'block'}
 											
-												})) : [],
+												}) : [],
 		
 	}))
 </script>
