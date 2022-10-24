@@ -232,12 +232,15 @@ export const mutations: MutationTree<OrderState> = {
 			state.order.id = (new Date()).getTime()
 		}
 	},
-	[OrderMutations.ADD_ORDER_DETAIL] (state, data): void{
+	[OrderMutations.ADD_ORDER_DETAIL] (state, data: OrderStateOrder): void{
 		if (data.position != null || data.position_presail != null) {
 			state.order_detail.id = data.id
 			state.order_detail.count = data.count
 			state.order_detail.partner_id = data.partner_id
-			
+			state.order_detail.request_certificate = data.request_certificate
+			state.order_detail.comment = data.comment
+			state.order_detail.delivery =  Object.assign({}, data.delivery)
+
 			let total = 0
 			let total_discount= 0
 			let total_presail = 0
@@ -253,7 +256,7 @@ export const mutations: MutationTree<OrderState> = {
 					});
 					
 					total_discount = total_discount + total_price
-					return {
+					return  <OrderStatePosition>{
 						product:{ NAME: x.name, PRICE: 0},
 						count: total_count, 
 						total: total_price,
@@ -284,7 +287,7 @@ export const mutations: MutationTree<OrderState> = {
 					});
 					
 					total_presail_discount = total_presail_discount + total_price
-					return {
+					return  <OrderStatePosition>{
 						product:{ NAME: x.name, PRICE: 0},
 						count: total_count, 
 						total: total_price,

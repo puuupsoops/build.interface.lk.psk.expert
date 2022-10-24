@@ -106,12 +106,11 @@ export default defineComponent({
 			now.setHours(0, 0, 0, 0);
 			let dt = new Date();
 	
-			if (props.modelValue) dt= new Date(props.modelValue);
-
+			if (props.modelValue) dt= new Date(props.modelValue.split('.')[2]+'-'+props.modelValue.split('.')[1]+'-'+props.modelValue.split('.')[0]);
 	
 			dt.setMonth(dt.getMonth() + delta.value);
 			dt = new Date(dt.toISOString().substr(0, 7) + '-01');
-			let month = dt.toLocaleString('default', { month: 'long' });
+			let month = dt.toLocaleString('ru', { month: 'long' });
 			month=month.charAt(0).toUpperCase() + month.slice(1);
 			let month_int = dt.getMonth();
 			let year = dt.getFullYear();
@@ -122,7 +121,7 @@ export default defineComponent({
 				let day = dt.getDate()
 				let select = false;
 				if (props.modelValue) 
-					select = dt.getTime()  === new Date(props.modelValue).getTime()
+					select = dt.getTime()  === new Date(props.modelValue.split('.')[2]+'-'+props.modelValue.split('.')[1]+'-'+props.modelValue.split('.')[0]).getTime()
 				
 				el.push({
 					day,
@@ -142,9 +141,11 @@ export default defineComponent({
 		})
 
 		const select_date = (year: number, month: number, day: number) => {
+			
 			let dt= new Date(year, month, day);
+			//console.log(year, month, day, dt.toLocaleString('ru').substr(0,10))
 			//emit('update:modelValue', dt.toISOString().substr(8,2)+'.'+dt.toISOString().substr(5,2)+'.'+ dt.toISOString().substr(0,4));
-			emit('update:modelValue', dt.toISOString().substr(0,10));
+			emit('update:modelValue', dt.toLocaleString('ru').substr(0,10));
 			emit('onInput');
 			active.value = false;
 		}

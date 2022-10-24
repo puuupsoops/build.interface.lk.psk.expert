@@ -168,7 +168,7 @@
 								<div class="order-list-elem">{{ Number(characteristic.price_discount * characteristic.count).toLocaleString('RU', {minimumFractionDigits: 0, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
 
 								<div class="order-list-elem-delete">
-									<DeleteButton  @onClick="removeCharacteristic(false, {guid: item.guid, characteristics: [characteristic]})" />
+									<DeleteButton  @onClick="removeCharacteristic(false, {guid: item.guid, characteristics: [characteristic], article: item.article, product:item.product})" />
 								</div>
 							</div>
 							
@@ -246,7 +246,7 @@
 								<div class="order-list-elem">{{ Number(characteristic.price_discount * characteristic.count).toLocaleString('RU', {minimumFractionDigits: 0, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
 								
 								<div class="order-list-elem-delete">
-									<DeleteButton  @onClick="removeCharacteristic(true, {guid: item.guid, characteristics: [characteristic]})" />
+									<DeleteButton  @onClick="removeCharacteristic(true, {guid: item.guid, characteristics: [characteristic], article: item.article, product:item.product})" />
 								</div>
 							</div>
 							
@@ -274,14 +274,14 @@
 			<button 
 				class="order-list-submit gradient-btn"
 				v-if="data.edit" 
-				@click="onClickEdit()"
+				@click="onClick()"
 			> 
 				<div class="gradient-btn-text">Изменить заказ</div>
 			</button>			
 			<button 
 				class="order-list-submit gradient-btn" 
 				v-else
-				@click="onClickAdd()"
+				@click="onClick()"
 			> 
 				<div class="gradient-btn-text">Оформить заказ</div>
 			</button>
@@ -309,6 +309,8 @@
 	import { OrderActions } from '/src/store/order/actions'
 	import { OrderStateDelivery, OrderStateOrder, OrderStatePosition } from '/src/store/order/types'
 	import { useRouter } from 'vue-router'
+	import { SelectInputData, DateFromRuLocale } from '/src/models/Components'
+import { emit } from 'process'
 
 	const props = defineProps(
 		{
@@ -317,7 +319,7 @@
 				required: true
 			},
 			companys:{
-				type: Array,
+				type: Array as PropType<SelectInputData[]>,
 				required: true
 			},
 			modelValue: {
@@ -329,7 +331,7 @@
 	const store = useStore()
 	const router = useRouter()
 	const open = ref<number[]>([])
-	const open_presail = ref([])
+	const open_presail = ref<number[]>([])
 
 	const error = ref(false)
 	const snack = ref(false)
@@ -365,7 +367,7 @@
 		else
 			store.dispatch(OrderActions.REMOVE_CHARACTERISTIC, CHAR)
 	}
-	const onClickAdd = () => {
+	const onClick = () => {
 		let valid = true
 		if (!showComment.value)	store.commit(OrderMutations.SET_ORDER_COMMENT, '')
 		if (props.modelValue == '') {
@@ -387,16 +389,15 @@
 			let delivery = <OrderStateDelivery>{
 					address: selectDelivery.value == 0 ? '' : store.getters.getShipmentsAddress[deliveryAddress.value].address,
 					case: DeliveryCode[selectDelivery.value].code,
-					date: (new Date(deliveryDate.value)).getTime(),
+					date: DateFromRuLocale(deliveryDate.value).getTime(),
 					extra: deliveryExtra.value,
 			}				
 			store.commit(OrderMutations.SET_ORDER_DELIVERY, delivery)
-			emits('onClickAdd')
+			if (props.data.edit) 
+				emits('onClickEdit')
+			else
+				emits('onClickAdd')
 		}
-	}
-	const onClickEdit = () => {
-		if (!showComment.value)	store.commit(OrderMutations.SET_ORDER_COMMENT, '')
-		emits('onClickEdit');
 	}
 	const delOrder = () => {
 		store.commit(OrderMutations.CLEAN_ORDER)
@@ -426,6 +427,16 @@
 			showComment.value = true
 			comment.value = props.data.comment
 		}
+		if (props.data.edit) {
+			console.log(new Date(props.data.delivery.date).toISOString().substr(0, 10))
+			let code = DeliveryCode.find(x=>x.code === props.data.delivery.case)?.id
+			selectDelivery.value = code ? code : 0
+			deliveryDate.value = new Date(props.data.delivery.date).toLocaleString('ru').substr(0, 10)
+			deliveryExtra.value = props.data.delivery.extra
+			emits('update:modelValue', props.data.partner_id)
+		}
+		
+		
 	})
 </script>
 

@@ -12,3 +12,6 @@ export interface SearchData{
 	id: number|string;
 	search: string;
 }
+export const DateFromRuLocale = (date: string) =>{
+	return new Date(date.split('.')[2]+'-'+date.split('.')[1]+'-'+date.split('.')[0])
+} 

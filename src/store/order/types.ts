@@ -44,8 +44,8 @@ export interface OrderStatePosition {
 //ProductOffersOrderCard возвращает тип
 export interface OrderStatePositionOffer extends Offer {
 	count:           number;
-	price_discount?: number;
-	discount?:       number;
+	price_discount: number;
+	discount:       number;
 	fullprice?:      number;
 }
 

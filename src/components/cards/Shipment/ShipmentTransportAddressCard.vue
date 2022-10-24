@@ -136,6 +136,7 @@ const props = defineProps({
     },
 	extra: {
 		type: Array as PropType<Number[]>,
+		default: false
 	}
 
 })
@@ -150,6 +151,8 @@ const addressList = computed( () => store.getters.getShipmentsAddressInputData)
 onMounted(()=>{ 
 	dateLocal.value = props.date
 	addressLocal.value = props.addressId
+	u.value = props.extra.indexOf(1) != -1
+	o.value = props.extra.indexOf(2) != -1
 	if (store.getters.getShipmentsAddress.length == 0){
 		loading.value=true
 		store.dispatch(ShipmentsActions.GET_SHIPMENTS_ADDRESS)

@@ -23,6 +23,7 @@ export interface Offer {
     orgguid:        string;
     CHARACTERISTIC: string;
     RESIDUE:        number;
+    RESERVED:       number;
     PRICE:          number;
     PPDATA:         string;
     STORAGES:       Storage[];
