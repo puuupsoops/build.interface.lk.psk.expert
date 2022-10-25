@@ -53,7 +53,7 @@ export interface OrderStateDelivery {
 	case:      string,// "pek", // <String> это код, который DeliveryCode
 	date:      number, // это дата, на какой день. в <Integer> timestamp милисекунды
 	address:   string, //  <String> это адрес, из списка адресов, (если самовывоз, то пустая строка)
-	extra:     number[] // Array<Int> Дополнительное условие к доставке, если есть. [1 - Жесткая упаковка, 2 - Ополечивание], перечисление через массив. или пустой параметр
+//	extra:     number[] // Array<Int> Дополнительное условие к доставке, если есть. [1 - Жесткая упаковка, 2 - Ополечивание], перечисление через массив. или пустой параметр
 }
 
 export const DefaultOrder: OrderStateOrder = {
@@ -73,7 +73,6 @@ export const DefaultOrder: OrderStateOrder = {
 		address: '',
 		case: '',
 		date: 0,
-		extra: []
 	},
 	request_certificate: false,
 }

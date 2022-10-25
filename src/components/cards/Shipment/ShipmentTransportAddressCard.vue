@@ -6,7 +6,7 @@
 				<div class="shipment-form-elem-title"><span>Адрес Доставки</span></div>
 				<div class="shipment-form-row">
 					<div class="shipment-form-input-wrap">
-						<preloader-local small v-if="loading"></preloader-local>
+						<preloader-local small v-if="loadingAddress"></preloader-local>
 						<SelectInput 
 								v-else
 								:data="addressList"
@@ -46,35 +46,33 @@
 				</div>
 			</div>
 		</div>
-		<div class="shipment-form-elem">
+	<div class="shipment-form-elem" v-if="other">
 			<div class="shipment-form-item">
-				<div class="shipment-form-elem-title"><span>Дополнительное условие к доставке:</span></div>
+				<div class="shipment-form-elem-title"><span>Достваку вкл. в счет</span></div>
 				<div class="order-list-btn"
-					tooltip="Добавить жесткую упаковку"
-					flow="up"
-					@click="u=!u"
+					
+					@click="fro=!fro; es=!es"
 				>
-					<svg  v-if="!u" class="content-heading-btn-img " width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+					<svg  v-if="!fro" class="content-heading-btn-img " width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 						<path  class="fill stroke"  fill="#A5A7A9"  d="M 4.5 17 q -0.625 0 -1.062 -0.438 Q 3 16.125 3 15.5 v -11 q 0 -0.625 0.438 -1.062 Q 3.875 3 4.5 3 h 11 q 0.625 0 1.062 0.438 Q 17 3.875 17 4.5 v 11 q 0 0.625 -0.438 1.062 Q 16.125 17 15.5 17 Z m 0 -1.5 h 11 v -11 h -11 v 11 Z"/>
 					</svg>
 					<svg  v-else class="content-heading-btn-img active" width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 						<path  class="fill stroke"  fill="#A5A7A9"  d="m 8.938 13 l 4.958 -4.938 L 12.833 7 l -3.895 3.875 l -1.771 -1.75 l -1.063 1.063 Z M 4.5 17 q -0.625 0 -1.062 -0.438 Q 3 16.125 3 15.5 v -11 q 0 -0.625 0.438 -1.062 Q 3.875 3 4.5 3 h 11 q 0.625 0 1.062 0.438 Q 17 3.875 17 4.5 v 11 q 0 0.625 -0.438 1.062 Q 16.125 17 15.5 17 Z m 0 -1.5 h 11 v -11 h -11 v 11 Z m 0 -11 v 11 v -11 Z"/>
 					</svg>
-					Жесткая упаковка
+					ФРО
 
 				</div>
 				<div class="order-list-btn"
-					tooltip="Добавить Ополечивание"
-					flow="up"
-					@click="o=!o"
+					
+					@click="fro=!fro; es=!es"
 				>
-					<svg  v-if="!o" class="content-heading-btn-img " width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+					<svg  v-if="!es" class="content-heading-btn-img " width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 						<path  class="fill stroke"  fill="#A5A7A9"  d="M 4.5 17 q -0.625 0 -1.062 -0.438 Q 3 16.125 3 15.5 v -11 q 0 -0.625 0.438 -1.062 Q 3.875 3 4.5 3 h 11 q 0.625 0 1.062 0.438 Q 17 3.875 17 4.5 v 11 q 0 0.625 -0.438 1.062 Q 16.125 17 15.5 17 Z m 0 -1.5 h 11 v -11 h -11 v 11 Z"/>
 					</svg>
 					<svg  v-else class="content-heading-btn-img active" width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 						<path  class="fill stroke"  fill="#A5A7A9"  d="m 8.938 13 l 4.958 -4.938 L 12.833 7 l -3.895 3.875 l -1.771 -1.75 l -1.063 1.063 Z M 4.5 17 q -0.625 0 -1.062 -0.438 Q 3 16.125 3 15.5 v -11 q 0 -0.625 0.438 -1.062 Q 3.875 3 4.5 3 h 11 q 0.625 0 1.062 0.438 Q 17 3.875 17 4.5 v 11 q 0 0.625 -0.438 1.062 Q 16.125 17 15.5 17 Z m 0 -1.5 h 11 v -11 h -11 v 11 Z m 0 -11 v 11 v -11 Z"/>
 					</svg>
-					Ополечивание
+					ЭС
 				</div>
 			</div>
 		</div>
@@ -111,9 +109,7 @@ import DatePicker from '/src/components/ui/DatePicker.vue'
 import DeleteButton from '/src/components/ui/DeleteButton.vue'
 
 import { onMounted, ref, PropType, computed, watch } from 'vue'
-
-import { store } from '/src/store'
-import { ShipmentsActions } from '/src/store/shipments/actions'
+import { SelectInputData } from '/src/models/Components'
 
 
 
@@ -134,33 +130,33 @@ const props = defineProps({
         type: Boolean,
         default: false
     },
-	extra: {
-		type: Array as PropType<Number[]>,
-		default: false
+	addressList: {
+		type: Array as PropType<SelectInputData[]>,
+		required: true
+	},
+	loadingAddress: {
+		type: Boolean,
+        default: false
+	},
+	other: {
+		type: Boolean,
+        default: false
 	}
 
+
 })
-const emits = defineEmits(['update:addressId', 'update:date', 'update:errorAddress', 'update:errorDate', 'update:extra'])
+const emits = defineEmits(['update:addressId', 'update:date', 'update:errorAddress', 'update:errorDate'])
 const showMap = ref(false)
 const dateLocal = ref('')
 const addressLocal = ref(-1)
-const u = ref(false)
-const o = ref(false)
-const loading = ref(false)
-const addressList = computed( () => store.getters.getShipmentsAddressInputData)
+const fro = ref(true)
+const es = ref(false)
+
 onMounted(()=>{ 
 	dateLocal.value = props.date
 	addressLocal.value = props.addressId
-	u.value = props.extra.indexOf(1) != -1
-	o.value = props.extra.indexOf(2) != -1
-	if (store.getters.getShipmentsAddress.length == 0){
-		loading.value=true
-		store.dispatch(ShipmentsActions.GET_SHIPMENTS_ADDRESS)
-			.then(()=>{				
-			 	loading.value=false
-			})
-		
-	}
+
+	
 })
 
 
@@ -174,18 +170,5 @@ watch(dateLocal, ()=>{
 	emits('update:errorDate', false)
 })
 
-watch(u, () => {
-	changeExtra()
-})
-
-watch(o, () => {
-	changeExtra()
-})
-const changeExtra = () => {
-	let extra = []
-	if (u.value) extra.push(1)
-	if (o.value) extra.push(2)
-	emits('update:extra', extra)
-}
 
 </script>

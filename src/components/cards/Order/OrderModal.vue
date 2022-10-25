@@ -95,7 +95,7 @@
 				</button>	
 				
 			</div>
-			<div class="order-list-buttons-wrap" v-if="isAddNewOrder">
+			<!-- <div class="order-list-buttons-wrap" v-if="isAddNewOrder">
 
 					<router-link
 						tag="div"
@@ -126,7 +126,7 @@
 					
 				
 				
-			</div>
+			</div> -->
 		</div>
 	</div>
 </div>

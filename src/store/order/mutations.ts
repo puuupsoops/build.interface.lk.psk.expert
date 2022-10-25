@@ -192,7 +192,12 @@ export const mutations: MutationTree<OrderState> = {
 			state.order.position = []
 			state.order.position_presail = []
 		}
+		if (state.order.delivery.case=='other'){
+			state.order.total_discount = state.order.total_discount ? state.order.total_discount + 900 : state.order.total//
+			state.order.total = state.order.total + 900 // костыль чтобы прибавить к сумме стоимость доставки. Очень плохо - переписать.
+		}
 	},
+
 	[OrderMutations.ADD_ORDER] (state, data: NewOrder): void{
 		state.new_order = data;
 	},

@@ -19,7 +19,7 @@
 							<SelectInput 
 								:data="DeliveryName"
 								v-model="selectDelivery"
-								
+								@on-input="updDeliveryCase()"
 							/>
 					</div>
 				</div>
@@ -76,20 +76,16 @@
 				</div>
 			</div>
 			<div class="order-list-delivery">
-				<ShipmentPickupAddressCard v-if="selectDelivery == 0" v-model:date="deliveryDate" v-model:errorDate="deliveryDateError" />
+				
 
-				<ShipmentDeliveryAddressCard v-else-if="selectDelivery == 4"
+				<ShipmentTransportAddressCard v-if="selectDelivery != 0"
 					v-model:date="deliveryDate" 
 					v-model:addressId="deliveryAddress" 
 					v-model:errorDate="deliveryDateError" 
 					v-model:errorAddress="deliveryAddressError" 
-				/>
-				<ShipmentTransportAddressCard v-else
-					v-model:date="deliveryDate" 
-					v-model:addressId="deliveryAddress" 
-					v-model:errorDate="deliveryDateError" 
-					v-model:errorAddress="deliveryAddressError" 
-					v-model:extra="deliveryExtra"
+					:loadingAddress="loadingAddress"
+					:addressList="addressList"
+					:other="data.delivery.case=='other'"
 				/>
 				
 				
@@ -292,7 +288,7 @@
 </template>
 
 <script setup lang="ts">
-	import { ref, computed, PropType, onMounted } from 'vue'
+	import { ref, computed, PropType, onMounted, watch } from 'vue'
 	import { useStore } from '/src/store'
 
 	import AmountInput from '/src/components/ui/AmountInput.vue'
@@ -300,8 +296,6 @@
 	import EditButton from '/src/components/ui/EditButton.vue'
 	import SelectInput from '/src/components/ui/SelectInput.vue'
 	import SnackBar from '/src/components/ui/SnackBar.vue'
-	import ShipmentPickupAddressCard from '/src/components/cards/Shipment/ShipmentPickupAddressCard.vue'
-	import ShipmentDeliveryAddressCard from '/src/components/cards/Shipment/ShipmentDeliveryAddressCard.vue'
 	import ShipmentTransportAddressCard from '/src/components/cards/Shipment/ShipmentTransportAddressCard.vue'
 	
 	import { DeliveryCode, DeliveryName } from '/src/store/shipments/types'
@@ -310,7 +304,8 @@
 	import { OrderStateDelivery, OrderStateOrder, OrderStatePosition } from '/src/store/order/types'
 	import { useRouter } from 'vue-router'
 	import { SelectInputData, DateFromRuLocale } from '/src/models/Components'
-import { emit } from 'process'
+
+import { ShipmentsActions } from '/src/store/shipments/actions'
 
 	const props = defineProps(
 		{
@@ -342,7 +337,7 @@ import { emit } from 'process'
 	const deliveryDateError = ref(false)
 	const deliveryAddress = ref(-1)
 	const deliveryAddressError = ref(false)
-	const deliveryExtra = ref<number[]>([])
+	const loadingAddress = ref(false)
 
 	const selectDelivery = ref(0)
 	
@@ -352,6 +347,8 @@ import { emit } from 'process'
 			set: (v) => emits('update:modelValue', v)
 		});
 	const isOrderInDraft = computed(()=> store.getters.isOrderInDraft)
+	
+	const addressList = computed( () => store.getters.getShipmentsAddressInputData)
 //methods
 	const updOrder = () => {store.commit(OrderMutations.CALC_ORDER)}
 	const removePosition = (presail: boolean, guid: string) => {
@@ -389,8 +386,7 @@ import { emit } from 'process'
 			let delivery = <OrderStateDelivery>{
 					address: selectDelivery.value == 0 ? '' : store.getters.getShipmentsAddress[deliveryAddress.value].address,
 					case: DeliveryCode[selectDelivery.value].code,
-					date: DateFromRuLocale(deliveryDate.value).getTime(),
-					extra: deliveryExtra.value,
+					date: DateFromRuLocale(deliveryDate.value).getTime(),				
 			}				
 			store.commit(OrderMutations.SET_ORDER_DELIVERY, delivery)
 			if (props.data.edit) 
@@ -427,16 +423,33 @@ import { emit } from 'process'
 			showComment.value = true
 			comment.value = props.data.comment
 		}
+		if (store.getters.getShipmentsAddress.length == 0){
+			loadingAddress.value=true
+			store.dispatch(ShipmentsActions.GET_SHIPMENTS_ADDRESS)
+				.then(()=>{				
+					loadingAddress.value=false
+				})
+			
+		}
 		if (props.data.edit) {
 			console.log(new Date(props.data.delivery.date).toISOString().substr(0, 10))
 			let code = DeliveryCode.find(x=>x.code === props.data.delivery.case)?.id
 			selectDelivery.value = code ? code : 0
 			deliveryDate.value = new Date(props.data.delivery.date).toLocaleString('ru').substr(0, 10)
-			deliveryExtra.value = props.data.delivery.extra
 			emits('update:modelValue', props.data.partner_id)
 		}
 		
 		
 	})
+	
+const updDeliveryCase = ()=>{
+	let delivery = <OrderStateDelivery>{
+					address: '',
+					case: DeliveryCode[selectDelivery.value].code,
+					date: 0,
+			}				
+	store.commit(OrderMutations.SET_ORDER_DELIVERY, delivery)
+	store.commit(OrderMutations.CALC_ORDER)
+}
 </script>
 

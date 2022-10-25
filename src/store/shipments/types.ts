@@ -16,7 +16,7 @@ export const DeliveryName = <SelectInputData[]>[
     {id: 1, name: 'ДЕЛОВЫЕ ЛИНИИ'}, 
     {id: 2, name: 'БАЙКАЛ'},
     {id: 3, name: 'ПЭК'},
-    {id: 4, name: 'ДОСТАВКА'},
+    {id: 4, name: 'ДРУГАЯ ТРАНСПОРТНАЯ'},
 ]
 
 export const DeliveryCode =  [
@@ -24,7 +24,7 @@ export const DeliveryCode =  [
     {id: 1, code: 'del_line'}, 
     {id: 2, code: 'baikal'},
     {id: 3, code: 'pek'},
-    {id: 4, code: 'delivery'},
+    {id: 4, code: 'other'},
 ]
 
 export const PSKWorkTime: string = '8.00 до 18.00 (пн-пт) сб,вс-вых.'

@@ -6,14 +6,19 @@
 		</div>
 		<div class="content-heading-wrap-elem">
 		<div class="content-heading-price"> 
-			<div class="content-heading-price-text">Сумма заказа: </div>
-			<div class="content-heading-price-value" v-if="data.total != data.total_discount">
-				<span class="strikethrough">{{ Number(data.total).toLocaleString('ru')}} ₽</span>
-				{{ Number(data.total_discount).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽
-				
+			<div>
+				<div class="content-heading-price-text">Сумма заказа: </div>
+				<div class="content-heading-info-elem" v-if="data.delivery.case=='other'" style="position: absolute">+Достава: 900 ₽</div>	
 			</div>
+			
+			<div class="content-heading-price-value" v-if="data.total != data.total_discount">
+					<span class="strikethrough">{{ Number(data.total).toLocaleString('ru')}} ₽</span>
+					{{ Number(data.total_discount).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽
+				</div>
+				
 			<div class="content-heading-price-value" v-else>{{Number(data.total).toLocaleString('ru')}} ₽</div>
 		</div>
+		
 		</div>
 		<div class="content-heading-info"> 
 		<div class="content-heading-info-elem"> <span class="content-heading-info-text">Количество единиц: </span><span class="content-heading-info-value">{{data.total_count}}</span></div>
@@ -24,18 +29,16 @@
 	
 </template>
 
-<script lang="ts">
-export default {
-	props: {
+<script setup lang="ts">
+import { PropType } from 'vue';
+import { OrderStateOrder } from '/src/store/order/types';
+const props = defineProps({
 		data: {
-			type: Object,
+			type: Object as PropType<OrderStateOrder>,
+			required: true
 		},
 		discount:{
 			type: Number
 		},
-	},
-	setup() {
-		
-	}
-}
+	})
 </script>
