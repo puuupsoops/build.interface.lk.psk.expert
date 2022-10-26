@@ -48,7 +48,7 @@
 		</div>
 	<div class="shipment-form-elem" v-if="other">
 			<div class="shipment-form-item">
-				<div class="shipment-form-elem-title"><span>Достваку вкл. в счет</span></div>
+				<div class="shipment-form-elem-title"><span>Доставку вкл. в счет</span></div>
 				<div class="order-list-btn"
 					
 					@click="fro=!fro; es=!es"

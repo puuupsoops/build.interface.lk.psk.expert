@@ -8,7 +8,7 @@
 		<div class="content-heading-price"> 
 			<div>
 				<div class="content-heading-price-text">Сумма заказа: </div>
-				<div class="content-heading-info-elem" v-if="data.delivery.case=='other'" style="position: absolute">+Достава: 900 ₽</div>	
+				<div class="content-heading-info-elem" v-if="data.delivery.case=='other'" style="position: absolute">+Доставка: 900 ₽</div>	
 			</div>
 			
 			<div class="content-heading-price-value" v-if="data.total != data.total_discount">
