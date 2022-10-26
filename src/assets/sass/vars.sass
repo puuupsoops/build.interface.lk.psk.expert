@@ -221,7 +221,8 @@ a
 				rect,
 				circle
 					+prefix(transition, $default-transition)
-			
+				&.error
+					+box-shadow(0px 0px 20px rgba(231, 12, 12, 1))
 			&.active
 				color: $accent-color
 				path

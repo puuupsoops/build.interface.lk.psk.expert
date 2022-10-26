@@ -1,6 +1,7 @@
 <template>
 
 	<div class="order-list content-elem">
+
 			<div class="order-list-top">
 				<div class="order-list-top-elem">
 					<div class="order-list-top-wrap">
@@ -10,6 +11,7 @@
 							:error="error"
 							:read-only="data.edit"
 							v-model="selectCompany"
+							
 						/>
 					</div>
 				</div>
@@ -83,9 +85,12 @@
 					v-model:addressId="deliveryAddress" 
 					v-model:errorDate="deliveryDateError" 
 					v-model:errorAddress="deliveryAddressError" 
+					v-model:storage="deliveryStorage"
+					v-model:storageError="deliveryStorageError"
 					:loadingAddress="loadingAddress"
 					:addressList="addressList"
 					:other="data.delivery.case=='other'"
+					:storagesList="storagesList"
 				/>
 				
 				
@@ -337,6 +342,8 @@ import { ShipmentsActions } from '/src/store/shipments/actions'
 	const deliveryDateError = ref(false)
 	const deliveryAddress = ref(-1)
 	const deliveryAddressError = ref(false)
+	const deliveryStorage = ref('')
+	const deliveryStorageError = ref(false)
 	const loadingAddress = ref(false)
 
 	const selectDelivery = ref(0)
@@ -349,9 +356,12 @@ import { ShipmentsActions } from '/src/store/shipments/actions'
 	const isOrderInDraft = computed(()=> store.getters.isOrderInDraft)
 	
 	const addressList = computed( () => store.getters.getShipmentsAddressInputData)
+
+	const storagesList = computed (() => store.getters.getOrderStorages)
 //methods
-	const updOrder = () => {store.commit(OrderMutations.CALC_ORDER)}
+	const updOrder = () => {store.commit(OrderMutations.CALC_ORDER)	}
 	const removePosition = (presail: boolean, guid: string) => {
+		deliveryStorage.value = ''
 		if (presail)
 			store.dispatch(OrderActions.REMOVE_POSITION_PRESAIL, guid)
 		else
@@ -359,6 +369,7 @@ import { ShipmentsActions } from '/src/store/shipments/actions'
 
 	}
 	const removeCharacteristic = (presail: boolean, CHAR: OrderStatePosition) => {
+		deliveryStorage.value = ''
 		if (presail)
 			store.dispatch(OrderActions.REMOVE_CHARACTERISTIC_PRESAIL, CHAR)
 		else
@@ -371,7 +382,7 @@ import { ShipmentsActions } from '/src/store/shipments/actions'
 			error.value = true;
 			setTimeout(() => {error.value=false;}, 5000);
 		}
-		if (deliveryDate.value == '') {
+		if (selectDelivery.value > 0 && deliveryDate.value == '') {
 			deliveryDateError.value = true;
 			setTimeout(() => {deliveryDateError.value=false;}, 5000);
 			valid=false
@@ -381,12 +392,19 @@ import { ShipmentsActions } from '/src/store/shipments/actions'
 			setTimeout(() => {deliveryAddressError.value=false;}, 5000);
 			valid=false
 		}
+		if (DeliveryCode[selectDelivery.value].code == 'other'&& storagesList.value.length > 0 && deliveryStorage.value == '') {
+			deliveryStorageError.value = true;
+			setTimeout(() => {deliveryStorageError.value=false;}, 5000);
+			valid=false
+		}
 	
 		if (valid){
 			let delivery = <OrderStateDelivery>{
 					address: selectDelivery.value == 0 ? '' : store.getters.getShipmentsAddress[deliveryAddress.value].address,
 					case: DeliveryCode[selectDelivery.value].code,
-					date: DateFromRuLocale(deliveryDate.value).getTime(),				
+					date: DateFromRuLocale(deliveryDate.value).getTime(),		
+					cost: DeliveryCode[selectDelivery.value].code == 'other' ? 900 : 0,	
+					bill_to: deliveryStorage.value	
 			}				
 			store.commit(OrderMutations.SET_ORDER_DELIVERY, delivery)
 			if (props.data.edit) 
@@ -394,6 +412,7 @@ import { ShipmentsActions } from '/src/store/shipments/actions'
 			else
 				emits('onClickAdd')
 		}
+		console.log(valid)
 	}
 	const delOrder = () => {
 		store.commit(OrderMutations.CLEAN_ORDER)
@@ -447,9 +466,12 @@ const updDeliveryCase = ()=>{
 					address: '',
 					case: DeliveryCode[selectDelivery.value].code,
 					date: 0,
+					cost: DeliveryCode[selectDelivery.value].code == 'other' ? 900 : 0,
+					bill_to: ''
 			}				
 	store.commit(OrderMutations.SET_ORDER_DELIVERY, delivery)
 	store.commit(OrderMutations.CALC_ORDER)
 }
+
 </script>
 

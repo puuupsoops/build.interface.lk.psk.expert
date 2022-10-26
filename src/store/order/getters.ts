@@ -2,7 +2,8 @@ import { GetterTree } from "vuex"
 import { RootState } from "/src/store"
 import { OrderState } from "./types"
 import { Order } from "/src/models/Order"
-
+import { SelectInputData } from "/src/models/Components"
+import { state as CompanyState } from "/src/store/company/state"
 
 export const getters: GetterTree<OrderState, RootState> = {
 	getOrderError: state => state.error !== null,
@@ -53,4 +54,35 @@ export const getters: GetterTree<OrderState, RootState> = {
 	getOrderDraft: state => state.order_drafts,
 	isOrderInDraft: state => state.order_drafts.findIndex(x => x.id==state.order.id)!==-1,
 	getOrderDetail: state => state.order_detail,
+	getOrderStorages: (state): SelectInputData[] => {
+		let res = <SelectInputData[]>[]
+		
+		state.order.position.forEach(x => {
+			x.characteristics.forEach(c => {
+				if (res.findIndex(r => r.id==c.ORGGUID) == -1 && state.partner_id !== '') 
+					{
+						const company = CompanyState.companys.find(x => x.uid === state.partner_id)
+						if (company && company.storages){
+							const storage_name = company?.storages?.find(store => store.guid ==  c.ORGGUID)?.name
+							res.push({id: c.ORGGUID, name: storage_name ? storage_name.replace(/(^|\s)\S/g, s => s.toUpperCase()).replace(/(ООО)|(")|(\s)|([а-я])/g, '') : 'Склад'})
+						}
+					}
+			})
+		})
+
+		state.order.position_presail.forEach(x => {
+			x.characteristics.forEach(c => {
+				if (res.findIndex(r => r.id==c.ORGGUID) == -1 && state.partner_id !== '') 
+					{
+						const company = CompanyState.companys.find(x => x.uid === state.partner_id)
+						if (company && company.storages){
+							const storage_name = company?.storages?.find(store => store.guid ==  c.ORGGUID)?.name
+							res.push({id: c.ORGGUID, name: storage_name ? storage_name.replace(/(^|\s)\S/g, s => s.toUpperCase()).replace(/(ООО)|(")|(\s)|([а-я])/g, '') : 'Склад'})
+						}
+					}
+			})
+		})
+
+		return res;
+	}
 }

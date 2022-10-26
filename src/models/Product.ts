@@ -26,6 +26,7 @@ export interface Offer {
     RESERVED:       number;
     PRICE:          number;
     PPDATA:         string;
+    MAX_DISCOUNT:   number;
     STORAGES:       Storage[];
 }
 

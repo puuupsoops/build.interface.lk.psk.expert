@@ -138,6 +138,7 @@ export const mutations: MutationTree<OrderState> = {
 			pos.characteristics.forEach( c => {
 				total_pos = total_pos + c.PRICE * c.count
 				c.discount = getCompanyDiscount(state.partner_id, c.ORGGUID, pos.product.STATUS)
+				if (c.discount > c.MAX_DISCOUNT ) c.discount =  c.MAX_DISCOUNT
 				c.price_discount = c.PRICE-c.discount*(c.PRICE/100)
 				
 				total_discount_pos = total_discount_pos +c.price_discount * c.count
@@ -164,6 +165,7 @@ export const mutations: MutationTree<OrderState> = {
 			pos.characteristics.forEach( c => {
 				total_pos = total_pos + c.PRICE * c.count
 				c.discount = getCompanyDiscount(state.partner_id, c.ORGGUID, pos.product.STATUS)
+				if (c.discount > c.MAX_DISCOUNT ) c.discount =  c.MAX_DISCOUNT
 				c.price_discount = c.PRICE-c.discount*(c.PRICE/100)
 				
 				total_discount_pos = total_discount_pos +c.price_discount * c.count
@@ -192,10 +194,9 @@ export const mutations: MutationTree<OrderState> = {
 			state.order.position = []
 			state.order.position_presail = []
 		}
-		if (state.order.delivery.case=='other'){
-			state.order.total_discount = state.order.total_discount ? state.order.total_discount + 900 : state.order.total//
-			state.order.total = state.order.total + 900 // костыль чтобы прибавить к сумме стоимость доставки. Очень плохо - переписать.
-		}
+		// Добавить стоимость доставки к цене .
+		state.order.total_discount = state.order.total_discount ? state.order.total_discount + state.order.delivery.cost : state.order.total//
+		state.order.total = state.order.total + state.order.delivery.cost 
 	},
 
 	[OrderMutations.ADD_ORDER] (state, data: NewOrder): void{

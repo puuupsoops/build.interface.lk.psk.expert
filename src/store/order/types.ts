@@ -44,8 +44,8 @@ export interface OrderStatePosition {
 //ProductOffersOrderCard возвращает тип
 export interface OrderStatePositionOffer extends Offer {
 	count:           number;
-	price_discount: number;
-	discount:       number;
+	price_discount:  number;
+	discount:        number;
 	fullprice?:      number;
 }
 
@@ -53,6 +53,8 @@ export interface OrderStateDelivery {
 	case:      string,// "pek", // <String> это код, который DeliveryCode
 	date:      number, // это дата, на какой день. в <Integer> timestamp милисекунды
 	address:   string, //  <String> это адрес, из списка адресов, (если самовывоз, то пустая строка)
+	cost:      number, // 900р если доставка до транспортной, иначе 0
+	bill_to:   string, // storage куда выставлять счет за доставку
 //	extra:     number[] // Array<Int> Дополнительное условие к доставке, если есть. [1 - Жесткая упаковка, 2 - Ополечивание], перечисление через массив. или пустой параметр
 }
 
@@ -73,6 +75,8 @@ export const DefaultOrder: OrderStateOrder = {
 		address: '',
 		case: '',
 		date: 0,
+		cost: 0,
+		bill_to: ''
 	},
 	request_certificate: false,
 }
