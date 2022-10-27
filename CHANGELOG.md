@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-10-27
+
+    #0.2.47
+    1. Доработки
+
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-10-26
 
     #0.2.46

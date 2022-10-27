@@ -117,6 +117,7 @@ const addToOrder = () => {
 				charArrPos.push(<OrderStatePositionOffer>{
 							ID: x.ID,
 							CHARACTERISTIC: x.CHARACTERISTIC,
+							MAX_DISCOUNT: x.MAX_DISCOUNT,
 							count: x.count,
 							PRICE: x.PRICE,
 							RESIDUE: x.RESIDUE,
@@ -141,6 +142,7 @@ const init = () => {
 		return <OrderStateAddPositionItem>{
 			ID: item.ID,
 			CHARACTERISTIC: item.CHARACTERISTIC,
+			MAX_DISCOUNT: item.MAX_DISCOUNT,
 			RESIDUE: item.RESIDUE,
 			RESERVED: item.RESERVED,
 			PRICE: item.PRICE,

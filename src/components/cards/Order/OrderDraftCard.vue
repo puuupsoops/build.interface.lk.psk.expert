@@ -17,9 +17,13 @@
 								</div>
 								<div class="content-heading-price-value" v-else>{{Number(data.total).toLocaleString('ru', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.')}} ₽</div>
 							</div>
-						</div>
-					</div>
 
+						</div>
+						<div class="content-heading-info-elem" v-if="data.delivery.case=='other'" >+Доставка: {{data.delivery.cost}} ₽</div>	
+					</div>
+					<div>
+				
+			</div>
 					<div class="order-list-row order-list-heading" v-if="data.position.length>0">
 						<div class="order-list-elem">№</div>
 						<div class="order-list-elem">Артикул</div>
@@ -171,9 +175,10 @@ import { OrderStateOrder } from '/src/store/order/types'
 const props = defineProps( {
 		data: {
 			type: Object as PropType<OrderStateOrder>,
+			required: true,
 		},
     })
-		const open = ref([]);
-		const open_presail = ref([]);
+		const open = ref<number[]>([]);
+		const open_presail = ref<number[]>([]);
 </script>
 
