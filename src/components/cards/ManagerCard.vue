@@ -57,6 +57,7 @@
 	const props = defineProps({
 		manager: {
 			type: Object as PropType<Manager>,
+			required: true
 		}
 	})
 	const loadImage = ref(false)
@@ -81,7 +82,10 @@
 				loadingImage.value=false
 			})
   		} else loadingImage.value=false
-		
+		//костыль
+		if ( props.manager.image!='')
+			loadImage.value = true
+		image.value = props.manager.image
 	})
 </script>
 
