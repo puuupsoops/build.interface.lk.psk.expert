@@ -50,7 +50,7 @@ import { useRouter } from 'vue-router'
 import { CompanyActions } from '/src/store/company/actions'
 import { KeysMutations } from '/src/store/keys/mutations'
 import { CompanyMutations } from '/src/store/company/mutations'
-import { Storage } from '/src/models/Partner'
+import { StorageCompany } from '/src/models/Partner'
 
 	const props = defineProps (['id'])
  	const store = useStore()

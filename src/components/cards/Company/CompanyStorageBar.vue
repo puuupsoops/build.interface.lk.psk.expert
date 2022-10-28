@@ -29,7 +29,7 @@
 
 import { PropType } from 'vue'
 import CompanyStorageCard from '/src/components/cards/Company/CompanyStorageCard.vue'
-import { Storage } from '/src/models/Partner'
+import { StorageCompany } from '/src/models/Partner'
 
 const props = defineProps({
 		data: {

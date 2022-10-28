@@ -207,7 +207,7 @@
 	import { useStore } from '/src/store'
 	
 	import { OrderActions } from '/src/store/order/actions'
-	import { Storage } from '/src/models/Partner'
+	import { StorageCompany } from '/src/models/Partner'
 	import { OrdersActions } from '/src/store/orders/actions'
 	import { OrdersSatusCode } from '/src/store/orders/types'
 
@@ -364,7 +364,7 @@ const props = defineProps({
 	const getStorageName = (partner_guid: string, organization_id: string): string=>{
 		const storages = <Storage[]>store.getters.getCompanyStoragesData(partner_guid)
 		const storage = storages.find(x  => x.guid == organization_id)
-		return storage ? storage.name.replace(/(^|\s)\S/g, s => s.toUpperCase()).replace(/(ООО)|(")|(\s)|([а-я])/g, '') : 'Склад'
+		return storage ? storage.name.replace(/(^|\s)\S/g, (s: string) => s.toUpperCase()).replace(/(ООО)|(")|(\s)|([а-я])/g, '') : 'Склад'
 	}
 	
 	const setOrderId = (id: number) => {
