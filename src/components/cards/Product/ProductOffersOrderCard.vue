@@ -5,8 +5,8 @@
 			<div class="table order-amount-table">
 				<div class="table-row table-heading">
 					<div class="table-elem">Характеристика</div>
-					<!-- <div class="table-elem">Остаток</div> -->
-					<div class="table-elem">Резерв</div>
+					<div class="table-elem">Остаток</div>
+					<!-- <div class="table-elem">Резерв</div> -->
 					<div class="table-elem">Цена<span style="font-size: 10px" v-if="discount"> - {{discount}}%</span></div>
 					<div class="table-elem">Количество</div>
 					<div class="table-elem">Пп / Дата</div>
