@@ -219,7 +219,7 @@ export default defineComponent({
 			if (!store.getters.isCompanysLoad)
 			{
 				store.dispatch(CompanyActions.GET_COMPANYS).finally(() => { setTimeout(()=>{
-								activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
+								activeCompanyUid.value = store.getters.getCompanys.length==0 ? '' : store.getters.getCompanys[0].uid;
 							},500);})
 			}
 			activeProductId.value=store.getters.getProduct.ID;

@@ -3,10 +3,10 @@
 
 	<Preloader v-if="loader"></Preloader>
 	<div v-if="isAuth">
-		<SideMenu v-model="showMenu" :orderPositionLength="orderPositionLength"></SideMenu>
+		<SideMenu v-model="showMenu" :orderPositionLength="orderPositionLength" :draft="getOrderDraftCount"></SideMenu>
 		<NotificationBar v-model="showNotificationBar"></NotificationBar>
 		<div class="content"
-			:class="{'blur': showMenu | showNotificationBar}"
+			:class="{'blur': showMenu || showNotificationBar}"
 		>
 
 			<router-view v-slot= "{ Component }">
@@ -53,7 +53,7 @@
 	const isAuth = computed(() => store.getters.isAuthenticated)
 	const errorMsg = computed(() => store.getters.getErrorMsg)
 	const orderPositionLength = computed(() => store.getters.getOrderPositionLength)
-	
+	const getOrderDraftCount = computed(() => store.getters.getOrderDraftCount)
 </script>
 
 <style lang="sass">

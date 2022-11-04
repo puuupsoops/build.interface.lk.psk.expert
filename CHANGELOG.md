@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-11-04
+
+    #0.2.48
+    1. Добавил ссылки на черновик в SideNavigation И SideMenu
+
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-10-27
 
     #0.2.47

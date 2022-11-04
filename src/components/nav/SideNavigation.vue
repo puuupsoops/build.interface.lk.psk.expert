@@ -61,8 +61,18 @@
 									:key="i"
 								>
 									<router-link
+										v-if="child.link == 'draft'"
+										:to="'#'"
 										tag="a"
-										:to="child.link"
+										class="sidebar-nav-dropdown-link "
+										@click="$emit('close'); showDraft = true"
+									>
+										{{ child.title }}
+									</router-link>
+									<router-link
+										v-else
+										tag="a"
+										:to="child.link" 
 										@click="$emit('close')"
 										:class="'sidebar-nav-dropdown-link' + (child.lock ? ' lock':'')" 
 										active-class="sidebar-nav-dropdown-link active"
@@ -104,6 +114,7 @@
 		</div>
 		<div  class="sidebar-menu-bg" v-if="modelValue" @click="$emit('close')"></div>
 	</div>
+	<OrderDraftModal v-model="showDraft"/>
 </template>
 
 <script  setup lang="ts">
@@ -111,8 +122,8 @@
 import { computed, ref } from 'vue'
 import { useStore } from '/src/store'
 import { CompanyActions } from '/src/store/company/actions'
-import { normalizeCompanyName } from '/src/models/Partner';
-
+import { normalizeCompanyName } from '/src/models/Partner'
+import OrderDraftModal from '/src/components/cards/Order/OrderDraftModal.vue'
 
 
 const props = defineProps({
@@ -125,6 +136,7 @@ const emits = defineEmits(['update:modelValue', 'close'])
 const store = useStore();
 const version = APP_VERSION
 const active_item = ref(0)
+const showDraft = ref(false)
 
 const menu = computed(() => {
 		const menu_start = [
@@ -135,7 +147,7 @@ const menu = computed(() => {
 				{title: 'Заказы', link: '/orders', lock: false, collapsed: false},
 				{title: 'Отгрузки', link: '/shipments', lock: false, collapsed: false},
 				{title: 'Претензии', link:'/claims', lock: false, collapsed: false},
-				{title: 'Конструктор КП', link: '/kp', lock: true, collapsed: false},
+				{title: 'Черновики', link: 'draft', lock: false, collapsed: false},
 				{title: 'История', link: '/history', lock: true, collapsed: false},
 				
 			]},
