@@ -562,12 +562,18 @@
 			&.actions
 				padding: 0px 14px 0px 0px
 				justify-content: flex-end
+			
 				&:hover
 					svg
-						fill: $accent-color
+						
+						+prefix(transform, scale(1.1))
 			&.active
 				svg
-						fill: $accent-color
+					fill: $accent-color
+					
+					.save
+						fill: none
+						stroke: $accent-color
 				
 			&:nth-child(1)
 				text-align: center
@@ -583,6 +589,7 @@
 					right: 15px
 				height: 100%
 				width: 30%
+				
 			&:nth-child(3)
 				padding:
 					left: 15px

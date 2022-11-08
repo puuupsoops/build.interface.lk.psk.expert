@@ -28,13 +28,14 @@
 					:key="key"
 					:class="'product-search-input-options-item' + (loading ? ' loading': '')"
 				>
-					<a
-						
-						@click="done(item.article); search_str=item.name"
+					<router-link
+						tag="a"
+						:to="'/product/'+item.article"
+						@click="show_options=false"
 						
 					>
 						<div class="article">{{item.article}}</div> <div class="name">{{item.name}}</div>
-					</a>
+					</router-link>
 				</p>
 				<span v-if="loading && articles.length == 0"> Поиск...</span>
 				<span v-if="!loading && articles.length == 0"> Не найдено</span>
@@ -47,79 +48,56 @@
 	</button>
 </div>
 </template>
-<script lang="ts">
+<script setup lang="ts">
 import PreloaderLocal from '/src/components/PreloaderLocal.vue'
-;
-import { ProductActions } from '/src/store/product/actions';
-import { ProductMutations } from '/src/store/product/mutations';
+import { ProductActions } from '/src/store/product/actions'
+import { ProductMutations } from '/src/store/product/mutations'
 import { computed, defineComponent, ref} from 'vue'
 import { onClickOutside } from '@vueuse/core'
-import { useStore } from '/src/store';
+import { useStore } from '/src/store'
 
 
-
-export default defineComponent({
-	props:{
+const props = defineProps({
 		modelValue: {
 			type: String,
 			required: true,
 		}
-	},
-	emits: ['update:modelValue', 'search'],
-	components:{
-		PreloaderLocal
-	},
-	setup(props, { emit }) {
-		const store = useStore()
-		const search_str = ref('')
-		const loading = ref(false)
-		const debounce = ref()
-		const target = ref(null)
-		const show_options = ref(false)
+	})
+const emits = defineEmits( ['update:modelValue', 'search'])
+const store = useStore()
+const search_str = ref('')
+const loading = ref(false)
+const debounce = ref()
+const target = ref(null)
+const show_options = ref(false)
+const articles = computed(()=>store.getters.getProductArticles)
+		
+const doSearch = () => {
+	clearTimeout(debounce.value)
+	show_options.value = true
+	emits('update:modelValue', search_str.value)
+	loading.value=true;
+	debounce.value = setTimeout(() => {
+			if (search_str.value.length >=2)
+			store.dispatch(ProductActions.SEARCH_PRODUCT_ARTICLE, search_str.value)
+					.then(()=>{ setTimeout( ()=> {loading.value=false}, 500)})
+					//.finally(() => {loading.value=false})
+		}, 500)
+}
+const close = () => {
+	search_str.value = ''
+	show_options.value = false
+	store.commit(ProductMutations.SET_PRODUCT_ARTICLS, [])
+	emits('update:modelValue', '')
+}
 
-		
-		const doSearch = () => {
-			clearTimeout(debounce.value)
-			show_options.value = true
-			emit('update:modelValue', search_str.value)
-			loading.value=true;
-			debounce.value = setTimeout(() => {
-					if (search_str.value.length >=2)
-					store.dispatch(ProductActions.SEARCH_PRODUCT_ARTICLE, search_str.value)
-							.then(()=>{ setTimeout( ()=> {loading.value=false}, 500)})
-							//.finally(() => {loading.value=false})
-				}, 500)
-		}
-		const close = () => {
-			search_str.value = ''
-			show_options.value = false
-			store.commit(ProductMutations.SET_PRODUCT_ARTICLS, [])
-			emit('update:modelValue', '')
-		}
-		
-		const done = (str: string) => {
-			show_options.value = false
-			emit('update:modelValue', str)			
-			emit('search')
-		}
-		
-		onClickOutside(target, () => {show_options.value = false})
-	
-		return {
-			search_str,
-			loading,
-			target,
-			show_options,
-			articles: computed(()=>store.getters.getProductArticles),
-			doSearch,
-			close,
-			done,
-		}
-	},
-})
+const done = (str: string) => {
+	show_options.value = false
+	emits('update:modelValue', str)			
+	emits('search')
+}
+
+onClickOutside(target, () => {show_options.value = false})
+
 </script>
-
-<style lang="sass" scoped>
-
-</style>
 

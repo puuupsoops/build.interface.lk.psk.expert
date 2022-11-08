@@ -70,7 +70,7 @@ import TopNav from '/src/components/nav/TopNav.vue'
 
 import { useStore } from '/src/store'
 import { useRouter } from 'vue-router'
-import { ref, onMounted, computed, defineComponent } from 'vue'
+import { ref, onMounted, computed, defineComponent, watch} from 'vue'
 
 import { KeysMutations } from '/src/store/keys/mutations'
 import { CompanyActions } from '/src/store/company/actions'
@@ -120,7 +120,7 @@ export default defineComponent({
 						])
 						//.catch(()=>{alert('error')})
 						.finally(() => { setTimeout(()=>{
-								activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
+								activeCompanyUid.value = store.getters.getCompanys.length == 0 ? '' : store.getters.getCompanys[0].uid;
 							},500); })
 				}
 				// if get parametr aticle is not emty when using product page else using search
@@ -139,7 +139,20 @@ export default defineComponent({
 					.finally(() => {loader.value=false})
 			}
 		});
-		
+		watch( ()=>props.article, (new_val) => {
+			if (new_val !=='' && new_val !== undefined) {
+				loader.value = true;
+				store.dispatch(ProductActions.SEARCH_PRODUCT, props.article)
+					.then(()=>{
+						isLoad.value=true;
+						if (store.getters.getProduct.ID)
+							activeProductId.value=store.getters.getProduct.ID
+						else
+							router.push({name: 'Product'});
+						})
+					.finally(() => {loader.value=false})
+			}
+		});
 		const discount = computed(() => {
 			let status = store.getters.getProduct.STATUS
 			if (status == 'Outlet' || status == 'Discount' || status == 'Activity')

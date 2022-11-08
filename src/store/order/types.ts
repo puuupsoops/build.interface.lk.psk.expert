@@ -30,6 +30,7 @@ export interface OrderStateOrder {
 	comment:                  string;
 	request_certificate:      boolean;
 	delivery:                 OrderStateDelivery;
+	name?:                    string; // нужно для имени черновика
 }
 
 export interface OrderStatePosition {

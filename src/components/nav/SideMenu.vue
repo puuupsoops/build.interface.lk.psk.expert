@@ -102,7 +102,7 @@
 			</svg>
 			</router-link>
 		</div>
-		<div class="sidebar-btn"  @click="$emit('update:modelValue', false)">
+		<div class="sidebar-btn"  @click="$emit('update:modelValue', false)" title="Черновик">
 			<div @click="showDraft = true">
 				<div class="sidebar-btn-notification draft" v-if="draft>0">
 					{{draft}}
