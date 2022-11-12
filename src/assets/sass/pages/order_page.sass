@@ -590,8 +590,15 @@
 			border-radius: 6px
 			background-color: $bg-default-color
 			+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.2))
+
 			.shipment-address-list-elem:nth-child(2)
+				+flex
+				+justify-content(space-between)
 				width:100%
+				font-size: 22px
+				.date
+					color: $font-light-color
+					font-size: 12px
 
 .order-modal
 	display: block 

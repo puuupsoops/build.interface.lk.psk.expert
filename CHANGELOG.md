@@ -1,4 +1,11 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-11-12
+
+    #0.2.50
+    1. При создании черновика можно задать имя
+    2. В окне с черновиками имя можно менять
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-11-08
 
     #0.2.49

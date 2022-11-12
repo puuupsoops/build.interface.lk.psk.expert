@@ -16,7 +16,7 @@
                     <div class="table-elem"><span v-html="offer.CHARACTERISTIC"></span></div>
                     <div class="table-elem"><span v-html="offer.RESIDUE"></span></div>
                     <div class="table-elem"><span v-html="(offer.PRICE ? offer.PRICE-(offer.PRICE/100)*discount : 0 ).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') + ' ₽'"></span></div>
-                    <div class="table-elem"><span v-html="offer.PPDATA.replaceAll('/', '&nbsp;/&nbsp;')"></span></div>
+                    <div class="table-elem"><span :v-html="offer.PPDATA ? offer.PPDATA.replaceAll('/', '&nbsp;/&nbsp;') : ''"></span></div>
                 </div>
             
             </div>
@@ -26,15 +26,18 @@
 
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
+import { Offer } from '/src/models/Product';
 
 export default defineComponent({
     props:{
         data: {
-            type: Array
+            type: Array as PropType<Offer[]>,
+            required: true
         },
         discount: {
-            type: Number
+            type: Number,
+            required: true
         }
     },
 

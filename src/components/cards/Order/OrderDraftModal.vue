@@ -34,11 +34,13 @@
 									<div class="input-textfield"
 										v-if="editItem && item.id == active"
 										@click.stop=""
+										:style="'width: 100%'"
 									>
 										<input type="text" placeholder=" " v-model="item.name" >
                                     	<label>Имя</label>
 									</div>
-									<span v-else>{{item.name}} Создан {{new Date(item.id).toLocaleString('ru')}}</span>
+									<div v-else>{{item.name}}</div>
+									<div v-if="item.id != active" class="date">{{new Date(item.id).toLocaleString('ru')}}</div>
 								</div>
 
 								<div class="shipment-address-list-elem actions"
@@ -64,7 +66,7 @@
 									flow="up"
 								>
 									<div
-										@click.stop="editItem=!editItem; delItem=false; delAll=false; useDraft=false"
+										@click.stop="editItem=!editItem; delItem=false; delAll=false; useDraft=false; saveName(item.id, item.name)"
 									>
 										<svg width="24px" height="25px" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 											<path class="save" d="M1 3.5C1 2.39543 1.89543 1.5 3 1.5H16C19.866 1.5 23 4.63401 23 8.5V21.5C23 22.6046 22.1046 23.5 21 23.5H3C1.89543 23.5 1 22.6046 1 21.5V3.5Z" stroke="#A5A7A9" stroke-width="2"/>
@@ -157,10 +159,10 @@
 import DeleteButton from '/src/components/ui/DeleteButton.vue'
 import OrderDraftCard from '/src/components/cards/Order/OrderDraftCard.vue'
 
-import { ref, computed, defineComponent } from 'vue'
+import { ref, computed } from 'vue'
 import { useStore } from '/src/store'
 import { onClickOutside } from '@vueuse/core'
-
+import { useRouter } from 'vue-router'
 
 import { OrderMutations } from '/src/store/order/mutations'
 
@@ -173,6 +175,7 @@ const props = defineProps({
 const emits = defineEmits(['update:modelValue'])
 	
 		const store = useStore()
+		const router = useRouter();
 		const delItem = ref(false)
 		const editItem = ref(false)
 		const delAll = ref(false)
@@ -207,6 +210,7 @@ const emits = defineEmits(['update:modelValue'])
 			delItem.value = false
 			active.value = -1
 			emits('update:modelValue', false)
+			router.push({name: 'Order'});
 		}
 		const clickItem = ( id: number) => {
 			if (id  === active.value)
@@ -217,6 +221,10 @@ const emits = defineEmits(['update:modelValue'])
 			useDraft.value = false
 			delItem.value = false
 			editItem.value = false
+		}
+
+		const saveName = (id: number, name: string) => {
+			store.commit(OrderMutations.UPD_ALL_DRAFT)
 		}
 		
 </script>

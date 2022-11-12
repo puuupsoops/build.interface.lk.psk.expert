@@ -32,6 +32,7 @@ export enum OrderMutations {
 	ADD_ORDER_TO_DRAFT = "ADD_ORDER_TO_DRAFT",
 	DEL_ORDER_FROM_DRAFT = "DEL_ORDER_FROM_DRAFT",
 	DEL_ALL_DRAFT = "DEL_ALL_DRAFT",
+	UPD_ALL_DRAFT = 'UPD_ALL_DRAFT',
 	USE_DRAFT = "USE_DRAFT",
 	ADD_ORDER_DETAIL = "ADD_ORDER_DETAIL",
 	CLEAN_ORDER_DETAIL = "CLEAN_ORDER_DETAIL",
@@ -219,7 +220,8 @@ export const mutations: MutationTree<OrderState> = {
 	[OrderMutations.ADD_ORDER_PARTNER_ID] (state, data: string): void{
 		state.partner_id = data;
 	},
-	[OrderMutations.ADD_ORDER_TO_DRAFT] (state): void{
+	[OrderMutations.ADD_ORDER_TO_DRAFT] (state, name: string): void{
+		state.order.name = name
 		state.order_drafts.push(state.order)
 		localStorage.setItem('orders_drafts', JSON.stringify(state.order_drafts));
 	},
@@ -238,6 +240,10 @@ export const mutations: MutationTree<OrderState> = {
 			state.order.id = (new Date()).getTime()
 		}
 	},
+	[OrderMutations.UPD_ALL_DRAFT] (state): void{
+		localStorage.setItem('orders_drafts', JSON.stringify(state.order_drafts));
+	},
+
 	[OrderMutations.ADD_ORDER_DETAIL] (state, data: OrderStateOrder): void{
 		if (data.position != null || data.position_presail != null) {
 			state.order_detail.id = data.id
