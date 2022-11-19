@@ -1,5 +1,5 @@
 <template>
-<div class="orders-list-wrap">
+<div class="orders-list-wrap" @mouseup="onMouseUp()">
 	<div class="orders-heading-info">
 		<div class="orders-heading-pagination">
 
@@ -15,12 +15,40 @@
 			>
 					Показано {{data_filtred.length}} из {{orders_list.length}}
 		</div>
+		<div class="orders-heading-info-settings"
+			:class="{'active': showTableMenu}"
+			@click="showTableMenu = true "
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+				<path fill="#A5A7A9" d="m9.8 21.3-.375-3q-.175-.025-.625-.275T7.775 17.4l-2.75 1.15-2.2-3.825 2.4-1.825q-.05-.2-.062-.413-.013-.212-.013-.487 0-.175.025-.413.025-.237.05-.537l-2.4-1.8 2.2-3.8L7.8 6.625q.35-.275.762-.525.413-.25.863-.4L9.8 2.675h4.4l.375 3q.475.175.838.4.362.225.737.55l2.825-1.175 2.2 3.8-2.5 1.875q.05.25.063.437.012.188.012.438 0 .225-.012.438-.013.212-.063.462l2.475 1.825-2.225 3.825-2.775-1.175q-.325.275-.7.5-.375.225-.875.425l-.375 3Zm2.175-6.4q1.2 0 2.038-.85.837-.85.837-2.05 0-1.2-.837-2.05-.838-.85-2.038-.85-1.225 0-2.062.85-.838.85-.838 2.05 0 1.2.838 2.05.837.85 2.062.85Zm0-1.4q-.625 0-1.062-.438-.438-.437-.438-1.062t.438-1.062q.437-.438 1.062-.438.6 0 1.05.438.45.437.45 1.062t-.45 1.062q-.45.438-1.05.438ZM12 11.975ZM11 19.9h1.95l.375-2.7q.75-.2 1.35-.55.6-.35 1.175-.925l2.5 1.075.975-1.7-2.2-1.625q.125-.4.163-.75.037-.35.037-.725t-.037-.713q-.038-.337-.163-.737l2.2-1.675-.95-1.675-2.55 1.075q-.45-.5-1.15-.913-.7-.412-1.375-.587l-.3-2.7h-1.975l-.325 2.7q-.8.2-1.4.525-.6.325-1.2.95L5.625 7.2 4.65 8.875l2.15 1.6q-.125.375-.175.75-.05.375-.05.775 0 .375.038.738.037.362.162.762L4.65 15.1l.975 1.7 2.45-1.05q.6.575 1.225.938.625.362 1.375.537Z"/>
+			</svg>
+		</div>
+		<div class="orders-heading-info-settings-dropdown"
+				:class="{'active': showTableMenu}"  
+				ref="tableMenu"
+		>
+			<a class="orders-list-more-dropdown-link" 
+				v-for="i, col in tableColumn"
+				:key="col"
+			>	<CheckButton v-model="i.visible" @click="saveTableColumn" />
+				{{i.name}}
+			</a>							
+		</div>
 	</div>
-
 	<div class="orders-list ">
-		<div class="orders-list-row orders-list-heading">
-			<div class="orders-list-elem">№</div>
-			<div :class="'orders-list-elem' + (search.search !='' && search.id == 1 ? ' active': '') + (filter[1].value != '' ? ' active': '')">
+		<div class="orders-list-row orders-list-heading"
+		ref="table"
+		>
+			<div class="orders-list-elem" v-if="tableColumn.id.visible"
+			:style="`width: ${tableColumn.id.width}${tableColumn.id.unit}`"
+			>
+				{{tableColumn.id.name}}
+				<div class="orders-list-elem-resize" @mousedown="onMouseDown($event, 'id')" ></div>
+			</div>
+			<div class="orders-list-elem" v-if="tableColumn.name.visible"
+				:class="{'active': (search.search !='' && search.id == 1) || filter[1].value != '' }" 
+				:style="`width: ${tableColumn.name.width}${tableColumn.name.unit}`"
+			>
 				<modal-input v-model="filter[1].value" v-model:show="filter[1].show"></modal-input>
 				<div>Наименование</div>
 				<div 
@@ -44,12 +72,28 @@
 					</svg>
 
 				</div>
+				<div class="orders-list-elem-resize" @mousedown="onMouseDown($event, 'name')" ></div>
 			</div>
-			<div :class="'orders-list-elem' + (contrAgent !='' ? ' active':'')">Контрагент</div>
-			<div :class="'orders-list-elem' + (search.search !='' && search.id == 2 ? ' active': '')">Номер</div>
-			<div :class="'orders-list-elem' + (search.search !='' && search.id == 3 ? ' active': '') + (period != 'Все' ? ' active':'')+ (filter[2].value != '' ? ' active': '')">
+			<div class="orders-list-elem" v-if="tableColumn.partner_name.visible"
+				:class="{'active' : contrAgent !='' }"
+				:style="`width: ${tableColumn.partner_name.width}${tableColumn.partner_name.unit}`"
+			>
+				{{tableColumn.partner_name.name}}
+				<div class="orders-list-elem-resize" @mousedown="onMouseDown($event, 'partner_name')" ></div>
+			</div>
+			<div class="orders-list-elem" v-if="tableColumn.n.visible"
+				:class="{'active' : search.search !='' && search.id == 2 }"
+				:style="`width: ${tableColumn.n.width}${tableColumn.n.unit}`"
+			>
+				<div class="orders-list-elem-center">{{tableColumn.n.name}}</div>
+				<div class="orders-list-elem-resize" @mousedown="onMouseDown($event, 'n')" ></div>
+			</div>
+			<div class="orders-list-elem" v-if="tableColumn.date.visible"
+				:class="{'active': (search.search !='' && search.id == 3) || (period != 'Все' ) || (filter[2].value != '')}"
+				:style="`width: ${tableColumn.date.width}${tableColumn.date.unit}`"
+			>
 				<modal-date-picker v-model="filter[2].value" v-model:show="filter[2].show"></modal-date-picker>
-				<div>Дата создания</div>
+				<div>{{tableColumn.date.name}}</div>
 				<div 
 					:class="'orders-list-elem-filter' +(filter[2].show || filter[2].value != '' ? ' active': '')"
 					title="Фильтр"
@@ -71,9 +115,18 @@
 					</svg>
 
 				</div>
+				<div class="orders-list-elem-resize" @mousedown="onMouseDown($event, 'date')" ></div>
 			</div>
-			<div :class="'orders-list-elem' + (status != 'Все' ? ' active':'')">Статус</div>
-			<div class="orders-list-elem">Инфо</div>
+			<div class="orders-list-elem" v-if="tableColumn.status.visible"
+				:class="{'active': status != 'Все' }"
+				:style="`width: ${tableColumn.status.width}${tableColumn.status.unit}`"
+			>
+			{{tableColumn.status.name}}
+				<div class="orders-list-elem-resize" @mousedown="onMouseDown($event, 'status')" ></div>
+			</div>
+			<div class="orders-list-elem" v-if="tableColumn.info.visible"
+				:style="`width: ${tableColumn.info.width}${tableColumn.info.unit}`"
+			>{{tableColumn.info.name}}</div>
 		</div>
 
 		<div class="orders-list-item"
@@ -81,19 +134,30 @@
 			v-for="(item, key) in data_filtred"
 			:key="key"
 			>
-			
 				<div class="orders-list-row orders-list-main-row"
 					v-if="paginationShow(key)"
 					@click="key == active ? active = -1 : active = key"
 					
 				>
 
-					<div class="orders-list-elem">{{ key+1}}	<div class="table-arrow"></div>	</div>
-					<div class="orders-list-elem">{{ item.name }}</div>
-					<div class="orders-list-elem">{{ normalizeCompanyName(item.partner_name) }}</div>
-					<div class="orders-list-elem">{{ item.n }}</div>
-					<div class="orders-list-elem">{{ item.date }}</div>
-					<div class="orders-list-elem" >
+					<div class="orders-list-elem"  v-if="tableColumn.id.visible"
+						:style="`width: ${tableColumn.id.width}${tableColumn.id.unit}`"
+					>{{ key+1}}	<div class="table-arrow"></div>	
+					</div>
+					<div class="orders-list-elem" v-if="tableColumn.name.visible"
+						:style="`width: ${tableColumn.name.width}${tableColumn.name.unit}`"
+					>{{ item.name }}</div>
+					<div class="orders-list-elem" v-if="tableColumn.partner_name.visible"
+						:style="`width: ${tableColumn.partner_name.width}${tableColumn.partner_name.unit}`"
+					>{{ normalizeCompanyName(item.partner_name) }}</div>
+					<div class="orders-list-elem" v-if="tableColumn.n.visible"
+						:style="`width: ${tableColumn.n.width}${tableColumn.n.unit}`">{{ item.n }}</div>
+					<div class="orders-list-elem" v-if="tableColumn.date.visible"
+						:style="`width: ${tableColumn.date.width}${tableColumn.date.unit}`"
+					>{{ item.date }}</div>
+					<div class="orders-list-elem" v-if="tableColumn.status.visible" 
+						:style="`width: ${tableColumn.status.width}${tableColumn.status.unit}`"
+					>
 
 						<div v-for="(check, key) in item.checks" 
 							:class="'orders-list-elem-status ' + (parseInt(check.status) >= 0 && parseInt(check.status) < OrdersSatusCodeClass.length ? OrdersSatusCodeClass[parseInt(check.status)].class: '')"
@@ -104,7 +168,9 @@
 							
 						</div>
 					</div>
-					<div class="orders-list-elem" > 
+					<div class="orders-list-elem" v-if="tableColumn.info.visible"
+						:style="`width: ${tableColumn.info.width}${tableColumn.info.unit}`"
+					> 
 						<button
 							class="orders-list-more"
 							@click.stop="active_more = key"
@@ -278,8 +344,9 @@
 	import ModalInput from '/src/components/ui/ModalInput.vue'
 	import ModalDatePicker from '/src/components/ui/ModalDatePicker.vue'
 	import CatalogPagination from '/src/components/cards/Catalog/CatalogPagination.vue'
+	import CheckButton from '/src/components/ui/CheckButton.vue'
 
-	import { ref, PropType, watch, computed } from 'vue'
+	import { ref, PropType, watch, computed, onMounted, nextTick } from 'vue'
 	import { onClickOutside } from '@vueuse/core'
 	import { Check, Orders } from '/src/models/Orders'
 	import { normalizeCompanyName } from '/src/models/Partner'
@@ -296,6 +363,7 @@
 	import { OrderMutations } from '/src/store/order/mutations'
 	import { ClaimActions } from '/src/store/claims/actions'
 	import { ClaimMutations } from '/src/store/claims/mutations'
+import { number } from 'yup'
 
 
 	const props = defineProps(
@@ -511,4 +579,68 @@
 				.catch(()=>{billRequestLoadingState.value = -1})
 		}
 	}
+// Изменение колонок таблици
+	const table = ref()
+	const tableWidth = ref(0)
+	const isColumnResize = ref('')
+	const showTableMenu = ref(false)
+	const tableMenu = ref()
+	onClickOutside(tableMenu, () => {
+		showTableMenu.value = false
+	});
+
+	interface TableWidthUnit {
+		name: string,
+		width: number,
+		unit: string, 
+		min: number,
+		visible: boolean
+	}
+	interface TableWidth {
+		id: TableWidthUnit,
+		name: TableWidthUnit, 
+		partner_name: TableWidthUnit,
+		n: TableWidthUnit,
+		date: TableWidthUnit,
+		status: TableWidthUnit,
+		info: TableWidthUnit,
+	}
+	
+	const tableColumn = ref<TableWidth>({ id: {name: '№', width: 3, unit: '%', min: 10, visible: true},
+								name: {name: 'Наименование', width:20, unit: '%', min: 10, visible: true},
+								partner_name: {name: ' Контрагент', width:20, unit: '%', min: 10, visible: true},
+								n: {name: 'Номер', width:15, unit: '%', min: 5, visible: true},
+								date: {name: 'Дата создания', width:15, unit: '%', min: 10, visible: true},
+								status: {name: 'Статус', width:14.5, unit: '%', min: 10, visible: true},
+								info: {name: 'Инфо', width:10, unit: '%', min: 10, visible: true}})
+
+	
+	const mouseMoveEvent = (e: any) => {
+			const percent = (e.movementX / tableWidth.value) * 100
+
+			if (Object.keys(tableColumn.value).reduce( (sum, i)=> tableColumn.value[i  as keyof TableWidth].visible ? sum + tableColumn.value[i  as keyof TableWidth].width : sum + 0, 0)+percent < 100 &&
+				tableColumn.value[isColumnResize.value  as keyof TableWidth].width + percent > tableColumn.value[isColumnResize.value  as keyof TableWidth].min
+			)
+			tableColumn.value[isColumnResize.value  as keyof TableWidth].width = tableColumn.value[isColumnResize.value  as keyof TableWidth].width + percent
+		}
+	const onMouseDown = (e: any, columnName: string) => {
+		isColumnResize.value = columnName		
+		document.addEventListener('mousemove', mouseMoveEvent)
+	}
+	const onMouseUp = () => {
+		document.removeEventListener('mousemove', mouseMoveEvent)
+		isColumnResize.value = ''
+		saveTableColumn()
+	}
+	const saveTableColumn = () => {
+		localStorage.setItem('orders_list_table', JSON.stringify(tableColumn.value));
+	}
+	onMounted(() => {
+			nextTick(() => {
+				tableWidth.value = table.value.getBoundingClientRect().width
+				const orders_list_table = localStorage.getItem('orders_list_table')
+				if (orders_list_table) tableColumn.value = <TableWidth>JSON.parse(orders_list_table ) 
+
+				})
+			})
 </script>

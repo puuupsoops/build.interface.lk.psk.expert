@@ -110,6 +110,48 @@
 				font-size: 12px
 				line-height: 25px
 				color: $font-light-color
+				flex-grow: 1
+				text-align: right
+				padding: 
+					right: 15px
+			&-settings
+				cursor: pointer
+				margin-right: 10px
+				+prefix(transition, $default-transition)
+				&:hover
+					+prefix(transition, $default-transition)
+					+prefix(transform, rotate(-23deg))
+					path
+						fill: $accent-color
+				&.active
+					path
+						stroke: $active-color
+				
+				&-dropdown 
+					visibility: hidden
+					opacity: 0
+					position: absolute	
+					padding: 15px 30px
+					+prefix(transform, translateY(calc(50% + 5px))) 
+					right: 50px
+					background-color: $bg-default-color
+					border:
+						radius: 3px
+					+box-shadow(0px 0px 20px rgba(0, 0, 0, 0.8))
+					+flex
+					+flex-flow(column)
+					z-index: 5
+					max-height: 0px
+		
+					+prefix(transition, $default-transition)
+
+					&.active
+						visibility: visible
+						opacity: 1
+						max-height: 600px
+
+
+
 				
 	&-list
 		width: 100%
@@ -126,6 +168,12 @@
 			&.orders-list-heading
 				cursor: default
 				text-transform: uppercase
+				-webkit-user-select: none
+				-khtml-user-select: none
+				-moz-user-select: none
+				-ms-user-select: none
+				user-select: none
+
 			
 		&-main-row
 			background-color: $bg-color2
@@ -136,12 +184,17 @@
 				color: $accent-color
 
 		&-elem
+			flex: 0 0 auto
 			position: relative
-			padding: 16px 10px 14px 10px
+			padding:
+				top: 16px
+				right: 0px
+				bottom: 14px
+				left: 10px
 			font-size: 14px
 			line-height: 20px
 			//color: $font-light-color
-			+prefix(transition, $default-transition)
+			// +prefix(transition, $default-transition)
 			display: flex
 				
 			&-filter
@@ -155,6 +208,27 @@
 				&.active
 					.fill
 						fill: $accent-color
+			
+			&-center
+				width: 100%
+				text-align: center
+			
+			&-resize
+				width: 2px
+				height: 20px
+				margin-left: auto
+				display: block
+				background: #53565B
+				cursor: col-resize
+				border-radius: 2px
+				position: absolute
+				right: 0
+				+prefix(transition, $default-transition)
+				&:hover
+					width: 6px
+					+prefix(transform, translateX(2px))
+					+box-shadow(0px 0px 10px $bg-dlight-color)
+
 
 			&:nth-child(1)
 				text-align: center
@@ -165,12 +239,13 @@
 				width: 5.5%
 
 			&:nth-child(2)
-				width: 100%	
+				width: 30%	
 			&:nth-child(3)
-				width: 100%
-			&:nth-child(4)
 				width: 10%
-				text-align: center
+			&:nth-child(4)
+				width: 15%
+				justify-content: center
+				
 			&:nth-child(5)
 				width: 50%
 				text-align: center
@@ -179,7 +254,7 @@
 				width: 30%
 			&:nth-child(7)
 				width: 20%
-				text-align: center
+				justify-content: center
 			&:nth-child(8)
 				width: 20%
 				
