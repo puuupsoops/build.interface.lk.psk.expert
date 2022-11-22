@@ -184,11 +184,11 @@
 				color: $accent-color
 
 		&-elem
-			flex: 0 0 auto
+			//flex: 0 0 auto
 			position: relative
 			padding:
 				top: 16px
-				right: 0px
+				right: 10px
 				bottom: 14px
 				left: 10px
 			font-size: 14px
@@ -239,12 +239,13 @@
 				width: 5.5%
 
 			&:nth-child(2)
-				width: 30%	
+				width: 100%	
+				
 			&:nth-child(3)
-				width: 10%
+				width: 100%
 			&:nth-child(4)
 				width: 15%
-				justify-content: center
+				text-align: center
 				
 			&:nth-child(5)
 				width: 50%
@@ -254,10 +255,41 @@
 				width: 30%
 			&:nth-child(7)
 				width: 20%
-				justify-content: center
+				text-align: center
 			&:nth-child(8)
 				width: 20%
 				
+			&.id
+				text-align: center
+				padding:
+					left: 15px
+					right: 15px
+				height: 100%
+				width: 5.5%
+				
+			&.name
+				width: 30%	
+				
+			&.partner_name
+				width: 10%
+				
+			&.n
+				width: 15%
+				
+				justify-content: center
+				
+			&.date
+				width: 50%
+				text-align: center
+
+			&.status
+				text-align: left
+				width: 30%
+				
+			&.info
+				width: 20%
+				justify-content: center
+				margin-left: auto
 
 			&.error
 				color: #FF5449
@@ -409,9 +441,14 @@
 					font-size: 14px
 					line-height: 20px
 					color: $white
-					
+					cursor: pointer
 					white-space: nowrap
-
+					& span
+						margin-left: 7px
+					&.clear
+						+flex
+						+align-items(center)
+						+justify-content(center)
 					&:hover
 						color: $accent-color
 

@@ -1,4 +1,10 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-11-22
+
+    #0.2.52
+    1. Работа с таблицей с заказами. Улучшил поведение масштабируемых колонок.
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-11-19
 
     #0.2.51
