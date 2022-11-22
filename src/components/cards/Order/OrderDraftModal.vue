@@ -37,7 +37,7 @@
 										:style="'width: 100%'"
 									>
 										<input type="text" placeholder=" " v-model="item.name" >
-                                    	<label>Имя</label>
+                                    	<label>Наименование</label>
 									</div>
 									<div v-else>{{item.name}}</div>
 									<div v-if="item.id != active" class="date">{{new Date(item.id).toLocaleString('ru')}}</div>

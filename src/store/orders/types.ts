@@ -15,15 +15,15 @@ export const DefaultDocStatus: OrdersDocStatus = {
 
 export const OrdersSatusCode =  [
     {id: 0, name: 'Все'},
-    {id: 1, name: 'Зарегистрирован'},
+  //  {id: 1, name: 'Зарегистрирован'},
     {id: 2, name: 'Предзаказ'}, 
     {id: 3, name: 'Подтвержден'},
     {id: 4, name: 'Передан на склад'},
     {id: 5, name: 'Собран'},
     {id: 6, name: 'Отгружен'},
     {id: 7, name: 'Создан'},
-    {id: 8, name: 'Истек'},
-    {id: 9, name: 'Отменен'},
+  //  {id: 8, name: 'Истек'},
+  //  {id: 9, name: 'Отменен'},
     {id: 10, name: 'Закрыт'},
     {id: 11, name: 'Запрос счета'},
 ] //https://polshakov.atlassian.net/wiki/spaces/LKPSKEXPERT/pages/65791 -- deprecated
