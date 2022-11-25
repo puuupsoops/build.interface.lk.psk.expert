@@ -58,7 +58,7 @@
 </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { ref, computed, defineComponent } from 'vue'
 import { useStore } from '/src/store'
 
@@ -71,91 +71,78 @@ import { KeysMutations } from '/src/store/keys/mutations'
 import { AuthRequest } from '/src/models/Auth'
 import { CompanyActions } from '/src/store/company/actions'
 import { ProfileActions } from '../store/profile/actions'
+import { wsStoreActions } from '../plugins/wsStore'
 
-export default defineComponent({
-	components:{
-		Form,
-		Field,
-		ErrorMessage,
-		SnackBar
-	},	
-	setup(){
-		const store = useStore();
-		const router = useRouter();
-		const authData = ref<AuthRequest>({
-			login: '',
-			password: ''
-		})
+	
+const store = useStore()
+const router = useRouter()
+const authData = ref<AuthRequest>({
+	login: '',
+	password: ''
+})
 
-		const saved = ref<boolean>(false);
-		
-		const loader = computed<boolean>({
-			get: () => store.getters.getLoader,
-			set: (val: boolean) => store.commit(KeysMutations.SET_LOADER, val)
-		})
-		
-		defineRule('required', (value: string) => {
-			if (!value || !value.length) { 
-				return 'Обязательное поле';	
-				}
-				return true;	
-		});
-		defineRule('minLength', (value: string, [limit]: number[]) => {
-			if (!value || !value.length) {
-				return true;
-			}
-			if (value.length < limit) {
-				return `Минимум ${limit} символа`;
-			}
-			return true;
-		});
+const saved = ref<boolean>(false)
 
-		let loginError = computed({
-			get: () => store.getters.getLoginError,
-			set: () => store.commit(AuthMutations.CLEAR_LOGIN_ERROR)
-		})
+const loader = computed<boolean>({
+	get: () => store.getters.getLoader,
+	set: (val: boolean) => store.commit(KeysMutations.SET_LOADER, val)
+})
+const isAuth = computed(() => store.getters.isAuthenticated)
+const loginErrorMsg = computed(() => store.getters.getLoginErrorMsg)
 
-		let onLogin = () => {
-			loader.value=true;
-			setTimeout(() => {
-				store.dispatch(AuthActions.LOGIN, authData.value)
-						.then(() => {
-							if (saved.value) store.commit(AuthMutations.SET_SAVE_AUTH)
-							store.commit(AuthMutations.SET_AUTH_LOGIN,authData.value.login)
-							Promise.all([
-								store.dispatch(CompanyActions.GET_COMPANYS),
-								store.dispatch(ProfileActions.GET_PROFILE)
-							])
-							.catch(()=>{
-								authData.value.password = '';
-								setTimeout(() => {loader.value=false;}, 3000);
-							})
-							.finally(() => {
-								loader.value=false;
-								router.push({name: 'Main'});
-							})		
-						})
-						.catch(() => {
-							authData.value.password = '';
-							setTimeout(() => {loader.value=false;}, 3000);
-						})
-					}, 500);
-			
-		};
-
-
-		return {
-			isAuth: computed(() => store.getters.isAuthenticated),
-			loginError,
-			loginErrorMsg: computed(() => store.getters.getLoginErrorMsg),
-			loader,
-			authData,
-			saved,
-			onLogin,
+defineRule('required', (value: string) => {
+	if (!value || !value.length) { 
+		return 'Обязательное поле'	
 		}
-
+		return true	
+})
+defineRule('minLength', (value: string, [limit]: number[]) => {
+	if (!value || !value.length) {
+		return true
 	}
-});
+	if (value.length < limit) {
+		return `Минимум ${limit} символа`
+	}
+	return true
+})
+
+let loginError = computed({
+	get: () => store.getters.getLoginError,
+	set: () => store.commit(AuthMutations.CLEAR_LOGIN_ERROR)
+})
+
+let onLogin = () => {
+	loader.value=true
+	setTimeout(() => {
+		store.dispatch(AuthActions.LOGIN, authData.value)
+				.then(() => {
+					if (saved.value) store.commit(AuthMutations.SET_SAVE_AUTH)
+					store.commit(AuthMutations.SET_AUTH_LOGIN,authData.value.login)
+					Promise.all([
+						store.dispatch(CompanyActions.GET_COMPANYS),
+						store.dispatch(ProfileActions.GET_PROFILE)
+					])
+					.catch(()=>{
+						authData.value.password = ''
+						setTimeout(() => {loader.value=false}, 3000)
+					})
+					.finally(() => {
+						loader.value=false
+						store.dispatch(wsStoreActions.AUTH_WS)
+						router.push({name: 'Main'})
+						
+					})		
+				})
+				.catch(() => {
+					authData.value.password = ''
+					setTimeout(() => {loader.value=false}, 3000)
+				})
+			}, 500)
+	
+}
+
+
+
 </script>
 
 <style scoped lang="sass">

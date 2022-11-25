@@ -1,9 +1,16 @@
 import { Module } from 'vuex'
+import { globalProperties } from '../main';
 import { RootState } from '/src/store'
 
 export interface wsRootState {
     socket: any;
     messages: messageType[];
+}
+
+interface wsMessage {
+  type: string,
+  text: string,
+  date: string
 }
 
 export interface messageType {
@@ -29,7 +36,7 @@ export enum wsStoreMutations {
 }
 
 export enum wsStoreActions {
-
+  AUTH_WS = 'AUTH_WS',
 }
 
 
@@ -38,19 +45,16 @@ export const wsStore: Module<wsRootState, RootState> = {
   state: {
     socket: {
       isConnected: false,
-      // Message content
       message: "",
-      // Reconnect error
       reconnectError: false,
-      // Heartbeat message sending time
-      heartBeatInterval: 50000,
-      // Heartbeat timer
+      heartBeatInterval: 5000,
       heartBeatTimer: 0
     },
     messages:[],
 
   },
   getters:{
+    getWSisConnected: state => state.socket.isConnected,
     getWSMessage: state => state.messages,
     getWSMessagePopup: state => state.messages.filter((x: messageType) => x.readPopup == false ),
     getWSMessagePopupCnt: state => state.messages.filter((x: messageType) => x.readPopup == false ).length,
@@ -59,41 +63,43 @@ export const wsStore: Module<wsRootState, RootState> = {
   mutations: {
     // Connection open
     [wsStoreMutations.SOCKET_ONOPEN] (state, event) {
-
-      // globalProperties.$socket = event.currentTarget;
-      state.socket.isConnected = true;
-      // When the connection is successful, start sending heartbeat messages regularly to avoid being disconnected by the server
-      state.socket.heartBeatTimer = setInterval(() => {
-        const message = "Heartbeat message";
+      state.socket.isConnected = true
+      const token = localStorage.getItem('id_token')
+      console.log(globalProperties)
+      globalProperties.send(JSON.stringify({token}));
+      // // When the connection is successful, start sending heartbeat messages regularly to avoid being disconnected by the server
+      // state.socket.heartBeatTimer = setInterval(() => {
+      //   const message = "Heartbeat message";
       //   state.socket.isConnected &&
       //     globalProperties.$socket.send(JSON.stringify({
       //       code: 200,
       //       msg: message
       //     }));
-      }, state.socket.heartBeatInterval);
+      // }, state.socket.heartBeatInterval);
     },
 
     [wsStoreMutations.SOCKET_ONCLOSE] (state, event) {
       state.socket.isConnected = false;
-      clearInterval(state.socket.heartBeatTimer);
-      state.socket.heartBeatTimer = 0;
-      console.log("The line is disconnected: " + new Date());
-      console.log(event);
     },
-    // An error occurred
+    
     [wsStoreMutations.SOCKET_ONERROR] (state, event) {
       console.error(state, event);
     },
-    // Receive the message sent by the server
-    [wsStoreMutations.SOCKET_ONMESSAGE](state, message) {
-      //console.log(message)
-      const msg = {
-          id: state.messages.length,
-          time: Date.now(), 
-          message: message.data,
-          readPopup: false,
+
+    [wsStoreMutations.SOCKET_ONMESSAGE](state, message ) {
+      const wsMsg = <wsMessage>message.data
+
+      if (wsMsg.type == 'popup'){
+        const msg = {
+            id: state.messages.length,
+            time: Date.now(), 
+            message: message.data,
+            readPopup: false,
+        }
+        state.messages.push(msg)
+      } else if (wsMsg.type == 'message'){
+
       }
-      state.messages.push(msg)
     },
     // Auto reconnect
     [wsStoreMutations.SOCKET_RECONNECT](state, count) {
@@ -119,6 +125,9 @@ export const wsStore: Module<wsRootState, RootState> = {
     },
   },
   actions: {
+    [wsStoreActions.AUTH_WS] ({state}, token: string){
+      if (state.socket.isConnected) globalProperties.$socket.send(JSON.stringify({token}));
+    }
     
   }
 }
