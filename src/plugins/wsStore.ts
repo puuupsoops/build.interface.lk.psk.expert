@@ -15,7 +15,7 @@ interface wsMessage {
 
 export interface messageType {
   id: number,
-  time: number, 
+  time: string, 
   message: string,
   readPopup: boolean,
 }
@@ -86,13 +86,15 @@ export const wsStore: Module<wsRootState, RootState> = {
     },
 
     [wsStoreMutations.SOCKET_ONMESSAGE](state, message ) {
-      const wsMsg = <wsMessage>message.data
+      const wsMsg = <wsMessage>message
+      
+      console.log(message);
 
       if (wsMsg.type == 'popup'){
         const msg = {
             id: state.messages.length,
-            time: Date.now(), 
-            message: message.data,
+            time: wsMsg.date, 
+            message: wsMsg.text,
             readPopup: false,
         }
         state.messages.push(msg)

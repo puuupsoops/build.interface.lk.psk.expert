@@ -14,7 +14,7 @@ app.use(router)
 
 //WebSocket со стором
 import VueNativeSock from 'vue-native-websocket-vue3'
-app.use(VueNativeSock, import.meta.env.VITE_APP_WS_LOCATION, {store: store})
+app.use(VueNativeSock, import.meta.env.VITE_APP_WS_LOCATION, {store: store,format: "json"})
 
 export const globalProperties = app.config.globalProperties.$socket
 
