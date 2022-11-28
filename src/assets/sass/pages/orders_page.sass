@@ -285,6 +285,15 @@
 			&.status
 				text-align: left
 				width: 30%
+			&.comment
+				width: 10%
+				white-space: nowrap
+				overflow: hidden
+				text-overflow: ellipsis
+				
+				&:hover
+					white-space: unset
+					+prefix(transition, $default-transition)
 				
 			&.info
 				width: 20%

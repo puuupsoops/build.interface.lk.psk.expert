@@ -65,8 +65,7 @@ export const wsStore: Module<wsRootState, RootState> = {
     [wsStoreMutations.SOCKET_ONOPEN] (state, event) {
       state.socket.isConnected = true
       const token = localStorage.getItem('id_token')
-      console.log(globalProperties)
-      globalProperties.send(JSON.stringify({token}));
+      if (token) globalProperties.send(JSON.stringify({token}))
       // // When the connection is successful, start sending heartbeat messages regularly to avoid being disconnected by the server
       // state.socket.heartBeatTimer = setInterval(() => {
       //   const message = "Heartbeat message";
@@ -125,8 +124,9 @@ export const wsStore: Module<wsRootState, RootState> = {
     },
   },
   actions: {
-    [wsStoreActions.AUTH_WS] ({state}, token: string){
-      if (state.socket.isConnected) globalProperties.$socket.send(JSON.stringify({token}));
+    [wsStoreActions.AUTH_WS] ({state}){
+      const token = localStorage.getItem('id_token')
+      if (state.socket.isConnected && token) globalProperties.$socket.send(JSON.stringify({token}));
     }
     
   }

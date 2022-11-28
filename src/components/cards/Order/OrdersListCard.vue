@@ -136,6 +136,13 @@
 			{{tableColumn.status.name}}
 				<div class="orders-list-elem-resize" @mousedown="onMouseDown($event, 'status')" ></div>
 			</div>
+			<div class="orders-list-elem" v-if="tableColumn.comment.visible"
+				:class="{'comment': true, 'active': status != 'Все' }"
+				:style="`width: ${tableColumn.comment.width}${tableColumn.comment.unit}`"
+			>
+			{{tableColumn.comment.name}}
+				<div class="orders-list-elem-resize" @mousedown="onMouseDown($event, 'comment')" ></div>
+			</div>
 			<div class="orders-list-elem" v-if="tableColumn.info.visible"
 				:class="{'info': true}"
 				:style="`width: ${tableColumn.info.width}${tableColumn.info.unit}`"
@@ -187,6 +194,11 @@
 							
 						</div>
 					</div>
+					<div class="orders-list-elem" v-if="tableColumn.comment.visible"
+						:class="{'comment': true}"
+						:style="`width: ${tableColumn.comment.width}${tableColumn.comment.unit}`"
+					>{{ item.comment }}</div>
+
 					<div class="orders-list-elem" v-if="tableColumn.info.visible"
 						:class="{'info': true}"
 						:style="`width: ${tableColumn.info.width}${tableColumn.info.unit}`"
@@ -626,6 +638,7 @@ import DeleteButton from '../../ui/DeleteButton.vue'
 		n: TableWidthUnit,
 		date: TableWidthUnit,
 		status: TableWidthUnit,
+		comment: TableWidthUnit,
 		info: TableWidthUnit,
 	}
 	
@@ -634,7 +647,8 @@ import DeleteButton from '../../ui/DeleteButton.vue'
 								partner_name: {name: 'Контрагент', width:20, unit: '%', min: 10, visible: true, disabled: false},
 								n: {name: 'Номер', width:15, unit: '%', min: 5, visible: true, disabled: false},
 								date: {name: 'Дата создания', width:15, unit: '%', min: 10, visible: true, disabled: false},
-								status: {name: 'Статус', width:14.5, unit: '%', min: 10, visible: true, disabled: false},
+								status: {name: 'Статус', width:10, unit: '%', min: 10, visible: true, disabled: false},
+								comment: {name: 'Комментарии', width:15, unit: '%', min: 10, visible: true, disabled: false},
 								info: {name: 'Инфо', width:10, unit: '%', min: 10, visible: true, disabled: true}}
 								
 	const tableColumn = ref<TableWidth>(JSON.parse(JSON.stringify(tableColumnDefault)))

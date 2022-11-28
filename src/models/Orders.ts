@@ -23,6 +23,7 @@ export interface Orders {
     n:            number; // идентификатор общего заказа в таблице заказов Битрикс
     checks:       Check[] | null; //массив со счетами 
     reserved:     Boolean; // Признак того что заказ в резерве
+    comment:      String;
 }
 
 export interface Check {
