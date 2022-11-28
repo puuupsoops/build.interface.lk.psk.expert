@@ -1,4 +1,5 @@
 <template>
+	
 <div class="orders-list-wrap" @mouseup="onMouseUp()">
 	<div class="orders-heading-info">
 		<div class="orders-heading-pagination">
@@ -681,6 +682,7 @@ import DeleteButton from '../../ui/DeleteButton.vue'
 				}
 			})
 		}
+		
 	}
 	const clearTableWidth = () => {
 		tableColumn.value = <TableWidth>JSON.parse(JSON.stringify(tableColumnDefault))
@@ -695,7 +697,10 @@ import DeleteButton from '../../ui/DeleteButton.vue'
 				tableWidth.value = table.value.getBoundingClientRect().width
 				const orders_list_table = localStorage.getItem('orders_list_table')
 				if (orders_list_table) tableColumn.value = <TableWidth>JSON.parse(orders_list_table ) 
-
+				if (!tableColumn.value.comment){
+					tableColumn.value = JSON.parse(JSON.stringify(tableColumnDefault))
+					localStorage.setItem('orders_list_table', JSON.stringify(tableColumn.value));
+				}
 				})
 			})
 </script>
