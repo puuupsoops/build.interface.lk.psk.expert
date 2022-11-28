@@ -7,7 +7,7 @@
       <div class="popup-message" @click="more_event()">
         <div class="popup-text" :class="{'more': more | more_show}">{{message?.message}}</div>
 
-        <div class="popup-time"><b>{{(new Date(message?.time)).toLocaleString('ru').replace(',', '')}}</b></div>
+        <div class="popup-time"><b>{{message?.time}}</b></div>
       </div>
       <div class="popup-close" @click="close()"></div>
     </div>
