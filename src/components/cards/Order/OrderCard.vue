@@ -459,7 +459,7 @@ import { ShipmentsActions } from '/src/store/shipments/actions'
 			
 		}
 		if (props.data.edit) {
-			console.log(new Date(props.data.delivery.date).toISOString().substr(0, 10))
+			//console.log(new Date(props.data.delivery.date).toISOString().substr(0, 10))
 			let code = DeliveryCode.find(x=>x.code === props.data.delivery.case)?.id
 			selectDelivery.value = code ? code : 0
 			deliveryDate.value = new Date(props.data.delivery.date).toLocaleString('ru').substr(0, 10)

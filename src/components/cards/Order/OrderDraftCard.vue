@@ -6,7 +6,7 @@
 			<div class="order-list-bottom scroll-elem">
 				
 				<div class="order-list-bottom-wrap"> 
-					<div class="content-heading-wrap order-draft"  v-if="data.total">
+					<div class="content-heading-wrap order-draft"  v-if="data.total && !no_total">
 						<div class="content-heading-price"> 
 							<div class="content-heading-price" > 
 								<div class="content-heading-price-text">Сумма заказа: </div>
@@ -84,12 +84,12 @@
 					
 					
 				</div>
-				<div class="order-list-bottom-wrap" v-if="data.position_presail.length > 0"> 
+				<div class="order-list-bottom-wrap" v-if="data.position_presail.length > 0 && no_presail==false"> 
 
 					<div class="order-list-row order-list-subheading">
 						<div>Позиции для предзаказа</div>
 					</div>
-					<div class="content-heading-wrap order-draft"  v-if="data.total_presail">
+					<div class="content-heading-wrap order-draft"  v-if="data.total_presail && !no_total">
 						<div class="content-heading-price"> 
 							<div class="content-heading-price" > 
 								<div class="content-heading-price-text">Сумма заказа: </div>
@@ -177,6 +177,14 @@ const props = defineProps( {
 			type: Object as PropType<OrderStateOrder>,
 			required: true,
 		},
+		no_total: {
+			type: Boolean,
+			default: false
+		},
+		no_presail: {
+			type: Boolean,
+			default: false
+		}
     })
 		const open = ref<number[]>([]);
 		const open_presail = ref<number[]>([]);

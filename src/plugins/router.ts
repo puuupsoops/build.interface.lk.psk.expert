@@ -139,6 +139,14 @@ const routes = [
 			}
 	},
 	{
+		path: '/kp', 
+		component: () => import('/src/pages/kp/kp.vue'),
+		name: 'KP',
+		meta:{
+				auth: true,
+			}
+	},
+	{
 		path: '/404',
 		component: () => import('/src/pages/404.vue'),
 		name: '404',

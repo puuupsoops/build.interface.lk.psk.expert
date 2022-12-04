@@ -180,7 +180,7 @@ export default defineComponent({
 
 		}
 		const editOrder = () => {
-			console.log(activeCompanyUid.value)
+			//console.log(activeCompanyUid.value)
 			showModal.value=true;
 			store.commit(OrderMutations.ADD_ORDER_PARTNER_ID, activeCompanyUid.value)
 			setTimeout(() => {

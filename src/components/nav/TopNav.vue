@@ -64,7 +64,7 @@
 
 					<router-link  v-if="catalog"
 							tag="a" 
-							:to="'/catalog'"
+							:to="'/catalog/catalog'"
 							class="content-heading-btn"
 						>
 							<svg class="content-heading-btn-img" width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">

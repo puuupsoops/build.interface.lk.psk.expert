@@ -1,4 +1,10 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-12-04
+
+    #0.2.53
+    1. Добавлен конструктор КП
+    
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-11-22
 
     #0.2.52

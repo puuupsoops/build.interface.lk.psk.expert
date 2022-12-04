@@ -13,6 +13,8 @@ import { claims } from './claims/index'
 import { keys } from './keys/index'
 import { profile } from './profile/index'
 import { wsStore } from '/src/plugins/wsStore'
+import { kp } from './kp/index'
+
 
 // export default createStore({
 // 	modules:{
@@ -48,6 +50,7 @@ export const store = createStore<RootState>({
 		keys,
 		profile,
 		wsStore,
+		kp,
 	}
 })
 
