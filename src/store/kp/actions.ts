@@ -14,7 +14,7 @@ export enum KPActions {
 
 export const actions: ActionTree<KPState, RootState> =  {
 	async [KPActions.SEND_KP] ({ commit }, data: KP){
-		await axios.post('/services/proposal/add', data)
+		await axios.post('/services/proposal/add', data, {responseType: 'blob'})
 			.then(response => {
 				commit(KPMutations.SET_KP_FILE, response.data)
 				
