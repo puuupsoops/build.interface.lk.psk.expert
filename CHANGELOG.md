@@ -1,4 +1,10 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-12-08
+
+    #0.2.54
+    1. В конструктор КП добавлен поиск организации по ИНН
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-12-04
 
     #0.2.53

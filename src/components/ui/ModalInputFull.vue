@@ -8,7 +8,7 @@
 				:value="modelValue"
 				@input="inputModelValue($event)"
 			>
-			
+			<label v-if="label!=''">{{label}}</label>
 		</div>
 		<div
 			class="modal-input-btn" 
@@ -56,7 +56,12 @@ import { onClickOutside } from '@vueuse/core'
 		modelValue: {
 			type: String,
 			default: '',
+		},
+		label:{
+			type: String,
+			default:''
 		}
+
 	})
 	const emits = defineEmits(['update:modelValue', 'update:show', 'onInput', 'onOk'])
 

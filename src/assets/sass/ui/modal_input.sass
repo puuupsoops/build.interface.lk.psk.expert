@@ -1,6 +1,36 @@
 
 .modal-input
+	label
+		position: absolute
+		font-size: 1rem
+		left: 0
+		top: 50%
+		transform: translateY(-50%)
+		color: gray
+		padding: 0 0.3rem
+		margin: 0 0.5rem
+		transition: .1s ease-out
+		transform-origin: left top
+		pointer-events: none
 	
+	
+	
+	
+	input:focus + label 
+		color: $font-light-color
+		top: 0
+		
+		transform: translateY(-50%) scale(.9)
+	
+	input:not(:placeholder-shown) + label 
+		top: 0
+		transform: translateY(-50%) scale(.9)
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button 
+		-webkit-appearance: none
+		margin: 0
+	input[type=number]
+		-moz-appearance: textfield
 	&-wrap
 		+flex
 		+align-items(center)

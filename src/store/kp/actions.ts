@@ -10,6 +10,7 @@ import { AuthMutations } from '../auth/mutations'
 export enum KPActions {
 	SEND_KP = "SEND_KP",
 	SAVE_KP = "SAVE_KP",
+	GET_ORG_BY_INN = "GET_ORG_BY_INN",
 }
 
 export const actions: ActionTree<KPState, RootState> =  {
@@ -29,7 +30,18 @@ export const actions: ActionTree<KPState, RootState> =  {
 		link.href = url
 		link.setAttribute('download', 'file.pdf')
 		document.body.appendChild(link)
-		link.click()
-			
+		link.click()		
 	},
+	async [KPActions.GET_ORG_BY_INN] ({ commit }, inn: string){
+		await axios.get('/services/proposal/org/' + inn)
+			.then(response=>{
+				console.log(response.data.response.name)
+				commit(KPMutations.SET_KP_ORG_NAME, response.data.response.text)
+				
+			})
+			.catch( error => {
+				commit(AuthMutations.SET_ERROR, `${error.response.data.error.message}`)
+				return Promise.reject('Error')
+			})
+	}
 }

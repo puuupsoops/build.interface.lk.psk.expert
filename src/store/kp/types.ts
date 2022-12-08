@@ -3,6 +3,7 @@ import { KP } from "/src/models/KP"
 export interface KPState {
     kp: KP,
     file: any,
+    org_name: string,
 }
 
 export const DefaultKP:KP = {
@@ -15,6 +16,6 @@ export const DefaultKP:KP = {
         position: []
     },
     header: true,        //true,
-    as:     'PDF'              //PDF
+    as:     'PDF',       //PDF
 }
 

@@ -91,14 +91,28 @@
                     <div class="profile-personal-info-item-edit">
                         <div class="input-textfield">
                             <input name="lastname" type="text" placeholder=" " class="" v-model="NewKP.offer.executor">
-                            <label>Исполнитель</label>
+                            <label>Поставщик</label>
                         </div>
                     </div>
-                    <div class="profile-personal-info-item-edit">
-                        <div class="input-textfield">
-                            <input name="lastname" type="text" placeholder=" " class="" v-model="NewKP.offer.customer">
-                            <label>Заказчик</label>
+                    <div class="profile-personal-info-item-edit" :style="'display: flex; align-items: center;'">
+                        <div class="input-textfield" v-if="!loading_inn" :style="'width: 100%'" >
+                            <input name="lastname" type="text" placeholder=" " :class="{'error': inn_error}" v-model="NewKP.offer.customer" disabled>
+                            <label>Покупатель</label>
                         </div>
+                        <PreloaderLocal v-else/>
+                        <div
+                            class="kp-step-body-button"
+                            tooltip="Поиск по ИНН"
+                            :flow="showCustomer? '' :'up'" 
+                            @click.capture="(showCustomer=true)"
+                        >
+                          <modal-input-full v-model="customer" v-model:show="showCustomer" show-ok @on-ok="doSearch()" :label="'Введите ИНН'"></modal-input-full>
+                            <svg  width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="2.17029" height="21.7029" rx="1.08514" transform="matrix(0.999975 -0.00708126 -0.00708126 0.999975 11.097 1.26186)" fill="#A5A7A9"/>
+                                    <rect width="2.17029" height="21.7029" rx="1.08514" transform="matrix(0.00708126 -0.999975 -0.999975 0.00708126 22.7798 12.9446)" fill="#A5A7A9"/>
+                            </svg>
+                        </div>
+                       
                     </div>
                     <div class="profile-personal-info-item-edit">
                         <div class="input-textfield">
@@ -137,10 +151,11 @@
 </template>
 
 <script lang="ts" setup>
-import OrderDraftCard from '/src/components/cards/Order/OrderDraftCard.vue'
+
 import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 import DatePicker from '/src/components/ui/DatePicker.vue'
 import AmountInput from '/src/components/ui/AmountInput.vue'
+import ModalInputFull from '/src/components/ui/ModalInputFull.vue'
 
 import { computed, ref, watch } from 'vue'
 import { useStore } from '/src/store'
@@ -148,7 +163,7 @@ import { OrderActions } from '/src/store/order/actions'
 import { KPActions } from '/src/store/kp/actions'
 import { KP } from '/src/models/KP'
 import { DefaultKP } from '/src/store/kp/types'
-import { boolean } from 'yup'
+
 
     const store = useStore()    
 
@@ -161,10 +176,15 @@ import { boolean } from 'yup'
     })
     const loading = ref(false)
     const loading_next = ref(false)
+    const loading_inn = ref(false)
+    const inn_error = ref(false)
+    const customer = ref('')
+    const showCustomer = ref(false)
     const order = ref<number>(-1)
-        const open = ref<number[]>([])
+    const open = ref<number[]>([])
     const orders = computed(() => store.getters.getOrders)
     const order_detail = computed(() => store.getters.getOrderDetail)
+
 
     const NewKP = ref<KP>(JSON.parse(JSON.stringify(DefaultKP)))
     const date = ref(new Date().toLocaleString('ru').substr(0, 10))
@@ -180,7 +200,7 @@ import { boolean } from 'yup'
         if (order.value != -1 ){
             NewKP.value.offer.date = (new Date(date.value)).getTime()
             NewKP.value.offer.position = JSON.parse(JSON.stringify(order_detail.value.position))
-        // console.log(NewKP.value)
+        
             loading_next.value=true
             store.dispatch(KPActions.SEND_KP, NewKP.value ).finally(()=>{
                 emits('next')
@@ -189,5 +209,27 @@ import { boolean } from 'yup'
         //$emit('next')
     }
     
+    const doSearch = () =>{
+        
+        if ( customer.value.length >=2) {
+            NewKP.value.offer.customer = ''
+            loading_inn.value = true        
+            inn_error.value = false
+            showCustomer.value=false
+            store.dispatch(KPActions.GET_ORG_BY_INN, customer.value)
+                    .then( ()=> {
+                        loading_inn.value=false
+                        NewKP.value.offer.customer = store.getters.getKPOrgName
+                        customer.value = ''
+                    } )
+                    .catch(()=>{
+                        inn_error.value = true
+                        setTimeout(()=>{inn_error.value = false}, 10000)
+                        loading_inn.value=false
+                        customer.value = ''
+
+                    })
+        }
+    }
 </script>
  
