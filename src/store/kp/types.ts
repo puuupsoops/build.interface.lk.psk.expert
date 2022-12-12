@@ -3,6 +3,7 @@ import { KP } from "/src/models/KP"
 export interface KPState {
     kp: KP,
     file: any,
+    file_type: string,
     org_name: string,
 }
 

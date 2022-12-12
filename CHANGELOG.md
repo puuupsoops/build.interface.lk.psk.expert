@@ -1,4 +1,10 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-12-12
+
+    #0.2.55
+    1. Добавил выбор типа коммерческого предложения PDF или WORD
+    
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-12-08
 
     #0.2.54

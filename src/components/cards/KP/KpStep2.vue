@@ -96,7 +96,7 @@
                     </div>
                     <div class="profile-personal-info-item-edit" :style="'display: flex; align-items: center;'">
                         <div class="input-textfield" v-if="!loading_inn" :style="'width: 100%'" >
-                            <input name="lastname" type="text" placeholder=" " :class="{'error': inn_error}" v-model="NewKP.offer.customer" disabled>
+                            <input name="lastname" type="text" placeholder=" " :class="{'error': inn_error}" v-model="NewKP.offer.customer">
                             <label>Покупатель</label>
                         </div>
                         <PreloaderLocal v-else/>
@@ -120,18 +120,25 @@
                             <label>Номер документа</label>
                         </div>
                     </div>
-                   
                     <div class="shipment-form-item">
-                        <div class="shipment-form-elem-title"><span>Дата</span></div>
-                        <div class="shipment-form-row">
-                            <div class="shipment-form-date">
-                        
-                                <DatePicker
-                                    v-model="date"
-                                   
-                                />
+                            <div class="shipment-form-elem-title"><span>Дата</span></div>
+                            <div class="shipment-form-row" :style="'display:flex; align-items: center;'">
+                                <div class="shipment-form-date">
+                            
+                                    <DatePicker
+                                        v-model="date"
+                                    
+                                    />
+                                    
+                                </div>
+                                    <CheckButton v-model="PDF" @onClick="PDF=true; WORD=false; NewKP.as='PDF'"  :style="'margin-left: 30px'"/>
+                                    <div :style="'margin-left: 10px'">PDF</div>
+                                    <CheckButton v-model="WORD" @onClick="PDF=false; WORD=true; NewKP.as='WORD'" :style="'margin-left: 30px'"/>
+                                    <div :style="'margin-left: 10px'">Word</div>
                             </div>
-                        </div>
+                           
+                        
+                       
                     </div>
                                 
                     <div class="order-comment-form show">
@@ -156,6 +163,8 @@ import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 import DatePicker from '/src/components/ui/DatePicker.vue'
 import AmountInput from '/src/components/ui/AmountInput.vue'
 import ModalInputFull from '/src/components/ui/ModalInputFull.vue'
+import CheckButton from '/src/components/ui/CheckButton.vue'
+
 
 import { computed, ref, watch } from 'vue'
 import { useStore } from '/src/store'
@@ -187,6 +196,8 @@ import { DefaultKP } from '/src/store/kp/types'
 
 
     const NewKP = ref<KP>(JSON.parse(JSON.stringify(DefaultKP)))
+    const PDF = ref(true)
+    const WORD = ref(false)
     const date = ref(new Date().toLocaleString('ru').substr(0, 10))
 
     watch(order, ()=>{

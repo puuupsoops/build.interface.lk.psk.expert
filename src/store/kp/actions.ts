@@ -18,6 +18,7 @@ export const actions: ActionTree<KPState, RootState> =  {
 		await axios.post('/services/proposal/add', data, {responseType: 'blob'})
 			.then(response => {
 				commit(KPMutations.SET_KP_FILE, response.data)
+				commit(KPMutations.SET_KP_FILE_TYPE, data.as)
 				
 			})
 			.catch( error => {
@@ -28,7 +29,7 @@ export const actions: ActionTree<KPState, RootState> =  {
 		const url = window.URL.createObjectURL(new Blob([state.file]))
 		const link = document.createElement('a')
 		link.href = url
-		link.setAttribute('download', 'file.pdf')
+		link.setAttribute('download', 'file.'+state.file_type)
 		document.body.appendChild(link)
 		link.click()		
 	},
