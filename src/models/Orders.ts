@@ -29,7 +29,7 @@ export interface Orders {
 export interface Check {
     id:                      number; // идентификатор позиции заказа в битрикс 
     guid:                    string; // идентификатор позиции заказа в 1С базе (для получения документов)
-    status:                  string; // мнемонический код статуса позиции заказа из 1С
+    status:                  number; // мнемонический код статуса позиции заказа из 1С
     organization_id:         string; // уникальный идентификатор организации-склада (ФРО/ЭС)
     n:                       string; // <string> Номер документа в базе 1С
     doc_status?:     OrdersDocStatus;

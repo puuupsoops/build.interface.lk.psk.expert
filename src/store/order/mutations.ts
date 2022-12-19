@@ -8,7 +8,7 @@ const getCompanyDiscount = (uid: string, guid: string, status: string): number =
 	if (uid){
 		const company = CompanyState.companys.find(x => x.uid === uid)
 		const res = company && company.storages ? company.storages.find(x => x.guid === guid): null
-		return res?res.discount:0
+		return res ? res.discount:0
 	} else { return 0 }
 }
 
@@ -139,7 +139,7 @@ export const mutations: MutationTree<OrderState> = {
 			pos.characteristics.forEach( c => {
 				total_pos = total_pos + c.PRICE * c.count
 				c.discount = getCompanyDiscount(state.partner_id, c.ORGGUID, pos.product.STATUS)
-				if (c.discount > c.MAX_DISCOUNT ) c.discount =  c.MAX_DISCOUNT
+				if (c.MAX_DISCOUNT!= 0 && c.discount > c.MAX_DISCOUNT ) c.discount =  c.MAX_DISCOUNT
 				c.price_discount = c.PRICE-c.discount*(c.PRICE/100)
 				
 				total_discount_pos = total_discount_pos +c.price_discount * c.count
@@ -166,7 +166,7 @@ export const mutations: MutationTree<OrderState> = {
 			pos.characteristics.forEach( c => {
 				total_pos = total_pos + c.PRICE * c.count
 				c.discount = getCompanyDiscount(state.partner_id, c.ORGGUID, pos.product.STATUS)
-				if (c.discount > c.MAX_DISCOUNT ) c.discount =  c.MAX_DISCOUNT
+				if (c.MAX_DISCOUNT!= 0 && c.discount > c.MAX_DISCOUNT ) c.discount =  c.MAX_DISCOUNT
 				c.price_discount = c.PRICE-c.discount*(c.PRICE/100)
 				
 				total_discount_pos = total_discount_pos +c.price_discount * c.count
@@ -198,6 +198,7 @@ export const mutations: MutationTree<OrderState> = {
 		// Добавить стоимость доставки к цене .
 		state.order.total_discount = state.order.total_discount ? state.order.total_discount + state.order.delivery.cost : state.order.total//
 		state.order.total = state.order.total + state.order.delivery.cost 
+		
 	},
 
 	[OrderMutations.ADD_ORDER] (state, data: NewOrder): void{
@@ -282,7 +283,8 @@ export const mutations: MutationTree<OrderState> = {
 								GUID: c.guid,
 								count: c.quantity,
 								ORGGUID: c.orgguid,
-								fullprice: c.fullprice
+								fullprice: c.fullprice,
+								discount: c.discount * 100,
 							}
 						})
 					}

@@ -187,8 +187,8 @@
 					>
 
 						<div v-for="(check, key) in item.checks" 
-							:class="'orders-list-elem-status ' + (parseInt(check.status) >= 0 && parseInt(check.status) < OrdersSatusCodeClass.length ? OrdersSatusCodeClass[parseInt(check.status)].class: '')"
-							:tooltip="(parseInt(check.status) >= 0 && parseInt(check.status) < OrdersSatusCodeClass.length ? OrdersSatusCodeClass[parseInt(check.status)].name: '')"
+							:class="'orders-list-elem-status ' + (check.status >= 0 && check.status < OrdersSatusCodeClass.length ? OrdersSatusCodeClass[check.status].class: '')"
+							:tooltip="(check.status >= 0 && check.status < OrdersSatusCodeClass.length ? OrdersSatusCodeClass[check.status].name: '')"
 							flow="up"
 							:key="key"
 						>
@@ -214,7 +214,10 @@
 							<a class="orders-list-more-dropdown-link" v-if="item.reserved" @click.stop="detailOrderId = item.n; showDetail=true; editOrder=true;repeatOrder=false;" >Изменить заказ</a>
 							<a class="orders-list-more-dropdown-link" >Скачать документы</a>
 							<a class="orders-list-more-dropdown-link" >Скачать сертификаты</a>
-							<a class="orders-list-more-dropdown-link" @click.stop="setClaimOrderId(item.n)">Оформить претензию</a>
+							<a class="orders-list-more-dropdown-link" @click.stop="setClaimOrderId(item.n)" v-if="item.checks?.filter(check => check.status == 5 || check.status == 9 ) && item.checks?.filter(check => check.status == 5 || check.status == 9 ).length>0 ">
+								Оформить претензию
+							</a>
+							
 							
 							<router-link 
 								class="orders-list-more-dropdown-link" 
@@ -222,7 +225,7 @@
 								:to="'/shipments/request'"
 								@click="setOrderId(item.n)"
 							>
-									<span>Заявка на транспорт</span>
+									Заявка на транспорт
 							</router-link>
 							
 						</div>
@@ -307,10 +310,10 @@
 							</div>
 							<div class="orders-list-info-elem"> 
 								
-								{{ OrdersSatusCodeClass[parseInt(check.status)] ? OrdersSatusCodeClass[parseInt(check.status)].name : ''}}	
+								{{ OrdersSatusCodeClass[check.status] ? OrdersSatusCodeClass[check.status].name : ''}}	
 								<div  
-									v-if="OrdersSatusCodeClass[parseInt(check.status)]"
-									:class="'orders-list-elem-status small ' + (parseInt(check.status) >= 0 && parseInt(check.status) < OrdersSatusCodeClass.length ? OrdersSatusCodeClass[parseInt(check.status)].class: '')"
+									v-if="OrdersSatusCodeClass[check.status]"
+									:class="'orders-list-elem-status small ' + (check.status >= 0 && check.status < OrdersSatusCodeClass.length ? OrdersSatusCodeClass[check.status].class: '')"
 									
 									flow="up"
 								>
@@ -319,7 +322,7 @@
 							</div>
 							<div class="orders-list-info-elem"> 
 								<div class="orders-list-elem-request-bill"
-									v-if="check.status != '10'">
+									v-if="check.status != 10">
 
 									<preloader-local small v-if="billRequestLoadingState == check.id"/>
 									
@@ -556,7 +559,10 @@ import DeleteButton from '../../ui/DeleteButton.vue'
 			return true
 		} else {
 			if (Array.isArray(item.checks)){
-				return item.checks.findIndex( x => OrdersSatusCode[parseInt(x.status+1)] ? props.status == OrdersSatusCode[parseInt(x.status+1)].name : false) !=-1
+				return item.checks.findIndex( x => {
+							const id = OrdersSatusCode.find(c=> c.name==props.status)?.id 
+							return (id && id-1 == x.status)
+						}) !=-1
 			}
 			else 
 				return false

@@ -6,7 +6,8 @@
 		<div class="top-line-account-img-box"
 			:class="{'loading': loading}"
 		>
-			<img class="top-line-account-img" :src="image"/>
+			<img class="top-line-account-img" :src="image" v-if="image!=''"/>
+			<img class="company-consultant-img" src="/src/assets/img/user.png" alt=""  v-else/>
 		</div>
 
 	</div>

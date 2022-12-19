@@ -48,13 +48,12 @@
 		:data="searchColumn"
 		v-model="search"
 	/> -->
-
 	<OrdersListCard
 	
 		:loading="loading"
 		:contrAgent="filterCompanyUid"
 		:period="filterPeriodData[filterPeriod].name"
-		:status="OrdersSatusCode[filterStatus].name"
+		:status="OrdersSatusCode.find(x=>x.id==filterStatus)?.name"
 		:search="search"
 		:refresh="refreshing"
 	/>
@@ -82,7 +81,7 @@
 
 	const store = useStore();
 	const loading = ref(true)
-	const search = ref<SearchData|null>({id: 1, search: ''})
+	const search = ref<SearchData>({id: 1, search: ''})
 	const companyBarTopData = computed(() => store.getters.getCompanysList)
 
 	const filterStatus = ref(0)

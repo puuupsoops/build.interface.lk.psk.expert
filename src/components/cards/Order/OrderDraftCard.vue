@@ -68,7 +68,10 @@
 								<div class="order-list-elem"> </div>
 								<div class="order-list-elem"> </div>
 								<div class="order-list-elem">{{ characteristic.CHARACTERISTIC }}</div>
-								<div class="order-list-elem">{{ Number(characteristic.PRICE).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
+								<div class="order-list-elem">
+									{{ Number(characteristic.PRICE).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽
+									<div class="order-list-elem-text" v-if="characteristic.discount>0">скидка {{ characteristic.discount }}% </div>
+								</div>
 								<div class="order-list-elem"> 
 									<span>{{characteristic.count}}</span>
 								</div>
