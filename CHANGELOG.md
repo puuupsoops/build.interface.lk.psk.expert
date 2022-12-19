@@ -1,3 +1,11 @@
+Author: Vasilii Polshakov <45201a@gmail.com>
+Date:   2022-12-20
+
+    #0.2.56-fix
+    1. Last name hidden in personal buttons Name component
+    2. Main notification text is replace
+    3. Replaced production websoket address
+
 Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-12-19
 

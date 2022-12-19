@@ -3,7 +3,7 @@
         <div class="top-line-account-name-box"
         :class="{'loading': loading}"
         >
-            <div class="top-line-account-name-fio">{{personal.name}} {{personal.lastname}}</div>
+            <div class="top-line-account-name-fio">{{personal.name}}</div>
             <div class="top-line-account-name-mail">{{personal.email}}</div>
         </div>
     </div>
