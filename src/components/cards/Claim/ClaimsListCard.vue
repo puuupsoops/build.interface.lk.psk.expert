@@ -348,7 +348,7 @@ const props = defineProps({
 		} else {
 			if (!item.order) return false
 			if (Array.isArray(item.order.checks)){
-				return item.order.checks.findIndex( x => OrdersSatusCode[parseInt(x.status+1)] ? props.status == OrdersSatusCode[parseInt(x.status+1)].name : false) !=-1
+				return item.order.checks.findIndex( x => OrdersSatusCode[x.status+1] ? props.status == OrdersSatusCode[x.status+1].name : false) !=-1
 			}
 			else 
 				return false
