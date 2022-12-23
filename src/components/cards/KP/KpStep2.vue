@@ -1,10 +1,11 @@
 <template>
     <div class="kp-step" :class="{'active': active}">
-        <div class="kp-step-title">Выберите заказ</div>
+        <div class="kp-step-title"  v-if="type == KPTYPES.ORDER">Выберите заказ</div>
+        <div class="kp-step-title"  v-if="type == KPTYPES.DRAFT">Выберите черновик</div>
         <div class="kp-step-body">
            
-            <!-- <div v-if="companyUID == '' ">Выберите контрагента</div> -->
-            <div   class="shipment-heading-select">
+            
+            <div   class="shipment-heading-select" v-if="type == KPTYPES.ORDER">
                 <div class="base-select-wrap">
                     <select class="base-select" style="width: 100%" v-model="order">
                         <option value="-1">Выберите заказ</option>
@@ -15,13 +16,27 @@
                     </select>
                 </div>
             </div>
-            <div v-if="order!=-1" :style="'padding: 30px'">
+            <div   class="shipment-heading-select" v-if="type == KPTYPES.DRAFT">
+                <div class="base-select-wrap">
+                    <select class="base-select" style="width: 100%" v-model="draft">
+                        <option value="-1">Выберите черновик</option>
+                        <option v-for="(draft, key) in drafts"
+                            :key="key"
+                            :value="draft.id"
+                        >{{draft.name}}</option>
+                    </select>
+                </div>
+            </div>
+
+
+
+            <div v-if="order != -1 || draft != -1" :style="'padding: 30px'">
                 <div v-if="loading" style="display: flex; justify-content: center">
 					<PreloaderLocal ></PreloaderLocal>
 				</div>
                 <div class="order-list-bottom scroll-elem"  v-else>
 				
-                    <div class="order-list-bottom-wrap"> 
+                    <div class="order-list-bottom-wrap" v-if="order_detail"> 
                         
                         <div class="order-list-row order-list-heading" v-if="order_detail.position.length>0">
                             <div class="order-list-elem">№</div>
@@ -69,7 +84,7 @@
                                     <div class="order-list-elem">{{ characteristic.CHARACTERISTIC }}</div>
                                     <div class="order-list-elem" :style="'display: flex;align-items: center;gap: 10px'"> <amount-input v-model="characteristic.PRICE" ></amount-input>  ₽</div>
                                     <div class="order-list-elem"> 
-                                        <amount-input v-model="characteristic.count" ></amount-input> 
+                                        <amount-input v-model="characteristic.count" :min="1" ></amount-input> 
                                     </div>
                                     <div class="order-list-elem">{{ Number(characteristic.PRICE * characteristic.count).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
                                     
@@ -150,9 +165,9 @@
             </div>
         </div>
         <div class="kp-step-actions ">
-            <div class="kp-step-actions-link" @click="$emit('prev')">Назад</div>
+            <div class="kp-step-actions-link" @click="prev()">Назад</div>
             <PreloaderLocal v-if="loading_next"></PreloaderLocal>
-            <div v-else class="kp-step-actions-link" :class="{'disabled': order==-1}" @click="next()">Далее</div>
+            <div v-else class="kp-step-actions-link" :class="{'disabled': order==-1 && draft == -1}" @click="next()">Далее</div>
         </div>
     </div>
 </template>
@@ -166,13 +181,14 @@ import ModalInputFull from '/src/components/ui/ModalInputFull.vue'
 import CheckButton from '/src/components/ui/CheckButton.vue'
 
 
-import { computed, ref, watch } from 'vue'
+import { computed, PropType, ref, watch } from 'vue'
 import { useStore } from '/src/store'
 import { OrderActions } from '/src/store/order/actions'
 import { KPActions } from '/src/store/kp/actions'
-import { KP } from '/src/models/KP'
+import { KP, KP_TYPES } from '/src/models/KP'
 import { DefaultKP } from '/src/store/kp/types'
-
+import { OrderStateOrder } from '/src/store/order/types'
+import { Orders } from '/src/models/Orders'
 
     const store = useStore()    
 
@@ -181,8 +197,14 @@ import { DefaultKP } from '/src/store/kp/types'
         active: {
             type: Boolean,
             default: false
+        },
+        type: {
+			type: String as PropType<KP_TYPES>,
+			required: true
+	
         }
     })
+    const KPTYPES = computed(()=>KP_TYPES)
     const loading = ref(false)
     const loading_next = ref(false)
     const loading_inn = ref(false)
@@ -190,9 +212,12 @@ import { DefaultKP } from '/src/store/kp/types'
     const customer = ref('')
     const showCustomer = ref(false)
     const order = ref<number>(-1)
+    const draft = ref<number>(-1)
     const open = ref<number[]>([])
-    const orders = computed(() => store.getters.getOrders)
-    const order_detail = computed(() => store.getters.getOrderDetail)
+    const orders = computed<Orders[]>(() => store.getters.getOrders)
+    const drafts = computed<OrderStateOrder[]>(() => store.getters.getOrderDraft)
+    const order_detail = ref<OrderStateOrder>()
+
 
 
     const NewKP = ref<KP>(JSON.parse(JSON.stringify(DefaultKP)))
@@ -200,17 +225,27 @@ import { DefaultKP } from '/src/store/kp/types'
     const WORD = ref(false)
     const date = ref(new Date().toLocaleString('ru').substr(0, 10))
 
+
+
     watch(order, ()=>{
         if (order.value!=-1){
 			loading.value=true
-			store.dispatch(OrderActions.GET_ORDER_DETAIL, order.value ).finally(()=>{loading.value = false})
+			store.dispatch(OrderActions.GET_ORDER_DETAIL, order.value ).finally(()=>{
+                order_detail.value = JSON.parse(JSON.stringify(store.getters.getOrderDetail))
+                loading.value = false
+            })
+		}
+    })
+    watch(draft, ()=>{
+        if (draft.value!=-1){
+			order_detail.value = JSON.parse(JSON.stringify(drafts.value.find(x => x.id == draft.value)))
 		}
     })
 
     const next = () => {
-        if (order.value != -1 ){
+        if (order.value != -1 || draft.value != -1 ){
             NewKP.value.offer.date = (new Date(date.value)).getTime()
-            NewKP.value.offer.position = JSON.parse(JSON.stringify(order_detail.value.position))
+            NewKP.value.offer.position = JSON.parse(JSON.stringify(order_detail.value?.position))
         
             loading_next.value=true
             store.dispatch(KPActions.SEND_KP, NewKP.value ).finally(()=>{
@@ -219,7 +254,12 @@ import { DefaultKP } from '/src/store/kp/types'
             }
         //$emit('next')
     }
-    
+    const prev = () => {
+        order.value = -1
+        draft.value = -1
+        order_detail.value = undefined
+        emits('prev')
+    }
     const doSearch = () =>{
         
         if ( customer.value.length >=2) {

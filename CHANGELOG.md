@@ -1,3 +1,9 @@
+Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-12-23
+
+    #0.2.57
+    1. На странице КП добавил создание КП на основе черновика.
+
 Author: Vasilii Polshakov <45201a@gmail.com>
 Date:   2022-12-20
 

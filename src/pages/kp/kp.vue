@@ -31,13 +31,16 @@
             <div class="kp-form-stepper-content">
                 <div class="kp-form-stepper-content-tabs-box">
                     <div :class="`kp-form-stepper-content-tabs step${step}`">
-                        <KpStep1 
+                        
+                        <KpStep1
                             @next="nextStep"
-                            @prev="prevStep"
+                            v-model="kpType"
                             :active="step==1"
+                            :isOrder="isOrder"
+                            :isDraft="isDraft"
                         />
                         <KpStep2
-                            :companyUID="activeCompanyUid"
+                            :type="kpType"
                             @next="nextStep"
                             @prev="prevStep"
                             :active="step==2"
@@ -70,13 +73,14 @@ import { useStore } from '/src/store'
 import { computed, onMounted, ref } from 'vue'
 import { OrdersActions } from '/src/store/orders/actions'
 import { CompanyActions } from '/src/store/company/actions'
-
+import { KP_TYPES } from '/src/models/KP'
 const store = useStore()
 const companyBarTopData = computed(() => store.getters.getCompanysList)
 const activeCompanyUid = ref('')
 
 const step = ref(1)
 const loading = ref(false)
+const kpType = ref(KP_TYPES.ORDER)
 
 onMounted(() => {
 			//console.log(!store.getters.isOrders)
@@ -86,6 +90,9 @@ onMounted(() => {
 				store.dispatch(OrdersActions.GET_ORDERS).then(()=>{ loading.value = false})
 			}
 		});
+
+const isOrder = computed(()=> store.getters.isOrder)
+const isDraft = computed(()=> store.getters.getOrderDraftCount > 0)
 
 const nextStep = () =>{
     if( step.value < 3) step.value = step.value + 1

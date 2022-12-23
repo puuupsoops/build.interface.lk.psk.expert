@@ -12,3 +12,10 @@ export interface KP {
     header: boolean,        //true,
     as:     string              //PDF
 }
+
+
+export enum KP_TYPES {
+    ORDER = 'ORDER',        //Кп на основе уже умеющегося заказа
+    DRAFT = 'DRAFT',        //КП  основе сохраненного черновика
+    ORDER_POS = 'ORDER_POS' // КП из собранного, но еще не оформленного заказа
+}

@@ -2,8 +2,8 @@
 	<div class="top-line-button">
 			<Mail />
 			<Bell :amount = "msgCnt" tooltip="Открыть оповещения" @click="showNotificationBar = !showNotificationBar"/>
-			<Avatar :image = "image" :loading="personalLoading" @click="menu=!memu"/>
-			<Name :personal="personal" :loading="personalLoading" @click="menu=!memu"></Name>
+			<Avatar :image = "image" :loading="personalLoading" @click="menu=!menu"/>
+			<Name :personal="personal" :loading="personalLoading" @click="menu=!menu"></Name>
 	</div>
 
 	<div class="popup-wrap" v-if="!showNotificationBar">

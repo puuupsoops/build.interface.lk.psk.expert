@@ -147,6 +147,11 @@
 			padding:
 				top: 20px
 				bottom: 20px
+			&.step1 
+				margin: auto
+				.kp-step-body-elem
+					max-width: 500px
+
 			&-input
 				margin: auto
 				padding-top: 30px
@@ -157,6 +162,16 @@
 				&:hover
 					rect
 						fill: $accent-color
+			&-elem
+				+flex
+				margin: 1rem
+				&-text
+					margin-left: 1rem
+					&.disablsed
+						color: $font-light-color
+					&-sub
+						font-size: 12px
+						color: $font-light-color
 		&-actions
 			+flex
 			+justify-content(space-between)
