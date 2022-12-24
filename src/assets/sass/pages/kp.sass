@@ -156,6 +156,10 @@
 				margin: auto
 				padding-top: 30px
 				width: 70%
+				.orders-list-row
+					+align-items(center)
+					margin-top: 10px
+					cursor: pointer
 			&-button
 				margin-left: 10px
 				cursor: pointer
@@ -172,6 +176,12 @@
 					&-sub
 						font-size: 12px
 						color: $font-light-color
+			&-row
+				+flex
+				+align-items(center)
+				gap: 15px
+				padding-top: 20px
+				height: 50px
 		&-actions
 			+flex
 			+justify-content(space-between)

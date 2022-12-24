@@ -1,4 +1,10 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-12-24
+
+    #0.2.58
+    1. На странице КП добавил дополнения.
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-12-23
 
     #0.2.57

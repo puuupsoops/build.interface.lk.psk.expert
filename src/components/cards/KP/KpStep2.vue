@@ -30,11 +30,26 @@
 
 
 
-            <div v-if="order != -1 || draft != -1" :style="'padding: 30px'">
+            <div v-if="order != -1 || draft != -1 || type==KP_TYPES.ORDER_POS " :style="'padding: 30px'">
                 <div v-if="loading" style="display: flex; justify-content: center">
 					<PreloaderLocal ></PreloaderLocal>
 				</div>
-                <div class="order-list-bottom scroll-elem"  v-else>
+                <div v-else>
+                    <div class="order-list-bottom scroll-elem" v-if="order_detail" >
+                        <div class="order-list-bottom-wrap"> 
+                            <div class="content-heading-wrap order-draft" :style="'background-color: #1F2227'" >
+                                <div class="content-heading-price"> 
+                                    <div class="content-heading-price" > 
+                                        <div class="content-heading-price-text">Сумма заказа: </div>
+                                        
+                                        <div class="content-heading-price-value">{{Number(order_detail.total).toLocaleString('ru', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.')}} ₽</div>
+                                    </div>
+
+                                </div>
+                                
+                            </div>
+                        <div>
+                    </div>
 				
                     <div class="order-list-bottom-wrap" v-if="order_detail"> 
                         
@@ -82,9 +97,11 @@
                                     <div class="order-list-elem"> </div>
                                     <div class="order-list-elem"> </div>
                                     <div class="order-list-elem">{{ characteristic.CHARACTERISTIC }}</div>
-                                    <div class="order-list-elem" :style="'display: flex;align-items: center;gap: 10px'"> <amount-input v-model="characteristic.PRICE" ></amount-input>  ₽</div>
+                                    <div class="order-list-elem" :style="'display: flex;align-items: center;gap: 10px'">
+                                        <amount-input v-model="characteristic.PRICE" @on-input="calcOrder()"></amount-input>  ₽
+                                    </div>
                                     <div class="order-list-elem"> 
-                                        <amount-input v-model="characteristic.count" :min="1" ></amount-input> 
+                                        <amount-input v-model="characteristic.count" :min="1" @on-input="calcOrder()" ></amount-input> 
                                     </div>
                                     <div class="order-list-elem">{{ Number(characteristic.PRICE * characteristic.count).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
                                     
@@ -95,12 +112,10 @@
                                 
                             </div>
                         </div>
-                        
-                        
-                    
+                    </div>
+                    </div>
+                    </div>
                 </div>
-                </div>
-				<!-- <OrderDraftCard v-else :data="order_detail" no_total no_presail></OrderDraftCard> -->
 
                 <div class="kp-step-body-input">
                     <div class="profile-personal-info-item-edit">
@@ -136,26 +151,61 @@
                         </div>
                     </div>
                     <div class="shipment-form-item">
-                            <div class="shipment-form-elem-title"><span>Дата</span></div>
-                            <div class="shipment-form-row" :style="'display:flex; align-items: center;'">
-                                <div class="shipment-form-date">
-                            
-                                    <DatePicker
-                                        v-model="date"
-                                    
-                                    />
-                                    
-                                </div>
-                                    <CheckButton v-model="PDF" @onClick="PDF=true; WORD=false; NewKP.as='PDF'"  :style="'margin-left: 30px'"/>
-                                    <div :style="'margin-left: 10px'">PDF</div>
-                                    <CheckButton v-model="WORD" @onClick="PDF=false; WORD=true; NewKP.as='WORD'" :style="'margin-left: 30px'"/>
-                                    <div :style="'margin-left: 10px'">Word</div>
-                            </div>
-                           
+                        <div class="shipment-form-elem-title"><span>Дата</span></div>
+                        <div class="shipment-form-row" :style="'display:flex; align-items: center;'">
+                            <div class="shipment-form-date">
                         
-                       
-                    </div>
+                                <DatePicker
+                                    v-model="date"
                                 
+                                />
+                                
+                            </div>
+                                <CheckButton v-model="PDF" @onClick="PDF=true; WORD=false; NewKP.as='PDF'"  :style="'margin-left: 30px'"/>
+                                <div :style="'margin-left: 10px'">PDF</div>
+                                <CheckButton v-model="WORD" @onClick="PDF=false; WORD=true; NewKP.as='WORD'" :style="'margin-left: 30px'"/>
+                                <div :style="'margin-left: 10px'">Word</div>
+                        </div>
+                    </div>
+                    <div class="orders-list-item" :class="{'active': additionally}">
+                        <div class="orders-list-row " @click="additionally=!additionally">
+                            
+                            <div class="orders-list-elem"> <div class="table-arrow"></div> 	</div>
+                            <div class="orders-list-elem"> Дополнительные условия</div>
+                        </div>
+                        <div class="orders-list-info"  :class="{'active': additionally}">
+                            <div class="kp-step-body-row">
+                                <span>Условия доставки</span>
+                                <CheckButton v-model="NewKP.additionally.pickup" @onClick="NewKP.additionally.delivery=false; NewKP.additionally.deliveryValue=0"  :style="'margin-left: 30px'"/>
+                                <div>Самовывоз</div>
+                                <CheckButton v-model="NewKP.additionally.delivery"   @onClick="NewKP.additionally.pickup=false" :style="'margin-left: 30px'"/>
+                                <div>Доставка</div>
+                                <AmountInput v-if="NewKP.additionally.delivery" :min="0" :step="10" v-model="NewKP.additionally.deliveryValue" :style="'margin-left: 30px'"/>
+                                <div v-if="NewKP.additionally.delivery">₽  <span class="kp-step-body-elem-text-sub">Стоимость</span></div>
+                            </div>
+                            <div class="kp-step-body-row">
+                                <span>Предоплата</span>
+                                <CheckButton v-model="NewKP.additionally.prepayment" @onClick="NewKP.additionally.prepaymentValue=0"  :style="'margin-left: 30px'"/>
+                                
+                                <AmountInput v-if="NewKP.additionally.prepayment" :min="0" :max="order_detail?.total" v-model="NewKP.additionally.prepaymentValue" :style="'margin-left: 30px'"/>
+                                <div v-if="NewKP.additionally.prepayment" :style="'margin-left: 10px'">₽</div>
+                                <div class="kp-step-body-elem-text-sub"  v-if="NewKP.additionally.prepayment && order_detail" :style="'margin-left: 10px'" >
+                                    {{  Number((NewKP.additionally.prepaymentValue / order_detail?.total ) *100).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }}%
+                                  
+                                </div>
+                            </div>
+                            <div class="kp-step-body-row">
+                                <span>Отсрочка</span>
+                                <CheckButton v-model="NewKP.additionally.delay" @onClick="NewKP.additionally.delayWorkValue=0; NewKP.additionally.delayCalendarValue=0"  :style="'margin-left: 30px'"/>
+                                <div v-if="NewKP.additionally.delay" :style="'margin-left: 30px'">Количество<br>рабочих дней</div>
+                                <AmountInput v-if="NewKP.additionally.delay" :min="0" v-model="NewKP.additionally.delayWorkValue" />
+                                <div v-if="NewKP.additionally.delay" :style="'margin-left: 30px'">Количество <br>календарных дней</div>
+                                <AmountInput v-if="NewKP.additionally.delay" :min="0" v-model="NewKP.additionally.delayCalendarValue" />
+                                
+                            </div>
+                        </div>
+					
+                    </div>   
                     <div class="order-comment-form show">
                     
                         <div class="order-comment-title"><span>Комментарий</span></div>
@@ -167,7 +217,7 @@
         <div class="kp-step-actions ">
             <div class="kp-step-actions-link" @click="prev()">Назад</div>
             <PreloaderLocal v-if="loading_next"></PreloaderLocal>
-            <div v-else class="kp-step-actions-link" :class="{'disabled': order==-1 && draft == -1}" @click="next()">Далее</div>
+            <div v-else class="kp-step-actions-link" :class="{'disabled': order==-1 && draft == -1 && type != KP_TYPES.ORDER_POS}" @click="next()">Далее</div>
         </div>
     </div>
 </template>
@@ -208,6 +258,7 @@ import { Orders } from '/src/models/Orders'
     const loading = ref(false)
     const loading_next = ref(false)
     const loading_inn = ref(false)
+    const additionally = ref(false)
     const inn_error = ref(false)
     const customer = ref('')
     const showCustomer = ref(false)
@@ -232,6 +283,7 @@ import { Orders } from '/src/models/Orders'
 			loading.value=true
 			store.dispatch(OrderActions.GET_ORDER_DETAIL, order.value ).finally(()=>{
                 order_detail.value = JSON.parse(JSON.stringify(store.getters.getOrderDetail))
+                calcOrder()
                 loading.value = false
             })
 		}
@@ -239,16 +291,26 @@ import { Orders } from '/src/models/Orders'
     watch(draft, ()=>{
         if (draft.value!=-1){
 			order_detail.value = JSON.parse(JSON.stringify(drafts.value.find(x => x.id == draft.value)))
+            calcOrder()
 		}
     })
 
-    const next = () => {
-        if (order.value != -1 || draft.value != -1 ){
-            NewKP.value.offer.date = (new Date(date.value)).getTime()
-            NewKP.value.offer.position = JSON.parse(JSON.stringify(order_detail.value?.position))
+    watch(() => props.type, () =>{
+        if (props.type == KP_TYPES.ORDER_POS){
+            order_detail.value = JSON.parse(JSON.stringify(store.getters.getOrder))
+            calcOrder()
+        }
         
+    })
+
+    const next = () => {
+        if (order.value != -1 || draft.value != -1 || props.type == KP_TYPES.ORDER_POS){
+            let kp = <KP>JSON.parse(JSON.stringify(NewKP.value))
+            kp.offer.date = (new Date(date.value)).getTime()
+            kp.offer.position = JSON.parse(JSON.stringify(order_detail.value?.position))
+            if (kp.additionally.prepayment && order_detail.value) kp.additionally.prepaymentValue = NewKP.value.additionally.prepaymentValue / order_detail.value.total 
             loading_next.value=true
-            store.dispatch(KPActions.SEND_KP, NewKP.value ).finally(()=>{
+            store.dispatch(KPActions.SEND_KP, kp ).finally(()=>{
                 emits('next')
                 loading_next.value = false})
             }
@@ -258,6 +320,7 @@ import { Orders } from '/src/models/Orders'
         order.value = -1
         draft.value = -1
         order_detail.value = undefined
+        NewKP.value = JSON.parse(JSON.stringify(DefaultKP))
         emits('prev')
     }
     const doSearch = () =>{
@@ -281,6 +344,28 @@ import { Orders } from '/src/models/Orders'
 
                     })
         }
+    }
+
+    const calcOrder = () => {
+        
+		if (order_detail.value) {
+            let total = 0
+            order_detail.value.position.forEach(pos => {
+                let total_pos = 0
+                
+                pos.characteristics.forEach( c => {
+                    total_pos = total_pos + c.PRICE * c.count
+                   
+                });
+                pos.total = total_pos
+                
+
+                total = total + total_pos
+            
+            });
+            order_detail.value.total = total
+        }
+		
     }
 </script>
  

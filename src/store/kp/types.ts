@@ -16,6 +16,16 @@ export const DefaultKP:KP = {
         comment:  '',
         position: []
     },
+    additionally: {
+        delay: false,
+        delayCalendarValue: 0,
+        delayWorkValue: 0,
+        delivery: false,
+        deliveryValue: 0,
+        pickup: false,
+        prepayment:false,
+        prepaymentValue: 0
+    },
     header: true,        //true,
     as:     'PDF',       //PDF
 }
