@@ -136,7 +136,7 @@
                             :flow="showCustomer? '' :'up'" 
                             @click.capture="(showCustomer=true)"
                         >
-                          <modal-input-full v-model="customer" v-model:show="showCustomer" show-ok @on-ok="doSearch()" :label="'Введите ИНН'"></modal-input-full>
+                            <modal-input-full v-model="customer" v-model:show="showCustomer" show-ok @on-ok="doSearch()" :label="'Введите ИНН'"></modal-input-full>
                             <svg  width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <rect width="2.17029" height="21.7029" rx="1.08514" transform="matrix(0.999975 -0.00708126 -0.00708126 0.999975 11.097 1.26186)" fill="#A5A7A9"/>
                                     <rect width="2.17029" height="21.7029" rx="1.08514" transform="matrix(0.00708126 -0.999975 -0.999975 0.00708126 22.7798 12.9446)" fill="#A5A7A9"/>
@@ -175,7 +175,7 @@
                         </div>
                         <div class="orders-list-info"  :class="{'active': additionally}">
                             <div class="kp-step-body-row">
-                                <span>Условия доставки</span>
+                                <span class="kp-step-body-row-elem">Условия доставки</span>
                                 <CheckButton v-model="NewKP.additionally.pickup" @onClick="NewKP.additionally.delivery=false; NewKP.additionally.deliveryValue=0"  :style="'margin-left: 30px'"/>
                                 <div>Самовывоз</div>
                                 <CheckButton v-model="NewKP.additionally.delivery"   @onClick="NewKP.additionally.pickup=false" :style="'margin-left: 30px'"/>
@@ -184,7 +184,7 @@
                                 <div v-if="NewKP.additionally.delivery">₽  <span class="kp-step-body-elem-text-sub">Стоимость</span></div>
                             </div>
                             <div class="kp-step-body-row">
-                                <span>Предоплата</span>
+                                <span  class="kp-step-body-row-elem">Предоплата</span>
                                 <CheckButton v-model="NewKP.additionally.prepayment" @onClick="NewKP.additionally.prepaymentValue=0"  :style="'margin-left: 30px'"/>
                                 
                                 <AmountInput v-if="NewKP.additionally.prepayment" :min="0" :max="order_detail?.total" v-model="NewKP.additionally.prepaymentValue" :style="'margin-left: 30px'"/>
@@ -195,7 +195,7 @@
                                 </div>
                             </div>
                             <div class="kp-step-body-row">
-                                <span>Отсрочка</span>
+                                <span  class="kp-step-body-row-elem">Отсрочка</span>
                                 <CheckButton v-model="NewKP.additionally.delay" @onClick="NewKP.additionally.delayWorkValue=0; NewKP.additionally.delayCalendarValue=0"  :style="'margin-left: 30px'"/>
                                 <div v-if="NewKP.additionally.delay" :style="'margin-left: 30px'">Количество<br>рабочих дней</div>
                                 <AmountInput v-if="NewKP.additionally.delay" :min="0" v-model="NewKP.additionally.delayWorkValue" />
