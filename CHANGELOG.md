@@ -1,4 +1,10 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-12-26
+
+    #0.2.59
+    1. На странице КП добавил обработку заголовка КП, загрузку лого.
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-12-24
 
     #0.2.58

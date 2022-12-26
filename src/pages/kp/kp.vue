@@ -74,6 +74,7 @@ import { computed, onMounted, ref } from 'vue'
 import { OrdersActions } from '/src/store/orders/actions'
 import { CompanyActions } from '/src/store/company/actions'
 import { KP_TYPES } from '/src/models/KP'
+import { KPActions } from '/src/store/kp/actions'
 const store = useStore()
 const companyBarTopData = computed(() => store.getters.getCompanysList)
 const activeCompanyUid = ref('')
@@ -89,6 +90,7 @@ onMounted(() => {
 				loading.value = true
 				store.dispatch(OrdersActions.GET_ORDERS).then(()=>{ loading.value = false})
 			}
+            store.dispatch(KPActions.GET_KP_LOGO)
 		});
 
 const isOrder = computed(()=> store.getters.isOrder)

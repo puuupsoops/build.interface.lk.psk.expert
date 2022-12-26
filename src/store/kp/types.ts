@@ -1,10 +1,11 @@
-import { KP } from "/src/models/KP"
+import { KP, KPLogoList } from "/src/models/KP"
 
 export interface KPState {
     kp: KP,
     file: any,
     file_type: string,
     org_name: string,
+    logo_list: KPLogoList[],
 }
 
 export const DefaultKP:KP = {
@@ -26,7 +27,9 @@ export const DefaultKP:KP = {
         prepayment:false,
         prepaymentValue: 0
     },
-    header: true,        //true,
+    header: false,        //true,
+    headerLogo: 0,
+    headerText: '',
     as:     'PDF',       //PDF
 }
 

@@ -2,7 +2,7 @@ import axios from '/src/plugins/axios'
 import { ActionTree } from "vuex"
 import { RootState } from "/src/store"
 import { KPState } from "./types"
-import { KP } from '/src/models/KP'
+import { KP, KPLogoList } from '/src/models/KP'
 import { KPMutations } from '../kp/mutations'
 import { AuthMutations } from '../auth/mutations'
 
@@ -11,6 +11,8 @@ export enum KPActions {
 	SEND_KP = "SEND_KP",
 	SAVE_KP = "SAVE_KP",
 	GET_ORG_BY_INN = "GET_ORG_BY_INN",
+	ADD_KP_LOGO = "ADD_KP_LOGO",
+	GET_KP_LOGO = "GET_KP_LOGO",
 }
 
 export const actions: ActionTree<KPState, RootState> =  {
@@ -22,7 +24,7 @@ export const actions: ActionTree<KPState, RootState> =  {
 				
 			})
 			.catch( error => {
-				commit(AuthMutations.SET_ERROR, 'Request SEND_KP error:<br>'+error)
+				commit(AuthMutations.SET_ERROR, `Request SEND_KP error:<br>${error}`)
 			})
 	},
 	[KPActions.SAVE_KP] ({ state }){
@@ -44,5 +46,32 @@ export const actions: ActionTree<KPState, RootState> =  {
 				commit(AuthMutations.SET_ERROR, `${error.response.data.error.message}`)
 				return Promise.reject('Error')
 			})
-	}
+	},
+	async [KPActions.ADD_KP_LOGO] ({ commit }, data){
+		 
+        let formData = new FormData();
+        formData.append('file', data)
+
+		await axios.post( '/services/proposal/logo/add',
+					formData,
+						{
+							headers: {
+								'Content-Type': 'multipart/form-data'
+							}
+						}
+					).then(response=> {
+						commit(KPMutations.SET_KP_LOGO, <KPLogoList>{id: response.data.response.id, image: data})
+					})
+					.catch(error => {
+						commit(AuthMutations.SET_ERROR, `Request ADD_KP_LOGO error:<br>${error}`)
+					});
+	},
+	async [KPActions.GET_KP_LOGO] ({ commit }) {
+		await axios.get( '/services/proposal/logo/list').then(response=> {
+						commit(KPMutations.SET_KP_LOGO_LIST, response.data.response)
+					})
+					.catch(error => {
+						commit(AuthMutations.SET_ERROR, `Request SET_KP_LOGO_LIST error:<br>${error}`)
+					});
+	},
 }

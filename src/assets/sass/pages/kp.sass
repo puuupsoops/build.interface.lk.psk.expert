@@ -181,9 +181,31 @@
 				+align-items(center)
 				gap: 15px
 				padding-top: 20px
-				height: 50px
+				min-height: 64px
 				&-elem
 					width: 15%
+			&-add-file-input
+				display: none
+			&-add-file-label
+				display: block
+				position: relative
+				width: 25px
+				height: 25px
+				background-image: url(/src/assets/img/icon/doc-add.svg)
+				background-size: 100% auto
+				background-position: center center
+				background-repeat: no-repeat
+				cursor: pointer
+				transition: 0.3s
+				
+				&::after
+					content: "Добавить лого"
+					width: 130px
+					margin: 
+						left: 30px
+						top: 7px
+					position: absolute
+					display: block
 		&-actions
 			+flex
 			+justify-content(space-between)

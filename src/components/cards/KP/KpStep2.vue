@@ -204,12 +204,68 @@
                                 
                             </div>
                         </div>
-					
-                    </div>   
+                    </div>
+                    <div class="orders-list-item" :class="{'active': NewKP.header}">
+                        <div class="orders-list-row " @click="NewKP.header=!NewKP.header">
+                            
+                            <div class="orders-list-elem"> <div class="table-arrow"></div> 	</div>
+                            <div class="orders-list-elem">Заголовок</div>
+                        </div>
+                        <div class="orders-list-info"  :class="{'active': NewKP.header}">
+                            <div class="kp-step-body-row">
+                                
+                                <div>Текст</div>
+                                <SwitchButton v-model="logoText"></SwitchButton> 
+                                <div>Лого</div>
+                                
+                                
+                            </div>
+                            <div class="kp-step-body-row" v-if="!logoText">
+                               
+                                <textarea class="order-comment-textarea" v-model="NewKP.headerText" placeholder="Текст заголовка коммерческого предложения..." ></textarea>
+                            </div>
+                            <div class="kp-step-body-row" v-else>
+                                <div>
+                                    <div v-if="logoList.length>0"> Лого #{{ logoList[0].id  }} </div>
+                                    <div class="product-slider-wrap" >
+
+                                        <button class='product-slider-arrow prev' @click="prevLogo"></button>
+
+                                        <transition-group name="product-slider-trans" class='product-slider' :style="'align-items: center'"  tag="div">
+                                                <div v-for="slide in logoList" class='product-slider-slide' :key="slide.id">
+                                                    <img
+                                                        v-if="slide.image"
+                                                        :src="slide.image" 
+                                                    
+                                                    />
+                                                </div>
+                                        </transition-group>
+                                        <div class='product-slider-arrow next' @click="nextLogo"></div>
+
+                                    
+                                    </div>
+                                </div>
+
+                                <div class="" >
+                                    
+                                    <label class="kp-step-body-add-file-label" for="file-upload">
+                                          
+                                        <input @change="handleFileUpload( $event )" class="kp-step-body-add-file-input" id="file-upload" type="file" accept="image/*">
+                                    </label>
+                                    
+                                    <PreloaderLocal v-if="loadingLogo"></PreloaderLocal>
+                                  
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="order-comment-form show">
                     
                         <div class="order-comment-title"><span>Комментарий</span></div>
                         <textarea class="order-comment-textarea" v-model="NewKP.offer.comment"  ></textarea>
+
                     </div>
                 </div>
             </div>
@@ -229,13 +285,14 @@ import DatePicker from '/src/components/ui/DatePicker.vue'
 import AmountInput from '/src/components/ui/AmountInput.vue'
 import ModalInputFull from '/src/components/ui/ModalInputFull.vue'
 import CheckButton from '/src/components/ui/CheckButton.vue'
-
+import SwitchButton from '/src/components/ui/SwitchButton.vue'
 
 import { computed, PropType, ref, watch } from 'vue'
 import { useStore } from '/src/store'
 import { OrderActions } from '/src/store/order/actions'
 import { KPActions } from '/src/store/kp/actions'
-import { KP, KP_TYPES } from '/src/models/KP'
+import { KPMutations } from '/src/store/kp/mutations'
+import { KP, KP_TYPES, KPLogoList } from '/src/models/KP'
 import { DefaultKP } from '/src/store/kp/types'
 import { OrderStateOrder } from '/src/store/order/types'
 import { Orders } from '/src/models/Orders'
@@ -259,6 +316,7 @@ import { Orders } from '/src/models/Orders'
     const loading_next = ref(false)
     const loading_inn = ref(false)
     const additionally = ref(false)
+    const logoText = ref(false)
     const inn_error = ref(false)
     const customer = ref('')
     const showCustomer = ref(false)
@@ -269,8 +327,9 @@ import { Orders } from '/src/models/Orders'
     const drafts = computed<OrderStateOrder[]>(() => store.getters.getOrderDraft)
     const order_detail = ref<OrderStateOrder>()
 
-
-
+    const imageBase64 = ref('')
+    const loadingLogo = ref(false)
+    const logoList = computed<KPLogoList[]>(() => store.getters.getKPLogoList)
     const NewKP = ref<KP>(JSON.parse(JSON.stringify(DefaultKP)))
     const PDF = ref(true)
     const WORD = ref(false)
@@ -303,12 +362,15 @@ import { Orders } from '/src/models/Orders'
         
     })
 
+
+
     const next = () => {
         if (order.value != -1 || draft.value != -1 || props.type == KP_TYPES.ORDER_POS){
             let kp = <KP>JSON.parse(JSON.stringify(NewKP.value))
             kp.offer.date = (new Date(date.value)).getTime()
             kp.offer.position = JSON.parse(JSON.stringify(order_detail.value?.position))
             if (kp.additionally.prepayment && order_detail.value) kp.additionally.prepaymentValue = NewKP.value.additionally.prepaymentValue / order_detail.value.total 
+            if (logoList.value.length>0) kp.headerLogo = logoList.value[0].id
             loading_next.value=true
             store.dispatch(KPActions.SEND_KP, kp ).finally(()=>{
                 emits('next')
@@ -367,5 +429,28 @@ import { Orders } from '/src/models/Orders'
         }
 		
     }
+
+    const handleFileUpload = ( event: any) =>{
+        let img = event.target.files[0]
+        var reader = new FileReader()
+        reader.onloadend =  () => {
+            imageBase64.value = <string>reader.result
+            loadingLogo.value = true
+            store.dispatch(KPActions.ADD_KP_LOGO, imageBase64.value)
+            .then(()=>{
+                NewKP.value.headerLogo = store.getters.getKPLogoId
+                loadingLogo.value = false
+            })  
+        };
+        reader.readAsDataURL(img)
+
+    }
+    const nextLogo = () => {
+        store.commit(KPMutations.SET_KP_LOGO_LIST_NEXT)
+	}
+    let prevLogo = () => {
+        store.commit(KPMutations.SET_KP_LOGO_LIST_PREV)
+    };
+    
 </script>
  

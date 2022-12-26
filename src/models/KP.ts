@@ -10,18 +10,19 @@ export interface KP {
         position: Position[]
     },
     additionally : {
-        prepayment: boolean,        // флаг предоплаты <Boolean>: true или false
-        prepaymentValue: number,    // процент предоплаты, в виде коэффициента <Float>: 0.25 = 25%
-        delay: boolean,             // флаг отсрочки <Boolean>:  
-        delayWorkValue: number,     // рабочих дней отсрочки <Integer>
+        prepayment:         boolean,        // флаг предоплаты <Boolean>: true или false
+        prepaymentValue:    number,    // процент предоплаты, в виде коэффициента <Float>: 0.25 = 25%
+        delay:              boolean,             // флаг отсрочки <Boolean>:  
+        delayWorkValue:     number,     // рабочих дней отсрочки <Integer>
         delayCalendarValue: number, // календарных дней отсрочки <Integer>
-        pickup : boolean ,          // флаг самовывоза <Boolean>: true или false
-        delivery: boolean ,         // флаг доставки <Boolean>: true или false
-        deliveryValue : number      // стоимость доставки <Float>
-          
+        pickup:             boolean ,          // флаг самовывоза <Boolean>: true или false
+        delivery:           boolean ,         // флаг доставки <Boolean>: true или false
+        deliveryValue :     number      // стоимость доставки <Float>
       },
-    header: boolean,        //true,
-    as:     string              //PDF
+    header:     boolean,       // true,
+    headerLogo: number,        // тут передаём идентификатор изображение или base64 , base64 в методе вместе с id (как удобней будет)/api/services/proposal/logo/list
+    headerText: string,        // Текст преамбулы...
+    as:         string         // PDF
 }
 
 
@@ -29,4 +30,9 @@ export enum KP_TYPES {
     ORDER = 'ORDER',        //Кп на основе уже умеющегося заказа
     DRAFT = 'DRAFT',        //КП  основе сохраненного черновика
     ORDER_POS = 'ORDER_POS' // КП из собранного, но еще не оформленного заказа
+}
+
+export interface KPLogoList {
+    id: number,
+    image: string,
 }
