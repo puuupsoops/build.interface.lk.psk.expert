@@ -50,7 +50,7 @@ export const actions: ActionTree<KPState, RootState> =  {
 	async [KPActions.ADD_KP_LOGO] ({ commit }, data){
 		 
         let formData = new FormData();
-        formData.append('file', data)
+        formData.append('file', DataURIToBlob(data))
 
 		await axios.post( '/services/proposal/logo/add',
 					formData,
@@ -75,3 +75,14 @@ export const actions: ActionTree<KPState, RootState> =  {
 					});
 	},
 }
+function DataURIToBlob(dataURI: string) {
+	const splitDataURI = dataURI.split(',')
+	const byteString = splitDataURI[0].indexOf('base64') >= 0 ? atob(splitDataURI[1]) : decodeURI(splitDataURI[1])
+	const mimeString = splitDataURI[0].split(':')[1].split(';')[0]
+
+	const ia = new Uint8Array(byteString.length)
+	for (let i = 0; i < byteString.length; i++)
+		ia[i] = byteString.charCodeAt(i)
+
+	return new Blob([ia], { type: mimeString })
+  }
