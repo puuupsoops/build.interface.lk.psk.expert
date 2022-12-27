@@ -227,6 +227,14 @@
 							>
 									Заявка на транспорт
 							</router-link>
+							<router-link 
+								class="orders-list-more-dropdown-link" 
+								tag="a"
+								:to="'/kp'"
+								@click.stop=""
+							>
+									Конструктор КП
+							</router-link>
 							
 						</div>
 					</div>

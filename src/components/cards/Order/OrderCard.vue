@@ -274,7 +274,16 @@
 				@click="delOrder()"
 			> 
 				<div class="gradient-btn-text">Отменить</div>
-			</button>			
+			</button>	
+			
+			<router-link 
+					class="order-list-submit gradient-btn disabled" 
+					tag="button"
+					:to="'/kp'"
+				>
+				<div class="gradient-btn-text">Конструктор КП</div>
+			</router-link>
+
 			<button 
 				class="order-list-submit gradient-btn"
 				v-if="data.edit" 
