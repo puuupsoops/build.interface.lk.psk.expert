@@ -1,4 +1,10 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-12-27
+
+    #0.2.60
+    1. На странице КП предоплата вносится в процентах, Поставщик выбирается из контрагентов.
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-12-26
 
     #0.2.59

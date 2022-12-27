@@ -120,8 +120,13 @@
                 <div class="kp-step-body-input">
                     <div class="profile-personal-info-item-edit">
                         <div class="input-textfield">
-                            <input name="lastname" type="text" placeholder=" " class="" v-model="NewKP.offer.executor">
-                            <label>Поставщик</label>
+                            <!-- <input name="lastname" type="text" placeholder=" " class="" v-model="NewKP.offer.executor">
+                            <label>Поставщик</label> -->
+                            <div class="kp-step-body-elem-text-sub">Поставщик:</div>
+                            <SelectInput 
+                                :data="companyList"
+                                v-model="NewKP.offer.executor"
+                            />
                         </div>
                     </div>
                     <div class="profile-personal-info-item-edit" :style="'display: flex; align-items: center;'">
@@ -187,11 +192,10 @@
                                 <span  class="kp-step-body-row-elem">Предоплата</span>
                                 <CheckButton v-model="NewKP.additionally.prepayment" @onClick="NewKP.additionally.prepaymentValue=0"  :style="'margin-left: 30px'"/>
                                 
-                                <AmountInput v-if="NewKP.additionally.prepayment" :min="0" :max="order_detail?.total" v-model="NewKP.additionally.prepaymentValue" :style="'margin-left: 30px'"/>
-                                <div v-if="NewKP.additionally.prepayment" :style="'margin-left: 10px'">₽</div>
+                                <AmountInput v-if="NewKP.additionally.prepayment" :min="0" :max="100" :step="0.1" v-model="NewKP.additionally.prepaymentValue" :style="'margin-left: 30px'"/>
+                                <div v-if="NewKP.additionally.prepayment" :style="'margin-left: 10px'">%</div>
                                 <div class="kp-step-body-elem-text-sub"  v-if="NewKP.additionally.prepayment && order_detail" :style="'margin-left: 10px'" >
-                                    {{  Number((NewKP.additionally.prepaymentValue / order_detail?.total ) *100).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }}%
-                                  
+                                    {{  Number((order_detail?.total / 100 ) * NewKP.additionally.prepaymentValue).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }}₽  
                                 </div>
                             </div>
                             <div class="kp-step-body-row">
@@ -286,6 +290,7 @@ import AmountInput from '/src/components/ui/AmountInput.vue'
 import ModalInputFull from '/src/components/ui/ModalInputFull.vue'
 import CheckButton from '/src/components/ui/CheckButton.vue'
 import SwitchButton from '/src/components/ui/SwitchButton.vue'
+import SelectInput from '/src/components/ui/SelectInput.vue'
 
 import { computed, PropType, ref, watch } from 'vue'
 import { useStore } from '/src/store'
@@ -296,6 +301,8 @@ import { KP, KP_TYPES, KPLogoList } from '/src/models/KP'
 import { DefaultKP } from '/src/store/kp/types'
 import { OrderStateOrder } from '/src/store/order/types'
 import { Orders } from '/src/models/Orders'
+import { DateFromRuLocale, SelectInputData } from '/src/models/Components'
+import { filter } from 'lodash'
 
     const store = useStore()    
 
@@ -335,7 +342,7 @@ import { Orders } from '/src/models/Orders'
     const WORD = ref(false)
     const date = ref(new Date().toLocaleString('ru').substr(0, 10))
 
-
+    const companyList = computed<SelectInputData[]>(() => store.getters.getCompanysListInput().filter((x: SelectInputData) => x.id !== ''))
 
     watch(order, ()=>{
         if (order.value!=-1){
@@ -367,16 +374,18 @@ import { Orders } from '/src/models/Orders'
     const next = () => {
         if (order.value != -1 || draft.value != -1 || props.type == KP_TYPES.ORDER_POS){
             let kp = <KP>JSON.parse(JSON.stringify(NewKP.value))
-            kp.offer.date = (new Date(date.value)).getTime()
+            kp.offer.date = (new Date(DateFromRuLocale(date.value))).getTime()
             kp.offer.position = JSON.parse(JSON.stringify(order_detail.value?.position))
-            if (kp.additionally.prepayment && order_detail.value) kp.additionally.prepaymentValue = NewKP.value.additionally.prepaymentValue / order_detail.value.total 
+            if (kp.additionally.prepayment && order_detail.value) kp.additionally.prepaymentValue = NewKP.value.additionally.prepaymentValue / 100
+            const executorName = companyList.value.find( (x : SelectInputData) => x.id == NewKP.value.offer.executor)
+            if (executorName) kp.offer.executor = executorName.name
             if (logoList.value.length>0) kp.headerLogo = logoList.value[0].id
+            //console.log(new Date(DateFromRuLocale(date.value)), date.value)
             loading_next.value=true
             store.dispatch(KPActions.SEND_KP, kp ).finally(()=>{
                 emits('next')
                 loading_next.value = false})
             }
-        //$emit('next')
     }
     const prev = () => {
         order.value = -1

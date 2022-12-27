@@ -128,7 +128,7 @@ export default defineComponent({
 			//computed
 			companyBarTopData: computed(() => store.getters.getCompanysList),
 			//filterCompanyData: computed(() => store.getters.getCompanyFromShipments),
-			filterCompanyData: computed(() => store.getters.getCompanysListInput),
+			filterCompanyData: computed(() => store.getters.getCompanysListInput()),
 			filterPeriodData: computed(() => store.getters.getOrdersDataPeriodArray),
 			shipmentsList: computed(() => store.getters.getShipments),
 			isOrders: computed(() => store.getters.isOrders),

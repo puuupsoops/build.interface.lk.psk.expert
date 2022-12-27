@@ -5,8 +5,7 @@
 		type="text"
 		:disabled="disabled"
 		:value="modelValue"
-		@input="$emit('update:modelValue', Number($event.target.value))"
-		
+		@input="onInput($event)"
 		>
 	<div
 		:class="disabled ? 'amount-input-arrow plus disable' : 'amount-input-arrow plus'"
@@ -28,10 +27,10 @@
 </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, watch } from 'vue';
-export default defineComponent({
-	props:{
+<script setup lang="ts">
+	import {  watch } from 'vue';
+
+	const props = defineProps({
 		modelValue: {
 			type: Number,
 			required: true
@@ -52,35 +51,31 @@ export default defineComponent({
 			type: Number,
 		},
 
-	},
-	emits: ['update:modelValue', 'onInput'],
+	})
+	const emits = defineEmits(['update:modelValue', 'onInput'])
 
-	setup(props, { emit }){
-		
-		watch( ()=>props.modelValue, (new_val, old_val) => {
+	watch( ()=>props.modelValue, (new_val, old_val) => {
 			
-			if (isNaN(new_val)) emit('update:modelValue', old_val)
+			if (isNaN(new_val)) emits('update:modelValue', old_val)
 
 			if (String(props.modelValue) == '') 
-				emit('update:modelValue', 0)
+				emits('update:modelValue', 0)
 			if (props.max !== undefined && Number(new_val) > props.max )
-				emit('update:modelValue', old_val)
+				emits('update:modelValue', old_val)
 			if (props.min !== undefined && Number(new_val) < props.min )
-				emit('update:modelValue', old_val)
-			emit('onInput')
+				emits('update:modelValue', old_val)
+			emits('onInput')
 		});
 
-		const changeStep = (v: number) => {
-			if (!props.disabled )
-				emit('update:modelValue', Number(props.modelValue) + v)
-		}
-		
-		return {
-			changeStep,
-		}
-
+	const changeStep = (v: number) => {
+		if (!props.disabled )
+			emits('update:modelValue', Number((props.modelValue + v).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.')))
 	}
-})
+	const onInput = (e: Event) => {
+		if (e.target)
+		emits('update:modelValue', Number((e.target as HTMLTextAreaElement).value))
+	}
+
 </script>
 
 <style lang="sass" scoped>

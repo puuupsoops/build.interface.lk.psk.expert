@@ -2,6 +2,7 @@ import { GetterTree } from "vuex"
 import { RootState } from "/src/store"
 import { CompanyState } from "./types"
 import { Document, normalizeCompanyName, Partner, StorageCompany } from "/src/models/Partner"
+import { SelectInputData } from "/src/models/Components"
 
 export const getters: GetterTree<CompanyState, RootState> = {
 	isCompanysLoad: state => state.companys.length !== 0,
@@ -10,7 +11,7 @@ export const getters: GetterTree<CompanyState, RootState> = {
 		getCompanysList: state => state.companys.map ( val => ({
 			id: val.uid,
 			name: normalizeCompanyName(val.name)})),
-		getCompanysListInput: state => {
+		getCompanysListInput: state =>  (): SelectInputData[] =>{
 			const res = state.companys.map ( val => ({
 				id: val.uid,
 				name: normalizeCompanyName(val.name)}))

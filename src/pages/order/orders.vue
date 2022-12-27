@@ -85,7 +85,7 @@
 	const companyBarTopData = computed(() => store.getters.getCompanysList)
 
 	const filterStatus = ref(0)
-	const filterCompanyData = computed(() => store.getters.getCompanyFromOrders)
+	const filterCompanyData = computed(() => store.getters.getCompanyFromOrders())
 	const filterCompanyUid =  ref('')
 	const filterPeriodData = computed(() => store.getters.getOrdersDataPeriodArray)
 	const filterPeriod = ref(0)
