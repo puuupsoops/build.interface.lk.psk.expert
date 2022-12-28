@@ -10,11 +10,12 @@ export interface KPState {
 
 export const DefaultKP:KP = {
     offer: {
-        executor: '',
-        customer: '',
-        n:        '',
-        date:     -1,
-        comment:  '',
+        executor:    '',
+        executorUID: '',
+        customer:    '',
+        n:           '',
+        date:        -1,
+        comment:     '',
         position: []
     },
     additionally: {
@@ -24,6 +25,7 @@ export const DefaultKP:KP = {
         delivery: false,
         deliveryValue: 0,
         pickup: false,
+        pickupValue: '',
         prepayment:false,
         prepaymentValue: 0
     },

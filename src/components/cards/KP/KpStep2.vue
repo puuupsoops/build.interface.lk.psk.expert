@@ -98,7 +98,7 @@
                                     <div class="order-list-elem"> </div>
                                     <div class="order-list-elem">{{ characteristic.CHARACTERISTIC }}</div>
                                     <div class="order-list-elem" :style="'display: flex;align-items: center;gap: 10px'">
-                                        <amount-input v-model="characteristic.PRICE" @on-input="calcOrder()"></amount-input>  ₽
+                                        <amount-input v-model="characteristic.PRICE"  :min="1" @on-input="calcOrder()"></amount-input>  ₽
                                     </div>
                                     <div class="order-list-elem"> 
                                         <amount-input v-model="characteristic.count" :min="1" @on-input="calcOrder()" ></amount-input> 
@@ -118,16 +118,18 @@
                 </div>
 
                 <div class="kp-step-body-input">
-                    <div class="profile-personal-info-item-edit">
-                        <div class="input-textfield">
-                            <!-- <input name="lastname" type="text" placeholder=" " class="" v-model="NewKP.offer.executor">
-                            <label>Поставщик</label> -->
-                            <div class="kp-step-body-elem-text-sub">Поставщик:</div>
-                            <SelectInput 
-                                :data="companyList"
-                                v-model="NewKP.offer.executor"
-                            />
+                    <div class="kp-step-body-row">
+                        <div class="profile-personal-info-item-edit">
+                            <div class="input-textfield">
+                                <input name="lastname" type="text" placeholder=" " class="" v-model="NewKP.offer.executor" @input="NewKP.offer.executorUID = ''">
+                                <label>Поставщик</label>
+                            </div>
                         </div>
+                        <SelectInput 
+                                    :data="companyList"
+                                    v-model="NewKP.offer.executorUID"
+                                    @on-input="NewKP.offer.executor =  companyList.find(x => x.id == NewKP.offer.executorUID)?.name || ''"
+                                />
                     </div>
                     <div class="profile-personal-info-item-edit" :style="'display: flex; align-items: center;'">
                         <div class="input-textfield" v-if="!loading_inn" :style="'width: 100%'" >
@@ -187,6 +189,12 @@
                                 <div>Доставка</div>
                                 <AmountInput v-if="NewKP.additionally.delivery" :min="0" :step="10" v-model="NewKP.additionally.deliveryValue" :style="'margin-left: 30px'"/>
                                 <div v-if="NewKP.additionally.delivery">₽  <span class="kp-step-body-elem-text-sub">Стоимость</span></div>
+                                <SelectInput  v-if="NewKP.additionally.pickup"
+                                    :data="addressList"
+                                    v-model="NewKP.additionally.deliveryValue"
+                                    :style="'max-width: 300px'"
+                                /> 
+                                
                             </div>
                             <div class="kp-step-body-row">
                                 <span  class="kp-step-body-row-elem">Предоплата</span>
@@ -217,20 +225,19 @@
                         </div>
                         <div class="orders-list-info"  :class="{'active': NewKP.header}">
                             <div class="kp-step-body-row">
-                                
+                                <span class="kp-step-body-row-elem"></span>
+                                <CheckButton v-model="headerText" @onClick="headerLogo=false"  :style="'margin-left: 30px'"/>
                                 <div>Текст</div>
-                                <SwitchButton v-model="logoText"></SwitchButton> 
+                                <CheckButton v-model="headerLogo"   @onClick="headerText=false" :style="'margin-left: 30px'"/>
                                 <div>Лого</div>
-                                
-                                
                             </div>
-                            <div class="kp-step-body-row" v-if="!logoText">
-                               
+                            <div class="kp-step-body-row" v-if="headerText">
                                 <textarea class="order-comment-textarea" v-model="NewKP.headerText" placeholder="Текст заголовка коммерческого предложения..." ></textarea>
                             </div>
-                            <div class="kp-step-body-row" v-else>
+                            <div class="kp-step-body-row" v-if="headerLogo" :style="'justify-content: center'"><div v-if="logoList.length>0" > Лого #{{ logoList[0].id  }} </div></div>
+                            <div class="kp-step-body-row" v-if="headerLogo">
                                 <div>
-                                    <div v-if="logoList.length>0"> Лого #{{ logoList[0].id  }} </div>
+                                    
                                     <div class="product-slider-wrap" >
 
                                         <button class='product-slider-arrow prev' @click="prevLogo"></button>
@@ -261,6 +268,9 @@
                                   
                                 </div>
                                 
+                            </div>
+                            <div class="kp-step-body-row" v-if="headerLogo">
+                            
                             </div>
                         </div>
                     </div>
@@ -302,7 +312,7 @@ import { DefaultKP } from '/src/store/kp/types'
 import { OrderStateOrder } from '/src/store/order/types'
 import { Orders } from '/src/models/Orders'
 import { DateFromRuLocale, SelectInputData } from '/src/models/Components'
-import { filter } from 'lodash'
+
 
     const store = useStore()    
 
@@ -323,7 +333,9 @@ import { filter } from 'lodash'
     const loading_next = ref(false)
     const loading_inn = ref(false)
     const additionally = ref(false)
-    const logoText = ref(false)
+    const headerLogo = ref(false) // чекбаттон для выбора лого в заголовок
+    const headerText = ref(true) // чекбаттон для выбора текста в заголовок
+
     const inn_error = ref(false)
     const customer = ref('')
     const showCustomer = ref(false)
@@ -343,6 +355,7 @@ import { filter } from 'lodash'
     const date = ref(new Date().toLocaleString('ru').substr(0, 10))
 
     const companyList = computed<SelectInputData[]>(() => store.getters.getCompanysListInput().filter((x: SelectInputData) => x.id !== ''))
+    const addressList = computed<SelectInputData[]>(() => store.getters.getShipmentsAddressInputData)
 
     watch(order, ()=>{
         if (order.value!=-1){
@@ -360,7 +373,6 @@ import { filter } from 'lodash'
             calcOrder()
 		}
     })
-
     watch(() => props.type, () =>{
         if (props.type == KP_TYPES.ORDER_POS){
             order_detail.value = JSON.parse(JSON.stringify(store.getters.getOrder))
@@ -376,9 +388,16 @@ import { filter } from 'lodash'
             let kp = <KP>JSON.parse(JSON.stringify(NewKP.value))
             kp.offer.date = (new Date(DateFromRuLocale(date.value))).getTime()
             kp.offer.position = JSON.parse(JSON.stringify(order_detail.value?.position))
+
             if (kp.additionally.prepayment && order_detail.value) kp.additionally.prepaymentValue = NewKP.value.additionally.prepaymentValue / 100
+            
             const executorName = companyList.value.find( (x : SelectInputData) => x.id == NewKP.value.offer.executor)
             if (executorName) kp.offer.executor = executorName.name
+
+            if (kp.additionally.pickup ) {
+                const pickupValue = addressList.value.find( (x : SelectInputData) => x.id == NewKP.value.additionally.pickupValue)
+                if (pickupValue) kp.additionally.pickupValue = pickupValue.name
+            }
             if (logoList.value.length>0) kp.headerLogo = logoList.value[0].id
             //console.log(new Date(DateFromRuLocale(date.value)), date.value)
             loading_next.value=true

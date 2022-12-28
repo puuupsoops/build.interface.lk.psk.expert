@@ -75,6 +75,7 @@ import { OrdersActions } from '/src/store/orders/actions'
 import { CompanyActions } from '/src/store/company/actions'
 import { KP_TYPES } from '/src/models/KP'
 import { KPActions } from '/src/store/kp/actions'
+import { ShipmentsActions } from '/src/store/shipments/actions'
 const store = useStore()
 const companyBarTopData = computed(() => store.getters.getCompanysList)
 const activeCompanyUid = ref('')
@@ -91,7 +92,8 @@ onMounted(() => {
 				store.dispatch(OrdersActions.GET_ORDERS).then(()=>{ loading.value = false})
 			}
             store.dispatch(KPActions.GET_KP_LOGO)
-		});
+            store.dispatch(ShipmentsActions.GET_SHIPMENTS_ADDRESS)
+		})
 
 const isOrder = computed(()=> store.getters.isOrder)
 const isDraft = computed(()=> store.getters.getOrderDraftCount > 0)

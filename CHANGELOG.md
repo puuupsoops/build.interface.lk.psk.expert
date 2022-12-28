@@ -1,4 +1,10 @@
 Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2022-12-28
+
+    #0.2.61
+    1. На странице КП добавлен выбор контрагента и выбор адреса самовывоза
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-12-27
 
     #0.2.60
