@@ -68,8 +68,11 @@
 		});
 
 	const changeStep = (v: number) => {
-		if (!props.disabled )
-			emits('update:modelValue', Number((props.modelValue + v).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.')))
+		if (!props.disabled ){
+			let x = props.modelValue + v
+			emits('update:modelValue', Number(x.toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.').replace(/\s/g,'')))
+		}
+			
 	}
 	const onInput = (e: Event) => {
 		if (e.target)
