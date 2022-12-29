@@ -60,9 +60,9 @@
 
 			if (String(props.modelValue) == '') 
 				emits('update:modelValue', 0)
-			if (props.max !== undefined && Number(new_val) > props.max )
+			if (props.max !== undefined && new_val > props.max )
 				emits('update:modelValue', old_val)
-			if (props.min !== undefined && Number(new_val) < props.min )
+			if (new_val < props.min )
 				emits('update:modelValue', old_val)
 			emits('onInput')
 		});

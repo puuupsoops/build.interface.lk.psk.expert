@@ -27,8 +27,60 @@
                     </select>
                 </div>
             </div>
-
-
+            <div class="kp-step-body-input" v-if="order!=-1 || draft != -1 || type == KP_TYPES.ORDER_POS">
+                <div class="kp-step-body-row" :style="'align-items: flex-end;'">
+                    <div class="profile-personal-info-item-edit" :style="'padding-bottom: 0px'">
+                        <div class="input-textfield">
+                            <input name="lastname" type="text" placeholder=" " class="" v-model="NewKP.offer.n">
+                            <label>Номер документа</label>
+                        </div>
+                    </div>
+                    <div class="shipment-form-item">
+                        <div class="shipment-form-elem-title"><span>Дата</span></div>
+                        <div class="shipment-form-row" :style="'display:flex; align-items: center;'">
+                            <div class="shipment-form-date">
+                                <DatePicker
+                                    v-model="date"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="kp-step-body-row">
+                    <div class="profile-personal-info-item-edit">
+                        <div class="input-textfield">
+                            <input name="lastname" type="text" placeholder=" " class="" v-model="NewKP.offer.executor" @input="NewKP.offer.executorUID = ''">
+                            <label>Поставщик</label>
+                        </div>
+                    </div>
+                    <SelectInput 
+                                :data="companyList"
+                                v-model="NewKP.offer.executorUID"
+                                @on-input="NewKP.offer.executor =  companyList.find(x => x.id == NewKP.offer.executorUID)?.name || ''"
+                            />
+                </div>
+                <div class="profile-personal-info-item-edit" :style="'display: flex; align-items: center;'">
+                    <div class="input-textfield" v-if="!loading_inn" :style="'width: 100%'" >
+                        <input name="lastname" type="text" placeholder=" " :class="{'error': inn_error}" v-model="NewKP.offer.customer">
+                        <label>Покупатель</label>
+                    </div>
+                    <PreloaderLocal v-else/>
+                    <div
+                        class="kp-step-body-button"
+                        tooltip="Поиск по ИНН"
+                        :flow="showCustomer? '' :'up'" 
+                        @click.capture="(showCustomer=true)"
+                    >
+                        <modal-input-full v-model="customer" v-model:show="showCustomer" show-ok @on-ok="doSearch()" :label="'Введите ИНН'"></modal-input-full>
+                        <svg  width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="2.17029" height="21.7029" rx="1.08514" transform="matrix(0.999975 -0.00708126 -0.00708126 0.999975 11.097 1.26186)" fill="#A5A7A9"/>
+                                <rect width="2.17029" height="21.7029" rx="1.08514" transform="matrix(0.00708126 -0.999975 -0.999975 0.00708126 22.7798 12.9446)" fill="#A5A7A9"/>
+                        </svg>
+                    </div>
+                    
+                </div>
+            </div>
+            
 
             <div v-if="order != -1 || draft != -1 || type==KP_TYPES.ORDER_POS " :style="'padding: 30px'">
                 <div v-if="loading" style="display: flex; justify-content: center">
@@ -117,63 +169,8 @@
                     </div>
                 </div>
 
-                <div class="kp-step-body-input">
-                    <div class="kp-step-body-row">
-                        <div class="profile-personal-info-item-edit">
-                            <div class="input-textfield">
-                                <input name="lastname" type="text" placeholder=" " class="" v-model="NewKP.offer.executor" @input="NewKP.offer.executorUID = ''">
-                                <label>Поставщик</label>
-                            </div>
-                        </div>
-                        <SelectInput 
-                                    :data="companyList"
-                                    v-model="NewKP.offer.executorUID"
-                                    @on-input="NewKP.offer.executor =  companyList.find(x => x.id == NewKP.offer.executorUID)?.name || ''"
-                                />
-                    </div>
-                    <div class="profile-personal-info-item-edit" :style="'display: flex; align-items: center;'">
-                        <div class="input-textfield" v-if="!loading_inn" :style="'width: 100%'" >
-                            <input name="lastname" type="text" placeholder=" " :class="{'error': inn_error}" v-model="NewKP.offer.customer">
-                            <label>Покупатель</label>
-                        </div>
-                        <PreloaderLocal v-else/>
-                        <div
-                            class="kp-step-body-button"
-                            tooltip="Поиск по ИНН"
-                            :flow="showCustomer? '' :'up'" 
-                            @click.capture="(showCustomer=true)"
-                        >
-                            <modal-input-full v-model="customer" v-model:show="showCustomer" show-ok @on-ok="doSearch()" :label="'Введите ИНН'"></modal-input-full>
-                            <svg  width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect width="2.17029" height="21.7029" rx="1.08514" transform="matrix(0.999975 -0.00708126 -0.00708126 0.999975 11.097 1.26186)" fill="#A5A7A9"/>
-                                    <rect width="2.17029" height="21.7029" rx="1.08514" transform="matrix(0.00708126 -0.999975 -0.999975 0.00708126 22.7798 12.9446)" fill="#A5A7A9"/>
-                            </svg>
-                        </div>
-                       
-                    </div>
-                    <div class="profile-personal-info-item-edit">
-                        <div class="input-textfield">
-                            <input name="lastname" type="text" placeholder=" " class="" v-model="NewKP.offer.n">
-                            <label>Номер документа</label>
-                        </div>
-                    </div>
-                    <div class="shipment-form-item">
-                        <div class="shipment-form-elem-title"><span>Дата</span></div>
-                        <div class="shipment-form-row" :style="'display:flex; align-items: center;'">
-                            <div class="shipment-form-date">
-                        
-                                <DatePicker
-                                    v-model="date"
-                                
-                                />
-                                
-                            </div>
-                                <CheckButton v-model="PDF" @onClick="PDF=true; WORD=false; NewKP.as='PDF'"  :style="'margin-left: 30px'"/>
-                                <div :style="'margin-left: 10px'">PDF</div>
-                                <CheckButton v-model="WORD" @onClick="PDF=false; WORD=true; NewKP.as='WORD'" :style="'margin-left: 30px'"/>
-                                <div :style="'margin-left: 10px'">Word</div>
-                        </div>
-                    </div>
+                <div class="kp-step-body-input">                    
+                   
                     <div class="orders-list-item" :class="{'active': additionally}">
                         <div class="orders-list-row " @click="additionally=!additionally">
                             
@@ -280,6 +277,12 @@
                         <div class="order-comment-title"><span>Комментарий</span></div>
                         <textarea class="order-comment-textarea" v-model="NewKP.offer.comment"  ></textarea>
 
+                    </div>
+                    <div class="kp-step-body-row" :style="'justify-content: flex-end'">
+                        <CheckButton v-model="PDF" @onClick="PDF=true; WORD=false; NewKP.as='PDF'"  :style="'margin-left: 30px'"/>
+                        <div :style="'margin-left: 10px'">PDF</div>
+                        <CheckButton v-model="WORD" @onClick="PDF=false; WORD=true; NewKP.as='WORD'" :style="'margin-left: 30px'"/>
+                        <div :style="'margin-left: 10px'">Word</div>
                     </div>
                 </div>
             </div>

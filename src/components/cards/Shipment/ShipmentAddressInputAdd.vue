@@ -7,7 +7,7 @@
 			<div class="product-search-input options" >
 				<input 
 					type="text"
-					placeholder="Поиск"
+					:placeholder="step == 1 ? 'Поиск' : 'Введите наименование'"
 					autocomplete="off"
 					@keyup="doSearch($event)"
 					v-model="search_str"
