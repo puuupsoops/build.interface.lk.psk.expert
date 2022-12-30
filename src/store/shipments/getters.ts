@@ -20,7 +20,8 @@ export const getters: GetterTree<ShipmentsState, RootState> = {
 		getShipmentsAddressInputData: state => <SelectInputData[]>state.address.map((x: ShipmentsAddress) => {
 				return {
 						id: x.index,
-						name: x.label
+						name: x.label,
+						address: x.address
 					}
 			})
 }

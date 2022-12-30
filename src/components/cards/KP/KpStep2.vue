@@ -279,6 +279,7 @@
 
                     </div>
                     <div class="kp-step-body-row" :style="'justify-content: flex-end'">
+                        Скачать документ в формате: 
                         <CheckButton v-model="PDF" @onClick="PDF=true; WORD=false; NewKP.as='PDF'"  :style="'margin-left: 30px'"/>
                         <div :style="'margin-left: 10px'">PDF</div>
                         <CheckButton v-model="WORD" @onClick="PDF=false; WORD=true; NewKP.as='WORD'" :style="'margin-left: 30px'"/>
@@ -399,7 +400,7 @@ import { DateFromRuLocale, SelectInputData } from '/src/models/Components'
 
             if (kp.additionally.pickup ) {
                 const pickupValue = addressList.value.find( (x : SelectInputData) => x.id == NewKP.value.additionally.pickupValue)
-                if (pickupValue) kp.additionally.pickupValue = pickupValue.name
+                if (pickupValue) kp.additionally.pickupValue = pickupValue.address
             }
             if (logoList.value.length>0) kp.headerLogo = logoList.value[0].id
             //console.log(new Date(DateFromRuLocale(date.value)), date.value)

@@ -1,3 +1,10 @@
+Author: Vasilii Polshakov <45201a@gmail.com>
+Date:   2022-12-39
+
+    #0.2.61-fix
+    1. Some text hase been replaced in KP
+    2. Bug fixed: the dropdown now sets the value of the address, instead of the label
+
 Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2022-12-28
 
