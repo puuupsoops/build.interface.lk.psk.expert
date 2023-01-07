@@ -21,7 +21,6 @@ export const getters: GetterTree<ShipmentsState, RootState> = {
 				return {
 						id: x.index,
 						name: x.label,
-						address: x.address
 					}
 			})
 }

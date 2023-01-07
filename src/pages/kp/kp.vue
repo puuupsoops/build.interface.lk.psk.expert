@@ -70,7 +70,7 @@ import KpStep3 from '/src/components/cards/KP/KpStep3.vue'
 
 
 import { useStore } from '/src/store'
-import { computed, onMounted, ref } from 'vue'
+import { computed, inject, onMounted, provide, ref } from 'vue'
 import { OrdersActions } from '/src/store/orders/actions'
 import { CompanyActions } from '/src/store/company/actions'
 import { KP_TYPES } from '/src/models/KP'
@@ -81,9 +81,10 @@ const companyBarTopData = computed(() => store.getters.getCompanysList)
 const activeCompanyUid = ref('')
 
 const step = ref(1)
+
 const loading = ref(false)
 const kpType = ref(KP_TYPES.ORDER)
-
+const tempKPType = ref(inject<string>('tempKPType') ?? '')
 onMounted(() => {
 			//console.log(!store.getters.isOrders)
 			if (!store.getters.isCompanysLoad) store.dispatch(CompanyActions.GET_COMPANYS)
@@ -93,6 +94,11 @@ onMounted(() => {
 			}
             store.dispatch(KPActions.GET_KP_LOGO)
             store.dispatch(ShipmentsActions.GET_SHIPMENTS_ADDRESS)
+            if (tempKPType.value != '') {
+                kpType.value = tempKPType.value as KP_TYPES
+                tempKPType.value = ''
+                step.value=2
+            }
 		})
 
 const isOrder = computed(()=> store.getters.isOrder)

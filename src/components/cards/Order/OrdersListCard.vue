@@ -231,7 +231,7 @@
 								class="orders-list-more-dropdown-link" 
 								tag="a"
 								:to="'/kp'"
-								@click.stop=""
+								@click.stop="setOrderId(item.n)"
 							>
 									Конструктор КП
 							</router-link>
@@ -391,7 +391,7 @@
 	import CatalogPagination from '/src/components/cards/Catalog/CatalogPagination.vue'
 	import CheckButton from '/src/components/ui/CheckButton.vue'
 
-	import { ref, PropType, watch, computed, onMounted, nextTick } from 'vue'
+	import { ref, PropType, watch, computed, onMounted, nextTick, inject } from 'vue'
 	import { onClickOutside } from '@vueuse/core'
 	import { Check, Orders } from '/src/models/Orders'
 	import { normalizeCompanyName } from '/src/models/Partner'
@@ -409,6 +409,7 @@
 	import { ClaimActions } from '/src/store/claims/actions'
 	import { ClaimMutations } from '/src/store/claims/mutations'
 import DeleteButton from '../../ui/DeleteButton.vue'
+import { KP_TYPES } from '/src/models/KP'
 
 
 
@@ -457,6 +458,8 @@ import DeleteButton from '../../ui/DeleteButton.vue'
 	const docLocation = import.meta.env.VITE_APP_DOC_LOCATION
 	const page = ref({maxItemOnPage: 10, currentPage: 1})
 	const billRequestLoadingState = ref(-1) //Переменная для прелоадера с загрузкой запроса счета
+	const tempOrderId = ref(inject<number>('tempOrderId') ?? -1)
+	const tempKPType = ref(inject<string>('tempKPType') ?? '')
 
 	onClickOutside(target, () => {
 		active_more.value = -1
@@ -591,8 +594,9 @@ import DeleteButton from '../../ui/DeleteButton.vue'
 	
 	const setOrderId = (id: number) => {
 		store.commit(KeysMutations.SET_CURRENT_ORDER, id)
-
-	}
+		tempOrderId.value = id
+		tempKPType.value = KP_TYPES.ORDER
+	}	
 	
 	const setClaimOrderId = (id: number) => {
 		loading_global.value = true

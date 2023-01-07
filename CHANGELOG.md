@@ -1,3 +1,9 @@
+Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2023-01-07
+
+    #0.2.62
+    1. При переходе на страницу КП из списка заказов или из оформления нового заказа в КП подставляется выбранный заказ
+    
 Author: Vasilii Polshakov <45201a@gmail.com>
 Date:   2022-12-39
 

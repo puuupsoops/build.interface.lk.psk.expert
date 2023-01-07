@@ -96,6 +96,7 @@ import { OrdersActions } from '/src/store/orders/actions'
 import { Orders } from '/src/models/Orders'
 import { KeysConst } from '/src/store/keys/types'
 import { KeysMutations } from '/src/store/keys/mutations'
+import { Order } from '/src/models/Order'
 
 export default defineComponent({
 	components: {
@@ -169,7 +170,7 @@ export default defineComponent({
 			order,
 			//computed
 
-			orders: computed(() => store.getters.getOrders.filter((x: Orders) => x.partner_guid == companyUID.value )),
+			orders: computed<Orders[]>(() => store.getters.getOrders.filter((x: Orders) => x.partner_guid == companyUID.value )),
 			companys: computed(() => store.getters.getCompanysList),
 			companyUID,
 		}

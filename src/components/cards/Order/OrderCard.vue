@@ -280,6 +280,7 @@
 					class="order-list-submit gradient-btn disabled" 
 					tag="button"
 					:to="'/kp'"
+					@click="setKPType()"
 				>
 				<div class="gradient-btn-text">Конструктор КП</div>
 			</router-link>
@@ -305,7 +306,7 @@
 </template>
 
 <script setup lang="ts">
-	import { ref, computed, PropType, onMounted, watch } from 'vue'
+	import { ref, computed, PropType, onMounted, watch, inject } from 'vue'
 	import { useStore } from '/src/store'
 
 	import AmountInput from '/src/components/ui/AmountInput.vue'
@@ -324,6 +325,7 @@
 	import { SelectInputData, DateFromRuLocale } from '/src/models/Components'
 
 import { ShipmentsActions } from '/src/store/shipments/actions'
+import { KP_TYPES } from '/src/models/KP'
 
 	const props = defineProps(
 		{
@@ -493,6 +495,12 @@ const updDeliveryCase = ()=>{
 watch(draftShowModal, ()=>{
 	if (draftShowModal.value) draftName.value = 'Черновик #' + Number(store.getters.getOrderDraftCount+1)
 })
+
+const tempKPType = ref(inject<string>('tempKPType') ?? '')
+
+const setKPType = ()=>{
+	tempKPType.value = KP_TYPES.ORDER_POS
+}
 
 </script>
 

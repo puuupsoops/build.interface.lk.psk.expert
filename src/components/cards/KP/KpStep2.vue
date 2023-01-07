@@ -188,7 +188,7 @@
                                 <div v-if="NewKP.additionally.delivery">₽  <span class="kp-step-body-elem-text-sub">Стоимость</span></div>
                                 <SelectInput  v-if="NewKP.additionally.pickup"
                                     :data="addressList"
-                                    v-model="NewKP.additionally.deliveryValue"
+                                    v-model="NewKP.additionally.pickupValue"
                                     :style="'max-width: 300px'"
                                 /> 
                                 
@@ -306,7 +306,7 @@ import CheckButton from '/src/components/ui/CheckButton.vue'
 import SwitchButton from '/src/components/ui/SwitchButton.vue'
 import SelectInput from '/src/components/ui/SelectInput.vue'
 
-import { computed, PropType, ref, watch } from 'vue'
+import { computed, inject, PropType, ref, watch, onMounted } from 'vue'
 import { useStore } from '/src/store'
 import { OrderActions } from '/src/store/order/actions'
 import { KPActions } from '/src/store/kp/actions'
@@ -316,6 +316,7 @@ import { DefaultKP } from '/src/store/kp/types'
 import { OrderStateOrder } from '/src/store/order/types'
 import { Orders } from '/src/models/Orders'
 import { DateFromRuLocale, SelectInputData } from '/src/models/Components'
+import { ShipmentsAddress } from '/src/models/Shipments'
 
 
     const store = useStore()    
@@ -344,6 +345,7 @@ import { DateFromRuLocale, SelectInputData } from '/src/models/Components'
     const customer = ref('')
     const showCustomer = ref(false)
     const order = ref<number>(-1)
+    const tempOrderId = ref(inject<number>('tempOrderId') ?? -1)
     const draft = ref<number>(-1)
     const open = ref<number[]>([])
     const orders = computed<Orders[]>(() => store.getters.getOrders)
@@ -385,7 +387,10 @@ import { DateFromRuLocale, SelectInputData } from '/src/models/Components'
         
     })
 
-
+    onMounted(()=>{
+        order.value=tempOrderId.value
+        tempOrderId.value = -1
+    })
 
     const next = () => {
         if (order.value != -1 || draft.value != -1 || props.type == KP_TYPES.ORDER_POS){
@@ -399,8 +404,9 @@ import { DateFromRuLocale, SelectInputData } from '/src/models/Components'
             if (executorName) kp.offer.executor = executorName.name
 
             if (kp.additionally.pickup ) {
-                const pickupValue = addressList.value.find( (x : SelectInputData) => x.id == NewKP.value.additionally.pickupValue)
-                if (pickupValue) kp.additionally.pickupValue = pickupValue.address
+                const pickupValue = store.getters.getShipmentsAddress.find((x: ShipmentsAddress) =>  x.index == parseInt(NewKP.value.additionally.pickupValue)).address
+
+                if (pickupValue) kp.additionally.pickupValue = pickupValue
             }
             if (logoList.value.length>0) kp.headerLogo = logoList.value[0].id
             //console.log(new Date(DateFromRuLocale(date.value)), date.value)
