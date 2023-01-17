@@ -100,6 +100,18 @@
                                 </div>
                                 
                             </div>
+                            <div class="orders-heading-elem">
+								<AmountInput v-model="addAmount" :min="-100000000000"></AmountInput>
+                                <button 
+											:class="'product-parcel-btn' + (parcel_type === 'percent' ? ' active':'')"
+											@click="parcel_type='percent'"
+								>%</button>
+                                <button 
+											:class="'product-parcel-btn' + (parcel_type === 'add' ? ' active':'')"
+											@click="parcel_type='add'"
+								>₽</button>
+                                <button class="product-search-btn gradient-btn" @click = "foo()" ><div>Применить</div></button>
+                            </div>   
                         <div>
                     </div>
 				
@@ -282,8 +294,8 @@
                         Скачать документ в формате: 
                         <CheckButton v-model="PDF" @onClick="PDF=true; WORD=false; NewKP.as='PDF'"  :style="'margin-left: 30px'"/>
                         <div :style="'margin-left: 10px'">PDF</div>
-                        <CheckButton v-model="WORD" @onClick="PDF=false; WORD=true; NewKP.as='WORD'" :style="'margin-left: 30px'"/>
-                        <div :style="'margin-left: 10px'">Word</div>
+                        <!--<CheckButton disabled v-model="WORD" @onClick="PDF=false; WORD=true; NewKP.as='WORD'" :style="'margin-left: 30px'"/>
+                        <div :style="'margin-left: 10px;'">Word</div>-->
                     </div>
                 </div>
             </div>
@@ -362,6 +374,41 @@ import { ShipmentsAddress } from '/src/models/Shipments'
 
     const companyList = computed<SelectInputData[]>(() => store.getters.getCompanysListInput().filter((x: SelectInputData) => x.id !== ''))
     const addressList = computed<SelectInputData[]>(() => store.getters.getShipmentsAddressInputData)
+
+    
+    const addAmount = ref(0)
+    const parcel_type = ref('percent')
+    // для рассчета надбавки/скидки на стоимость позиций
+    const foo = () => {
+		if (order_detail.value) {
+
+            let total = 0
+            order_detail.value.position.forEach(pos => {
+                let total_pos = 0
+                
+                pos.characteristics.forEach( c => {
+                    let price = c.PRICE
+
+                    if(parcel_type.value == "percent") {
+                        price = price + (price * addAmount.value/100)
+                    }
+
+                    if(parcel_type.value == "add") {
+                        price = price +  addAmount.value
+                    }
+                    c.PRICE = price
+                    total_pos = total_pos + price * c.count
+                   
+                });
+                pos.total = total_pos
+                
+                total = total + total_pos
+                console.log(total)
+            });
+
+            order_detail.value.total = total
+        }
+    }
 
     watch(order, ()=>{
         if (order.value!=-1){

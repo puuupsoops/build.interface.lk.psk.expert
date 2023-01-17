@@ -27,7 +27,7 @@
                     Позиций из католога
                     <div class="kp-step-body-elem-text-sub" >
                         Коммерческое предложение из собранного, но еще не оформленного заказа. 
-                        <span v-if="!isOrder">Для этого сформируйте заказ и вариант станет активным.</span>
+                        <span v-if="!isOrder"><router-link tag="a" to="/order"><span style="color: darkgoldenrod;">Для этого сформируйте заказ и вариант станет активным.</span></router-link></span>
                     </div>
                 </div>    
             </div>
