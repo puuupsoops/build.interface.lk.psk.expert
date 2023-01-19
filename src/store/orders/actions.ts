@@ -11,6 +11,7 @@ export enum OrdersActions {
 	GET_ORDERS = "GET_ORDERS_ACTION",
 	GET_ORDERS_DOCSTATUS = "GET_ORDERS_DOCSTATUS",
 	GET_ORDERS_BILL_REQUEST = "GET_ORDERS_BILL_REQUEST",
+	GET_ORDERS_DOWNLOAD_CERTIFICATED = "GET_ORDERS_DOWNLOAD_CERTIFICATED"
 }
 
 export const actions: ActionTree<OrdersState, RootState> =  {
@@ -41,6 +42,31 @@ export const actions: ActionTree<OrdersState, RootState> =  {
 		})
 		.catch(error => {
 			commit(AuthMutations.SET_ERROR, 'Request GET_ORDERS_BILL_REQUEST error:<br>'+error)
+		})
+	},
+
+	async [OrdersActions.GET_ORDERS_DOWNLOAD_CERTIFICATED] ({commit}, id) {
+		await axios({
+			method: "GET",
+			url:'/order/'+ id +'/certificates',
+			responseType: 'blob'
+		})
+		.then(response => {
+			console.log(response)
+			//let fileURL = window.URL.createObjectURL(new Blob([response.data]));
+			//console.log(fileURL)
+			const url = window.URL.createObjectURL(new Blob([response.data]));
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute('download', 'cert.zip');
+			document.body.appendChild(link);
+			link.click();
+		})
+		.catch(error => {
+			console.log('error')
+			console.log(error)
+			//commit(OrdersMutations.SET_ORDERS_DOCSTATUS_ERROR)
+			//commit(AuthMutations.SET_ERROR, 'Request GET_ORDERS_DOCSTATUS error:<br>'+error)
 		})
 	}
 }

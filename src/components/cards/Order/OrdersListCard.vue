@@ -336,6 +336,10 @@
 									
 									<span v-else @click="billRequestLoading(item.n, check)">Запросить счет</span>
 								</div>
+								<div class="orders-list-elem-request-bill">
+									<span @click="downloadCertificates(check)">Скачать Сертификаты</span>
+								</div>
+								
 							</div>
 							<!-- <div class="orders-list-info-elem">
 								<a class="orders-list-info-link" href="">Сертификаты</a>
@@ -632,6 +636,13 @@ import { KP_TYPES } from '/src/models/KP'
 				.catch(()=>{billRequestLoadingState.value = -1})
 		}
 	}
+
+	//скачать сертификаты
+	const downloadCertificates = (check: Check) => {
+		let guid = check.guid;
+		store.dispatch(OrdersActions.GET_ORDERS_DOWNLOAD_CERTIFICATED, guid)
+	}
+
 // Изменение колонок таблици
 	const table = ref()
 	const tableWidth = ref(0)
