@@ -1,4 +1,5 @@
 import { Position } from "./Order"
+import { OrderStatePosition } from '/src/store/order/types'
 
 export interface KP {
 	offer: {
@@ -8,7 +9,7 @@ export interface KP {
         n:           string,   //1,
         date:        number,   //17461231231,
         comment:     string,   //1. Наличие товара уточняйте перед оплатой;\n 2.Срок действия коммерческого предложения 3 дня.\n,
-        position:    Position[]
+        position:    OrderStatePosition[]
     },
     additionally : {
         prepayment:         boolean,        // флаг предоплаты <Boolean>: true или false

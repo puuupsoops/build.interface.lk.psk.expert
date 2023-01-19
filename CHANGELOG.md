@@ -1,3 +1,10 @@
+
+Author: Vadim Zaboturin <vadimzab@gmail.com>
+Date:   2023-01-19
+
+    #0.2.63
+    1. На странице КП добавлен обновил слайдер и кнопку скидка/наценка
+
 Author: Vasilii Polshakov <45201a@gmail.com>
 Date:   2023-01-19
 

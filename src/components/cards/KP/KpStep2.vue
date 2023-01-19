@@ -100,17 +100,24 @@
                                 </div>
                                 
                             </div>
-                            <div class="orders-heading-elem">
-								<AmountInput v-model="addAmount" :min="-100000000000"></AmountInput>
+                            <div :style="'display: flex;align-items: center;justify-content: flex-end;'">
+                                                                   
                                 <button 
 											:class="'product-parcel-btn' + (parcel_type === 'percent' ? ' active':'')"
-											@click="parcel_type='percent'"
+                                            :style="'width: auto; min-width: 7em;'"
+											@click="sale_type=-sale_type;calcOrder()"
+								><div class="product-parcel-text">{{ sale_type< 0 ? 'Скидка': 'Наценка'}} </div></button>
+                                
+								<AmountInput v-model="addAmount" :style="'margin: 5px'" @on-input="calcOrder()"></AmountInput>
+                                <button 
+											:class="'product-parcel-btn' + (parcel_type === 'percent' ? ' active':'')"
+											@click="parcel_type='percent';calcOrder()"
 								>%</button>
                                 <button 
 											:class="'product-parcel-btn' + (parcel_type === 'add' ? ' active':'')"
-											@click="parcel_type='add'"
+											@click="parcel_type='add';calcOrder()"
 								>₽</button>
-                                <button class="product-search-btn gradient-btn" @click = "foo()" ><div>Применить</div></button>
+
                             </div>   
                         <div>
                     </div>
@@ -167,8 +174,13 @@
                                     <div class="order-list-elem"> 
                                         <amount-input v-model="characteristic.count" :min="1" @on-input="calcOrder()" ></amount-input> 
                                     </div>
-                                    <div class="order-list-elem">{{ Number(characteristic.PRICE * characteristic.count).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽</div>
-                                    
+                                    <div class="order-list-elem" v-if="parcel_type == 'percent'">
+                                        {{ Number((characteristic.PRICE + sale_type * characteristic.PRICE * addAmount/100) * characteristic.count).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽
+                                    </div>
+                                    <div class="order-list-elem" v-else>
+                                        {{ Number((characteristic.PRICE + sale_type * addAmount) * characteristic.count).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }} ₽
+                                    </div>
+
                                     <div class="order-list-elem-delete">
                                         
                                     </div>
@@ -239,19 +251,29 @@
                                 <div>Текст</div>
                                 <CheckButton v-model="headerLogo"   @onClick="headerText=false" :style="'margin-left: 30px'"/>
                                 <div>Лого</div>
+                                <div v-if="headerLogo" :style="'margin-left:20px'">
+                                    
+                                    <label class="kp-step-body-add-file-label" for="file-upload">
+                                          
+                                        <input @change="handleFileUpload( $event )" class="kp-step-body-add-file-input" id="file-upload" type="file" accept="image/*">
+                                    </label>
+                                    
+                                    <PreloaderLocal v-if="loadingLogo"></PreloaderLocal>
+                                  
+                                </div>
                             </div>
                             <div class="kp-step-body-row" v-if="headerText">
                                 <textarea class="order-comment-textarea" v-model="NewKP.headerText" placeholder="Текст заголовка коммерческого предложения..." ></textarea>
                             </div>
                             <div class="kp-step-body-row" v-if="headerLogo" :style="'justify-content: center'"><div v-if="logoList.length>0" > Лого #{{ logoList[0].id  }} </div></div>
-                            <div class="kp-step-body-row" v-if="headerLogo">
+                            <div class="kp-step-body-row" v-if="headerLogo" :style="'justify-content: center'">
                                 <div>
                                     
                                     <div class="product-slider-wrap" >
 
                                         <button class='product-slider-arrow prev' @click="prevLogo"></button>
 
-                                        <transition-group name="product-slider-trans" class='product-slider' :style="'align-items: center'"  tag="div">
+                                        <transition-group name="product-slider-trans" class='product-slider' :style="'align-items: center; height: 500px;'"  tag="div">
                                                 <div v-for="slide in logoList" class='product-slider-slide' :key="slide.id">
                                                     <img
                                                         v-if="slide.image"
@@ -266,16 +288,7 @@
                                     </div>
                                 </div>
 
-                                <div class="" >
-                                    
-                                    <label class="kp-step-body-add-file-label" for="file-upload">
-                                          
-                                        <input @change="handleFileUpload( $event )" class="kp-step-body-add-file-input" id="file-upload" type="file" accept="image/*">
-                                    </label>
-                                    
-                                    <PreloaderLocal v-if="loadingLogo"></PreloaderLocal>
-                                  
-                                </div>
+                                
                                 
                             </div>
                             <div class="kp-step-body-row" v-if="headerLogo">
@@ -378,38 +391,8 @@ import { ShipmentsAddress } from '/src/models/Shipments'
     
     const addAmount = ref(0)
     const parcel_type = ref('percent')
-    // для рассчета надбавки/скидки на стоимость позиций
-    const foo = () => {
-		if (order_detail.value) {
-
-            let total = 0
-            order_detail.value.position.forEach(pos => {
-                let total_pos = 0
-                
-                pos.characteristics.forEach( c => {
-                    let price = c.PRICE
-
-                    if(parcel_type.value == "percent") {
-                        price = price + (price * addAmount.value/100)
-                    }
-
-                    if(parcel_type.value == "add") {
-                        price = price +  addAmount.value
-                    }
-                    c.PRICE = price
-                    total_pos = total_pos + price * c.count
-                   
-                });
-                pos.total = total_pos
-                
-                total = total + total_pos
-                console.log(total)
-            });
-
-            order_detail.value.total = total
-        }
-    }
-
+    const sale_type = ref(-1)
+   
     watch(order, ()=>{
         if (order.value!=-1){
 			loading.value=true
@@ -443,8 +426,18 @@ import { ShipmentsAddress } from '/src/models/Shipments'
         if (order.value != -1 || draft.value != -1 || props.type == KP_TYPES.ORDER_POS){
             let kp = <KP>JSON.parse(JSON.stringify(NewKP.value))
             kp.offer.date = (new Date(DateFromRuLocale(date.value))).getTime()
-            kp.offer.position = JSON.parse(JSON.stringify(order_detail.value?.position))
-
+            kp.offer.position = JSON.parse(JSON.stringify(order_detail.value?.position)) 
+            kp.offer.position.forEach(pos => {
+                pos.characteristics.forEach( c => {
+                    if(parcel_type.value == "percent") {
+                        c.PRICE = c.PRICE + sale_type.value * c.PRICE * addAmount.value/100
+                    }
+                    if(parcel_type.value == "add") {
+                        c.PRICE = c.PRICE + sale_type.value * addAmount.value
+                    }
+                });
+            });
+                   
             if (kp.additionally.prepayment && order_detail.value) kp.additionally.prepaymentValue = NewKP.value.additionally.prepaymentValue / 100
             
             const executorName = companyList.value.find( (x : SelectInputData) => x.id == NewKP.value.offer.executor)
@@ -501,7 +494,13 @@ import { ShipmentsAddress } from '/src/models/Shipments'
                 let total_pos = 0
                 
                 pos.characteristics.forEach( c => {
-                    total_pos = total_pos + c.PRICE * c.count
+                    if(parcel_type.value == "percent") {
+                        total_pos = total_pos + c.count * (c.PRICE + sale_type.value * c.PRICE * addAmount.value/100)
+                    }
+
+                    if(parcel_type.value == "add") {
+                        total_pos = total_pos + c.count * (c.PRICE + sale_type.value * addAmount.value)
+                    }
                    
                 });
                 pos.total = total_pos
