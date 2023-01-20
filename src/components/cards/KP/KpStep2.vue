@@ -227,14 +227,16 @@
                                     {{  Number((order_detail?.total / 100 ) * NewKP.additionally.prepaymentValue).toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.') }}₽  
                                 </div>
                             </div>
-                            <div class="kp-step-body-row">
+                            <div v-show="NewKP.additionally.prepaymentValue != 100" class="kp-step-body-row">
                                 <span  class="kp-step-body-row-elem">Отсрочка</span>
                                 <CheckButton v-model="NewKP.additionally.delay" @onClick="NewKP.additionally.delayWorkValue=0; NewKP.additionally.delayCalendarValue=0"  :style="'margin-left: 30px'"/>
-                                <div v-if="NewKP.additionally.delay" :style="'margin-left: 30px'">Количество<br>рабочих дней</div>
-                                <AmountInput v-if="NewKP.additionally.delay" :min="0" v-model="NewKP.additionally.delayWorkValue" />
-                                <div v-if="NewKP.additionally.delay" :style="'margin-left: 30px'">Количество <br>календарных дней</div>
-                                <AmountInput v-if="NewKP.additionally.delay" :min="0" v-model="NewKP.additionally.delayCalendarValue" />
-                                
+                                <div v-if="NewKP.additionally.delay" :style="[!isDelayType ? 'color: #FFFFFF':'color: #292C32','margin-left: 30px']">Количество <br>календарных дней</div>
+                                <AmountInput v-if="NewKP.additionally.delay" :min="0" v-model="NewKP.additionally.delayCalendarValue" :disabled="isDelayType" />
+                                <div v-show="NewKP.additionally.delay" :style="'margin-left: 30px'">
+                                    <SwitchButton v-model="isDelayType"></SwitchButton>
+                                </div>
+                                <div v-if="NewKP.additionally.delay" :style="[isDelayType ? 'color: #FFFFFF':'color: #292C32','margin-left: 30px']">Количество<br>рабочих дней</div>
+                                <AmountInput v-if="NewKP.additionally.delay" :min="0" v-model="NewKP.additionally.delayWorkValue" :disabled="!isDelayType" />
                             </div>
                         </div>
                     </div>
@@ -365,6 +367,7 @@ import { ShipmentsAddress } from '/src/models/Shipments'
     const additionally = ref(false)
     const headerLogo = ref(false) // чекбаттон для выбора лого в заголовок
     const headerText = ref(true) // чекбаттон для выбора текста в заголовок
+    const isDelayType = ref(false) // переключатель выбора типа отсрочки
 
     const inn_error = ref(false)
     const customer = ref('')

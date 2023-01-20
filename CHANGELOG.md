@@ -1,3 +1,9 @@
+Author: Vasilii Polshakov <45201a@gmail.com>
+Date:   2023-01-20
+
+    #0.2.63.1
+    1. Отсрочка скрывается, если предоплата равна 100
+    2. Добавлено переключение (деактивация) типов отсрочки
 
 Author: Vadim Zaboturin <vadimzab@gmail.com>
 Date:   2023-01-19
