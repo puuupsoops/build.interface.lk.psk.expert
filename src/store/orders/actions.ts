@@ -45,22 +45,25 @@ export const actions: ActionTree<OrdersState, RootState> =  {
 		})
 	},
 
-	async [OrdersActions.GET_ORDERS_DOWNLOAD_CERTIFICATED] ({commit}, id) {
-		await axios({
-			method: "GET",
-			url:'/order/'+ id +'/certificates',
-			responseType: 'blob'
+	async [OrdersActions.GET_ORDERS_DOWNLOAD_CERTIFICATED] ({commit}, id: string) {
+		await axios.get('/order/'+ id +'/certificates',
+		{
+			responseType: 'blob',
+			transformRequest: (_, headers) => {
+				delete headers?.common
+			}
 		})
 		.then(response => {
-			console.log(response)
-			//let fileURL = window.URL.createObjectURL(new Blob([response.data]));
-			//console.log(fileURL)
 			const url = window.URL.createObjectURL(new Blob([response.data]));
 			const link = document.createElement('a');
 			link.href = url;
 			link.setAttribute('download', 'cert.zip');
 			document.body.appendChild(link);
 			link.click();
+			
+			// clean up "a" element & remove ObjectURL
+			document.body.removeChild(link);
+			window.URL.revokeObjectURL(url);
 		})
 		.catch(error => {
 			console.log('error')
