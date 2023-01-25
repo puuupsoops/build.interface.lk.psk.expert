@@ -212,8 +212,8 @@
 							<a class="orders-list-more-dropdown-link" @click.stop="detailOrderId = item.n; showDetail=true" >Детали заказа</a>
 							<a class="orders-list-more-dropdown-link" @click.stop="detailOrderId = item.n; showDetail=true; editOrder=false;repeatOrder=true;" >Повторить заказ</a>
 							<a class="orders-list-more-dropdown-link" v-if="item.reserved" @click.stop="detailOrderId = item.n; showDetail=true; editOrder=true;repeatOrder=false;" >Изменить заказ</a>
-							<a class="orders-list-more-dropdown-link" >Скачать документы</a>
-							<a class="orders-list-more-dropdown-link" >Скачать сертификаты</a>
+							<!-- <a class="orders-list-more-dropdown-link" >Скачать документы</a>
+							 <a class="orders-list-more-dropdown-link" >Скачать сертификаты</a> -->
 							<a class="orders-list-more-dropdown-link" @click.stop="setClaimOrderId(item.n)" v-if="item.checks?.filter(check => check.status == 5 || check.status == 9 ) && item.checks?.filter(check => check.status == 5 || check.status == 9 ).length>0 ">
 								Оформить претензию
 							</a>
@@ -336,9 +336,9 @@
 									
 									<span v-else @click="billRequestLoading(item.n, check)">Запросить счет</span>
 								</div>
-								<div class="orders-list-elem-request-bill">
+								<!-- 	<div class="orders-list-elem-request-bill">
 									<span @click="downloadCertificates(check)">Скачать Сертификаты</span>
-								</div>
+								</div> -->
 								
 							</div>
 							<!-- <div class="orders-list-info-elem">
