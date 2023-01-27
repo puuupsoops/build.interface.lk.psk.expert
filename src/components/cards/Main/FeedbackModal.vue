@@ -1,11 +1,10 @@
 <script setup lang="ts">
-  import { ref, computed } from 'vue'
-  import { useStore } from '/src/store'
-  import { onClickOutside } from '@vueuse/core'
-  import { useRouter } from 'vue-router'
-  import { OrderMutations } from '/src/store/order/mutations'
+  import { ref } from 'vue'
+  import axios from '/src/plugins/axios'
+  import Vuex from 'vuex'
   import DeleteButton from '/src/components/ui/DeleteButton.vue'
   import SwitchButton from '/src/components/ui/SwitchButton.vue'
+  import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 
   const props = defineProps({
     modelValue:{
@@ -15,12 +14,42 @@
     })
   
   const feedbackType = ref(false)
-  
+  const showPreload = ref(false)
+
+  const data = ref({
+    type: '',
+    text: '',
+    files: []
+  })
+
   const emits = defineEmits(['update:modelValue'])
 	
+  const handleFileUpload = ($event: any) => {
+      data.value.files.push(event.target.files[0]);
+  }
+
   const close = () => {
 		emits('update:modelValue', false);
-	};
+	}
+
+  const send = () => {
+    data.value.type = !feedbackType.value ? 'info' : 'error';
+    console.log(data.value)
+      axios.post('/user/request/feedback', data.value)
+      .then(response => {
+        if(response.status == 201) {
+          showPreload.value = !showPreload
+          close();
+        }
+      })
+      .catch(error => {
+        console.log(error)
+        showPreload.value = !showPreload
+      })
+    //close();
+  }
+
+
 
 </script>
 
@@ -56,18 +85,24 @@
           <br />
 
           <div class="order-comment-title"><span>Текст {{ !feedbackType ? 'предложения' : 'описания ошибки' }}</span></div>
-          <textarea class="order-comment-textarea"></textarea>
+          <textarea class="order-comment-textarea" v-model="data.text"></textarea>
 
           <br />
 
           <div>
-            <input type="file" multiple>
+            <input
+            @change="handleFileUpload($event)" 
+            type="file" multiple>
           </div>
         </div>
-      </div>
 
-      <div :style="'margin: 15px 14px 0px 0px;'">
-        <div class="gradient-btn claim-submit">
+      </div>
+      <div v-if="showPreload">
+        <PreloaderLocal :style="'margin: -8px 60px 0 auto;'"/>
+      </div>
+      <div v-else  :style="'margin: 15px 14px 0px 0px;'">
+        <div class="gradient-btn claim-submit"
+          @click="send(); showPreload=!showPreload">
 			    <div class="gradient-btn-text">Отправить</div>
 		    </div>
       </div>
