@@ -183,11 +183,32 @@
 					+justify-content(flex-end)
 					gap: 15px
 					width: 100%
+					padding-right: 50px
 					.header-button
 						cursor: pointer
+						
 						color: $font-light-color
+						// &.center 
+						// 	width: 34px
+						// 	height: 42px
+						// 	background-image: url(/src/assets/img/icon/align-center.svg)	
+						// &.left 
+						// 	width: 34px
+						// 	height: 42px
+						// 	background-image: url(/src/assets/img/icon/align-left.svg)	
+						// &.right 
+						// 	width: 34px
+						// 	height: 42px
+						// 	background-image: url(/src/assets/img/icon/align-right.svg)	
+							
 						&.active
-							color: $active-color
+							svg
+								path
+									fill: $accent-color
+						// 	color: $active-color
+						// 	background-color: $active-color
+						// 	-webkit-mask-image: url(/src/assets/img/icon/align-right.svg)
+						// 	mask-image: url(/src/assets/img/icon/align-right.svg)
 			&-row
 				+flex
 				+align-items(center)

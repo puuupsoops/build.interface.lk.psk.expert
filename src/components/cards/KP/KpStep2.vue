@@ -280,24 +280,27 @@
                                 </label>
                                 <div v-if="headerLogo" class="kp-step-body-elem-header-align-wrap">
                                     <div class="kp-step-body-elem-text-sub">Выравнивание:</div>
-                                    <div class="header-button" 
+                                    <div class="header-button left" 
                                         :class="{'active': NewKP.headerLogoAlign==KPHEADERLOGOALIGN.LEFT}"
                                         @click="NewKP.headerLogoAlign=KPHEADERLOGOALIGN.LEFT"
-                                    >
-                                        Слева
-                                    </div>
-                                    <div class="header-button" 
+                                        tooltip="Слева"
+                                        flow="up"
+                                        v-html="ALIGN_LEFT"
+                                    ></div>
+                                    <div class="header-button center" 
                                         :class="{'active': NewKP.headerLogoAlign==KPHEADERLOGOALIGN.CENTER}"
                                         @click="NewKP.headerLogoAlign=KPHEADERLOGOALIGN.CENTER"
-                                    >
-                                        По центру
-                                    </div>
-                                    <div class="header-button" 
+                                        tooltip="По центру"
+                                        flow="up"
+                                        v-html="ALIGN_CENTER"
+                                    ></div>
+                                    <div class="header-button right" 
                                         :class="{'active': NewKP.headerLogoAlign==KPHEADERLOGOALIGN.RIGHT}"
+                                        tooltip="Справа"
+                                        flow="up"
                                         @click="NewKP.headerLogoAlign=KPHEADERLOGOALIGN.RIGHT"
-                                    >
-                                        Справа
-                                    </div>
+                                        v-html="ALIGN_RIGHT"
+                                    ></div>
 
                                 </div>
                             </div>
@@ -384,6 +387,7 @@ import { Orders } from '/src/models/Orders'
 import { DateFromRuLocale, SelectInputData } from '/src/models/Components'
 import { ShipmentsAddress } from '/src/models/Shipments'
 
+import { ALIGN_CENTER, ALIGN_LEFT, ALIGN_RIGHT} from '/src/components/ui/svg/align'
 
     const store = useStore()    
 
@@ -592,7 +596,8 @@ import { ShipmentsAddress } from '/src/models/Shipments'
 		store.commit(KPMutations.SET_KP_LOGO_LIST_SIFT, n-currentLogoId.value)
         currentLogoId.value = n
     }
+
     
-    
+
 </script>
  
