@@ -169,6 +169,7 @@
 			&-elem
 				+flex
 				margin: 1rem
+				
 				&-text
 					margin-left: 1rem
 					&.disablsed
@@ -176,14 +177,70 @@
 					&-sub
 						font-size: 12px
 						color: $font-light-color
+				&-header-align-wrap
+					+flex
+					+align-items(center)
+					+justify-content(flex-end)
+					gap: 15px
+					width: 100%
+					padding-right: 50px
+					.header-button
+						cursor: pointer
+						
+						color: $font-light-color
+						// &.center 
+						// 	width: 34px
+						// 	height: 42px
+						// 	background-image: url(/src/assets/img/icon/align-center.svg)	
+						// &.left 
+						// 	width: 34px
+						// 	height: 42px
+						// 	background-image: url(/src/assets/img/icon/align-left.svg)	
+						// &.right 
+						// 	width: 34px
+						// 	height: 42px
+						// 	background-image: url(/src/assets/img/icon/align-right.svg)	
+							
+						&.active
+							svg
+								path
+									fill: $accent-color
+						// 	color: $active-color
+						// 	background-color: $active-color
+						// 	-webkit-mask-image: url(/src/assets/img/icon/align-right.svg)
+						// 	mask-image: url(/src/assets/img/icon/align-right.svg)
 			&-row
 				+flex
 				+align-items(center)
 				gap: 15px
 				padding-top: 20px
 				min-height: 64px
+				
 				&-elem
 					width: 15%
+					flex-shrink: 0
+				&-group
+					overflow: hidden
+					max-height: 0
+					+prefix(transition,  $default-transition)
+					width: 100%
+					&.active 
+						padding:
+							top: 10px
+							bottom: 10px
+						display: block
+						max-height: 1000px
+						+prefix(transition,  max-height $default-transition)
+						
+			&-column
+				+flex
+				+align-items(center)
+				+flex-direction(column)
+				+flex-wrap
+				gap: 15px
+				padding-top: 20px
+				min-height: 64px
+				
 			&-add-file-input
 				display: none
 			&-add-file-label

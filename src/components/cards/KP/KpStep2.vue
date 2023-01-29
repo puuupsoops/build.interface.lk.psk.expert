@@ -4,7 +4,6 @@
         <div class="kp-step-title"  v-if="type == KPTYPES.DRAFT">Выберите черновик</div>
         <div class="kp-step-body">
            
-            
             <div   class="shipment-heading-select" v-if="type == KPTYPES.ORDER">
                 <div class="base-select-wrap">
                     <select class="base-select" style="width: 100%" v-model="order">
@@ -82,7 +81,7 @@
             </div>
             
 
-            <div v-if="order != -1 || draft != -1 || type==KP_TYPES.ORDER_POS " :style="'padding: 30px'">
+            <div v-if="order != -1 || draft != -1 || type==KP_TYPES.ORDER_POS ">
                 <div v-if="loading" style="display: flex; justify-content: center">
 					<PreloaderLocal ></PreloaderLocal>
 				</div>
@@ -196,19 +195,26 @@
                             </div>
                         </div>
                     </div>
+                    <div :style="'display: flex;align-items: center;justify-content: flex-end;'">
+                        <button 
+                            class="product-parcel-btn"
+                            style="width: auto; min-width: 7em;"
+                            @click="$emit('update:showAddPos', true)"
+                        >Добавить</button>
                     </div>
+                    
                     </div>
+                </div>
                 </div>
 
                 <div class="kp-step-body-input">                    
                    
                     <div class="orders-list-item" :class="{'active': additionally}">
                         <div class="orders-list-row " @click="additionally=!additionally">
-                            
                             <div class="orders-list-elem"> <div class="table-arrow"></div> 	</div>
                             <div class="orders-list-elem"> Дополнительные условия</div>
                         </div>
-                        <div class="orders-list-info"  :class="{'active': additionally}">
+                        <div class="kp-step-body-row-group"  :class="{'active': additionally}">
                             <div class="kp-step-body-row">
                                 <span class="kp-step-body-row-elem">Условия доставки</span>
                                 <CheckButton v-model="NewKP.additionally.pickup" @onClick="NewKP.additionally.delivery=false; NewKP.additionally.deliveryValue=0"  :style="'margin-left: 30px'"/>
@@ -248,61 +254,86 @@
                         </div>
                     </div>
                     <div class="orders-list-item" :class="{'active': NewKP.header}">
-                        <div class="orders-list-row " @click="NewKP.header=!NewKP.header">
-                            
+                        <div class="orders-list-row " @click="NewKP.header=!NewKP.header">    
                             <div class="orders-list-elem"> <div class="table-arrow"></div> 	</div>
                             <div class="orders-list-elem">Заголовок</div>
                         </div>
-                        <div class="orders-list-info"  :class="{'active': NewKP.header}">
-                            <div class="kp-step-body-row">
-                                <span class="kp-step-body-row-elem"></span>
-                                <CheckButton v-model="headerText" @onClick="headerLogo=false"  :style="'margin-left: 30px'"/>
-                                <div>Текст</div>
-                                <CheckButton v-model="headerLogo"   @onClick="headerText=false" :style="'margin-left: 30px'"/>
-                                <div>Лого</div>
-                                <div v-if="headerLogo" :style="'margin-left:20px'">
-                                    
-                                    <label class="kp-step-body-add-file-label" for="file-upload">
-                                          
-                                        <input @change="handleFileUpload( $event )" class="kp-step-body-add-file-input" id="file-upload" type="file" accept="image/*">
-                                    </label>
-                                    
-                                    <PreloaderLocal v-if="loadingLogo"></PreloaderLocal>
-                                  
+                        <div class="kp-step-body-row-group"  :class="{'active': NewKP.header}">
+
+                            <div class="kp-step-body-row" >
+                                <span class="kp-step-body-row-elem">Текст</span>
+                                <CheckButton v-model="headerText" :style="'margin-left: 30px'"/>
+                                <div class="kp-step-body-row-group"  :class="{'active': headerText}">
+                                    <textarea
+                                        class="order-comment-textarea"
+                                        style="min-width: 500px"
+                                        v-model="NewKP.headerText" 
+                                        placeholder="Текст заголовка коммерческого предложения..." 
+                                    ></textarea>
                                 </div>
                             </div>
-                            <div class="kp-step-body-row" v-if="headerText">
-                                <textarea class="order-comment-textarea" v-model="NewKP.headerText" placeholder="Текст заголовка коммерческого предложения..." ></textarea>
+                            <div class="kp-step-body-row">
+                                <span class="kp-step-body-row-elem">Лого</span>
+                                <CheckButton v-model="headerLogo" style="margin-left: 30px"/>
+                                <label v-if="headerLogo" class="kp-step-body-add-file-label" for="file-upload">
+                                    <input @change="handleFileUpload( $event )" class="kp-step-body-add-file-input" id="file-upload" type="file" accept="image/*">
+                                </label>
+                                <div v-if="headerLogo" class="kp-step-body-elem-header-align-wrap">
+                                    <div class="kp-step-body-elem-text-sub">Выравнивание:</div>
+                                    <div class="header-button left" 
+                                        :class="{'active': NewKP.headerLogoAlign==KPHEADERLOGOALIGN.LEFT}"
+                                        @click="NewKP.headerLogoAlign=KPHEADERLOGOALIGN.LEFT"
+                                        tooltip="Слева"
+                                        flow="up"
+                                        v-html="ALIGN_LEFT"
+                                    ></div>
+                                    <div class="header-button center" 
+                                        :class="{'active': NewKP.headerLogoAlign==KPHEADERLOGOALIGN.CENTER}"
+                                        @click="NewKP.headerLogoAlign=KPHEADERLOGOALIGN.CENTER"
+                                        tooltip="По центру"
+                                        flow="up"
+                                        v-html="ALIGN_CENTER"
+                                    ></div>
+                                    <div class="header-button right" 
+                                        :class="{'active': NewKP.headerLogoAlign==KPHEADERLOGOALIGN.RIGHT}"
+                                        tooltip="Справа"
+                                        flow="up"
+                                        @click="NewKP.headerLogoAlign=KPHEADERLOGOALIGN.RIGHT"
+                                        v-html="ALIGN_RIGHT"
+                                    ></div>
+
+                                </div>
                             </div>
-                            <div class="kp-step-body-row" v-if="headerLogo" :style="'justify-content: center'"><div v-if="logoList.length>0" > Лого #{{ logoList[0].id  }} </div></div>
-                            <div class="kp-step-body-row" v-if="headerLogo" :style="'justify-content: center'">
-                                <div>
-                                    
-                                    <div class="product-slider-wrap" >
-
-                                        <button class='product-slider-arrow prev' @click="prevLogo"></button>
-
-                                        <transition-group name="product-slider-trans" class='product-slider' :style="'align-items: center; height: 500px;'"  tag="div">
+                            <div class="kp-step-body-row-group"  :class="{'active': headerLogo}">
+                                    <div v-if="logoList.length>0" style="text-align: center"> Лого #{{ logoList[0].id }} </div>
+                                    <PreloaderLocal v-if="loadingLogo" style="margin:auto"></PreloaderLocal>
+                                    <div class="kp-step-body-column" v-if="headerLogo&&!loadingLogo" :style="'justify-content: center'">
+                                        <div class="product-slider-controls kp">
+                                            <span v-for="(slide, key) in logoListOrigin">
+                                                <input type="radio" :id="String(slide.id)" >
+                                                <label 
+                                                    :for="String(slide.id)" 
+                                                    :tooltip="`#${slide.id}`"
+                                                    flow="up"
+                                                    :class="{'checked': currentLogoId == key}" 
+                                                    @click="shiftLogo(key)"
+                                                ></label>
+                                                
+                                            </span>
+                                        </div>
+                                        <div class="product-slider-wrap" >
+                                            <button class='product-slider-arrow prev' @click="prevLogo"></button>
+                                            <transition-group name="product-slider-trans" class='product-slider' :style="'align-items: center; height: 500px;'"  tag="div">
                                                 <div v-for="slide in logoList" class='product-slider-slide' :key="slide.id">
-                                                    <img
-                                                        v-if="slide.image"
-                                                        :src="slide.image" 
-                                                    
-                                                    />
+                                                    <img v-if="slide.image" :src="slide.image"  />
                                                 </div>
-                                        </transition-group>
-                                        <div class='product-slider-arrow next' @click="nextLogo"></div>
-
+                                            </transition-group>
+                                            <div class='product-slider-arrow next' @click="nextLogo"></div>
+                                        </div>
                                     
                                     </div>
+                                
                                 </div>
-
-                                
-                                
-                            </div>
-                            <div class="kp-step-body-row" v-if="headerLogo">
-                            
-                            </div>
                         </div>
                     </div>
 
@@ -327,7 +358,9 @@
             <PreloaderLocal v-if="loading_next"></PreloaderLocal>
             <div v-else class="kp-step-actions-link" :class="{'disabled': order==-1 && draft == -1 && type != KP_TYPES.ORDER_POS}" @click="next()">Далее</div>
         </div>
+        
     </div>
+    
 </template>
 
 <script lang="ts" setup>
@@ -340,22 +373,25 @@ import CheckButton from '/src/components/ui/CheckButton.vue'
 import SwitchButton from '/src/components/ui/SwitchButton.vue'
 import SelectInput from '/src/components/ui/SelectInput.vue'
 
+
 import { computed, inject, PropType, ref, watch, onMounted } from 'vue'
+import _ from 'lodash'
 import { useStore } from '/src/store'
 import { OrderActions } from '/src/store/order/actions'
 import { KPActions } from '/src/store/kp/actions'
 import { KPMutations } from '/src/store/kp/mutations'
-import { KP, KP_TYPES, KPLogoList } from '/src/models/KP'
+import { KP, KP_TYPES, KP_HEADER_LOGO_ALIGN, KPLogoList } from '/src/models/KP'
 import { DefaultKP } from '/src/store/kp/types'
 import { OrderStateOrder } from '/src/store/order/types'
 import { Orders } from '/src/models/Orders'
 import { DateFromRuLocale, SelectInputData } from '/src/models/Components'
 import { ShipmentsAddress } from '/src/models/Shipments'
 
+import { ALIGN_CENTER, ALIGN_LEFT, ALIGN_RIGHT} from '/src/components/ui/svg/align'
 
     const store = useStore()    
 
-    const emits = defineEmits(['next','prev'])
+    const emits = defineEmits(['next','prev','update:showAddPos'])
     const props = defineProps({
         active: {
             type: Boolean,
@@ -365,9 +401,14 @@ import { ShipmentsAddress } from '/src/models/Shipments'
 			type: String as PropType<KP_TYPES>,
 			required: true
 	
+        },
+        showAddPos: {
+            type: Boolean,
+            default: false
         }
     })
     const KPTYPES = computed(()=>KP_TYPES)
+    const KPHEADERLOGOALIGN = computed(()=>KP_HEADER_LOGO_ALIGN)
     const loading = ref(false)
     const loading_next = ref(false)
     const loading_inn = ref(false)
@@ -380,7 +421,7 @@ import { ShipmentsAddress } from '/src/models/Shipments'
     const customer = ref('')
     const showCustomer = ref(false)
     const order = ref<number>(-1)
-    const tempOrderId = ref(inject<number>('tempOrderId') ?? -1)
+    const tempOrderId = ref(inject<number|null>('tempOrderId'))
     const draft = ref<number>(-1)
     const open = ref<number[]>([])
     const orders = computed<Orders[]>(() => store.getters.getOrders)
@@ -389,25 +430,30 @@ import { ShipmentsAddress } from '/src/models/Shipments'
 
     const imageBase64 = ref('')
     const loadingLogo = ref(false)
-    const logoList = computed<KPLogoList[]>(() => store.getters.getKPLogoList)
+    const logoList = computed<KPLogoList[]>(() => store.getters.getKPLogoList) //Список загруженных лого для карусели
+    const logoListOrigin = computed<KPLogoList[]>(() => store.getters.getKPLogoListOrigin) // Копия списка агруженных лого которая не меняется для списка контрол-бар
     const NewKP = ref<KP>(JSON.parse(JSON.stringify(DefaultKP)))
-    const PDF = ref(true)
+    const PDF = ref(true)       //Флаги 
     const WORD = ref(false)
     const date = ref(new Date().toLocaleString('ru').substr(0, 10))
 
     const companyList = computed<SelectInputData[]>(() => store.getters.getCompanysListInput().filter((x: SelectInputData) => x.id !== ''))
     const addressList = computed<SelectInputData[]>(() => store.getters.getShipmentsAddressInputData)
 
-    
+    // Переменные для калькулятора
     const addAmount = ref(0)
     const parcel_type = ref('percent')
     const sale_type = ref(-1)
+    //для панели выбора лого из карусели
+    const currentLogoId = ref(0)
    
+
+
     watch(order, ()=>{
         if (order.value!=-1){
 			loading.value=true
 			store.dispatch(OrderActions.GET_ORDER_DETAIL, order.value ).finally(()=>{
-                order_detail.value = JSON.parse(JSON.stringify(store.getters.getOrderDetail))
+                order_detail.value = _.cloneDeep(store.getters.getOrderDetail)
                 calcOrder()
                 loading.value = false
             })
@@ -415,28 +461,29 @@ import { ShipmentsAddress } from '/src/models/Shipments'
     })
     watch(draft, ()=>{
         if (draft.value!=-1){
-			order_detail.value = JSON.parse(JSON.stringify(drafts.value.find(x => x.id == draft.value)))
+			order_detail.value = _.cloneDeep(drafts.value.find(x => x.id == draft.value))
             calcOrder()
 		}
     })
     watch(() => props.type, () =>{
         if (props.type == KP_TYPES.ORDER_POS){
-            order_detail.value = JSON.parse(JSON.stringify(store.getters.getOrder))
+            order_detail.value = _.cloneDeep(store.getters.getOrder)
             calcOrder()
         }
         
     })
-
     onMounted(()=>{
-        order.value=tempOrderId.value
-        tempOrderId.value = -1
+        if (tempOrderId.value) {
+            order.value=tempOrderId.value
+            tempOrderId.value = null
+        }
     })
 
     const next = () => {
         if (order.value != -1 || draft.value != -1 || props.type == KP_TYPES.ORDER_POS){
-            let kp = <KP>JSON.parse(JSON.stringify(NewKP.value))
+            let kp = _.cloneDeep(NewKP.value)
             kp.offer.date = (new Date(DateFromRuLocale(date.value))).getTime()
-            kp.offer.position = JSON.parse(JSON.stringify(order_detail.value?.position)) 
+            kp.offer.position = _.cloneDeep(order_detail.value!.position)
             kp.offer.position.forEach(pos => {
                 pos.characteristics.forEach( c => {
                     if(parcel_type.value == "percent") {
@@ -481,70 +528,76 @@ import { ShipmentsAddress } from '/src/models/Shipments'
             inn_error.value = false
             showCustomer.value=false
             store.dispatch(KPActions.GET_ORG_BY_INN, customer.value)
-                    .then( ()=> {
-                        loading_inn.value=false
-                        NewKP.value.offer.customer = store.getters.getKPOrgName
-                        customer.value = ''
-                    } )
-                    .catch(()=>{
-                        inn_error.value = true
-                        setTimeout(()=>{inn_error.value = false}, 10000)
-                        loading_inn.value=false
-                        customer.value = ''
+                .then( ()=> {
+                    loading_inn.value=false
+                    NewKP.value.offer.customer = store.getters.getKPOrgName
+                    customer.value = ''
+                } )
+                .catch(()=>{
+                    inn_error.value = true
+                    setTimeout(()=>{inn_error.value = false}, 10000)
+                    loading_inn.value=false
+                    customer.value = ''
 
-                    })
+                })
         }
     }
-
     const calcOrder = () => {
-        
 		if (order_detail.value) {
             let total = 0
             order_detail.value.position.forEach(pos => {
                 let total_pos = 0
-                
                 pos.characteristics.forEach( c => {
                     if(parcel_type.value == "percent") {
                         total_pos = total_pos + c.count * (c.PRICE + sale_type.value * c.PRICE * addAmount.value/100)
                     }
-
                     if(parcel_type.value == "add") {
                         total_pos = total_pos + c.count * (c.PRICE + sale_type.value * addAmount.value)
                     }
-                   
                 });
                 pos.total = total_pos
-                
-
                 total = total + total_pos
-            
             });
             order_detail.value.total = total
         }
-		
     }
-
     const handleFileUpload = ( event: any) =>{
-        let img = event.target.files[0]
-        var reader = new FileReader()
-        reader.onloadend =  () => {
-            imageBase64.value = <string>reader.result
-            loadingLogo.value = true
-            store.dispatch(KPActions.ADD_KP_LOGO, imageBase64.value)
-            .then(()=>{
-                NewKP.value.headerLogo = store.getters.getKPLogoId
-                loadingLogo.value = false
-            })  
-        };
-        reader.readAsDataURL(img)
+        if (!loadingLogo.value) {
+            let img = event.target.files[0]
+            var reader = new FileReader()
+            reader.onloadend =  () => {
+                imageBase64.value = <string>reader.result
+                loadingLogo.value = true
+                store.dispatch(KPActions.ADD_KP_LOGO, imageBase64.value)
+                .then(()=>{
+                    NewKP.value.headerLogo = store.getters.getKPLogoId
+                    loadingLogo.value = false
+                })  
+            };
+            reader.readAsDataURL(img)
+        }
 
     }
     const nextLogo = () => {
         store.commit(KPMutations.SET_KP_LOGO_LIST_NEXT)
+        ++currentLogoId.value
+        if (currentLogoId.value >= logoList.value.length){
+            currentLogoId.value = 0
+        }
 	}
     let prevLogo = () => {
         store.commit(KPMutations.SET_KP_LOGO_LIST_PREV)
+        --currentLogoId.value
+        if (currentLogoId.value < 0 ){
+            currentLogoId.value = logoList.value.length-1
+        }
     };
+    const shiftLogo = (n: number):void => {
+		store.commit(KPMutations.SET_KP_LOGO_LIST_SIFT, n-currentLogoId.value)
+        currentLogoId.value = n
+    }
+
     
+
 </script>
  

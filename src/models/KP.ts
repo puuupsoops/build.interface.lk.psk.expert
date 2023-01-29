@@ -1,4 +1,3 @@
-import { Position } from "./Order"
 import { OrderStatePosition } from '/src/store/order/types'
 
 export interface KP {
@@ -22,10 +21,11 @@ export interface KP {
         delivery:           boolean ,         // флаг доставки <Boolean>: true или false
         deliveryValue :     number      // стоимость доставки <Float>
       },
-    header:     boolean,       // true,
-    headerLogo: number,        // тут передаём идентификатор изображение или base64 , base64 в методе вместе с id (как удобней будет)/api/services/proposal/logo/list
-    headerText: string,        // Текст преамбулы...
-    as:         string         // PDF
+    header:          boolean,       // true,
+    headerLogo:      number,        // тут передаём идентификатор изображение или base64 , base64 в методе вместе с id (как удобней будет)/api/services/proposal/logo/list
+    headerLogoAlign: KP_HEADER_LOGO_ALIGN,
+    headerText:      string,        // Текст преамбулы...
+    as:              string         // PDF
 }
 
 
@@ -38,4 +38,9 @@ export enum KP_TYPES {
 export interface KPLogoList {
     id: number,
     image: string,
+}
+export enum KP_HEADER_LOGO_ALIGN {
+    LEFT = 'left',
+    CENTER = 'center',
+    RIGHT = 'right'
 }
