@@ -462,7 +462,7 @@ import { KP_TYPES } from '/src/models/KP'
 	const docLocation = import.meta.env.VITE_APP_DOC_LOCATION
 	const page = ref({maxItemOnPage: 10, currentPage: 1})
 	const billRequestLoadingState = ref(-1) //Переменная для прелоадера с загрузкой запроса счета
-	const tempOrderId = ref(inject<number>('tempOrderId') ?? -1)
+	const tempOrderId = ref(inject<number|null>('tempOrderId'))
 	const tempKPType = ref(inject<string>('tempKPType') ?? '')
 
 	onClickOutside(target, () => {
@@ -598,7 +598,7 @@ import { KP_TYPES } from '/src/models/KP'
 	
 	const setOrderId = (id: number) => {
 		store.commit(KeysMutations.SET_CURRENT_ORDER, id)
-		tempOrderId.value = id
+		tempOrderId.value 	= id
 		tempKPType.value = KP_TYPES.ORDER
 	}	
 	

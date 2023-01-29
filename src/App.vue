@@ -45,7 +45,7 @@
 	const showMenu =ref(false)
 	const showNotificationBar =ref(false)
 	provide('showNotificationBar', showNotificationBar ) //Открыть из другого копонента
-	const tempOrderId = ref(-1)//переменная для временного хранения номера заказа при переходе на другие страницы
+	const tempOrderId = ref<number|null>(null)//переменная для временного хранения номера заказа при переходе на другие страницы
 	provide('tempOrderId', tempOrderId ) //Чтобы изменить из другого компонента (Таблица с заказами)
 	
 	const tempKPType = ref('')//

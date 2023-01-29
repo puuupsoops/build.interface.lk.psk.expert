@@ -110,7 +110,7 @@ export default defineComponent({
 			slides.value=[last].concat(slides.value)
 		}
 		const shift = (n: number):void => {
-			console.log(n)
+			//console.log(n)
 			if (n > 0)
 				slides.value = slides.value.concat(slides.value.splice(0, n))
 			else

@@ -44,6 +44,7 @@
                             @next="nextStep"
                             @prev="prevStep"
                             :active="step==2"
+                            v-model:show-add-pos="showAddPos"
                         />
                         <KpStep3 
                             @next="nextStep"
@@ -54,7 +55,7 @@
                 </div>
             </div>
         </div>
-
+        <OrderProductAddModal v-model="showAddPos"/>
 
     </div>
 </template>
@@ -64,6 +65,7 @@ import PersonalBar from '/src/components/cards/PersonalBar.vue'
 import Notification from '/src/components/cards/Notification.vue'
 import CompanyBarTop from '/src/components/cards/Company/CompanyBarTop.vue'
 import TopNav from '/src/components/nav/TopNav.vue'
+import OrderProductAddModal from '/src/components/cards/Order/OrderProductAddModal.vue'
 import KpStep1 from '/src/components/cards/KP/KpStep1.vue'
 import KpStep2 from '/src/components/cards/KP/KpStep2.vue'
 import KpStep3 from '/src/components/cards/KP/KpStep3.vue'
@@ -81,7 +83,7 @@ const companyBarTopData = computed(() => store.getters.getCompanysList)
 const activeCompanyUid = ref('')
 
 const step = ref(1)
-
+const showAddPos = ref(false)
 const loading = ref(false)
 const kpType = ref(KP_TYPES.ORDER)
 const tempKPType = ref(inject<string>('tempKPType') ?? '')
@@ -105,6 +107,7 @@ const isOrder = computed(()=> store.getters.isOrder)
 const isDraft = computed(()=> store.getters.getOrderDraftCount > 0)
 
 const nextStep = () =>{
+    tempKPType.value = kpType.value
     if( step.value < 3) step.value = step.value + 1
 }
 const prevStep = () =>{
