@@ -25,7 +25,7 @@
 						:class=" modelValue===product.ID ? 'table-row table-element active' : 'table-row table-element'" 
 						v-for="(product, i) in data"
 						:key="i"
-						@click="$emit('update:modelValue', product.ID); $emit('onClick', $event)"
+						@click="onClick(product.ID)"
 						
 					> 
 						<div class="table-elem">{{ product.ARTICLE }}</div>
@@ -39,30 +39,31 @@
 		
 </template>
 
-<script lang="ts">
-import { ref } from 'vue'
+<script setup lang="ts">
+import { ref, PropType } from 'vue'
+import { Found } from '/src/models/Product'
 
-export default {
-	props:{
-		data: {
-			type: Array
-		},
-		cardType:{
-			type: String
-		},
-		modelValue: {
-			type: String,
-			//required: true
-		},
+const props = defineProps({
+	modelValue: {
+		type: String,
+		required: true
 	},
-	emits: ['update:modelValue', 'onClick', 'ShowSearch'],
-	setup(){
-		let show=ref(true);
-		return{
-			show
-		}
-	}
+	data: {
+		type: Array as PropType<Found[]>
+	},
+	cardType:{
+		type: String
+	},
+
+})
+const emits = defineEmits(['update:modelValue', 'onClick', 'ShowSearch'])
+
+const show=ref(true)
+const onClick = (id: string)=> {
+	emits('update:modelValue') 
+	emits('onClick')
 }
+
 </script>
 
 <style scoped>

@@ -1,7 +1,8 @@
 <template>
-<div :class="'product-search '" ref="target">
+<div class="product-search" 
+	:class="{'show': show}"
+	ref="target">
 	<div class="product-search-input-container">
-	
 		<div :class="'product-search-input' + (show_options ? ' options':'')" >
 			<input 
 				type="text"
@@ -17,25 +18,29 @@
 		</div>
 		<div 
 			v-if="show_options"
-			:class="'product-search-input-options' + (search_str == '' || articles.length == 0 ? ' default': '')"
+			class="product-search-input-options"
+			:class="{'default': search_str == '' || articles.length == 0 }"
 		>
-			<!-- <PreloaderLocal v-if="loading"></PreloaderLocal> -->
+
 			<span v-if="search_str == ''">Чтобы добавить в заказ новый продукт - начните ввод для поиска продукта</span>
 			<div v-else>
 			
 				<p
 					v-for="item, key in articles"
 					:key="key"
-					:class="'product-search-input-options-item' + (loading ? ' loading': '')"
+					class="product-search-input-options-item"
+					:class="{loading}"
 				>
-					<router-link
+					<router-link v-if="to"
 						tag="a"
-						:to="'/product/'+item.article"
+						:to="`/${to}/${item.article}`"
 						@click="show_options=false"
-						
 					>
 						<div class="article">{{item.article}}</div> <div class="name">{{item.name}}</div>
 					</router-link>
+					<a v-else  @click="done(item.article)">
+						<div class="article">{{item.article}}</div> <div class="name">{{item.name}}</div>
+					</a>
 				</p>
 				<span v-if="loading && articles.length == 0"> Поиск...</span>
 				<span v-if="!loading && articles.length == 0"> Не найдено</span>
@@ -43,7 +48,9 @@
 		</div>
 
 	</div>
-	<button class="product-search-btn gradient-btn" @click="doSearch()">
+	<button class="product-search-btn gradient-btn" 
+		v-if="to=='product'"
+		@click="done(search_str)">
 			<div>Поиск</div>
 	</button>
 </div>
@@ -52,7 +59,7 @@
 import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 import { ProductActions } from '/src/store/product/actions'
 import { ProductMutations } from '/src/store/product/mutations'
-import { computed, defineComponent, ref} from 'vue'
+import { computed, ref} from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { useStore } from '/src/store'
 
@@ -60,10 +67,17 @@ import { useStore } from '/src/store'
 const props = defineProps({
 		modelValue: {
 			type: String,
-			required: true,
+		},
+		to: {
+			type: String
+		},
+		show: {
+			type: Boolean,
+			default: true
 		}
+		
 	})
-const emits = defineEmits( ['update:modelValue', 'search'])
+const emits = defineEmits( ['update:modelValue', 'update:show', 'search'])
 const store = useStore()
 const search_str = ref('')
 const loading = ref(false)
@@ -97,7 +111,13 @@ const done = (str: string) => {
 	emits('search')
 }
 
-onClickOutside(target, () => {show_options.value = false})
+onClickOutside(target, () => {
+	if (props.to == 'order')	{
+		emits('update:show', false)
+	} else {
+		show_options.value = false
+	}
+})
 
 </script>
 
