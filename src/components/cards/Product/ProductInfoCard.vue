@@ -42,20 +42,13 @@
 			</div>
 			<div :class="content_switch === 'certificate' ? 'product-info-desc product-info-tab-elem active':'product-info-desc product-info-tab-elem'">
 				<p>
-					<div 
-						:class="'certificate-download-container'"
-						@click="download();isDownload=true"
-					>
-							<svg :class="'sidebar-btn-img'" xmlns="http://www.w3.org/2000/svg" version="1.0" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" 
-							preserveAspectRatio="xMidYMid meet"
-							fill="#A5A7A9"
-							:style="'width: 32px; height: 32px;'">
-								<g :class="'svg-line'" transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#A5A7A9" stroke="#A5A7A9">
-									<path :class="'svg-line'" fill="#A5A7A9" stroke="#A5A7A9" d="M930 4464 c-229 -49 -431 -246 -484 -474 -14 -57 -16 -241 -16 -1430 0 -1516 -4 -1425 68 -1570 54 -110 168 -223 282 -279 154 -75 45 -71 1780 -71 1327 0 1565 2 1625 15 233 49 435 245 489 475 23 98 23 2122 0 2220 -41 175 -172 340 -334 419 -147 72 -132 71 -990 71 -502 0 -778 4 -803 11 -65 18 -102 61 -179 213 -64 124 -83 151 -153 222 -63 64 -98 90 -165 123 -138 67 -168 71 -640 70 -315 0 -431 -4 -480 -15z m952 -449 c36 -26 55 -54 118 -173 41 -79 93 -165 115 -193 72 -91 205 -178 331 -215 54 -16 132 -18 869 -23 728 -5 813 -8 840 -23 37 -20 67 -52 91 -98 18 -34 19 -78 19 -1050 l0 -1015 -25 -45 c-14 -24 -45 -58 -68 -75 l-44 -30 -1546 -3 c-1079 -2 -1558 0 -1584 8 -49 14 -94 53 -121 104 l-22 41 0 1335 0 1335 22 40 c26 49 57 79 103 99 30 13 95 15 447 13 l411 -2 44 -30z"/>
-									<path :class="'svg-line'" fill="#A5A7A9" stroke="#A5A7A9" d="M2510 2981 c-74 -24 -119 -63 -145 -123 -12 -30 -15 -83 -15 -272 l0 -234 -138 -4 c-128 -3 -140 -5 -184 -31 -84 -49 -124 -148 -98 -244 12 -43 38 -73 254 -291 136 -138 258 -253 281 -264 26 -14 59 -21 95 -21 36 0 69 7 95 21 23 11 145 126 281 264 216 218 242 248 254 291 26 96 -14 195 -98 244 -44 26 -56 28 -184 31 l-138 4 0 234 c0 251 -5 281 -53 332 -47 51 -149 82 -207 63z"/>
-								</g>
-							</svg>
-						<span :class="'certificate-download-container-text'">{{ isDownload ? 'Идет скачивание...' : 'Скачать сертификаты архивом.' }}</span>
+					<div :style="'margin: 0 auto 0 auto; display: table;'">
+						<ButtonWithIcon 
+							:text="btnText"
+							:icon="btnIcon"
+							:state="btnState"
+							@click="download()"
+						/>
 					</div>
 
 					<div class="product-slider-wrap">
@@ -103,11 +96,14 @@
 import { ref, onUpdated } from 'vue'
 import ProductPropertiesCard from '/src/components/cards/Product/ProductPropertiesCard.vue'
 import ProductSliderFullscreen from '/src/components/cards/Product/ProductSliderFullscreen.vue'
+import ButtonWithIcon from '/src/components/ui/ButtonWithIcon.vue'
 import { Sliders } from '/src/models/Components'
 import axios from '/src/plugins/axios'
+import { ButtonState } from '/src/components/ui/button/state'
+import { IconsSVG } from '/src/components/ui/button/icons'
 
 export default {
-	components: { ProductPropertiesCard, ProductSliderFullscreen },
+	components: { ProductPropertiesCard, ProductSliderFullscreen,ButtonWithIcon },
 	props: {
 		data: {
 		type: Object
@@ -141,8 +137,13 @@ export default {
 		};
 
 		//Скачивание сертификатов
+		let btnText = ref('Скачать сертификаты архивом ')
+		let btnState = ref<ButtonState>(ButtonState.Active)
+		let btnIcon = IconsSVG.Download
 		let isDownload = ref(false)
-		let download = () => {
+		let download = () => { 
+			btnState.value = ButtonState.InProgress
+			btnText.value = 'Архив скачивается, подождите'
 			let productID = props.data.UID
 
 			axios.get('/product/'+ productID +'/certificates',
@@ -171,6 +172,10 @@ export default {
 					//commit(OrdersMutations.SET_ORDERS_DOCSTATUS_ERROR)
 					//commit(AuthMutations.SET_ERROR, 'Request GET_ORDERS_DOCSTATUS error:<br>'+error)
 				})
+				.finally( function() { 
+					btnState.value = ButtonState.Active
+					btnText.value = 'Скачать сертификаты архивом ' 
+				})
 		}
 
 		return {
@@ -179,6 +184,9 @@ export default {
 			fullscreen,
 			slides,
 			isDownload,
+			btnText,
+			btnState,
+			btnIcon,
 			download,
 			prev,
 			next
