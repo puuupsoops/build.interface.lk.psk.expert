@@ -59,8 +59,9 @@ const props = defineProps({
 const emits = defineEmits(['update:modelValue', 'onClick', 'ShowSearch'])
 
 const show=ref(true)
+
 const onClick = (id: string)=> {
-	emits('update:modelValue') 
+	emits('update:modelValue', id) 
 	emits('onClick')
 }
 

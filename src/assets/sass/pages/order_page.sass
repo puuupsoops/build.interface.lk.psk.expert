@@ -632,8 +632,18 @@
 		&.map
 			width: 800px
 			left: calc(50% - 400px)
-			
 			top: 20%
+		&.fullscreen
+			width: 100vw
+			height: 100vh
+			margin: 0
+			position: fixed
+			left: 0
+			top: 0
+			right: 0
+			bottom: 0
+			z-index: 120		
+			background: rgba(0,0,0,.8)
 			
 		&.shake
 			animation: shake 0.3s cubic-bezier(.36,.07,.19,.97) both
@@ -660,7 +670,7 @@
 		width: auto
 		margin: 10px
 		min-height: 200px
-		max-height: 300px
+		//max-height: 300px
 		height: 100%
 		z-index: 120
 		&.draft

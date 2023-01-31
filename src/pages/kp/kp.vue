@@ -83,7 +83,7 @@ const companyBarTopData = computed(() => store.getters.getCompanysList)
 const activeCompanyUid = ref('')
 
 const step = ref(1)
-const showAddPos = ref(true)
+const showAddPos = ref(false)
 const loading = ref(false)
 const kpType = ref(KP_TYPES.ORDER)
 const tempKPType = ref(inject<string>('tempKPType') ?? '')
