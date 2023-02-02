@@ -9,8 +9,8 @@
 			<li :class="content_switch === 'characteristics' ? 'product-info-tab-link active':'product-info-tab-link'"
 				@click="content_switch = 'characteristics'">Характеристика</li>
 			
-			<li v-if="data.CERTIFICATES" :class="content_switch === 'certificate' ? 'product-info-tab-link active':'product-info-tab-link'"
-				@click="content_switch = 'certificate'">Сертификат</li>	
+			<li :class="content_switch === 'certificate' ? 'product-info-tab-link active':'product-info-tab-link'"
+				@click="getCirtificates(showCertificates);content_switch = 'certificate'">Сертификат</li>	
 		</ul>
 		<div class="content-elem-heading-btn content-hide-btn product-info-hide-btn" @click="show = !show">{{ !show ? 'Показать +' : 'Скрыть —' }}</div>
 	</div>
@@ -41,7 +41,13 @@
 				</div>
 			</div>
 			<div :class="content_switch === 'certificate' ? 'product-info-desc product-info-tab-elem active':'product-info-desc product-info-tab-elem'">
-				<p>
+				<p v-if="!showCertificates"
+				 :style="'text-align: center; display: table; margin: 0 auto 0 auto;'"
+				>
+					Загрузка...
+					<Preloader />
+				</p>
+				<p v-else>
 					<div :style="'margin: 0 auto 0 auto; display: table;'">
 						<ButtonWithIcon 
 							:text="btnText"
@@ -87,13 +93,13 @@
 </div>
 <ProductSliderFullscreen
 		v-model="fullscreen"
-		:data="data.CERTIFICATES"
+		:data="certificates"
 > </ProductSliderFullscreen>
 
 </template>
 
 <script lang="ts">
-import { ref, onUpdated } from 'vue'
+import { ref, onUpdated, watch } from 'vue'
 import ProductPropertiesCard from '/src/components/cards/Product/ProductPropertiesCard.vue'
 import ProductSliderFullscreen from '/src/components/cards/Product/ProductSliderFullscreen.vue'
 import ButtonWithIcon from '/src/components/ui/ButtonWithIcon.vue'
@@ -101,9 +107,11 @@ import { Sliders } from '/src/models/Components'
 import axios from '/src/plugins/axios'
 import { ButtonState } from '/src/components/ui/button/state'
 import { IconsSVG } from '/src/components/ui/button/icons'
+import Preloader from '/src/components/PreloaderLocal.vue' 
+import { useStore } from '/src/store'
 
 export default {
-	components: { ProductPropertiesCard, ProductSliderFullscreen,ButtonWithIcon },
+	components: { ProductPropertiesCard, ProductSliderFullscreen,ButtonWithIcon,Preloader },
 	props: {
 		data: {
 		type: Object
@@ -120,11 +128,18 @@ export default {
 		//Слайдер с сертефикатами
 		let slides = ref<Sliders[]>([])
 		let fullscreen = ref(false)
-		props.data.CERTIFICATES?.forEach( (v: string, i: number) => slides.value.push(<Sliders>{ id: i, src: v })) 
-		
+		let certificates = ref([])
+		let showCertificates = ref(false)
+		// костыль для переключения на закладку ОПИСАНИЕ
+		let productID = ref(useStore().getters.getProduct.ID)
+
 		onUpdated( () => {
-			slides.value = [];
-			props.data.CERTIFICATES?.forEach( (v: string, i: number) => slides.value.push(<Sliders>{id: i, src: v}))
+			// костыль для переключения на закладку ОПИСАНИЕ
+			if(productID.value != useStore().getters.getProduct.ID) {
+				productID.value = useStore().getters.getProduct.ID
+				content_switch.value = 'detail'
+				showCertificates.value = false;
+			}
 		});
 
 		let next = () => {
@@ -141,12 +156,41 @@ export default {
 		let btnState = ref<ButtonState>(ButtonState.Active)
 		let btnIcon = IconsSVG.Download
 		let isDownload = ref(false)
+		let getCirtificates = (state: boolean) => {
+			if(state)
+				return;
+			
+			slides.value = []
+			certificates.value = [];
+
+			let productID = props.data.UID
+			console.log(productID)
+
+			axios.get('/product/'+ productID +'/certificates')
+				.then(response => {
+					response.data?.forEach( (v: string, i: number) => { 
+						slides.value.push(<Sliders>{id: i, src: v})
+						certificates.value.push(v)	
+					})
+				})
+				.catch(error => {
+					//todo: сделать проверку на ошибки
+					console.log('error')
+					console.log(error)
+					//commit(OrdersMutations.SET_ORDERS_DOCSTATUS_ERROR)
+					//commit(AuthMutations.SET_ERROR, 'Request GET_ORDERS_DOCSTATUS error:<br>'+error)
+				})
+				.finally( function() { 
+					showCertificates.value = true;
+				})
+		}
+
 		let download = () => { 
 			btnState.value = ButtonState.InProgress
 			btnText.value = 'Архив скачивается, подождите'
 			let productID = props.data.UID
 
-			axios.get('/product/'+ productID +'/certificates',
+			axios.get('/product/'+ productID +'/certificates/download',
 				{
 					responseType: 'blob',
 					transformRequest: (_, headers) => {
@@ -167,6 +211,7 @@ export default {
 					isDownload.value = !isDownload
 				})
 				.catch(error => {
+					//todo: сделать проверку на ошибки
 					console.log('error')
 					console.log(error)
 					//commit(OrdersMutations.SET_ORDERS_DOCSTATUS_ERROR)
@@ -187,7 +232,10 @@ export default {
 			btnText,
 			btnState,
 			btnIcon,
+			certificates,
+			showCertificates,
 			download,
+			getCirtificates,
 			prev,
 			next
 		}
