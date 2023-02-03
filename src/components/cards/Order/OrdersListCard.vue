@@ -212,8 +212,10 @@
 							<a class="orders-list-more-dropdown-link" @click.stop="detailOrderId = item.n; showDetail=true" >Детали заказа</a>
 							<a class="orders-list-more-dropdown-link" @click.stop="detailOrderId = item.n; showDetail=true; editOrder=false;repeatOrder=true;" >Повторить заказ</a>
 							<a class="orders-list-more-dropdown-link" v-if="item.reserved" @click.stop="detailOrderId = item.n; showDetail=true; editOrder=true;repeatOrder=false;" >Изменить заказ</a>
-							<!-- <a class="orders-list-more-dropdown-link" >Скачать документы</a>
-							 <a class="orders-list-more-dropdown-link" >Скачать сертификаты</a> -->
+							<!-- <a class="orders-list-more-dropdown-link" >Скачать документы</a> -->
+							 <a class="orders-list-more-dropdown-link" 
+							  @click.stop="downloadAllCertificates(item);"
+							 >Скачать все сертификаты</a> 
 							<a class="orders-list-more-dropdown-link" @click.stop="setClaimOrderId(item.n)" v-if="item.checks?.filter(check => check.status == 5 || check.status == 9 ) && item.checks?.filter(check => check.status == 5 || check.status == 9 ).length>0 ">
 								Оформить претензию
 							</a>
@@ -336,9 +338,12 @@
 									
 									<span v-else @click="billRequestLoading(item.n, check)">Запросить счет</span>
 								</div>
-								<!-- 	<div class="orders-list-elem-request-bill">
-									<span @click="downloadCertificates(check)">Скачать Сертификаты</span>
-								</div> -->
+								 	<div class="orders-list-elem-request-bill">
+									<span 
+									 @click="downloadCertificates(check)"
+									 :style="'font-size: 10px;'"
+									>Скачать Сертификаты</span>
+								</div>
 								
 							</div>
 							<!-- <div class="orders-list-info-elem">
@@ -639,8 +644,19 @@ import { KP_TYPES } from '/src/models/KP'
 
 	//скачать сертификаты
 	const downloadCertificates = (check: Check) => {
-		let guid = check.guid;
+		loading_global.value = true
+		let guid = check.guid
 		store.dispatch(OrdersActions.GET_ORDERS_DOWNLOAD_CERTIFICATED, guid)
+		.then(()=>{ loading_global.value = false; })
+	}
+
+	const downloadAllCertificates = (item: Orders) => {
+		loading_global.value = true
+		let ordersUIDs = [];
+		item.checks?.forEach( (i: Check) => { ordersUIDs.push(i.guid) } )
+		//todo: подождать реализацию метода для массива счетов на беке
+		store.dispatch(OrdersActions.GET_ORDERS_DOWNLOAD_CERTIFICATED, ordersUIDs[0])
+		.then(()=>{ loading_global.value = false; })
 	}
 
 // Изменение колонок таблици
