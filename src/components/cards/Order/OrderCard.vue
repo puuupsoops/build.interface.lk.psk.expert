@@ -274,16 +274,7 @@
 				@click="delOrder()"
 			> 
 				<div class="gradient-btn-text">Отменить</div>
-			</button>	
-			
-			<router-link 
-					class="order-list-submit gradient-btn disabled" 
-					tag="button"
-					:to="'/kp'"
-					@click="setKPType()"
-				>
-				<div class="gradient-btn-text">Конструктор КП</div>
-			</router-link>
+			</button>
 
 			<button 
 				class="order-list-submit gradient-btn"
@@ -495,12 +486,6 @@ const updDeliveryCase = ()=>{
 watch(draftShowModal, ()=>{
 	if (draftShowModal.value) draftName.value = 'Черновик #' + Number(store.getters.getOrderDraftCount+1)
 })
-
-const tempKPType = ref(inject<string>('tempKPType') ?? '')
-
-const setKPType = ()=>{
-	tempKPType.value = KP_TYPES.ORDER_POS
-}
 
 </script>
 

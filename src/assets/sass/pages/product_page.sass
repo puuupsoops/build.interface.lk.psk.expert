@@ -1,16 +1,13 @@
 .product
 
 	&-search
-		+flex
 		margin: 20px 20px 20px 0px
 		+align-items(center)
-		
-		
-		&.fullwidth
-			margin: 20px 0px 20px 0px
-			width: 100%
-		&.none
-			display: none
+		margin: 20px 0px 20px 0px
+		width: 100%
+		display: none
+		&.show
+			+flex
 			
 			
 		&-top
@@ -251,6 +248,7 @@
 		padding: 30px
 			bottom: 0
 		+align-items(center)
+		+justify-content(space-between)
 		// +flex-wrap(nowrap)
 		//max-height: 570px
 		
@@ -409,7 +407,10 @@
 			transform: translateX(-50%)
 			transition-timing-function: ease-out
 			z-index: 20
-			
+			&.kp
+				position: unset
+				transform: none
+
 			& label 
 				display: inline-block
 				width: 15px

@@ -12,7 +12,7 @@ app.use(store, key)
 import router from '/src/plugins/router'
 app.use(router)
 
-//WebSocket со стором
+// WebSocket со стором
 import VueNativeSock from 'vue-native-websocket-vue3'
 app.use(VueNativeSock, import.meta.env.VITE_APP_WS_LOCATION, {store: store,format: "json"})
 

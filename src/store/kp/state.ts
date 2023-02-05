@@ -6,5 +6,6 @@ export const state: KPState = {
 	file: '',
 	file_type:'pdf',
 	org_name: '',
-	logo_list: []
+	logo_list: [],
+	logo_list_origin: []
 }

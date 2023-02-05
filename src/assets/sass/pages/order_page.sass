@@ -154,7 +154,6 @@
 						color: $font-light-color
 	
 	&-list
-
 		&-top
 			+flex
 			gap: 10px
@@ -328,13 +327,13 @@
 			&:nth-child(3)
 				margin:
 					right: 1.8%
-				width: 36.83%
+				width: 20%
 				text-transform: uppercase
 			
 			&:nth-child(4)
 				margin:
 					right: 3.67%
-				width: 9.17%
+				width: 25%
 				cursor: pointer
 				&:hover
 					.order-list-elem-text
@@ -366,6 +365,23 @@
 				line-height: 5px
 				+prefix(transition,  max-height $default-transition)
 
+			&.kp
+				+flex
+				+align-items(center)
+				gap: 10px
+				white-space: nowrap
+				.kp-add
+					width: 25px
+					height: 25px
+					font-size: 0
+					background-color: transparent
+					border: 0
+					cursor: pointer
+					z-index: 10
+					opacity: 0.1
+					background-image: url(/src/assets/img/icon/plus.svg)
+					&:hover
+						opacity: 1
 			
 		&-sublist
 			
@@ -594,7 +610,7 @@
 			.shipment-address-list-elem:nth-child(2)
 				+flex
 				+justify-content(space-between)
-				width:100%
+				width: 100%
 				font-size: 22px
 				.date
 					color: $font-light-color
@@ -632,8 +648,18 @@
 		&.map
 			width: 800px
 			left: calc(50% - 400px)
-			
 			top: 20%
+		&.fullscreen
+			width: 100vw
+			height: 100vh
+			margin: 0
+			position: fixed
+			left: 0
+			top: 0
+			right: 0
+			bottom: 0
+			z-index: 120		
+			background: rgba(0,0,0,.8)
 			
 		&.shake
 			animation: shake 0.3s cubic-bezier(.36,.07,.19,.97) both
@@ -660,7 +686,7 @@
 		width: auto
 		margin: 10px
 		min-height: 200px
-		max-height: 300px
+		//max-height: 300px
 		height: 100%
 		z-index: 120
 		&.draft

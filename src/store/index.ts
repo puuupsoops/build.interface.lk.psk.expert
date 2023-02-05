@@ -1,5 +1,5 @@
 import { InjectionKey } from 'vue'
-import { createStore, Store, useStore as baseUseStore } from 'vuex'
+import { createStore, Store as StoreT, useStore as baseUseStore } from 'vuex'
 import { auth } from './auth/index'
 import { company } from './company/index'
 import { news } from './news/index'
@@ -31,7 +31,7 @@ import { kp } from './kp/index'
 
 
 export interface RootState {}
-export const key: InjectionKey<Store<RootState>> = Symbol()
+export const key: InjectionKey<StoreT<RootState>> = Symbol()
 
 
 export const store = createStore<RootState>({

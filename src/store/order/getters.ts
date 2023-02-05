@@ -1,6 +1,6 @@
 import { GetterTree } from "vuex"
 import { RootState } from "/src/store"
-import { OrderState } from "./types"
+import {OrderState, OrderStateOrder} from "./types"
 import { Order } from "/src/models/Order"
 import { SelectInputData } from "/src/models/Components"
 import { state as CompanyState } from "/src/store/company/state"
@@ -14,7 +14,7 @@ export const getters: GetterTree<OrderState, RootState> = {
 	getOrder: state => state.order,
 	getOrderPositionLength: state => state.order.position.length,
 	getOrderToAdd: (state) : Order => {
-		let res = <Order>{
+		const res = <Order>{
 			id: state.order.id,
 			edit: state.order.edit,
 			reserved: state.order.reserved,
@@ -51,7 +51,8 @@ export const getters: GetterTree<OrderState, RootState> = {
 	},
 	
 	getOrderDraftCount: state => state.order_drafts.length,
-	getOrderDraft: state => state.order_drafts,
+	getOrderDrafts: (state):OrderStateOrder[] => state.order_drafts,
+	getOrderDraftsInputData: (state):SelectInputData[] => state.order_drafts.map(draft => ({id: draft.id, name: draft.name!})),
 	isOrderInDraft: state => state.order_drafts.findIndex(x => x.id==state.order.id)!==-1,
 	getOrderDetail: state => state.order_detail,
 	getOrderStorages: (state): SelectInputData[] => {

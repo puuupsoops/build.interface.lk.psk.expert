@@ -3,17 +3,16 @@
         <div class="kp-step-title">Собрать КП на основании</div>
         <div class="kp-step-body step1">
             <div class="kp-step-body-elem">
-                    <CheckButton v-model="order" @onClick="select('order')"/> 
-                    <div class="kp-step-body-elem-text" >
-                        Заказа
-                        <div class="kp-step-body-elem-text-sub" >
-                            Создать коммерческое предложение на основе уже умеющегося заказа.
-                        </div>
-                    </div>
-                    
+                  <CheckButton v-model="order" @onClick="select(KP_TYPES.ORDER)"/>
+                  <div class="kp-step-body-elem-text" >
+                      Заказа
+                      <div class="kp-step-body-elem-text-sub" >
+                          Создать коммерческое предложение на основе уже имеющегося заказа.
+                      </div>
+                  </div>
             </div>
             <div class="kp-step-body-elem"  tooltip="Отсутвуют сохраненные черновики" :flow="!isDraft ? 'left':''">
-                <CheckButton v-model="draft" @onClick="select('draft')" :disabled="!isDraft"/>
+                <CheckButton v-model="draft" @onClick="select(KP_TYPES.DRAFT)" :disabled="!isDraft"/>
                 <div class="kp-step-body-elem-text" :class="{'disablsed': !isDraft }" >
                     Черновика
                     <div class="kp-step-body-elem-text-sub" >
@@ -21,14 +20,13 @@
                     </div>
                 </div>    
             </div>
-            <div class="kp-step-body-elem" tooltip="Соберите заказ и возвращайтесь в конструктор предложений" :flow="!isOrder ? 'left':''">
-                <CheckButton v-model="order_pos" @onClick="select('order_pos')" :disabled="!isOrder "/>
-                <div class="kp-step-body-elem-text" :class="{'disablsed': !isOrder }" >
+            <div class="kp-step-body-elem">
+                <CheckButton v-model="order_pos" @onClick="select(KP_TYPES.CATALOG_POS)"/>
+                <div class="kp-step-body-elem-text" >
                     Позиций из католога
                     <div class="kp-step-body-elem-text-sub" >
-                        Коммерческое предложение из собранного, но еще не оформленного заказа. 
-                        <span v-if="!isOrder"><router-link tag="a" to="/order"><span style="color: darkgoldenrod;">Для этого сформируйте заказ и вариант станет активным.</span></router-link></span>
-                    </div>
+                        Коммерческое предложение из позиций каталога
+                     </div>
                 </div>    
             </div>
         </div>
@@ -43,16 +41,12 @@
     import CheckButton from '../../ui/CheckButton.vue'
     import { KP_TYPES } from '/src/models/KP'
 
-     const props = defineProps({
+    const props = defineProps({
         modelValue: {
-			type: String as PropType<KP_TYPES>,
-			required: true
-		},
-        active: {
-            type: Boolean,
-            default: false
+          type: String as PropType<KP_TYPES>,
+          required: true
         },
-        isOrder: {
+        active: {
             type: Boolean,
             default: false
         },
@@ -66,22 +60,21 @@
     const draft = ref(false)
     const order_pos = ref(false)
     
-    
-    const select = (s: string) => {
-        if (s == 'order'){
-            draft.value = false
-            order_pos.value = false
-            emits('update:modelValue', KP_TYPES.ORDER)
-        } else if (s == 'draft' && props.isDraft){
-            order.value = false
-            order_pos.value = false
-            emits('update:modelValue', KP_TYPES.DRAFT)
-        } else if (props.isOrder){
-            order.value = false
-            draft.value = false
-            emits('update:modelValue', KP_TYPES.ORDER_POS)
+    const select = (s: KP_TYPES) => {
+        if (s == KP_TYPES.ORDER){
+          order.value = true
+          draft.value = false
+          order_pos.value = false
+        } else if (s == KP_TYPES.DRAFT && props.isDraft) {
+          order.value = false
+          draft.value = true
+          order_pos.value = false
+        } else  {
+          order.value = false
+          draft.value = false
+          order_pos.value = true
         }
-
+      emits('update:modelValue', s)
        
     }
 </script>

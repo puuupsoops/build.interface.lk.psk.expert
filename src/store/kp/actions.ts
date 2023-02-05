@@ -48,10 +48,8 @@ export const actions: ActionTree<KPState, RootState> =  {
 			})
 	},
 	async [KPActions.ADD_KP_LOGO] ({ commit }, data){
-		 
         let formData = new FormData();
         formData.append('file', DataURIToBlob(data))
-
 		await axios.post( '/services/proposal/logo/add',
 					formData,
 						{

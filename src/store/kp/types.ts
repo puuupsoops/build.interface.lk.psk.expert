@@ -1,4 +1,4 @@
-import { KP, KPLogoList } from "/src/models/KP"
+import { KP, KPLogoList, KP_HEADER_LOGO_ALIGN } from '/src/models/KP'
 
 export interface KPState {
     kp: KP,
@@ -6,6 +6,7 @@ export interface KPState {
     file_type: string,
     org_name: string,
     logo_list: KPLogoList[],
+    logo_list_origin: KPLogoList[],
 }
 
 export const DefaultKP:KP = {
@@ -31,6 +32,7 @@ export const DefaultKP:KP = {
     },
     header: false,        //true,
     headerLogo: 0,
+    headerLogoAlign: KP_HEADER_LOGO_ALIGN.LEFT,
     headerText: '',
     as:     'PDF',       //PDF
 }

@@ -1,6 +1,6 @@
 <template>
 <div class="product-info product-info-tab content-elem">
-	<div class="content-elem-heading"> 
+	<div class="content-elem-heading" style="flex-wrap: wrap"> 
 		<div class="content-elem-heading-text">Подробно</div>
 		<ul class="product-info-tab-nav">
 			<li :class="content_switch === 'detail' ? 'product-info-tab-link active':'product-info-tab-link'"
@@ -43,29 +43,23 @@
 </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { ref } from 'vue'
 import ProductPropertiesCard from '/src/components/cards/Product/ProductPropertiesCard.vue'
-export default {
-	components: { ProductPropertiesCard },
-	props: {
-		data: {
-		type: Object
+
+const props = defineProps({
+	data: {
+		type: Object,
+		required: true
 		},
-		protect: {
+	protect: {
 			type: Array
 		},
+	})
 
-	},
-	setup() {
-		let content_switch = ref('detail')
-		let show = ref(true)
-		return {
-			content_switch,
-			show
-		}
-	}
-}
+let content_switch = ref('detail')
+let show = ref(true)
+		
 </script>
 
 

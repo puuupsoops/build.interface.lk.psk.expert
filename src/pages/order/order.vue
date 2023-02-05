@@ -20,13 +20,13 @@
 </div>
 
 <div v-else>
-		<OrderProductSearchInput v-model="productSearch"/>
+		<ProductSearchInput to="order" v-model:show="showProductSearch"/>
 		<ProductHeaderCard
 			:title="String(product.NAME)"
 			:price="String(product.PRICE_OPT)"
 			:discount="discount"
 			:status="String(product.STATUS)"
-			@ShowSearch="productSearch=!productSearch"
+			@ShowSearch="showProductSearch=!showProductSearch"
 		/>
 
 	<div class="content-wrap content-product-wrap">
@@ -36,7 +36,7 @@
 					:cardType="'order'"
 					v-model="activeProductId" 
 					@onClick="loadProduct()"
-					@ShowSearch="productSearch=!productSearch"
+					@ShowSearch="showProductSearch=!showProductSearch"
 					/>
 
 		</div>
@@ -95,7 +95,7 @@ import CompanyBarTop from '/src/components/cards/Company/CompanyBarTop.vue'
 import TopNav from '/src/components/nav/TopNav.vue'
 import ProductHeaderCard from '/src/components/cards/Product/ProductHeaderCard.vue'
 import ProductSearchResultCard from '/src/components/cards/Product/ProductSearchResultCard.vue'
-import OrderProductSearchInput from '/src/components/cards/Order/OrderProductSearchInput.vue'
+import ProductSearchInput from '/src/components/cards/Product/ProductSearchInput.vue'
 import ProductOffersOrderCard from '/src/components/cards/Product/ProductOffersOrderCard.vue'
 import ProductSliderSmallCard from '/src/components/cards/Product/ProductSliderSmallCard.vue'
 import OrderHeaderCard from '/src/components/cards/Order/OrderHeaderCard.vue'
@@ -124,7 +124,7 @@ export default defineComponent({
 		TopNav,
 		ProductHeaderCard,
 		ProductSearchResultCard,
-		OrderProductSearchInput,
+		ProductSearchInput,
 		ProductOffersOrderCard,
 		ProductSliderSmallCard,
 		OrderHeaderCard,
@@ -148,7 +148,7 @@ export default defineComponent({
 		const errorMsg = ref('')
 		const showModal = ref(false)
 		const showDraft = ref(false)
-		const productSearch = ref(false)
+		const showProductSearch = ref(false)
 		const productItems = ref<OrderStatePositionOffer[]>([]);
 
 		const addToOrder = () => {
@@ -263,7 +263,7 @@ export default defineComponent({
 			showModal,
 			showDraft,
 			productItems,
-			productSearch,
+			showProductSearch,
 			//computed
 			isProduct: computed(() => store.getters.isProduct),
 			companyBarTopData: computed(() => store.getters.getCompanysList),

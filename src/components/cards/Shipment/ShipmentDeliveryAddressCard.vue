@@ -83,7 +83,7 @@ import DeleteButton from '/src/components/ui/DeleteButton.vue'
 
 import { onMounted, ref, computed, watch } from 'vue'
 
-import { store } from '/src/store'
+import { useStore } from '/src/store'
 import { ShipmentsActions } from '/src/store/shipments/actions'
 
 
@@ -110,7 +110,7 @@ const emits = defineEmits(['update:addressId', 'update:date', 'update:errorAddre
 const showMap = ref(false)
 const dateLocal = ref('')
 const addressLocal = ref(-1)
-
+const store = useStore()    
 const loading = ref(false)
 const addressList = computed( () => store.getters.getShipmentsAddressInputData)
 onMounted(()=>{ 

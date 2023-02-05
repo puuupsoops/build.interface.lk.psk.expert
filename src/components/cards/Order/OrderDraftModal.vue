@@ -31,7 +31,7 @@
 									{{key+1}}
 								</div>
 								<div class="shipment-address-list-elem">
-									<div class="input-textfield"
+									<div class="input-text-field"
 										v-if="editItem && item.id == active"
 										@click.stop=""
 										:style="'width: 100%'"
@@ -116,7 +116,7 @@
 							<div :class="'orders-list-info draft'   + (!delItem && item.id  == active ? ' active': '' )"  >
 								<div class="orders-list-info-row draft">
 									<OrderDraftCard 
-										:data="item"
+										:order="item"
 									/>
 								</div>
 							</div>
@@ -183,7 +183,7 @@ const emits = defineEmits(['update:modelValue'])
 		const shake = ref(false)
 		const targetModal = ref(null)
 		const active = ref(-1)
-		const orderDraft = computed(() => store.getters.getOrderDraft)
+		const orderDraft = computed(() => store.getters.getOrderDrafts)
 		onClickOutside(targetModal, () => {
 			shake.value = true;
 			setTimeout(() => {shake.value=false;}, 500);
