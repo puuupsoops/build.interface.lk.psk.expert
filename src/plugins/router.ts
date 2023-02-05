@@ -1,8 +1,5 @@
-
-import { createRouter, createWebHistory } from 'vue-router';
-//import { useStore } from '/src/store';
+import { createRouter, createWebHistory } from 'vue-router'
 import { store } from '/src/store/index'
-import { AuthActions } from '/src/store/auth/actions';
 
 const routes = [
 	{
@@ -140,7 +137,7 @@ const routes = [
 	},
 	{
 		path: '/kp', 
-		component: () => import('/src/pages/kp/kp.vue'),
+		component: () => import('/src/pages/kp/KpPage.vue'),
 		name: 'KP',
 		meta:{
 				auth: true,
@@ -170,13 +167,6 @@ const routes = [
 	// 			auth: true,
 	// 		}
 	// },
-	{   path: '/logout',
-		name: 'logout',
-		component: () => import('/src/pages/logout.vue'),
-		meta:{
-			auth: true,
-		}
- 	},
 	{
 		path: '/:pathMatch(.*)*',
 		redirect: '/404',
@@ -184,13 +174,18 @@ const routes = [
 				auth: true,
 			}
 	},
-	
+	{   path: '/logout',
+		name: 'logout',
+		component: () => import('/src/pages/logout.vue'),
+		meta:{
+			auth: true,
+		}
+	},
 	{
 		path: '/login', 
 		component: () => import('/src/pages/login.vue'),
 		name: 'Login'
 	},
-	
 
 ];
 

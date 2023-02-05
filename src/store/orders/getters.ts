@@ -8,11 +8,12 @@ export const getters: GetterTree<OrdersState, RootState> = {
 	isOrders: state => state.orders.length != 0,
 	getOrdersByID: state => (id: number) => state.orders.find(x => x.n == id),
 	getOrders: state => state.orders,
+	getOrdersInputData: (state):SelectInputData[] => state.orders.map(order => ({id: order.n, name: order.name})),
 	getOrdersMaxId: state => Math.max(...state.orders.map(x => x.n)),
-	getCompanyFromOrders: state =>  (): SelectInputData[] =>{
+	getCompanyFromOrders: state => (): SelectInputData[] =>{
 		const unique = <Object[]>[...new Set(state.orders.map(item => item.partner_guid))]
 		const res = unique.map(id => {
-			let name =  state.orders.find(x => x.partner_guid ==id)?.partner_name
+			const name =  state.orders.find(x => x.partner_guid ==id)?.partner_name
 			return <SelectInputData>{id, name: name ? normalizeCompanyName(name):''}
 		})
 		res.unshift({id: '', name: "Все"})

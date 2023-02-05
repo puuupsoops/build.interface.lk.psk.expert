@@ -32,7 +32,7 @@ export interface KP {
 export enum KP_TYPES {
     ORDER = 'ORDER',        //Кп на основе уже умеющегося заказа
     DRAFT = 'DRAFT',        //КП  основе сохраненного черновика
-    ORDER_POS = 'ORDER_POS' // КП из собранного, но еще не оформленного заказа
+    CATALOG_POS = 'CATALOG_POS' // КП из собранного, но еще не оформленного заказа
 }
 
 export interface KPLogoList {

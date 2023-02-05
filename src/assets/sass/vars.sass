@@ -1,21 +1,4 @@
 @import "var/services.sass"
-$accent-color: #FAC12E
-$white: #ffffff
-$font-light-color: #A5A7A9
-
-$bg-default-color: #1F2227
-$bg-dlight-color: #53565B
-$bg-color: #15171C
-$bg-color2: #292c32
-
-$default-font: "Muli", sans-serif
-$default-transition: .3s
-$default-opacity: .8
-
-$active-color:  #FF9900
-
-$alert-color: #e70c0c
-
 
 
 ::-webkit-scrollbar 
@@ -161,6 +144,8 @@ a
 				right: 20px
 				top: 10px
 				bottom: 10px
+		&.kp
+			background-color: $bg-default-color
 		&-elem
 			+flex
 			+align-items(flex-end)
@@ -255,7 +240,14 @@ a
 					right: 30px
 				font-size: 12px
 				color: $font-light-color
-			
+				&.kp
+					+flex
+
+					gap: 10px
+					margin:
+						top: 10px
+						right: 0
+
 			&-text
 				font-weight: 600
 

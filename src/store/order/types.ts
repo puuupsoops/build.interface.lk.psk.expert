@@ -48,6 +48,7 @@ export interface OrderStatePositionOffer extends Offer {
 	price_discount:  number;
 	discount:        number;
 	fullprice?:      number;
+	add_sum?:        number; // Используется в конструкторе КП
 }
 
 export interface OrderStateDelivery {
