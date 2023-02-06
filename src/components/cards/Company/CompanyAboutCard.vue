@@ -24,7 +24,7 @@
 							<span class="company-head-about-text-bottom">{{data.city}}</span>
 						</div>
 						<div class="company-head-about-text edit" v-else style="width: 100%">
-							<div class="input-textfield">
+							<div class="input-text-field">
 								<Field 
 									name="City"
 									validateOnInput
@@ -85,7 +85,7 @@
 					
 					<div class="company-head-about-text-wrap" v-else>
 						<div class="company-head-about-text edit">
-							<div class="input-textfield">
+							<div class="input-text-field">
 								<Field 
 									name="inn"
 									validateOnInput
@@ -107,7 +107,7 @@
 							
 						</div>
 						<div class="company-head-about-text edit">
-							<div class="input-textfield">
+							<div class="input-text-field">
 								<Field 
 									name="phone"
 									validateOnInput
@@ -129,7 +129,7 @@
 							</div>
 						</div>
 						<div class="company-head-about-text edit">
-							<div class="input-textfield">
+							<div class="input-text-field">
 								<Field 
 									name="bik"
 									validateOnInput
@@ -151,7 +151,7 @@
 							</div>
 						</div>
 						<div class="company-head-about-text edit">
-							<div class="input-textfield">
+							<div class="input-text-field">
 								<Field 
 									name="email"
 									validateOnInput
@@ -173,7 +173,7 @@
 							</div>
 						</div>
 						<div class="company-head-about-text edit">
-							<div class="input-textfield">
+							<div class="input-text-field">
 								<Field 
 									name="payment"
 									validateOnInput
@@ -195,7 +195,7 @@
 							</div>
 						</div>
 						<div class="company-head-about-text edit">
-							<div class="input-textfield">
+							<div class="input-text-field">
 								<Field 
 									name="correspondent"
 									validateOnInput
@@ -217,7 +217,7 @@
 							</div>
 						</div>
 						<div class="company-head-about-text edit" style="width: 100%;">
-							<div class="input-textfield">
+							<div class="input-text-field">
 								<Field 
 									name="address"
 									validateOnInput

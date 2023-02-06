@@ -8,7 +8,11 @@
 	</div>
 	<top-nav catalog></top-nav>
 
-	<ProductSearchInput v-model="search_str" @search="doSearch()"></ProductSearchInput>
+	<ProductSearchInput 
+		v-model="search_str" 
+		to="product"
+		@search="doSearch()"
+	/>
 		
 
 

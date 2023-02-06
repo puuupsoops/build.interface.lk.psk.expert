@@ -1,5 +1,6 @@
 <template>
-<div :class="disabled ? 'amount-input-wrap disable': 'amount-input-wrap'">
+<div class="amount-input-wrap"
+    :class="{ disabled }">
 	<input 
 		class="amount-input"
 		type="text"
@@ -7,8 +8,8 @@
 		:value="modelValue"
 		@input="onInput($event)"
 		>
-	<div
-		:class="disabled ? 'amount-input-arrow plus disable' : 'amount-input-arrow plus'"
+	<div class="amount-input-arrow"
+		:class="{ disabled, 'plus': true }"
 		@click="changeStep(step)"
 		>
 
@@ -16,8 +17,8 @@
 			<path d="M3.71679 0.986589C4.11715 0.482264 4.88285 0.482265 5.28321 0.986589L7.9757 4.37825C8.49596 5.0336 8.02925 6 7.19249 6L1.80751 6C0.970754 6 0.504041 5.0336 1.0243 4.37824L3.71679 0.986589Z" fill="#53565B"></path>
 		</svg>
 	</div>
-	<div
-		:class="disabled ? 'amount-input-arrow minus disable' : 'amount-input-arrow minus'"
+	<div class="amount-input-arrow"
+		:class="{ disabled, 'minus': true }"
 		@click="changeStep(-step)"
 	>
 		<svg class="amount-input-arrow-img" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -29,6 +30,7 @@
 
 <script setup lang="ts">
 	import {  watch } from 'vue';
+  import { PriceFormat } from '/src/models/Components'
 
 	const props = defineProps({
 		modelValue: {
@@ -69,8 +71,8 @@
 
 	const changeStep = (v: number) => {
 		if (!props.disabled ){
-			let x = props.modelValue + v
-			emits('update:modelValue', Number(x.toLocaleString('RU', {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(',','.').replace(/\s/g,'')))
+			const x = PriceFormat(props.modelValue + v).replace(/\s/g,'')
+			emits('update:modelValue', Number(x))
 		}
 			
 	}
@@ -81,6 +83,59 @@
 
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
+@import '/src/assets/sass/mixin/index.sass'
+@import '/src/assets/sass/style.sass'
+.amount
+  &-input
+    padding: 12px 10px 12px 15px
+    width: 100%
+    color: $font-light-color
+    background-color: $bg-color2
+    border: 0
+    border-radius: 6px
+    +prefix(user-select, none)
+    +prefix(transition, $default-transition)
 
+    &:focus
+      color: $white
+
+    &-wrap
+      position: relative
+      max-width: 80px
+      min-width: 80px
+      user-select: none
+      //margin: 5px
+
+      &.disable
+        opacity: 0.3
+
+    &-arrow
+      +flex
+      position: absolute
+      right: 5px
+      width: 9px
+      height: 20px
+      +align-items(center)
+      cursor: pointer
+
+      &.disable
+
+        cursor: default
+
+      &-img
+        width: 100%
+
+        path
+          +prefix(transition, $default-transition)
+
+      &:not(.disable):hover
+        path
+          fill: #A5A7A9
+
+      &.plus
+        top: 0
+
+      &.minus
+        bottom: 0
 </style>

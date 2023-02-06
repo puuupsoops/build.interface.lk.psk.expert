@@ -1,6 +1,6 @@
 <template>
 <div class="product-info product-info-tab content-elem">
-	<div class="content-elem-heading"> 
+	<div class="content-elem-heading" style="flex-wrap: wrap"> 
 		<div class="content-elem-heading-text">Подробно</div>
 		<ul class="product-info-tab-nav">
 			<li :class="content_switch === 'detail' ? 'product-info-tab-link active':'product-info-tab-link'"
@@ -116,9 +116,10 @@ export default {
 		data: {
 		type: Object
 		},
-		protect: {
+	protect: {
 			type: Array
 		},
+	})
 
 	},
 	setup(props) {

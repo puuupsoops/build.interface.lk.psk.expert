@@ -44,7 +44,7 @@
                     </div>
                     <div class="profile-personal-info-box">
                         <div class="profile-personal-info-item-edit">
-                            <div class="input-textfield">
+                            <div class="input-text-field">
                                 <Field 
                                     name="lastname"
                                     validateOnInput
@@ -65,7 +65,7 @@
                             </div>
                         </div>
                         <div class="profile-personal-info-item-edit">
-                            <div class="input-textfield">
+                            <div class="input-text-field">
                                 <Field 
                                     name="name"
                                     validateOnInput
@@ -88,7 +88,7 @@
                         
                         </div>
                         <div class="profile-personal-info-item-edit">
-                            <div class="input-textfield">
+                            <div class="input-text-field">
                                 <Field 
                                     name="patronymic"
                                     validateOnInput
@@ -109,7 +109,7 @@
                             </div> 
                         </div>
                         <div class="profile-personal-info-item-edit">
-                            <div class="input-textfield">
+                            <div class="input-text-field">
                                 <Field 
                                     name="phone"
                                     validateOnInput
@@ -131,7 +131,7 @@
                             </div>
                         </div>
                         <div class="profile-personal-info-item-edit">
-                            <div class="input-textfield">
+                            <div class="input-text-field">
                                 <Field 
                                     name="email"
                                     validateOnInput

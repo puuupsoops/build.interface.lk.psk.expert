@@ -10,7 +10,7 @@
 			+box-shadow(0px 0px 15px rgba(0, 0, 0, 0.5))
 			text-align: center
 			padding: 
-				top:31px
+				top: 31px
 				left: 30px
 				right: 30px
 				bottom: 15px
@@ -70,19 +70,19 @@
 				justify-content: space-between
 				width: 100%
 				
-			&-item 
-				z-index: 2
+			&-item
+				+flex
 				+prefix(transition, $default-transition)
 				min-width: 32px
 				height: 32px
 				border-radius: 50%
 				border: 2px solid $accent-color
 				color: $font-light-color
-				+flex
 				align-items: center
 				justify-content: center
-				
+				z-index: 2
 				background-color: $bg-color2
+				cursor: pointer
 
 				&.active 
 					//background: $font-light-color
@@ -94,13 +94,11 @@
 							background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M20 8.9087L17.1443 6L9.97468 13.191L6.8557 10.0399L4 12.888L8.53671 17.4126C8.91618 17.7888 9.4295 18 9.96456 18C10.4996 18 11.0129 17.7888 11.3924 17.4126L20 8.9087Z' fill='%23ffffff'/%3E%3C/svg%3E")
 					
 					
-				&.with-image 
-					&:after 
-						content: ''
-						width: 24px
-						height: 24px
-						background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M20 8.9087L17.1443 6L9.97468 13.191L6.8557 10.0399L4 12.888L8.53671 17.4126C8.91618 17.7888 9.4295 18 9.96456 18C10.4996 18 11.0129 17.7888 11.3924 17.4126L20 8.9087Z' fill='%23A5A7A9'/%3E%3C/svg%3E")
-						background-repeat: no-repeat
+				&.with-image
+					content: ''
+					background-position: 2px 2px
+					background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M20 8.9087L17.1443 6L9.97468 13.191L6.8557 10.0399L4 12.888L8.53671 17.4126C8.91618 17.7888 9.4295 18 9.96456 18C10.4996 18 11.0129 17.7888 11.3924 17.4126L20 8.9087Z' fill='%23A5A7A9'/%3E%3C/svg%3E")
+					background-repeat: no-repeat
 
 
 			&-content
@@ -112,31 +110,37 @@
 				min-height: 300px
 		
 				padding: 
-					top:31px
-					left: 30px
-					right: 30px
+					top: 31px
 					bottom: 15px
 				
 				&-tabs
 					+flex
 					+prefix(transition, $default-transition)
 					min-height: inherit
+
 					&.step1
 						+prefix(transform, translateX(0px))
 					&.step2
 						+prefix(transform, translateX(-100%))
 					&.step3
 						+prefix(transform, translateX(-200%))
+					&.step4
+						+prefix(transform, translateX(-300%))
 					&-box
 						min-height: inherit
 						overflow: hidden
 
 	&-step
+		+flex
+		+flex-direction(column)
+		+justify-content(space-between)
 		width: 100%
 		flex: 0 0 100%
 		max-height: 200px
-		+flex
-		+flex-direction(column)
+		padding:
+			left: 20px
+			right: 20px
+
 		&.active
 			max-height: none
 		&-title
@@ -153,7 +157,10 @@
 					max-width: 500px
 
 			&-input
-				margin: auto
+				margin:
+					left: auto
+					right: auto
+					bottom: 30px
 				padding-top: 30px
 				width: 70%
 				.orders-list-row
@@ -215,7 +222,7 @@
 				gap: 15px
 				padding-top: 20px
 				min-height: 64px
-				
+
 				&-elem
 					width: 15%
 					flex-shrink: 0
@@ -266,7 +273,10 @@
 		&-actions
 			+flex
 			+justify-content(space-between)
-			margin-top: auto
+			margin:
+				top: 50px
+				left: 50px
+				right: 50px
 			height: 50px
 			&-link
 				cursor: pointer
