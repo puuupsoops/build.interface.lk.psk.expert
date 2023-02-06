@@ -308,9 +308,9 @@
 			line-height: 20px
 			color: $font-light-color
 			+prefix(transition, $default-transition)
-			
-				
-				
+
+
+
 			&:nth-child(1)
 				padding:
 					left: 10px
@@ -322,34 +322,40 @@
 				margin:
 					right: 2%
 				width: 6%
-				text-transform: uppercase	
-				
+				text-transform: uppercase
+
 			&:nth-child(3)
 				margin:
 					right: 1.8%
 				width: 20%
 				text-transform: uppercase
-			
+
 			&:nth-child(4)
 				margin:
 					right: 3.67%
 				width: 25%
 				cursor: pointer
+				text-align: center
 				&:hover
 					.order-list-elem-text
 						display: block
-			
+
 			&:nth-child(5)
 				margin:
 					right: 3.67%
 				width: 7.34%
 				text-align: center
 
+
 			&:nth-child(6)
 				margin:
 					right: 3.67%
 				width: 11.93%
-			
+				text-align: center
+				.order-list-heading &
+					margin:
+						right: 0
+
 			&:nth-child(7)
 				padding:
 					right: 45px
@@ -357,7 +363,7 @@
 
 			&.error
 				color: #FF5449
-			
+
 			&-text
 				//display: none
 				color: $font-light-color
@@ -368,6 +374,7 @@
 			&.kp
 				+flex
 				+align-items(center)
+				+justify-content(center)
 				gap: 10px
 				white-space: nowrap
 				.kp-add
@@ -382,7 +389,9 @@
 					background-image: url(/src/assets/img/icon/plus.svg)
 					&:hover
 						opacity: 1
-			
+					&.active
+						opacity: 1
+
 		&-sublist
 			
 			overflow: hidden

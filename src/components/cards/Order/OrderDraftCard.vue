@@ -77,22 +77,25 @@
               <div class="order-list-elem"> </div>
               <div class="order-list-elem">{{ characteristic.CHARACTERISTIC }}</div>
               <div class="order-list-elem kp" v-if="isKp">
-                <div class="order-list-elem-text" v-if="characteristic.add_sum!==undefined">{{ characteristic.PRICE - characteristic.add_sum }} ₽ + </div>
-                <div class="kp-add" v-if="characteristic.add_sum===undefined" @click="characteristic.add_sum=1;calcOrder()"
-                 ></div>
-                <span v-else
-                    :tooltip="'К этой сумме не применяется '+ (sale_margin < 0 ? 'скидка': 'наценка')"
-                    flow="down"
-                >
-                  <AmountInput
-                    v-model="characteristic.add_sum"
-                    @on-input="calcOrder()"
-                  />
-
-                </span>
-                <span v-if="characteristic.add_sum!==undefined">₽</span>
-                <span v-if="characteristic.add_sum!==undefined">=</span>
                 {{ PriceFormat(characteristic.PRICE, true) }}
+                <div class="kp-add"
+                     :class="{'active': characteristic.add_sum!==undefined }"
+                     @click="showAddSum(characteristic)"
+                ></div>
+                <template v-if="characteristic.add_sum!==undefined">
+                  <span
+                      :tooltip="'К этой сумме не применяется '+ (sale_margin < 0 ? 'скидка': 'наценка')"
+                      :flow="k+1===item.characteristics.length ? 'right':'down'"
+                  >
+                    <AmountInput
+                      v-model="characteristic.add_sum"
+                      @on-input="calcOrder()"
+                      :min="-1000000"
+                    />
+                  </span>
+                  <span v-if="characteristic.add_sum!==undefined">=</span>
+                  <div class="order-list-elem-text" v-if="characteristic.add_sum!==undefined">{{ PriceFormat(characteristic.PRICE - characteristic.add_sum, true) }}</div>
+                </template>
 
               </div>
               <div class="order-list-elem" v-else>
@@ -209,7 +212,7 @@ import AmountInput from '/src/components/ui/AmountInput.vue'
 import DeleteButton from '/src/components/ui/DeleteButton.vue'
 import OrderProductAddModal from '/src/components/cards/Product/ProductAddModal.vue'
 
-import { OrderStateOrder, OrderStatePosition } from '/src/store/order/types'
+import {OrderStateOrder, OrderStatePosition, OrderStatePositionOffer} from '/src/store/order/types'
 import { PriceFormat } from '/src/models/Components'
 
 // eslint-disable-next-line no-unused-vars
@@ -259,9 +262,6 @@ const calcOrder = (type?: SALE_TYPE, change?: boolean):void => {
       if (pos.characteristics.length == 0) orderLocal.value.position.splice(pos_id, 1)
       else
       pos.characteristics.forEach( c => {
-        if (c.add_sum == 0) {
-          c.add_sum = undefined
-        }
         if(sale_type.value == SALE_TYPE.PERCENT) {
           c.PRICE = c.fullprice! + (sale_margin.value * c.fullprice! * sale.value/100) + ( c.add_sum?? 0)
           total_pos = total_pos + c.count * c.PRICE
@@ -278,6 +278,10 @@ const calcOrder = (type?: SALE_TYPE, change?: boolean):void => {
     emits('update:order', orderLocal.value)
   }
 }
+const showAddSum = (characteristic: OrderStatePositionOffer) => {
+  characteristic.add_sum===undefined ? characteristic.add_sum=0 :characteristic.add_sum=undefined
+  calcOrder()
+}
 watch(addPos, ()=>{
     console.log(orderLocal.value)
     if (orderLocal.value.position) {
@@ -285,8 +289,6 @@ watch(addPos, ()=>{
     } else {
       orderLocal.value.position.push(addPos.value)
     }
-
-
 })
 </script>
 
