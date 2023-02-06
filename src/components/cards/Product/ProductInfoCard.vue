@@ -119,8 +119,6 @@ export default {
 	protect: {
 			type: Array
 		},
-	})
-
 	},
 	setup(props) {
 		let content_switch = ref('detail')
@@ -241,7 +239,7 @@ export default {
 			next
 		}
 	}
-}
+} 
 </script>
 
 
