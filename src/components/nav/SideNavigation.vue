@@ -101,12 +101,19 @@
 						</div>
 					</li>
 				</ul>
-				<div class="sidebar-logo">
-					<img class="sidebar-logo-img" src="/src/assets/img/lamp.png"/>
-					<div class="sidebar-logo-text">
-						<span>Сделай лучше<br>наше сотрудничество</span>
+				<router-link
+					tag="a"
+					to="#"
+					@click="$emit('close');
+							showFeedbackModal=true"
+				>
+					<div class="sidebar-logo">
+						<img class="sidebar-logo-img" src="/src/assets/img/lamp.png"/>
+						<div class="sidebar-logo-text">
+							<span>Сделай лучше<br>наше сотрудничество</span>
+						</div>
 					</div>
-				</div>
+				</router-link>
 				<div class="sidebar-logo-version">
 					Версия {{version}}
 				</div>
@@ -115,6 +122,7 @@
 		<div  class="sidebar-menu-bg" v-if="modelValue" @click="$emit('close')"></div>
 	</div>
 	<OrderDraftModal v-model="showDraft"/>
+	<FeedbackModal v-model="showFeedbackModal"/>
 </template>
 
 <script  setup lang="ts">
@@ -124,7 +132,7 @@ import { useStore } from '/src/store'
 import { CompanyActions } from '/src/store/company/actions'
 import { normalizeCompanyName } from '/src/models/Partner'
 import OrderDraftModal from '/src/components/cards/Order/OrderDraftModal.vue'
-
+import FeedbackModal from '/src/components/cards/Main/FeedbackModal.vue'
 
 const props = defineProps({
 		modelValue: {
@@ -137,6 +145,7 @@ const store = useStore();
 const version = APP_VERSION
 const active_item = ref(0)
 const showDraft = ref(false)
+const showFeedbackModal = ref(false)
 
 const menu = computed(() => {
 		const menu_start = [

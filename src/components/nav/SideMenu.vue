@@ -142,13 +142,13 @@
 			@close="$emit('update:modelValue', !modelValue)"
 		></SideNavigation>
 		<OrderDraftModal v-model="showDraft"/>
-
 </template>
 
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import SideNavigation from '/src/components/nav/SideNavigation.vue'
 import OrderDraftModal from '/src/components/cards/Order/OrderDraftModal.vue'
+
 
 const props = defineProps({
 	modelValue: {
@@ -170,6 +170,7 @@ const scroll_class = ref('show')
 const scroll = ref(0)
 let scroll_last = 0
 const showDraft = ref(false)
+
 const onScroll = (e: Event) => {
 			const scr = e.target as Document
 			scroll.value = scr.documentElement.scrollTop
