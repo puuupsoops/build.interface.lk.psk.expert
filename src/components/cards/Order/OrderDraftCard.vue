@@ -197,6 +197,7 @@
     <OrderProductAddModal v-model="showAddPos" v-model:add-position="addPos"/>
 	</div>
 
+
 </template>
 
 <script setup lang="ts">
