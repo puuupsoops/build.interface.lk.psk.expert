@@ -3,6 +3,7 @@
     :class="{ disabled }">
 	<input 
 		class="amount-input"
+    :class="{ disabled }"
 		type="text"
 		:disabled="disabled"
 		:value="modelValue"
@@ -96,7 +97,8 @@
     border-radius: 6px
     +prefix(user-select, none)
     +prefix(transition, $default-transition)
-
+    &.disabled
+      opacity: 0.3
     &:focus
       color: $white
 
@@ -107,7 +109,7 @@
       user-select: none
       //margin: 5px
 
-      &.disable
+      &.disabled
         opacity: 0.3
 
     &-arrow
@@ -119,8 +121,8 @@
       +align-items(center)
       cursor: pointer
 
-      &.disable
-
+      &.disabled
+        opacity: 0.3
         cursor: default
 
       &-img

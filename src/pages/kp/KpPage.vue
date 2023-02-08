@@ -93,7 +93,7 @@ import Preloader from '/src/components/Preloader.vue'
 
 
 import { useStore } from '/src/store'
-import { computed, ref } from 'vue'
+import {computed, ref} from 'vue'
 import _ from 'lodash'
 import { OrdersActions } from '/src/store/orders/actions'
 import { CompanyActions } from '/src/store/company/actions'
@@ -123,7 +123,6 @@ if (!store.getters.isOrders) {
 }
 store.dispatch(KPActions.GET_KP_LOGO)
 store.dispatch(ShipmentsActions.GET_SHIPMENTS_ADDRESS)
-
 
 const isDraft = computed(()=> store.getters.getOrderDraftCount > 0) // есть ли черновики
 

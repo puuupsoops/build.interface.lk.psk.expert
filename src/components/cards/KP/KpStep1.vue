@@ -75,6 +75,5 @@
           order_pos.value = true
         }
       emits('update:modelValue', s)
-       
     }
 </script>

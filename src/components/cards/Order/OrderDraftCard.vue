@@ -1,6 +1,6 @@
 <template>
-	<div class="order-list content-elem" v-if="orderLocal">
-    <div class="order-list-bottom scroll-elem" v-if="orderLocal.position && orderLocal.position.length>0">
+	<div class="order-list content-elem">
+    <div class="order-list-bottom scroll-elem" v-if="orderLocal && orderLocal.position && orderLocal.position.length>0">
       <div class="order-list-bottom-wrap">
         <div class="content-heading-wrap"  v-if="orderLocal.total && noTotal===false"
              :class="{ 'order-draft': true, 'kp': isKp }"
@@ -122,7 +122,7 @@
           </div>
         </div>
       </div>
-      <div class="order-list-bottom-wrap" v-if="orderLocal.position_presail.length > 0 && noPresail===false && isKp===false">
+      <div class="order-list-bottom-wrap" v-if="orderLocal && orderLocal.position_presail.length > 0 && noPresail===false && isKp===false">
 
         <div class="order-list-row order-list-subheading">
           <div>Позиции для предзаказа</div>
@@ -212,8 +212,9 @@ import AmountInput from '/src/components/ui/AmountInput.vue'
 import DeleteButton from '/src/components/ui/DeleteButton.vue'
 import OrderProductAddModal from '/src/components/cards/Product/ProductAddModal.vue'
 
-import {OrderStateOrder, OrderStatePosition, OrderStatePositionOffer} from '/src/store/order/types'
+import { OrderStateOrder, OrderStatePosition, OrderStatePositionOffer } from '/src/store/order/types'
 import { PriceFormat } from '/src/models/Components'
+import { orderCalc as orderCalcStore} from '/src/store/order/helper'
 
 // eslint-disable-next-line no-unused-vars
 const enum SALE_TYPE {
@@ -224,7 +225,7 @@ const enum SALE_TYPE {
 const props = defineProps( {
 		order: {
 			type: Object as PropType<OrderStateOrder>,
-			required: true,
+      required: true
 		},
 		noTotal: {
 			type: Boolean,
@@ -283,12 +284,12 @@ const showAddSum = (characteristic: OrderStatePositionOffer) => {
   calcOrder()
 }
 watch(addPos, ()=>{
-    console.log(orderLocal.value)
-    if (orderLocal.value.position) {
-      orderLocal.value.position = orderLocal.value.position.concat(addPos.value ?? [])
-    } else {
-      orderLocal.value.position.push(addPos.value)
-    }
+  if (orderLocal.value.position) {
+    orderLocal.value.position = orderLocal.value.position.concat(addPos.value ?? [])
+  } else {
+    orderLocal.value.position.push(addPos.value)
+  }
+  orderLocal.value = orderCalcStore(orderLocal.value)
 })
 </script>
 

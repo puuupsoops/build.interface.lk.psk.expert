@@ -96,7 +96,7 @@
   import { KPActions } from '/src/store/kp/actions'
   import { KP, KP_TYPES } from '/src/models/KP'
 
-  import { OrderStateOrder } from '/src/store/order/types'
+  import {DefaultOrder, OrderStateOrder} from '/src/store/order/types'
 
   import {DateFromRuLocale, SelectInputData} from '/src/models/Components'
   import { DefaultKP } from "/src/store/kp/types";
@@ -136,9 +136,8 @@
   const showCustomer = ref(false)
 
   const date = ref(new Date().toLocaleString('ru').substring(0, 10))
-  const order_detail = ref<OrderStateOrder>()
+  const order_detail = ref<OrderStateOrder>(_.cloneDeep(DefaultOrder))
   const companyList = computed<SelectInputData[]>(() => store.getters.getCompanysListInput().filter((x: SelectInputData) => x.id !== ''))
-
 
   watch(order, ()=>{
     if (order.value!=-1){
@@ -160,6 +159,8 @@
     order.value = -1
     draft.value = -1
     KPLocal.value = _.cloneDeep(DefaultKP)
+    order_detail.value = _.cloneDeep(DefaultOrder)
+    emits('update:kp', KPLocal.value)
     emits('prev')
   }
   const next = () => {

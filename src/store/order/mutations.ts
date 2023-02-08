@@ -1,16 +1,7 @@
 import { NewOrder } from "/src/models/Order";
 import { MutationTree } from "vuex";
 import { DefaultNewOrder, DefaultOrder, OrderState, OrderStateDelivery, OrderStateOrder, OrderStatePosition, OrderStatePositionOffer } from "./types";
-import { state as CompanyState} from '/src/store/company/state'
-
-const getCompanyDiscount = (uid: string, guid: string, status: string): number => {
-	if (status == 'Outlet' || status == 'Discount' || status == 'Activity') return 0
-	if (uid){
-		const company = CompanyState.companys.find(x => x.uid === uid)
-		const res = company && company.storages ? company.storages.find(x => x.guid === guid): null
-		return res ? res.discount:0
-	} else { return 0 }
-}
+import {orderCalc} from "/src/store/order/helper/orderCalc";
 
 export enum OrderMutations {
 	CREATE_ORDER = "CREATE_ORDER",
@@ -118,87 +109,7 @@ export const mutations: MutationTree<OrderState> = {
 		});
 	},
 	[OrderMutations.CALC_ORDER] (state): void{
-		state.order.position = state.order.position.filter(x=> x.characteristics.length > 0)
-		state.order.position_presail = state.order.position_presail.filter(x=> x.characteristics.length > 0)
-		let total = 0
-		let total_discount = 0
-		let total_count = 0
-		let total_valume = 0
-		let total_weight = 0
-		
-		
-
-		state.order.position.forEach(pos => {
-			let total_pos = 0
-			let total_discount_pos = 0
-			let total_count_pos = 0
-			
-			
-			const total_valume_pos = pos.product.VALUME
-			const total_weigth_pos = pos.product.WEIGHT
-			pos.characteristics.forEach( c => {
-				total_pos = total_pos + c.PRICE * c.count
-				c.discount = getCompanyDiscount(state.partner_id, c.ORGGUID, pos.product.STATUS)
-				if (c.MAX_DISCOUNT!= 0 && c.discount > c.MAX_DISCOUNT ) c.discount =  c.MAX_DISCOUNT
-				c.price_discount = c.PRICE-c.discount*(c.PRICE/100)
-				
-				total_discount_pos = total_discount_pos +c.price_discount * c.count
-				total_count_pos = total_count_pos + c.count;
-			});
-			pos.total = total_pos
-			pos.total_discount = total_discount_pos
-			pos.count = total_count_pos
-
-			total = total + total_pos
-			total_discount = total_discount + total_discount_pos
-			total_count = total_count + total_count_pos
-			total_valume = total_valume_pos * total_count_pos
-			total_weight = total_weigth_pos * total_count_pos
-		});
-		
-		state.order.position_presail.forEach(pos => {
-			let total_pos = 0
-			let total_discount_pos = 0
-			let total_count_pos = 0
-			
-			const total_valume_pos = pos.product.VALUME
-			const total_weigth_pos = pos.product.WEIGHT
-			pos.characteristics.forEach( c => {
-				total_pos = total_pos + c.PRICE * c.count
-				c.discount = getCompanyDiscount(state.partner_id, c.ORGGUID, pos.product.STATUS)
-				if (c.MAX_DISCOUNT!= 0 && c.discount > c.MAX_DISCOUNT ) c.discount =  c.MAX_DISCOUNT
-				c.price_discount = c.PRICE-c.discount*(c.PRICE/100)
-				
-				total_discount_pos = total_discount_pos +c.price_discount * c.count
-				total_count_pos = total_count_pos + c.count
-			});
-			pos.total = total_pos
-			pos.total_discount= total_discount_pos
-			pos.count = total_count_pos
-
-			total = total + total_pos
-			total_discount = total_discount + total_discount_pos
-			total_count = total_count + total_count_pos
-			total_valume = total_valume_pos * total_count_pos
-			total_weight = total_weigth_pos * total_count_pos
-		});
-
-		state.order.count = state.order.position.length;
-		state.order.total = total;
-		state.order.total_discount = total_discount
-		state.order.total_count = total_count;
-		state.order.total_valume = Number(total_valume.toFixed(3));
-		state.order.total_weight = Number(total_weight.toFixed(3));
-		
-		if (total == 0 && state.order.position_presail.length == 0 ) {
-			state.order = Object.assign({}, DefaultOrder)
-			state.order.position = []
-			state.order.position_presail = []
-		}
-		// Добавить стоимость доставки к цене .
-		state.order.total_discount = state.order.total_discount ? state.order.total_discount + state.order.delivery.cost : state.order.total//
-		state.order.total = state.order.total + state.order.delivery.cost 
-		
+		state.order = orderCalc(state.order, state.partner_id)
 	},
 
 	[OrderMutations.ADD_ORDER] (state, data: NewOrder): void{

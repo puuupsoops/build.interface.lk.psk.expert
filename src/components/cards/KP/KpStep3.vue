@@ -107,7 +107,6 @@
                      @click="KPLocal.headerLogoAlign=KPHEADERLOGOALIGN.RIGHT"
                      v-html="ALIGN_RIGHT"
                 ></div>
-
               </div>
             </div>
             <div class="kp-step-body-row-group"  :class="{'active': headerLogo}">
@@ -135,9 +134,7 @@
                   </transition-group>
                   <div class='product-slider-arrow next' @click="nextLogo"></div>
                 </div>
-
               </div>
-
             </div>
           </div>
         </div>
@@ -198,7 +195,7 @@ const KPLocal = ref(props.kp)
 const total = computed( ()=>{
   let total_price = 0
   KPLocal.value!.offer.position.forEach(c=>{
-    total_price = total_price + c.total
+    total_price = total_price + c.total!
   })
   return total_price
 })
