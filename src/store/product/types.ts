@@ -9,6 +9,7 @@ export interface ProductState {
 	product_protect: Protect[],
 	product_articls: ProductArticles[],
 	product_found_err_str: string,
+	product_video_link: string
 }
 export const DEFAULT_PRODUCT = {
 	ID:              '',

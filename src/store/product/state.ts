@@ -8,5 +8,6 @@ export const state: ProductState = {
 	product_images: [],
 	product_protect: [],
 	product_articls: [],
-	product_found_err_str: ''
+	product_found_err_str: '',
+	product_video_link: ''
 }

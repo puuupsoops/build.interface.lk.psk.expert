@@ -14,6 +14,7 @@
                   Сообщаем вам что согласно Постановлению Правительства 
                   Российской Федерации № 216 от 29.02.2020 дата запрета 
                   оборота немаркированной обуви перенесена на 1 июля 2020 года.
+                  <div class="video-area" v-html="link" :style="'padding-top: 10px;'"></div>
               </div>
             </transition>
   </div>
@@ -23,11 +24,18 @@
 import { ref } from 'vue'
 
 export default {
-    setup(){
+    props : {
+      data: {
+	    },
+    },
+    setup(props){
         let show=ref(true);
-
+        let link = props.data.VIDEO
+        //console.log(props.data.value.VIDEO)
+        console.log(props.data)
         return{
-            show
+            show,
+            link
         }
     }
 }
@@ -35,7 +43,6 @@ export default {
 
 
 <style lang="sass" scoped>
-
 .fade-enter-active, .fade-leave-active 
   transition: all 0.5s ease
 

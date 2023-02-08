@@ -20,6 +20,7 @@ export const mutations: MutationTree<ProductState> = {
 		state.product = data.PRODUCT;
 		state.product_images = data.IMAGES;
 		state.product_protect = data.PROTECT;
+		state.product_video_link = data.VIDEO;
 	},
 	[ProductMutations.SET_SEARCH_PRODUCT_CLEAR](state) {
 		state.search_product_result = [];
@@ -28,18 +29,21 @@ export const mutations: MutationTree<ProductState> = {
 		state.product = DEFAULT_PRODUCT;
 		state.product_images = [];
 		state.product_protect = [];
+		state.product_video_link = '';
 	},
 	[ProductMutations.SET_PRODUCT_RESULT](state, data){
 		state.product = data.PRODUCT;
 		state.product_images = data.IMAGES;
 		state.product_offers = data.OFFERS;
 		state.product_protect = data.PROTECT;
+		state.product_video_link = data.VIDEO;
 	},
 	[ProductMutations.SET_PRODUCT_CLEAR](state){
 		state.product = DEFAULT_PRODUCT;
 		state.product_images = [];
 		state.product_offers = [];
 		state.product_protect = [];
+		state.product_video_link = '';
 	},
 	[ProductMutations.SET_PRODUCT_ARTICLS](state, data: Found[]){
 		state.product_articls = data.map(x => {return {article: x.ARTICLE, name: x.NAME}});
