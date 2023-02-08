@@ -13,6 +13,7 @@ export enum KPMutations {
 	SET_KP_LOGO_LIST_NEXT = "SET_KP_LOGO_LIST_NEXT",
 	SET_KP_LOGO_LIST_PREV = "SET_KP_LOGO_LIST_PREV",
 	SET_KP_LOGO_LIST_SIFT = "SET_KP_LOGO_LIST_SIFT",
+	DELETE_KP_LOGO_BY_ID = "DELETE_KP_LOGO_BY_ID",
 }
 
 export const mutations: MutationTree<KPState> = {
@@ -28,8 +29,14 @@ export const mutations: MutationTree<KPState> = {
 	[KPMutations.SET_KP_ORG_NAME] (state, data: string): void{
 		state.org_name = data
 	},
-	[KPMutations.SET_KP_LOGO] (state, data: KPLogoList): void{
-		state.logo_list = [data].concat(state.logo_list)
+	//[KPMutations.SET_KP_LOGO] (state, data: KPLogoList): void{
+	//	state.logo_list = [data].concat(state.logo_list)
+	//},
+	[KPMutations.SET_KP_LOGO] (state, data): void{
+		// присваиваем новые значения, т.к. Битрикс дичит с файлами, и генерирует новые айдишники
+		state.logo_list_origin = _.cloneDeep(data)
+		state.logo_list_origin.reverse()
+		state.logo_list = _.cloneDeep(state.logo_list_origin)
 	},
 	[KPMutations.SET_KP_LOGO_LIST] (state, data: KPLogoList[]){
 		state.logo_list = data
@@ -50,5 +57,11 @@ export const mutations: MutationTree<KPState> = {
 		} else {
 			state.logo_list = state.logo_list.splice(state.logo_list.length + n ,-1*n).concat(state.logo_list)
 		}
-	}
+	},
+	[KPMutations.DELETE_KP_LOGO_BY_ID] (state, data): void{
+		// присваиваем новые значения, т.к. Битрикс дичит с файлами, и генерирует новые айдишники
+		state.logo_list_origin = _.cloneDeep(data)
+		state.logo_list_origin.reverse()
+		state.logo_list = _.cloneDeep(state.logo_list_origin)
+	},
 }

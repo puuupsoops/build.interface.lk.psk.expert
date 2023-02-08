@@ -107,13 +107,14 @@
                      @click="KPLocal.headerLogoAlign=KPHEADERLOGOALIGN.RIGHT"
                      v-html="ALIGN_RIGHT"
                 ></div>
+
               </div>
             </div>
-            <div class="kp-step-body-row-group"  :class="{'active': headerLogo}">
-              <div v-if="logoList.length>0" style="text-align: center"> Лого #{{ logoList[0].id }} </div>
+            <div v-if="logoList.length>0" class="kp-step-body-row-group"  :class="{'active': headerLogo}">
+              <div :style="'text-align: center;'"> Лого #{{ logoList[0].id }} </div>
               <PreloaderLocal v-if="loadingLogo" style="margin:auto"></PreloaderLocal>
               <div class="kp-step-body-column" v-if="headerLogo&&!loadingLogo" :style="'justify-content: center'">
-                <div class="product-slider-controls kp">
+                <!--<div class="product-slider-controls kp">
                   <span v-for="(slide, key) in logoListOrigin" :key="key">
                     <input type="radio" :id="String(slide.id)" >
                     <label
@@ -124,7 +125,7 @@
                         @click="shiftLogo(key)"
                     ></label>
                   </span>
-                </div>
+                </div>-->
                 <div class="product-slider-wrap" >
                   <button class='product-slider-arrow prev' @click="prevLogo"></button>
                   <transition-group name="product-slider-trans" class='product-slider' :style="'align-items: center; height: 500px;'"  tag="div">
@@ -135,6 +136,14 @@
                   <div class='product-slider-arrow next' @click="nextLogo"></div>
                 </div>
               </div>
+              <div :style="'text-align: center; margin-top: -50px;'">
+                <BaseButton
+                 @click="deleteLogo(currentLogoId)"
+                >Удалить</BaseButton>
+              </div>
+            </div>
+            <div v-else class="kp-step-title kp-step-body-row-group" :class="{'active': headerLogo}">
+              <span>Логотипов нет. Добавьте логотип.</span>
             </div>
           </div>
         </div>
@@ -155,6 +164,7 @@
       <div class="kp-step-actions-link right" @click="next()">Далее</div>
     </div>
   </div>
+  <Preloader v-if="showPreloader" />
 </template>
 
 <script setup lang="ts">
@@ -165,6 +175,8 @@ import SwitchButton from '/src/components/ui/SwitchButton.vue'
 import AmountInput from '/src/components/ui/AmountInput.vue'
 import CheckButton from '/src/components/ui/CheckButton.vue'
 import SelectInput from '/src/components/ui/SelectInput.vue'
+import BaseButton from '/src/components/ui/BaseButton.vue'
+import Preloader from '/src/components/Preloader.vue'
 
 import {KP, KP_HEADER_LOGO_ALIGN, KPLogoList} from '/src/models/KP'
 import { ALIGN_CENTER, ALIGN_LEFT, ALIGN_RIGHT} from '/src/components/ui/svg/align'
@@ -209,16 +221,19 @@ const loadingLogo = ref(false)
 const logoList = computed<KPLogoList[]>(() => store.getters.getKPLogoList) //Список загруженных лого для карусели
 const logoListOrigin = computed<KPLogoList[]>(() => store.getters.getKPLogoListOrigin) // Копия списка агруженных лого которая не меняется для списка контрол-бар
 
+const showPreloader = ref(false)
+
 const PDF = ref(true)       //Флаги
 const WORD = ref(false)
 const handleFileUpload = ( event: any) =>{
   if (!loadingLogo.value) {
     let img = event.target.files[0]
+    let filename = img.name
     let reader = new FileReader()
     reader.onloadend =  () => {
       imageBase64.value = <string>reader.result
       loadingLogo.value = true
-      store.dispatch(KPActions.ADD_KP_LOGO, imageBase64.value)
+      store.dispatch(KPActions.ADD_KP_LOGO, { name: filename, file: imageBase64.value })
           .then(()=>{
             KPLocal.value!.headerLogo = store.getters.getKPLogoId
             loadingLogo.value = false
@@ -264,9 +279,34 @@ const next = () => {
 
     if (pickupValue) KPLocal.value!.additionally.pickupValue = pickupValue
   }
-  if (logoList.value.length > 0) KPLocal.value!.headerLogo = logoList.value[0].id
+  if (logoList.value.length > 0) KPLocal.value!.headerLogo = Number(logoList.value[0].id)
 
   emits('next')
   emits('update:kp', KPLocal.value)
+}
+
+//удаляем логотип
+const deleteLogo = (index: number) => {
+  index=index-1
+  if(logoList.value.length == 1){
+    index = 0
+  }
+
+  showPreloader.value = true
+
+  //нужный индекс элемента, так как массив logoList постоянно перемещается
+  let i = 0;
+  let currentID = logoList.value[index].id;
+  logoListOrigin.value.forEach( (item, currentIndex)=>{
+    if(item.id == currentID){
+      i = currentIndex
+    }
+  } )
+
+
+  let data = { index: index, id: Number(logoListOrigin.value[i].id) }
+  store.dispatch(KPActions.DELETE_KP_LOGO, data)
+    .then( () => {showPreloader.value = false})
+  //store.commit(KPMutations.DELETE_KP_LOGO_BY_ID, data)
 }
 </script>

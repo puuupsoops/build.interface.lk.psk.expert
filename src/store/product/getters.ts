@@ -31,4 +31,5 @@ export const getters: GetterTree<ProductState, RootState> = {
 							const arr = state.product_offers.length != 0 ? state.product_offers.map(x=>x.ORGGUID) : [null]
 							return [...new Set(arr)][0]
 	},
+	getProductVideoLink: state => { console.log(state); return state.product_video_link}
 }

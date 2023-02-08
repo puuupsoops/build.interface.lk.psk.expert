@@ -42,7 +42,7 @@
 						:discount="discount"
 					/>
 				</div>
-				<ProductAddInfoCard></ProductAddInfoCard>
+				<ProductAddInfoCard :data="product"></ProductAddInfoCard>
 		
 			</div>
 			<div class="content-wrap-elem">
@@ -204,6 +204,7 @@ export default defineComponent({
 			productFound: computed(() => store.getters.getProductFound),
 			productImages: computed(() => store.getters.getProductImages),
 			productProtect: computed(() => store.getters.getProductProtect),
+			productVideoLink: computed(() => store.getters.getProductVideoLink),
 			discount,
 			productSearch,
 			isLoad,
