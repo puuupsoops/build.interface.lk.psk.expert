@@ -284,7 +284,7 @@ const next = () => {
 
     if (pickupValue) KPLocal.value!.additionally.pickupValue = pickupValue
   }
-  if (logoList.value.length > 0) KPLocal.value!.headerLogo = logoList.value[0].id
+  if (logoList.value.length > 0) KPLocal.value!.headerLogo = Number(logoList.value[0].id)
 
   emits('next')
   emits('update:kp', KPLocal.value)
@@ -296,7 +296,7 @@ const deleteLogo = (index: number) => {
   if(logoList.value.length == 1){
     index = 0
   }
-  
+
   showPreloader.value = true
   console.log(index)
   console.log(logoList.value[index])
