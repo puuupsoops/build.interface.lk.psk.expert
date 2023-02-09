@@ -1,6 +1,6 @@
 <template>
-<div class="product-search" 
-	:class="{'show': show}"
+<div class="product-search show" 
+	:class="''/*{'show': show}*/"
 	ref="target">
 	<div class="product-search-input-container">
 		<div :class="'product-search-input' + (show_options ? ' options':'')" >
