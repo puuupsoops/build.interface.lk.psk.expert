@@ -168,7 +168,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, PropType, ref } from 'vue'
+import {computed, onUnmounted, PropType, ref} from 'vue'
 import _ from "lodash";
 import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 import SwitchButton from '/src/components/ui/SwitchButton.vue'
@@ -284,7 +284,11 @@ const next = () => {
   emits('next')
   emits('update:kp', KPLocal.value)
 }
-
+onUnmounted( ()=>{
+  if (props.active) {
+    emits('update:kp', KPLocal.value)
+  }
+})
 //удаляем логотип
 const deleteLogo = (index: number) => {
   index=index-1

@@ -1,6 +1,6 @@
 import { MutationTree } from "vuex";
 import { KPState } from "./types";
-import { KPLogoList } from "/src/models/KP"
+import { KP, KPLogoList } from "/src/models/KP"
 import _ from 'lodash'
 
 
@@ -14,6 +14,8 @@ export enum KPMutations {
 	SET_KP_LOGO_LIST_PREV = "SET_KP_LOGO_LIST_PREV",
 	SET_KP_LOGO_LIST_SIFT = "SET_KP_LOGO_LIST_SIFT",
 	DELETE_KP_LOGO_BY_ID = "DELETE_KP_LOGO_BY_ID",
+	SET_KP_STEP = "SET_KP_STEP",
+	SET_KP = "SET_KP"
 }
 
 export const mutations: MutationTree<KPState> = {
@@ -63,5 +65,11 @@ export const mutations: MutationTree<KPState> = {
 		state.logo_list_origin = _.cloneDeep(data)
 		state.logo_list_origin.reverse()
 		state.logo_list = _.cloneDeep(state.logo_list_origin)
+	},
+	[KPMutations.SET_KP_STEP] (state, data: number):void {
+		state.step = data
+	},
+	[KPMutations.SET_KP] (state, data: KP):void {
+		state.kp = _.cloneDeep(data)
 	},
 }

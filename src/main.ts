@@ -5,7 +5,7 @@ import App from '/src/App.vue'
 const app = createApp(App)
 
 // Vuex4 
-import { store, key } from '/src/store/index'
+import { store, key } from '/src/store'
 app.use(store, key)
 
 // Роуты в приложении

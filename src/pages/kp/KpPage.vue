@@ -92,17 +92,16 @@ import KpStep4 from '/src/components/cards/KP/KpStep4.vue'
 import Preloader from '/src/components/Preloader.vue'
 
 
-import { useStore } from '/src/store'
-import {computed, ref} from 'vue'
+import {useStore} from '/src/store'
+import {computed, ref, watch} from 'vue'
 import _ from 'lodash'
-import { OrdersActions } from '/src/store/orders/actions'
-import { CompanyActions } from '/src/store/company/actions'
+import {OrdersActions} from '/src/store/orders/actions'
+import {CompanyActions} from '/src/store/company/actions'
 import {KP, KP_TYPES} from '/src/models/KP'
-import { KPActions } from '/src/store/kp/actions'
-import { ShipmentsActions } from '/src/store/shipments/actions'
-import { DefaultKP } from '/src/store/kp/types'
-
-
+import {KPActions} from '/src/store/kp/actions'
+import {ShipmentsActions} from '/src/store/shipments/actions'
+import {DefaultKP} from '/src/store/kp/types'
+import {KPMutations} from "/src/store/kp/mutations";
 
 
 const store = useStore()
@@ -124,6 +123,10 @@ if (!store.getters.isOrders) {
 store.dispatch(KPActions.GET_KP_LOGO)
 store.dispatch(ShipmentsActions.GET_SHIPMENTS_ADDRESS)
 
+NewKP.value = store.getters.getKP
+step.value = store.getters.getKPStep
+if (step.value != 1) kpType.value = KP_TYPES.CATALOG_POS
+
 const isDraft = computed(()=> store.getters.getOrderDraftCount > 0) // есть ли черновики
 
 const nextStep = () => {
@@ -136,15 +139,21 @@ const nextStep = () => {
     store.dispatch(KPActions.SEND_KP, kp).finally(() => {
       loading_send_kp.value = false
     })
+    store.commit(KPMutations.SET_KP_STEP, 1)
   }
+  store.commit(KPMutations.SET_KP_STEP, step.value)
 }
 const prevStep = () =>{
-    if( step.value > 1) step.value = step.value - 1
+  if( step.value > 1) step.value = step.value - 1
+  store.commit(KPMutations.SET_KP_STEP, step.value)
 }
 const save = () => {
   store.dispatch(KPActions.SAVE_KP)
 }
 
+watch(NewKP, ()=>{
+  store.commit(KPMutations.SET_KP, NewKP.value)
+})
 
 
 </script>

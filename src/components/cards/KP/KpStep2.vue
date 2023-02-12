@@ -64,11 +64,10 @@
       </div>
       <div v-if="order !== -1 || draft !== -1 || type === KP_TYPES.CATALOG_POS ">
         <PreloaderLocal v-if="loading" center/>
-        <OrderDraftCard v-else
+        <OrderDraftCard v-else-if="active"
             v-model:order="order_detail"
             is-kp
         />
-
       </div>
     </div>
     <div class="kp-step-actions ">
@@ -89,7 +88,7 @@
   import SimpleSelect from '/src/components/ui/SimpleSelect.vue'
   import BaseInput from '/src/components/ui/BaseInput.vue'
 
-  import { computed, PropType, ref, watch } from 'vue'
+  import {computed, onUnmounted, PropType, ref, watch} from 'vue'
   import _ from 'lodash'
   import { useStore } from '/src/store'
   import { OrderActions } from '/src/store/order/actions'
@@ -137,6 +136,8 @@
 
   const date = ref(new Date().toLocaleString('ru').substring(0, 10))
   const order_detail = ref<OrderStateOrder>(_.cloneDeep(DefaultOrder))
+  order_detail.value.position = _.cloneDeep(props.kp.offer.position)
+  console.log(order_detail.value)
   const companyList = computed<SelectInputData[]>(() => store.getters.getCompanysListInput().filter((x: SelectInputData) => x.id !== ''))
 
   watch(order, ()=>{
@@ -154,7 +155,12 @@
     }
   })
 
-
+  onUnmounted( ()=>{
+    if (props.active) {
+      KPLocal.value.offer.position = _.cloneDeep(order_detail.value.position)
+      emits('update:kp', KPLocal.value)
+    }
+  })
   const prev = () => {
     order.value = -1
     draft.value = -1
@@ -169,6 +175,7 @@
     emits('next')
     emits('update:kp', KPLocal.value)
   }
+
   const doSearch = () =>{
 
       if ( customer.value.length >=2) {

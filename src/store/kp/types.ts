@@ -7,6 +7,7 @@ export interface KPState {
     org_name: string,
     logo_list: KPLogoList[],
     logo_list_origin: KPLogoList[],
+    step: number
 }
 
 export const DefaultKP:KP = {
