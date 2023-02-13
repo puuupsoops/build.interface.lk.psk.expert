@@ -18,6 +18,4 @@ app.use(VueNativeSock, import.meta.env.VITE_APP_WS_LOCATION, {store: store,forma
 
 export const globalProperties = app.config.globalProperties.$socket
 
-
-
 app.mount('#app')

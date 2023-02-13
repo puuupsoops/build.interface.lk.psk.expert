@@ -138,8 +138,8 @@
 	</div>
 
 		<SideNavigation 
-			v-model="modelValue"
-			@close="$emit('update:modelValue', !modelValue)"
+			:modelValue="modelValue"
+			@close="$emit(`update:modelValue`, !modelValue)"
 		></SideNavigation>
 		<OrderDraftModal v-model="showDraft"/>
 </template>

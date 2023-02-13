@@ -159,16 +159,43 @@
         </div>
       </div>
     </div>
+
+    <!--<div style="position: relative;" width="720" height="900" >
+      <canvas width="720" height="900" style="z-index: -1;"></canvas>
+      <canvas id="canvas-back" width="720" height="900" 
+        style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+      <canvas id="canvas-front" width="720" height="900" 
+        style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+    </div>-->
+
+    <!--<canvas id="c1" width="720" height="900"></canvas>-->
+
+    <div 
+      :class="'zoom-wrapper'" 
+      :style="'display: contents; width: 720px; height: 900px;'" 
+      @wheel="Wheel()"
+      >
+      <div ref="zoomarea" id="zoom-area" @click="ZoomClick()">
+        <img :style="'pointer-events: none;'" src="https://picsum.photos/id/237/200/300"/>
+      </div>
+
+      <img
+       :style="'width: 100%;'" 
+       src="https://psk.expert/upload/iblock/5ca/d72rap9a2eeisgcsq409l0lg814gqtjx/kos600_kos610_b.jpg" />
+
+    </div>
+
     <div class="kp-step-actions ">
       <div class="kp-step-actions-link" @click="$emit('prev')">Назад</div>
       <div class="kp-step-actions-link right" @click="next()">Далее</div>
     </div>
   </div>
+
   <Preloader v-if="showPreloader" />
 </template>
 
 <script setup lang="ts">
-import {computed, PropType, ref } from 'vue'
+import {computed, PropType, ref, onMounted, nextTick } from 'vue'
 import _ from "lodash";
 import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 import SwitchButton from '/src/components/ui/SwitchButton.vue'
@@ -188,6 +215,8 @@ import {KPMutations} from '/src/store/kp/mutations'
 import {useStore} from '/src/store'
 import {ShipmentsAddress} from "/src/models/Shipments";
 
+import Panzoom from '@panzoom/panzoom';
+import  {fabric}  from "fabric";
 
 const props = defineProps({
   active: {
@@ -201,6 +230,118 @@ const props = defineProps({
 const emits = defineEmits(['next','prev','update:kp'])
 const store = useStore()
 
+const zoomArea = ref()
+
+onMounted(() => {
+
+})
+
+nextTick( () => {
+  zoomArea.value = window.document.getElementById('zoom-area');
+  console.log(zoomArea)
+  console.log(zoomArea.value)
+
+  const panzoom = Panzoom(zoomArea.value, {
+      maxScale: 6
+  });
+  //const Wheel = panzoom.zoomWithWheel
+})
+
+console.log(zoomArea)
+console.log(zoomArea.value)
+
+//const panzoom = Panzoom(zoomArea.value, {
+//    maxScale: 6
+//  });
+
+//let Wheel = panzoom.zoomWithWheel
+
+const ZoomClick = () => {
+  console.log('ZoomClick')
+}
+//Canvas Context
+//const cxt = ref()
+
+/*
+onMounted(() => {
+  let canvasBack = window.document.getElementById('canvas-back')
+  let canvasFront = window.document.getElementById('canvas-front')
+  cxt.value = canvasBack.getContext('2d')
+  //observer.observe(target);
+  //console.log(target)
+
+  const canvasBackground = new Image(720,900)
+  canvasBackground.src = 'https://psk.expert/upload/iblock/5ca/d72rap9a2eeisgcsq409l0lg814gqtjx/kos600_kos610_b.jpg'
+  //cxt.value.drawImage(canvasBackground, 0, 0, 720, 900)
+
+  let isDraggable = false
+  let currentX = canvasFront.width / 2
+  let currentY = canvasFront.height / 2
+  let initialWidthLogo = 200
+  let initialHeightLogo = 200
+
+  let startLogoPosX = currentX - initialWidthLogo/2
+  let startLogoPosY = currentY - initialHeightLogo/2
+
+  // Make sure the image is loaded first otherwise nothing will draw.
+  canvasBackground.onload = function() {
+    canvasBack.getContext('2d').drawImage(canvasBackground,0,0,720,900);
+}
+
+  const imageLogo = new Image()
+  imageLogo.src = 'https://picsum.photos/id/237/200/300'
+  imageLogo.crossOrigin = 'Anonymous'
+
+  imageLogo.onload = () => {
+    canvasFront.getContext('2d').drawImage(imageLogo,
+    startLogoPosX,startLogoPosY,
+    initialWidthLogo,initialHeightLogo);
+  }
+//panzoom.value = Panzoom(window.document.getElementById('zoom-area'), {
+//  maxScale: 6
+//});
+//console.log(panzoom)
+//console.log(panzoom.value.zoomWithWheel)
+/*
+canvasFront.onmousedown = (e) => {
+    console.log('layerX', e.layerX,'layerY', e.layerY)
+    console.log('layerX', e.layerX / 2,'layerY', e.layerY)
+    console.log('startLogoPosX', startLogoPosX, 'startLogoPosY', startLogoPosY)
+    console.log('mouseDownCanvas', e)
+    if( e.layerX <= (startLogoPosX + imageLogo.width/2) && 
+        e.layerX >= (startLogoPosX - imageLogo.width/2) &&
+        e.layerY <= (startLogoPosY + imageLogo.height/2) && 
+        e.layerY >= (startLogoPosY - imageLogo.height/2)
+        ) {
+      isDraggable = true
+      console.log('click Image')
+    }else{
+      console.log('didnt click Image')
+    }
+    console.log('isDraggable', isDraggable)
+}
+
+canvasFront.onmouseup = (e) => {
+  //console.log('mouseUpCanvas', e)
+  isDraggable = false
+  //console.log('isDraggable', isDraggable)
+}
+
+canvasFront.onmouseout = (e) => {
+  //console.log('mouseOutCanvas', e)
+  isDraggable = false
+  //console.log('isDraggable', isDraggable)
+}
+
+})
+console.log(cxt)
+*/
+
+//console.log(panzoom)
+//const Wheel = panzoom.value.zoomWithWheel
+//const ZoomClick = () => {
+//  console.log('clicked!')
+//}
 
 
 const KPLocal = ref(props.kp)
