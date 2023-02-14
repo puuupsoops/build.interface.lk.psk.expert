@@ -159,16 +159,43 @@
         </div>
       </div>
     </div>
+    
+    <div :class="'kp-canvas-controller'">
+      <span>
+        <input ref="file" type="file" @change="uploadLogo()">
+      </span>
 
-    <!--<div style="position: relative;" width="720" height="900" >
-      <canvas width="720" height="900" style="z-index: -1;"></canvas>
-      <canvas id="canvas-back" width="720" height="900" 
-        style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
-      <canvas id="canvas-front" width="720" height="900" 
-        style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
-    </div>-->
+      <span>
+        <base-button @onClick="moveRight()">Вправо</base-button>
+        <base-button @onClick="moveLeft()">Влево</base-button>
+        <base-button @mousedown="moveUp()">Вверх</base-button>
+        <base-button @onClick="moveDown()">Вниз</base-button>
+      </span>
 
-    <!--<canvas id="c1" width="720" height="900"></canvas>-->
+      <span>
+        <base-button @onClick="zoomUp()">Увеличить</base-button>
+        <base-button @onClick="zoomDown()">Уменьшить</base-button>
+      </span>
+
+      <span>
+        <base-button @onClick="download()" :style="'background-color: oldlace;'">Сохранить</base-button>
+      </span>
+    </div>
+    
+    <div>
+      <span>
+        <div style="position: relative;" width="720" height="900" >
+          <canvas width="720" height="900" style="z-index: -1;"></canvas>
+          <canvas id="canvas-back" width="720" height="900" 
+            style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+          <canvas id="canvas-front" width="720" height="900" 
+            style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+        </div>
+      </span>
+      <span>
+        <canvas id="c1" width="720" height="900"></canvas>
+      </span>
+    </div>
 
     <div 
       :class="'zoom-wrapper'" 
@@ -232,10 +259,6 @@ const store = useStore()
 
 const zoomArea = ref()
 
-onMounted(() => {
-
-})
-
 nextTick( () => {
   zoomArea.value = window.document.getElementById('zoom-area');
   console.log(zoomArea)
@@ -260,10 +283,140 @@ const ZoomClick = () => {
   console.log('ZoomClick')
 }
 //Canvas Context
-//const cxt = ref()
+const cxt = ref()
 
-/*
+const imageLogo = ref()
+
+const canvasFrontRef = ref()
+const canvasBackRef = ref()
+
+//test
+const canvasTest = ref()
+
+const startLogoPosX = ref()
+const startLogoPosY = ref()
+
+const startImageWidth = ref(200)
+const startImageHeight = ref(200)
+
+const file = ref(null)
+
+const toBase64 = res => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(res);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+});
+
+const download = () => {
+  console.log('Image download')
+  canvasTest.value.getContext('2d').clearRect(0,0,canvasTest.value.width, canvasTest.value.height)
+
+  canvasTest.value.getContext('2d').drawImage(canvasBackRef.value,0,0)
+  canvasTest.value.getContext('2d').drawImage(canvasFrontRef.value,0,0)
+
+  //console.log(canvasTest.value.toDataURL())
+  canvasTest.value.toBlob( (blob) => {
+      console.log(blob)
+      const url = window.URL.createObjectURL(blob);
+					const link = document.createElement('a');
+					link.href = url;
+					link.setAttribute('download', 'image.png');
+					document.body.appendChild(link);
+					link.click();
+					
+					// clean up "a" element & remove ObjectURL
+					document.body.removeChild(link);
+					window.URL.revokeObjectURL(url);
+  })
+}
+
+const uploadLogo = async () => {
+  let fileBase64 = await toBase64(file.value.files[0])
+  
+  imageLogo.value = new Image()
+  imageLogo.value.src = fileBase64
+
+  imageLogo.value.onload = () => {
+    console.log('Logo load',imageLogo.value)
+
+    canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
+
+    canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
+    startLogoPosX.value,startLogoPosY.value,
+    startImageWidth,startImageHeight);
+    canvasFrontRef.value.getContext('2d').save()
+
+    //костыль: двигаем изображение, т.к. не отображается после загрузки
+    moveRight()
+  }
+}
+
+const zoomUp = () => {
+  canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
+
+  startLogoPosX.value++
+
+  canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
+  startLogoPosX.value,startLogoPosY.value,
+  startImageWidth.value++,startImageHeight.value++);
+}
+
+const zoomDown = () => {
+  canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
+
+  startLogoPosX.value++
+
+  canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
+  startLogoPosX.value,startLogoPosY.value,
+  startImageWidth.value--,startImageHeight.value--);
+}
+
+const moveRight = () => {
+  canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
+
+  startLogoPosX.value++
+
+  canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
+  startLogoPosX.value,startLogoPosY.value,
+  startImageWidth.value,startImageHeight.value);
+}
+
+const moveLeft = () => {
+  canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
+
+  startLogoPosX.value--
+
+  canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
+  startLogoPosX.value,startLogoPosY.value,
+  startImageWidth.value,startImageHeight.value);
+}
+
+const moveUp = () => {
+  canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
+
+  startLogoPosY.value--
+
+  canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
+  startLogoPosX.value,startLogoPosY.value,
+  startImageWidth.value,startImageHeight.value);
+}
+
+const moveDown = () => {
+  canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
+
+  startLogoPosY.value++
+
+  canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
+  startLogoPosX.value,startLogoPosY.value,
+  startImageWidth.value,startImageHeight.value);
+}
+
 onMounted(() => {
+  canvasFrontRef.value = window.document.getElementById('canvas-front')
+  canvasBackRef.value = window.document.getElementById('canvas-back')
+  canvasTest.value = window.document.getElementById('c1')
+
   let canvasBack = window.document.getElementById('canvas-back')
   let canvasFront = window.document.getElementById('canvas-front')
   cxt.value = canvasBack.getContext('2d')
@@ -271,7 +424,17 @@ onMounted(() => {
   //console.log(target)
 
   const canvasBackground = new Image(720,900)
-  canvasBackground.src = 'https://psk.expert/upload/iblock/5ca/d72rap9a2eeisgcsq409l0lg814gqtjx/kos600_kos610_b.jpg'
+  //let back = await fetch('', {mode: 'no-cors'})
+  //.then(res => res.blob())
+  //console.log('fetch' , back)
+    // Make sure the image is loaded first otherwise nothing will draw.
+  canvasBackground.onload = function() {
+    canvasBack.getContext('2d').drawImage(canvasBackground,0,0,720,900)
+    canvasBack.getContext('2d').save()
+  }
+
+  canvasBackground.crossOrigin = 'Anonymous'
+  canvasBackground.src = 'http://89.111.136.61/upload/images/kos600_kos610_b.jpg'
   //cxt.value.drawImage(canvasBackground, 0, 0, 720, 900)
 
   let isDraggable = false
@@ -280,38 +443,39 @@ onMounted(() => {
   let initialWidthLogo = 200
   let initialHeightLogo = 200
 
-  let startLogoPosX = currentX - initialWidthLogo/2
-  let startLogoPosY = currentY - initialHeightLogo/2
+  //let startLogoPosX = currentX - initialWidthLogo/2
+  //let startLogoPosY = currentY - initialHeightLogo/2
+  startLogoPosX.value = currentX - initialWidthLogo/2
+  startLogoPosY.value = currentY - initialHeightLogo/2
 
-  // Make sure the image is loaded first otherwise nothing will draw.
-  canvasBackground.onload = function() {
-    canvasBack.getContext('2d').drawImage(canvasBackground,0,0,720,900);
-}
+  imageLogo.value = new Image()
+  imageLogo.value.src = 'https://picsum.photos/id/237/200/300'
+  imageLogo.value.crossOrigin = 'Anonymous'
 
-  const imageLogo = new Image()
-  imageLogo.src = 'https://picsum.photos/id/237/200/300'
-  imageLogo.crossOrigin = 'Anonymous'
+  imageLogo.value.onload = () => {
+    canvasFront.getContext('2d').drawImage(
+      imageLogo.value,
+      startLogoPosX.value,startLogoPosY.value,
+      initialWidthLogo,initialHeightLogo
+    )
 
-  imageLogo.onload = () => {
-    canvasFront.getContext('2d').drawImage(imageLogo,
-    startLogoPosX,startLogoPosY,
-    initialWidthLogo,initialHeightLogo);
+    canvasFront.getContext('2d').save()
   }
 //panzoom.value = Panzoom(window.document.getElementById('zoom-area'), {
 //  maxScale: 6
 //});
 //console.log(panzoom)
 //console.log(panzoom.value.zoomWithWheel)
-/*
+
 canvasFront.onmousedown = (e) => {
     console.log('layerX', e.layerX,'layerY', e.layerY)
     console.log('layerX', e.layerX / 2,'layerY', e.layerY)
-    console.log('startLogoPosX', startLogoPosX, 'startLogoPosY', startLogoPosY)
+    console.log('startLogoPosX', startLogoPosX.value, 'startLogoPosY', startLogoPosY.value)
     console.log('mouseDownCanvas', e)
-    if( e.layerX <= (startLogoPosX + imageLogo.width/2) && 
-        e.layerX >= (startLogoPosX - imageLogo.width/2) &&
-        e.layerY <= (startLogoPosY + imageLogo.height/2) && 
-        e.layerY >= (startLogoPosY - imageLogo.height/2)
+    if( e.layerX <= (startLogoPosX.value + imageLogo.width/2) && 
+        e.layerX >= (startLogoPosX.value - imageLogo.width/2) &&
+        e.layerY <= (startLogoPosY.value + imageLogo.height/2) && 
+        e.layerY >= (startLogoPosY.value - imageLogo.height/2)
         ) {
       isDraggable = true
       console.log('click Image')
@@ -333,9 +497,10 @@ canvasFront.onmouseout = (e) => {
   //console.log('isDraggable', isDraggable)
 }
 
-})
-console.log(cxt)
-*/
+}
+)
+//console.log(cxt)
+
 
 //console.log(panzoom)
 //const Wheel = panzoom.value.zoomWithWheel
@@ -451,3 +616,15 @@ const deleteLogo = (index: number) => {
   //store.commit(KPMutations.DELETE_KP_LOGO_BY_ID, data)
 }
 </script>
+
+<style lang="sass">
+.kp-canvas-controller
+  margin-bottom: 15px
+
+.kp-canvas-controller
+  & > span
+    margin-right: 20px
+  & > span > button
+    margin-right: 5px
+
+</style>>
