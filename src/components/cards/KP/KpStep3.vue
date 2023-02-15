@@ -161,55 +161,46 @@
     </div>
     
     <div :class="'kp-canvas-controller'">
-      <span>
+      <div>
         <input ref="file" type="file" @change="uploadLogo()">
-      </span>
+      </div>
 
-      <span>
-        <base-button @onClick="moveRight()">Вправо</base-button>
-        <base-button @onClick="moveLeft()">Влево</base-button>
-        <base-button @mousedown="moveUp()">Вверх</base-button>
-        <base-button @onClick="moveDown()">Вниз</base-button>
-      </span>
+      <div :style="'display: grid;'">
+        <span><base-button @mousedown="moveUp()">🠕</base-button></span>
+        <div>
+          <base-button @onClick="moveLeft()">🠔</base-button>
+          <base-button @onClick="moveDown()">🠗</base-button>
+          <base-button @onClick="moveRight()">➝</base-button>
+        </div>
+      </div>
 
-      <span>
-        <base-button @onClick="zoomUp()">Увеличить</base-button>
-        <base-button @onClick="zoomDown()">Уменьшить</base-button>
-      </span>
+      <div>
+        <span :style="'margin-bottom: 10px;'">Масштаб нанесения</span>
+        <div :style="'display: flex;'">
+          <div><base-button @onClick="zoomDown(1)">-</base-button></div>
+          <div><BaseInput v-model="scaleLogo" :class="'input-text-field-modify'"/></div>
+          <div><base-button @onClick="zoomUp(1)">+</base-button></div>
+        </div>
+      </div>
 
-      <span>
+      <div>
         <base-button @onClick="download()" :style="'background-color: oldlace;'">Сохранить</base-button>
-      </span>
+      </div>
     </div>
     
     <div>
       <span>
-        <div style="position: relative;" width="720" height="900" >
-          <canvas width="720" height="900" style="z-index: -1;"></canvas>
-          <canvas id="canvas-back" width="720" height="900" 
+        <div style="position: relative;" width="720" height="1080" >
+          <canvas width="720" height="1080" style="z-index: -1;"></canvas>
+          <canvas id="canvas-back" width="720" height="1080" 
             style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
-          <canvas id="canvas-front" width="720" height="900" 
+          <canvas id="canvas-front" width="720" height="1080" 
             style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
         </div>
       </span>
       <span>
-        <canvas id="c1" width="720" height="900"></canvas>
+        <canvas id="c1" width="720" height="1080"></canvas>
       </span>
-    </div>
-
-    <div 
-      :class="'zoom-wrapper'" 
-      :style="'display: contents; width: 720px; height: 900px;'" 
-      @wheel="Wheel()"
-      >
-      <div ref="zoomarea" id="zoom-area" @click="ZoomClick()">
-        <img :style="'pointer-events: none;'" src="https://picsum.photos/id/237/200/300"/>
-      </div>
-
-      <img
-       :style="'width: 100%;'" 
-       src="https://psk.expert/upload/iblock/5ca/d72rap9a2eeisgcsq409l0lg814gqtjx/kos600_kos610_b.jpg" />
-
     </div>
 
     <div class="kp-step-actions ">
@@ -231,6 +222,7 @@ import CheckButton from '/src/components/ui/CheckButton.vue'
 import SelectInput from '/src/components/ui/SelectInput.vue'
 import BaseButton from '/src/components/ui/BaseButton.vue'
 import Preloader from '/src/components/Preloader.vue'
+import BaseInput from '/src/components/ui/BaseInput.vue'
 
 import {KP, KP_HEADER_LOGO_ALIGN, KPLogoList} from '/src/models/KP'
 import { ALIGN_CENTER, ALIGN_LEFT, ALIGN_RIGHT} from '/src/components/ui/svg/align'
@@ -299,8 +291,13 @@ const canvasTest = ref()
 const startLogoPosX = ref()
 const startLogoPosY = ref()
 
-const startImageWidth = ref(200)
-const startImageHeight = ref(200)
+const startImageWidth = 200
+const startImageHeight = 200
+
+const currentLogoImageWidth = ref(startImageWidth)
+const currentLogoImageHeight = ref(startImageHeight)
+
+const scaleLogo = ref('100%')
 
 const file = ref(null)
 
@@ -347,7 +344,7 @@ const uploadLogo = async () => {
 
     canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
     startLogoPosX.value,startLogoPosY.value,
-    startImageWidth,startImageHeight);
+    currentLogoImageWidth.value,currentLogoImageHeight.value);
     canvasFrontRef.value.getContext('2d').save()
 
     //костыль: двигаем изображение, т.к. не отображается после загрузки
@@ -355,24 +352,24 @@ const uploadLogo = async () => {
   }
 }
 
-const zoomUp = () => {
+const zoomUp = (n: number) => {
   canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
 
-  startLogoPosX.value++
+  //startLogoPosX.value++
 
   canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
   startLogoPosX.value,startLogoPosY.value,
-  startImageWidth.value++,startImageHeight.value++);
+  currentLogoImageWidth.value += n,currentLogoImageHeight.value += n);
 }
 
-const zoomDown = () => {
+const zoomDown = (n: number) => {
   canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
 
-  startLogoPosX.value++
+  //startLogoPosX.value++
 
   canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
   startLogoPosX.value,startLogoPosY.value,
-  startImageWidth.value--,startImageHeight.value--);
+  currentLogoImageWidth.value -= n,currentLogoImageHeight.value -= n);
 }
 
 const moveRight = () => {
@@ -382,7 +379,7 @@ const moveRight = () => {
 
   canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
   startLogoPosX.value,startLogoPosY.value,
-  startImageWidth.value,startImageHeight.value);
+  currentLogoImageWidth.value,currentLogoImageHeight.value);
 }
 
 const moveLeft = () => {
@@ -392,7 +389,7 @@ const moveLeft = () => {
 
   canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
   startLogoPosX.value,startLogoPosY.value,
-  startImageWidth.value,startImageHeight.value);
+  currentLogoImageWidth.value,currentLogoImageHeight.value);
 }
 
 const moveUp = () => {
@@ -402,7 +399,7 @@ const moveUp = () => {
 
   canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
   startLogoPosX.value,startLogoPosY.value,
-  startImageWidth.value,startImageHeight.value);
+  currentLogoImageWidth.value,currentLogoImageHeight.value);
 }
 
 const moveDown = () => {
@@ -412,7 +409,7 @@ const moveDown = () => {
 
   canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
   startLogoPosX.value,startLogoPosY.value,
-  startImageWidth.value,startImageHeight.value);
+  currentLogoImageWidth.value,currentLogoImageHeight.value);
 }
 
 const getFrontCanvasOffset = () => {
@@ -420,6 +417,10 @@ const getFrontCanvasOffset = () => {
   canvasOffsetX.value = canvasOffset.x
   canvasOffsetY.value = canvasOffset.y
   console.log('getFrontCanvasOffset X: ', canvasOffsetX.value, ' Y: ',canvasOffsetY.value )
+}
+
+const disabledWheel = function(e:any) {
+  e.preventDefault()
 }
 
 onMounted(() => {
@@ -489,9 +490,9 @@ canvasFront.onmousedown = (e) => {
     let clientY = e.clientY - canvasOffsetY.value
 
     let logoLeft = startLogoPosX.value
-    let logoRight = startLogoPosX.value + startImageWidth.value
+    let logoRight = startLogoPosX.value + currentLogoImageWidth.value
     let logoTop = startLogoPosY.value
-    let logoBottom = startLogoPosY.value + startImageHeight.value
+    let logoBottom = startLogoPosY.value + currentLogoImageHeight.value
 
     /*
     if( e.layerX <= (startLogoPosX.value + imageLogo.width/2) && 
@@ -508,6 +509,9 @@ canvasFront.onmousedown = (e) => {
     {
       isDraggable = true
       console.log('click Image')
+
+      window.addEventListener('wheel', disabledWheel, {passive:false})
+       
     }else{
       console.log('didnt click Image')
     }
@@ -519,20 +523,27 @@ canvasFront.onmouseup = (e) => {
   //console.log('mouseUpCanvas', e)
   isDraggable = false
   //console.log('isDraggable', isDraggable)
+  window.removeEventListener('wheel', disabledWheel, false)
 }
 
 canvasFront.onmouseout = (e) => {
+  if(!isDraggable) {
+    return;
+  }
   //console.log('mouseOutCanvas', e)
   isDraggable = false
   //console.log('isDraggable', isDraggable)
+  window.removeEventListener('wheel', disabledWheel, false)
 }
 
 canvasFront.onmousemove = (e) => {
   if(!isDraggable) {
     return
   }
-  let clientX = (e.clientX - canvasOffsetX.value) - startLogoPosX.value - 100
-  let clientY = (e.clientY - canvasOffsetY.value) - startLogoPosY.value - 100
+
+  //вычисляем центр изображения
+  let clientX = (e.clientX - canvasOffsetX.value) - startLogoPosX.value - currentLogoImageWidth.value/2
+  let clientY = (e.clientY - canvasOffsetY.value) - startLogoPosY.value - currentLogoImageHeight.value/2
 
   console.log('move x:', clientX, ' y: ', clientY )
 
@@ -541,8 +552,35 @@ canvasFront.onmousemove = (e) => {
   canvasFrontRef.value.getContext('2d').drawImage(
       imageLogo.value,
       startLogoPosX.value += clientX, startLogoPosY.value += clientY,
-      initialWidthLogo,initialHeightLogo
+      currentLogoImageWidth.value,currentLogoImageHeight.value
   )
+}
+
+canvasFront.onwheel = (e) => {
+  if(!isDraggable) {
+    return;
+  }
+
+  // e.deltaY -100 - вверх, 100 - вниз
+  if(e.deltaY > 0) {
+    console.log('wheel down',e.deltaY)
+    
+    //лимит
+    if(currentLogoImageWidth.value <= 10 || currentLogoImageHeight.value <= 10) {
+      return;
+    }
+
+    zoomDown(10)
+  }else {
+    console.log('wheel up',e.deltaY)
+
+    //лимит width="720" 960 height="900" 1140
+    if(currentLogoImageWidth.value >= 700 || currentLogoImageHeight.value >= 800) {
+      return;
+    }
+    zoomUp(10)
+  }
+  
 }
 
 }
@@ -667,12 +705,27 @@ const deleteLogo = (index: number) => {
 
 <style lang="sass">
 .kp-canvas-controller
+  display: flex
+  align-items: end
   margin-bottom: 15px
 
 .kp-canvas-controller
-  & > span
+  & > div
     margin-right: 20px
-  & > span > button
+  & > div > button
     margin-right: 5px
-
+  & > div > span
+    display: flex
+  & > div > span > button
+    margin: 0px auto 5px 45px
+  & > div > div > button
+    margin-right: 5px
+  & > div > div > div > button
+    margin-right: 5px
+    margin-left: 5px
+    margin-top: 5px
+.input-text-field-modify > .input-text-field
+  & > input
+    width: 65px
+    margin-top: 5px
 </style>>
