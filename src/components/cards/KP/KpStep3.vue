@@ -288,6 +288,9 @@ const cxt = ref()
 const imageLogo = ref()
 
 const canvasFrontRef = ref()
+const canvasOffsetX = ref()
+const canvasOffsetY = ref()
+
 const canvasBackRef = ref()
 
 //test
@@ -412,6 +415,13 @@ const moveDown = () => {
   startImageWidth.value,startImageHeight.value);
 }
 
+const getFrontCanvasOffset = () => {
+  let canvasOffset = canvasFrontRef.value.getBoundingClientRect()
+  canvasOffsetX.value = canvasOffset.x
+  canvasOffsetY.value = canvasOffset.y
+  console.log('getFrontCanvasOffset X: ', canvasOffsetX.value, ' Y: ',canvasOffsetY.value )
+}
+
 onMounted(() => {
   canvasFrontRef.value = window.document.getElementById('canvas-front')
   canvasBackRef.value = window.document.getElementById('canvas-back')
@@ -435,6 +445,7 @@ onMounted(() => {
 
   canvasBackground.crossOrigin = 'Anonymous'
   canvasBackground.src = 'http://89.111.136.61/upload/images/kos600_kos610_b.jpg'
+  //canvasBackground.src = 'https://psk.expert/upload/iblock/77d/w8huebomv7df5plmaq7ok88rcpemw03m/kos610_aaa.jpg'
   //cxt.value.drawImage(canvasBackground, 0, 0, 720, 900)
 
   let isDraggable = false
@@ -468,21 +479,40 @@ onMounted(() => {
 //console.log(panzoom.value.zoomWithWheel)
 
 canvasFront.onmousedown = (e) => {
+  getFrontCanvasOffset()
     console.log('layerX', e.layerX,'layerY', e.layerY)
     console.log('layerX', e.layerX / 2,'layerY', e.layerY)
     console.log('startLogoPosX', startLogoPosX.value, 'startLogoPosY', startLogoPosY.value)
     console.log('mouseDownCanvas', e)
+
+    let clientX = e.clientX - canvasOffsetX.value
+    let clientY = e.clientY - canvasOffsetY.value
+
+    let logoLeft = startLogoPosX.value
+    let logoRight = startLogoPosX.value + startImageWidth.value
+    let logoTop = startLogoPosY.value
+    let logoBottom = startLogoPosY.value + startImageHeight.value
+
+    /*
     if( e.layerX <= (startLogoPosX.value + imageLogo.width/2) && 
         e.layerX >= (startLogoPosX.value - imageLogo.width/2) &&
         e.layerY <= (startLogoPosY.value + imageLogo.height/2) && 
         e.layerY >= (startLogoPosY.value - imageLogo.height/2)
-        ) {
+      )
+    */
+    if( clientX > logoLeft &&
+        clientX < logoRight &&
+        clientY > logoTop &&
+        clientY < logoBottom
+      ) 
+    {
       isDraggable = true
       console.log('click Image')
     }else{
       console.log('didnt click Image')
     }
     console.log('isDraggable', isDraggable)
+    
 }
 
 canvasFront.onmouseup = (e) => {
@@ -495,6 +525,24 @@ canvasFront.onmouseout = (e) => {
   //console.log('mouseOutCanvas', e)
   isDraggable = false
   //console.log('isDraggable', isDraggable)
+}
+
+canvasFront.onmousemove = (e) => {
+  if(!isDraggable) {
+    return
+  }
+  let clientX = (e.clientX - canvasOffsetX.value) - startLogoPosX.value - 100
+  let clientY = (e.clientY - canvasOffsetY.value) - startLogoPosY.value - 100
+
+  console.log('move x:', clientX, ' y: ', clientY )
+
+  canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
+
+  canvasFrontRef.value.getContext('2d').drawImage(
+      imageLogo.value,
+      startLogoPosX.value += clientX, startLogoPosY.value += clientY,
+      initialWidthLogo,initialHeightLogo
+  )
 }
 
 }
