@@ -159,7 +159,19 @@
         </div>
       </div>
     </div>
-    
+
+    <div v-if="KPLocal.offer.position">
+      <select @change="selectOnChangeHandler($event.target.value)">
+        <option value="null"></option>
+        <option  
+          v-for="(position,index) in KPLocal.offer.position" :key="index" 
+          :value=position.guid
+        >
+          [{{position.article}}] {{position.product.NAME}}
+        </option>
+      </select>
+    </div>
+
     <div :class="'kp-canvas-controller'">
       <div>
         <input ref="file" type="file" @change="uploadLogo()">
@@ -187,7 +199,14 @@
         <base-button @onClick="download()" :style="'background-color: oldlace;'">Сохранить</base-button>
       </div>
     </div>
-    
+
+    <PreloaderLocal v-if="showPreloader" center/>
+    <div class="kp-product-image-container" v-if="imageList.length > 0">
+      <img @click="selectCanvasBackgroundImageHandler($event.target.src)"
+      v-for="(src,index) in imageList" :key=index 
+      :src=src width="120" height="180"/>
+    </div>
+
     <div>
       <span>
         <div style="position: relative;" width="720" height="1080" >
@@ -213,6 +232,7 @@
 </template>
 
 <script setup lang="ts">
+import axios from '/src/plugins/axios'
 import {computed, PropType, ref, onMounted, nextTick } from 'vue'
 import _ from "lodash";
 import PreloaderLocal from '/src/components/PreloaderLocal.vue'
@@ -234,46 +254,20 @@ import {KPMutations} from '/src/store/kp/mutations'
 import {useStore} from '/src/store'
 import {ShipmentsAddress} from "/src/models/Shipments";
 
-import Panzoom from '@panzoom/panzoom';
-import  {fabric}  from "fabric";
-
 const props = defineProps({
   active: {
     type: Boolean,
     default: false
   },
   kp: {
-    type: Object as PropType<KP>
+    type: Object as PropType<KP>,
+    require: true
   },
 })
 const emits = defineEmits(['next','prev','update:kp'])
 const store = useStore()
+const showPreloader = ref(false)
 
-const zoomArea = ref()
-
-nextTick( () => {
-  zoomArea.value = window.document.getElementById('zoom-area');
-  console.log(zoomArea)
-  console.log(zoomArea.value)
-
-  const panzoom = Panzoom(zoomArea.value, {
-      maxScale: 6
-  });
-  //const Wheel = panzoom.zoomWithWheel
-})
-
-console.log(zoomArea)
-console.log(zoomArea.value)
-
-//const panzoom = Panzoom(zoomArea.value, {
-//    maxScale: 6
-//  });
-
-//let Wheel = panzoom.zoomWithWheel
-
-const ZoomClick = () => {
-  console.log('ZoomClick')
-}
 //Canvas Context
 const cxt = ref()
 
@@ -300,6 +294,45 @@ const currentLogoImageHeight = ref(startImageHeight)
 const scaleLogo = ref('100%')
 
 const file = ref(null)
+
+const imageList = ref([])
+const selectOnChangeHandler = (uid: string) => {
+  if(uid == "null") {
+    return;
+  }
+  showPreloader.value = true
+  imageList.value = []
+
+  console.log(uid)
+  axios.get('/product/search?QUERY='+uid+'&OPTION=8')
+    .then( (response) => {
+      console.log(response.data.IMAGES)
+      response.data.IMAGES.forEach( (item: string) => { imageList.value.push(item) })
+    })
+    .finally( () => {
+      showPreloader.value = false
+      console.log(imageList.value)
+    })
+  
+}
+
+const selectCanvasBackgroundImageHandler = (uid: string) => {
+  console.log(uid)
+  chooseCurrentBackgroundImage(uid)
+}
+
+//отрисовываем выбранное изображение для дальнего холста
+const chooseCurrentBackgroundImage = (src: string) => {
+  let image = new Image(canvasBackRef.value.width,canvasBackRef.value.height)
+
+  image.onload = function() {
+    canvasBackRef.value.getContext('2d').drawImage(image,0,0,canvasBackRef.value.width,canvasBackRef.value.height)
+    canvasBackRef.value.getContext('2d').save()
+  }
+
+  image.crossOrigin = 'Anonymous'
+  image.src = src + '?no-cache-please'
+}
 
 const toBase64 = res => new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -445,8 +478,8 @@ onMounted(() => {
   }
 
   canvasBackground.crossOrigin = 'Anonymous'
-  canvasBackground.src = 'http://89.111.136.61/upload/images/kos600_kos610_b.jpg'
-  //canvasBackground.src = 'https://psk.expert/upload/iblock/77d/w8huebomv7df5plmaq7ok88rcpemw03m/kos610_aaa.jpg'
+  //canvasBackground.src = 'http://89.111.136.61/upload/images/kos600_kos610_b.jpg'
+  canvasBackground.src = 'https://psk.expert/upload/iblock/77d/w8huebomv7df5plmaq7ok88rcpemw03m/kos610_aaa.jpg'
   //cxt.value.drawImage(canvasBackground, 0, 0, 720, 900)
 
   let isDraggable = false
@@ -613,8 +646,6 @@ const loadingLogo = ref(false)
 const logoList = computed<KPLogoList[]>(() => store.getters.getKPLogoList) //Список загруженных лого для карусели
 const logoListOrigin = computed<KPLogoList[]>(() => store.getters.getKPLogoListOrigin) // Копия списка агруженных лого которая не меняется для списка контрол-бар
 
-const showPreloader = ref(false)
-
 const PDF = ref(true)       //Флаги
 const WORD = ref(false)
 const handleFileUpload = ( event: any) =>{
@@ -728,4 +759,8 @@ const deleteLogo = (index: number) => {
   & > input
     width: 65px
     margin-top: 5px
+
+.kp-product-image-container
+  & > img
+    margin-right: 5px
 </style>>
