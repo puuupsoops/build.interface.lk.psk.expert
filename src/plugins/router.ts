@@ -48,7 +48,7 @@ const routes = [
 	},
 	{
 		path: '/order/:article?', 
-		component: () => import('/src/pages/order/order.vue'),
+		component: () => import('/src/pages/order/OrderPage.vue'),
 		name: 'Order',
 		props: true,
 		meta:{

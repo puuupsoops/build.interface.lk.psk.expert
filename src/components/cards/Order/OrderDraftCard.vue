@@ -195,7 +195,7 @@
       </div>
     </div>
     <div class="content-heading-wrap order-draft kp">
-      <BaseButton @click="showAddPos = true">Добавить</BaseButton>
+      <BaseButton @click="showAddPos = true" v-if="isKp">Добавить</BaseButton>
     </div>
     <OrderProductAddModal v-model="showAddPos" v-model:add-position="addPos"/>
 	</div>
@@ -218,8 +218,10 @@ import { orderCalc as orderCalcStore} from '/src/store/order/helper'
 
 // eslint-disable-next-line no-unused-vars
 const enum SALE_TYPE {
-  ADD = 'add',
-  PERCENT = 'persent'
+  // eslint-disable-next-line no-unused-vars
+  ADD,
+  // eslint-disable-next-line no-unused-vars
+  PERCENT
 }
 
 const props = defineProps( {
@@ -287,7 +289,7 @@ watch(addPos, ()=>{
   if (orderLocal.value.position) {
     orderLocal.value.position = orderLocal.value.position.concat(addPos.value ?? [])
   } else {
-    orderLocal.value.position = [].concat(addPos.value ?? [])
+    orderLocal.value.position = [].concat(addPos.value! ?? [])
   }
   orderLocal.value = orderCalcStore(orderLocal.value)
 })

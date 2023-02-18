@@ -5,16 +5,16 @@
 		<div class="orders-heading-pagination">
 
 			<CatalogPagination
-				:maxPage = "page.maxItemOnPage != -1 ? Math.ceil(data_filtred.length / page.maxItemOnPage): 1"
+				:maxPage = "page.maxItemOnPage !== -1 ? Math.ceil(data_filtered.length / page.maxItemOnPage): 1"
 				v-model:currentPage="page.currentPage"
 				v-model:maxItemOnPage="page.maxItemOnPage"
 				
 			/>
 		</div>
 		<div class="orders-heading-info-text"
-				:style=" data_filtred.length != orders_list.length ? 'visibility: visible': 'visibility: hidden'"
+				:style=" data_filtered.length !== orders_list.length ? 'visibility: visible': 'visibility: hidden'"
 			>
-					Показано {{data_filtred.length}} из {{orders_list.length}}
+					Показано {{data_filtered.length}} из {{orders_list.length}}
 		</div>
 		<div class="orders-heading-info-settings"
 			:class="{'active': showTableMenu}"
@@ -29,7 +29,7 @@
 				ref="tableMenu"
 		>
 			<a class="orders-list-more-dropdown-link" 
-				v-for="i, col in tableColumn"
+				v-for="(i, col) in tableColumn"
 				:key="col"
 				@click="saveTableColumn" 
 			>	<CheckButton v-model="i.visible" :disabled="i.disabled" />
@@ -59,13 +59,13 @@
 				<div class="orders-list-elem-resize" @mousedown="onMouseDown($event, 'id')" ></div>
 			</div>
 			<div class="orders-list-elem" v-if="tableColumn.name.visible"
-				:class="{'name': true, 'active': (search.search !='' && search.id == 1) || filter[1].value != '' }" 
+				:class="{'name': true, 'active': (search.search !=='' && search.id === 1) || filter[1].value !== '' }"
 				:style="`width: ${tableColumn.name.width}${tableColumn.name.unit}`"
 			>
 				<modal-input v-model="filter[1].value" v-model:show="filter[1].show"></modal-input>
 				<div>Наименование</div>
-				<div 
-					:class="'orders-list-elem-filter' +(filter[1].show || filter[1].value != '' ? ' active': '')"
+				<div class="orders-list-elem-filter"
+					:class="{ 'active' : filter[1].show || filter[1].value !== '' }"
 					title="Фильтр"
 					@click="filter[1].show=true"
 				>
@@ -74,7 +74,7 @@
 					</svg>
 				</div>
 				<div 
-					v-if="filter[1].value != ''"
+					v-if="filter[1].value !== ''"
 					class="orders-list-elem-filter active"
 					title="Очистить фильтр"
 					@click="filter[1].value='';active = -1"
@@ -88,27 +88,27 @@
 				<div class="orders-list-elem-resize" @mousedown="onMouseDown($event, 'name')" ></div>
 			</div>
 			<div class="orders-list-elem" v-if="tableColumn.partner_name.visible"
-				:class="{'partner_name': true, 'active' : contrAgent !='' }"
+				:class="{'partner_name': true, 'active' : contrAgent !=='' }"
 				:style="`width: ${tableColumn.partner_name.width}${tableColumn.partner_name.unit}`"
 			>
 				{{tableColumn.partner_name.name}}
 				<div class="orders-list-elem-resize" @mousedown="onMouseDown($event, 'partner_name')" ></div>
 			</div>
 			<div class="orders-list-elem" v-if="tableColumn.n.visible"
-				:class="{'n': true, 'active' : search.search !='' && search.id == 2 }"
+				:class="{'n': true, 'active' : search.search !=='' && search.id === 2 }"
 				:style="`width: ${tableColumn.n.width}${tableColumn.n.unit}`"
 			>
 				<div class="orders-list-elem-center">{{tableColumn.n.name}}</div>
 				<div class="orders-list-elem-resize" @mousedown="onMouseDown($event, 'n')" ></div>
 			</div>
 			<div class="orders-list-elem" v-if="tableColumn.date.visible"
-				:class="{'date': true, 'active': (search.search !='' && search.id == 3) || (period != 'Все' ) || (filter[2].value != '')}"
+				:class="{'date': true, 'active': (search.search !== '' && search.id === 3) || (period !== 'Все' ) || (filter[2].value !== '')}"
 				:style="`width: ${tableColumn.date.width}${tableColumn.date.unit}`"
 			>
 				<modal-date-picker v-model="filter[2].value" v-model:show="filter[2].show"></modal-date-picker>
 				<div>{{tableColumn.date.name}}</div>
 				<div 
-					:class="'orders-list-elem-filter' +(filter[2].show || filter[2].value != '' ? ' active': '')"
+					:class="'orders-list-elem-filter' +(filter[2].show || filter[2].value !== '' ? ' active': '')"
 					title="Фильтр"
 					@click="filter[2].show=true"
 				>
@@ -117,7 +117,7 @@
 					</svg>
 				</div>
 				<div 
-					v-if="filter[2].value != ''"
+					v-if="filter[2].value !== ''"
 					class="orders-list-elem-filter active"
 					title="Очистить фильтр"
 					@click="filter[2].value='';active = -1"
@@ -131,14 +131,14 @@
 				<div class="orders-list-elem-resize" @mousedown="onMouseDown($event, 'date')" ></div>
 			</div>
 			<div class="orders-list-elem" v-if="tableColumn.status.visible"
-				:class="{'status': true, 'active': status != 'Все' }"
+				:class="{'status': true, 'active': status !== 'Все' }"
 				:style="`width: ${tableColumn.status.width}${tableColumn.status.unit}`"
 			>
-			{{tableColumn.status.name}}
+			{{ tableColumn.status.name }}
 				<div class="orders-list-elem-resize" @mousedown="onMouseDown($event, 'status')" ></div>
 			</div>
 			<div class="orders-list-elem" v-if="tableColumn.comment.visible"
-				:class="{'comment': true, 'active': status != 'Все' }"
+				:class="{'comment': true, 'active': status !== 'Все' }"
 				:style="`width: ${tableColumn.comment.width}${tableColumn.comment.unit}`"
 			>
 			{{tableColumn.comment.name}}
@@ -151,13 +151,13 @@
 		</div>
 
 		<div class="orders-list-item"
-			:class="{'active': key==active,'reserved': item.reserved}"
-			v-for="(item, key) in data_filtred"
+			:class="{'active': key === active,'reserved': item.reserved}"
+			v-for="(item, key) in data_filtered"
 			:key="key"
 			>
 				<div class="orders-list-row orders-list-main-row"
 					v-if="paginationShow(key)"
-					@click="key == active ? active = -1 : active = key"
+					@click="key === active ? active = -1 : active = key"
 					
 				>
 
@@ -208,48 +208,30 @@
 							class="orders-list-more"
 							@click.stop="active_more = key"
 						>Подробно</button>
-						<div :class="'orders-list-more-dropdown' +  ( key == active_more ? ' active': '' )"  ref="target">
+						<div :class="'orders-list-more-dropdown' +  ( key === active_more ? ' active': '' )"  ref="target">
 							<a class="orders-list-more-dropdown-link" @click.stop="detailOrderId = item.n; showDetail=true" >Детали заказа</a>
 							<a class="orders-list-more-dropdown-link" @click.stop="detailOrderId = item.n; showDetail=true; editOrder=false;repeatOrder=true;" >Повторить заказ</a>
 							<a class="orders-list-more-dropdown-link" v-if="item.reserved" @click.stop="detailOrderId = item.n; showDetail=true; editOrder=true;repeatOrder=false;" >Изменить заказ</a>
 							<!-- <a class="orders-list-more-dropdown-link" >Скачать документы</a> -->
-							 <a class="orders-list-more-dropdown-link" 
-							  @click.stop="downloadAllCertificates(item);"
-							 >Сертификаты по заказу</a> 
-							<a class="orders-list-more-dropdown-link" @click.stop="setClaimOrderId(item.n)" v-if="item.checks?.filter(check => check.status == 5 || check.status == 9 ) && item.checks?.filter(check => check.status == 5 || check.status == 9 ).length>0 ">
+              <a class="orders-list-more-dropdown-link" @click.stop="downloadAllCertificates(item)">Сертификаты по заказу</a>
+							<a class="orders-list-more-dropdown-link" @click.stop="setClaimOrderId(item.n)" v-if="item.checks.filter(check => check.status === 5 || check.status === 9 ) && item.checks?.filter(check => check.status === 5 || check.status === 9 ).length>0 ">
 								Оформить претензию
 							</a>
-							
-							
-							<router-link 
-								class="orders-list-more-dropdown-link" 
-								tag="a"
-								:to="'/shipments/request'"
-								@click="setOrderId(item.n)"
-							>
-									Заявка на транспорт
-							</router-link>
-							<router-link 
-								class="orders-list-more-dropdown-link" 
-								tag="a"
-								:to="'/kp'"
-								@click.stop="setOrderId(item.n)"
-							>
-									Конструктор КП
-							</router-link>
+							<router-link class="orders-list-more-dropdown-link" :to="'/shipments/request'" @click="setOrderId(item.n)">Заявка на транспорт</router-link>
+              <a class="orders-list-more-dropdown-link" @click.stop="goToKP(item.n)">Конструктор КП</a>
 							
 						</div>
 					</div>
 				</div>
 
 				<div class="orders-list-info" 
-					:class="{'active': key == active }"
+					:class="{'active': key === active }"
 					@click="active_more =  -1" 
 					v-if="paginationShow(key)"
 				>
 
 					
-					<div v-if="Array.isArray(item.checks) && item.checks.length>0 && item.status_code != 7 && item.status_code != 9">
+					<div v-if="Array.isArray(item.checks) && item.checks.length>0 && item.status_code !== 7 && item.status_code !== 9">
 						<div
 							class="orders-list-info-row"
 							v-for="(check, key1) in item.checks"
@@ -282,7 +264,6 @@
 									<span class="tooltiptext">Сохранить счет можно только <br> после подтверждения заказа</span>
 								</div>
 							</div>
-							
 							<div class="orders-list-info-elem orders-list-info-doc-wrap"  v-if="!check.doc_status">
 								<PreloaderLocal small></PreloaderLocal>
 							</div>
@@ -332,16 +313,14 @@
 							</div>
 							<div class="orders-list-info-elem"> 
 								<div class="orders-list-elem-request-bill"
-									v-if="check.status != 10">
+									v-if="check.status !== 10">
 
-									<preloader-local small v-if="billRequestLoadingState == check.id"/>
+									<preloader-local small v-if="billRequestLoadingState === check.id"/>
 									
 									<span v-else @click="billRequestLoading(item.n, check)">Запросить счет</span>
 								</div>
-								 	<div class="orders-list-elem-request-bill">
-									<span 
-									 @click="downloadCertificates(check)"
-									>Сертификаты</span>
+                <div class="orders-list-elem-request-bill">
+									<span @click="downloadCertificates(check)">Сертификаты</span>
 								</div>
 								
 							</div>
@@ -372,10 +351,10 @@
 		</div>
 		<div
 				class="orders-list-row orders-list-main-row"
-				v-if="orders_list.length == 0 && !loading"
+				v-if="orders_list.length === 0 && !loading"
 			>
 				<div class="order-info">
-					Заказов не найдено. Создайте <router-link tag="a" class="order-info-link" :to="'/order'">новый заказ</router-link> и он появится в списке.
+					Заказов не найдено. Создайте <router-link class="order-info-link" :to="'/order'">новый заказ</router-link> и он появится в списке.
 				</div>
 		</div>
 	</div>
@@ -400,6 +379,7 @@
 	import CheckButton from '/src/components/ui/CheckButton.vue'
 
 	import { ref, PropType, watch, computed, onMounted, nextTick, inject } from 'vue'
+  import _ from 'lodash'
 	import { onClickOutside } from '@vueuse/core'
 	import { Check, Orders } from '/src/models/Orders'
 	import { normalizeCompanyName } from '/src/models/Partner'
@@ -416,10 +396,9 @@
 	import { OrderMutations } from '/src/store/order/mutations'
 	import { ClaimActions } from '/src/store/claims/actions'
 	import { ClaimMutations } from '/src/store/claims/mutations'
-import DeleteButton from '../../ui/DeleteButton.vue'
+
 import { KP_TYPES } from '/src/models/KP'
-
-
+  import {KPMutations} from "/src/store/kp/mutations";
 
 	const props = defineProps(
 		{		
@@ -445,7 +424,6 @@ import { KP_TYPES } from '/src/models/KP'
 			default: false
 		}
 	})
-
 
 	const store = useStore()
 	const router = useRouter()
@@ -476,8 +454,8 @@ import { KP_TYPES } from '/src/models/KP'
 	let orders_list = computed<Orders[]>(()=> store.getters.getOrders)
 	
 	const loadDocStatus = ()=>{
-		if (active.value!=-1 && data_filtred.value && Array.isArray(data_filtred.value[active.value].checks)) {
-			let promise_arr = data_filtred.value [active.value].checks?.map(x => !x.doc_status ? store.dispatch(OrdersActions.GET_ORDERS_DOCSTATUS, x.guid) : null)
+		if (active.value!=-1 && data_filtered.value && Array.isArray(data_filtered.value[active.value].checks)) {
+			let promise_arr = data_filtered.value [active.value].checks?.map(x => !x.doc_status ? store.dispatch(OrdersActions.GET_ORDERS_DOCSTATUS, x.guid) : null)
 			if (promise_arr){
 				Promise.all(promise_arr).finally(()=>{})
 			}
@@ -512,7 +490,7 @@ import { KP_TYPES } from '/src/models/KP'
 		
 	})
 	
-	const data_filtred = computed( () => {
+	const data_filtered = computed( () => {
 		//фильтр по контрагенту
 		
 		let data = orders_list.value.filter((x: Orders) => props.contrAgent =='' || x.partner_guid == props.contrAgent)
@@ -573,7 +551,6 @@ import { KP_TYPES } from '/src/models/KP'
 	}
 	
 	const checkStatus = (item: Orders) => {
-		
 		if (props.status == 'Все'){
 			return true
 		} else {
@@ -604,7 +581,16 @@ import { KP_TYPES } from '/src/models/KP'
 		store.commit(KeysMutations.SET_CURRENT_ORDER, id)
 		tempOrderId.value 	= id
 		tempKPType.value = KP_TYPES.ORDER
-	}	
+	}
+
+  const goToKP = async (orderId: number) => {
+    loading_global.value=true
+    await store.dispatch(OrderActions.GET_ORDER_DETAIL, orderId)
+    store.commit(KPMutations.SET_KP_OFFER_POSITION, store.getters.getOrderDetail.position)
+    store.commit(KPMutations.SET_KP_STEP, 2)
+    loading_global.value=false
+    await router.push('/kp')
+  }
 	
 	const setClaimOrderId = (id: number) => {
 		loading_global.value = true
@@ -616,15 +602,7 @@ import { KP_TYPES } from '/src/models/KP'
 		})
 		
 	}
-	
-	const filtred = ( item: Orders) => {
-		let show = false
-		if (filter.value[1].value !=''){
-			if (item.name.indexOf(filter.value[1].value)!=-1) show=true
-		} else show = true
-		return  show
-	}
-		
+
 	const billRequestLoading = (id: number, check: Check) => {
 		if (billRequestLoadingState.value == -1) {
 			billRequestLoadingState.value = check.id
@@ -651,7 +629,7 @@ import { KP_TYPES } from '/src/models/KP'
 
 	const downloadAllCertificates = (item: Orders) => {
 		loading_global.value = true
-		let ordersUIDs = [];
+		let ordersUIDs = <string[]>[];
 		item.checks?.forEach( (i: Check) => { ordersUIDs.push(i.guid) } )
 		//todo: подождать реализацию метода для массива счетов на беке
 		store.dispatch(OrdersActions.GET_ORDERS_DOWNLOAD_CERTIFICATED_ALL, ordersUIDs)
@@ -696,13 +674,12 @@ import { KP_TYPES } from '/src/models/KP'
 								comment: {name: 'Комментарии', width:15, unit: '%', min: 10, visible: true, disabled: false},
 								info: {name: 'Инфо', width:10, unit: '%', min: 10, visible: true, disabled: true}}
 								
-	const tableColumn = ref<TableWidth>(JSON.parse(JSON.stringify(tableColumnDefault)))
+	const tableColumn = ref<TableWidth>(_.cloneDeep(tableColumnDefault))
 
-	
 	const mouseMoveEvent = (e: any) => {
 			const percent = (e.movementX / tableWidth.value) * 100
 
-			if (Object.keys(tableColumn.value).reduce( (sum, i)=> tableColumn.value[i  as keyof TableWidth].visible ? sum + tableColumn.value[i  as keyof TableWidth].width : sum + 0, 0)+percent < 100 &&
+			if (Object.keys(tableColumn.value).reduce( (sum, i)=> tableColumn.value[i  as keyof TableWidth].visible ? sum + tableColumn.value[i  as keyof TableWidth].width : sum, 0)+percent < 100 &&
 				tableColumn.value[isColumnResize.value  as keyof TableWidth].width + percent > tableColumn.value[isColumnResize.value  as keyof TableWidth].min
 			)
 			tableColumn.value[isColumnResize.value  as keyof TableWidth].width = tableColumn.value[isColumnResize.value  as keyof TableWidth].width + percent
@@ -718,7 +695,7 @@ import { KP_TYPES } from '/src/models/KP'
 		saveTableColumn()
 	}
 	const calcTableWidth = () => {
-		const sum = Object.keys(tableColumn.value).reduce( (sum, i)=> tableColumn.value[i  as keyof TableWidth].visible ? sum + tableColumn.value[i  as keyof TableWidth].width : sum + 0, 0)
+		const sum = Object.keys(tableColumn.value).reduce( (sum, i)=> tableColumn.value[i  as keyof TableWidth].visible ? sum + tableColumn.value[i  as keyof TableWidth].width : sum, 0)
 		if (sum > 100 ) {
 			Object.keys(tableColumn.value).forEach(i => {
 				if (i != 'id'){

@@ -124,6 +124,7 @@ store.dispatch(KPActions.GET_KP_LOGO)
 store.dispatch(ShipmentsActions.GET_SHIPMENTS_ADDRESS)
 
 NewKP.value = store.getters.getKP
+
 step.value = store.getters.getKPStep
 if (step.value != 1) kpType.value = KP_TYPES.CATALOG_POS
 

@@ -7,7 +7,7 @@ export const orderCalc = (order: OrderStateOrder, partnerId?: string): OrderStat
     let total = 0
     let total_discount = 0
     let total_count = 0
-    let total_valume = 0
+    let total_volume = 0
     let total_weight = 0
 
 
@@ -18,8 +18,8 @@ export const orderCalc = (order: OrderStateOrder, partnerId?: string): OrderStat
         let total_count_pos = 0
 
 
-        const total_valume_pos = pos.product.VALUME
-        const total_weigth_pos = pos.product.WEIGHT
+        const total_volume_pos = pos.product.VALUME
+        const total_weight_pos = pos.product.WEIGHT
         pos.characteristics.forEach( c => {
             total_pos = total_pos + c.PRICE * c.count
             c.discount = partnerId ? getCompanyDiscount(partnerId, c.ORGGUID, pos.product.STATUS) : 0
@@ -36,8 +36,8 @@ export const orderCalc = (order: OrderStateOrder, partnerId?: string): OrderStat
         total = total + total_pos
         total_discount = total_discount + total_discount_pos
         total_count = total_count + total_count_pos
-        total_valume = total_valume_pos * total_count_pos
-        total_weight = total_weigth_pos * total_count_pos
+        total_volume = total_volume_pos * total_count_pos
+        total_weight = total_weight_pos * total_count_pos
     });
 
     order.position_presail.forEach(pos => {
@@ -45,8 +45,8 @@ export const orderCalc = (order: OrderStateOrder, partnerId?: string): OrderStat
         let total_discount_pos = 0
         let total_count_pos = 0
 
-        const total_valume_pos = pos.product.VALUME
-        const total_weigth_pos = pos.product.WEIGHT
+        const total_volume_pos = pos.product.VALUME
+        const total_weight_pos = pos.product.WEIGHT
         pos.characteristics.forEach( c => {
             total_pos = total_pos + c.PRICE * c.count
             c.discount = partnerId ? getCompanyDiscount(partnerId, c.ORGGUID, pos.product.STATUS) : 0
@@ -63,15 +63,15 @@ export const orderCalc = (order: OrderStateOrder, partnerId?: string): OrderStat
         total = total + total_pos
         total_discount = total_discount + total_discount_pos
         total_count = total_count + total_count_pos
-        total_valume = total_valume_pos * total_count_pos
-        total_weight = total_weigth_pos * total_count_pos
+        total_volume = total_volume_pos * total_count_pos
+        total_weight = total_weight_pos * total_count_pos
     });
 
     order.count = order.position.length;
     order.total = total;
     order.total_discount = total_discount
     order.total_count = total_count;
-    order.total_valume = Number(total_valume.toFixed(3));
+    order.total_volume = Number(total_volume.toFixed(3));
     order.total_weight = Number(total_weight.toFixed(3));
 
     if (total == 0 && order.position_presail.length == 0 ) {

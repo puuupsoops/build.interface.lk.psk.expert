@@ -91,22 +91,19 @@
                      @click="KPLocal.headerLogoAlign=KPHEADERLOGOALIGN.LEFT"
                      tooltip="Слева"
                      flow="up"
-                     v-html="ALIGN_LEFT"
-                ></div>
+                ><svgAlignLeft class="sidebar-btn"/></div>
                 <div class="header-button center"
                      :class="{'active': KPLocal.headerLogoAlign === KPHEADERLOGOALIGN.CENTER}"
                      @click="KPLocal.headerLogoAlign=KPHEADERLOGOALIGN.CENTER"
                      tooltip="По центру"
                      flow="up"
-                     v-html="ALIGN_CENTER"
-                ></div>
+                ><svgAlignCenter class="sidebar-btn"/></div>
                 <div class="header-button right"
                      :class="{'active': KPLocal.headerLogoAlign === KPHEADERLOGOALIGN.RIGHT}"
                      tooltip="Справа"
                      flow="up"
                      @click="KPLocal.headerLogoAlign=KPHEADERLOGOALIGN.RIGHT"
-                     v-html="ALIGN_RIGHT"
-                ></div>
+                ><svgAlignRight class="sidebar-btn"/></div>
 
               </div>
             </div>
@@ -169,7 +166,10 @@
 
 <script setup lang="ts">
 import {computed, onUnmounted, PropType, ref} from 'vue'
-import _ from "lodash";
+import svgAlignCenter from '/src/assets/img/icon/align-center.svg'
+import svgAlignLeft from '/src/assets/img/icon/align-left.svg'
+import svgAlignRight from '/src/assets/img/icon/align-right.svg'
+
 import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 import SwitchButton from '/src/components/ui/SwitchButton.vue'
 import AmountInput from '/src/components/ui/AmountInput.vue'
@@ -179,7 +179,7 @@ import BaseButton from '/src/components/ui/BaseButton.vue'
 import Preloader from '/src/components/Preloader.vue'
 
 import {KP, KP_HEADER_LOGO_ALIGN, KPLogoList} from '/src/models/KP'
-import { ALIGN_CENTER, ALIGN_LEFT, ALIGN_RIGHT} from '/src/components/ui/svg/align'
+
 import {SelectInputData, PriceFormat} from '/src/models/Components'
 import {ShipmentsActions} from '/src/store/shipments/actions'
 
@@ -257,10 +257,10 @@ const prevLogo = () => {
     currentLogoId.value = logoList.value.length-1
   }
 };
-const shiftLogo = (n: number):void => {
-  store.commit(KPMutations.SET_KP_LOGO_LIST_SIFT, n-currentLogoId.value)
-  currentLogoId.value = n
-}
+// const shiftLogo = (n: number):void => {
+//   store.commit(KPMutations.SET_KP_LOGO_LIST_SIFT, n-currentLogoId.value)
+//   currentLogoId.value = n
+// }
 const KPHEADERLOGOALIGN = computed(()=>KP_HEADER_LOGO_ALIGN)
 
 const addressList = computed<SelectInputData[]>(() => store.getters.getShipmentsAddressInputData)

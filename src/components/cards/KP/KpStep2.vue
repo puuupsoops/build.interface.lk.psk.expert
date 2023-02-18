@@ -1,14 +1,14 @@
 <template>
   <div class="kp-step" :class="{'active': active}">
-    <div class="kp-step-title"  v-if="type === KPTYPES.ORDER">Выберите заказ</div>
-    <div class="kp-step-title"  v-if="type === KPTYPES.DRAFT">Выберите черновик</div>
+    <div class="kp-step-title"  v-if="type === kpTypes.ORDER">Выберите заказ</div>
+    <div class="kp-step-title"  v-if="type === kpTypes.DRAFT">Выберите черновик</div>
     <div class="kp-step-body">
-      <SimpleSelect v-if="type === KPTYPES.ORDER"
+      <SimpleSelect v-if="type === kpTypes.ORDER"
                     v-model="order"
                     :select-input-data="orders"
                     :first-element="order === -1 ? firstOrders : null"
       />
-      <SimpleSelect v-if="type === KPTYPES.DRAFT"
+      <SimpleSelect v-if="type === kpTypes.DRAFT"
                     v-model="draft"
                     :select-input-data="drafts"
                     :first-element="draft === -1 ? firstDrafts : null"
@@ -96,6 +96,7 @@
   import { KP, KP_TYPES } from '/src/models/KP'
 
   import {DefaultOrder, OrderStateOrder} from '/src/store/order/types'
+  import { orderCalc } from '/src/store/order/helper'
 
   import {DateFromRuLocale, SelectInputData} from '/src/models/Components'
   import { DefaultKP } from "/src/store/kp/types";
@@ -125,7 +126,7 @@
   const drafts = computed<SelectInputData[]>(() => store.getters.getOrderDraftsInputData)
   const firstDrafts = <SelectInputData>{ id: -1, name: 'Выберите черновик'}
 
-  const KPTYPES = computed(()=>KP_TYPES)
+  const kpTypes = computed(()=>KP_TYPES)
   const loading = ref(false)
 
 
@@ -137,7 +138,8 @@
   const date = ref(new Date().toLocaleString('ru').substring(0, 10))
   const order_detail = ref<OrderStateOrder>(_.cloneDeep(DefaultOrder))
   order_detail.value.position = _.cloneDeep(props.kp.offer.position)
-  console.log(order_detail.value)
+  order_detail.value = orderCalc(order_detail.value)
+
   const companyList = computed<SelectInputData[]>(() => store.getters.getCompanysListInput().filter((x: SelectInputData) => x.id !== ''))
 
   watch(order, ()=>{
