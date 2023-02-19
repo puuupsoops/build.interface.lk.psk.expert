@@ -157,24 +157,59 @@
           <div :style="'margin-left: 10px'">PDF</div>
 
         </div>
+
+        <div class="orders-list-item" :class="{'active': attachments}">
+          <div class="orders-list-row " @click="attachments=!attachments">
+            <div class="orders-list-elem"> <div class="table-arrow"></div> 	</div>
+            <div class="orders-list-elem">Вложения</div>
+          </div>
+              <div class="kp-step-body-row-group"  :class="{'active': attachments}">
+                <div>
+                  <div class="kp-step-body-row">
+                    <div style="display: grid; width: 80px; height: 160px;"
+                      v-for="(item,index) in KPLocal.attachments" :key="index"
+                      @click="removeAttachmentsById($event.target.parentElement)"
+                      :data-id="index"
+                    >
+                      <span style="margin: 0 0 0 auto; font-weight: bold; color: red; cursor: pointer;">X</span>
+                      <img :src="item" :style="'height: 100%; width: 100%;'">
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>  
+
+
       </div>
     </div>
+    
+    <div class="order-list content-elem" :style="[ attachments ? 'display: flex;' : 'display: none;']">
+    <div class="content-heading-wrap kp" style="display: block;">
 
-    <div v-if="KPLocal.offer.position">
-      <select @change="selectOnChangeHandler($event.target.value)">
-        <option value="null"></option>
-        <option  
-          v-for="(position,index) in KPLocal.offer.position" :key="index" 
-          :value=position.guid
-        >
-          [{{position.article}}] {{position.product.NAME}}
-        </option>
-      </select>
+    <div v-if="KPLocal.offer.position" :style="'display: flex; align-items: center; max-width: 580px; padding: 10px 5px;'">
+      <div class="select-input-container">
+        <button 
+          @click="selectInputActive=!selectInputActive"
+          :class="['select-input-btn', selectInputActive ? 'active' : '']"
+        >ВЫБЕРИТЕ ТОВАР ИЗ ВЫПАДАЮЩЕГО СПИСКА.   
+        </button>
+        <div :class="['select-input-options', selectInputActive ? 'active' : '']" >
+          <p 
+            v-for="(position,index) in KPLocal.offer.position" :key="index"
+            :class="'select-input-item'"
+            @click="selectOnChangeHandler(position.guid); selectInputActive=false"
+          >
+            [{{position.article}}] {{position.product.NAME}}
+          </p>
+        </div>
+      </div>
+      <PreloaderLocal v-if="showPreloader"  center/>
     </div>
-
+    
     <div :class="'kp-canvas-controller'">
       <div>
-        <input ref="file" type="file" @change="uploadLogo()">
+        <label for="myfile">Добавить логотип: </label>
+        <input ref="file" id="myfile" type="file" @change="uploadLogo()">
       </div>
 
       <div :style="'display: grid;'">
@@ -196,18 +231,26 @@
       </div>
 
       <div>
-        <base-button @onClick="download()" :style="'background-color: oldlace;'">Сохранить</base-button>
+        <base-button 
+          @onClick="addToAttachments()" 
+          :tooltip="'Добавить сформированоое изображение в файл КП'" 
+          :tooltip-flow="'up'">Добавить</base-button>
+        <base-button 
+          @onClick="download()" 
+          :tooltip="'Сохранить изображение на устройство'" 
+          :tooltip-flow="'up'" 
+          :style="'background-color: oldlace;'">Скачать</base-button>
       </div>
     </div>
 
-    <PreloaderLocal v-if="showPreloader" center/>
     <div class="kp-product-image-container" v-if="imageList.length > 0">
-      <img @click="selectCanvasBackgroundImageHandler($event.target.src)"
+      <img style="cursor: pointer;" 
+      @click="selectCanvasBackgroundImageHandler($event.target.src)"
       v-for="(src,index) in imageList" :key=index 
       :src=src width="120" height="180"/>
     </div>
 
-    <div>
+    <div style="display: table; margin: auto;">
       <span>
         <div style="position: relative;" width="720" height="1080" >
           <canvas width="720" height="1080" style="z-index: -1;"></canvas>
@@ -217,9 +260,12 @@
             style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
         </div>
       </span>
-      <span>
+      <span style="display: none;" >
         <canvas id="c1" width="720" height="1080"></canvas>
       </span>
+    </div>
+
+    </div>
     </div>
 
     <div class="kp-step-actions ">
@@ -267,6 +313,9 @@ const props = defineProps({
 const emits = defineEmits(['next','prev','update:kp'])
 const store = useStore()
 const showPreloader = ref(false)
+
+const attachments = ref(false)
+const selectInputActive = ref(false)
 
 //Canvas Context
 const cxt = ref()
@@ -362,6 +411,16 @@ const download = () => {
 					document.body.removeChild(link);
 					window.URL.revokeObjectURL(url);
   })
+}
+
+//удаляем изображения из вложений
+const removeAttachmentsById = (item: any) => {
+  let id = item.getAttribute('data-id')
+  if(id < 0){
+    return;
+  }
+  KPLocal.value.attachments.splice(id,1)
+  console.log(KPLocal.value.attachments)
 }
 
 const uploadLogo = async () => {
@@ -620,15 +679,29 @@ canvasFront.onwheel = (e) => {
 )
 //console.log(cxt)
 
+//добавить изображение в массив вложений КП
+const addToAttachments = () => {
+  console.log(123)
+  console.log('Image add to attachments')
+  canvasTest.value.getContext('2d').clearRect(0,0,canvasTest.value.width, canvasTest.value.height)
 
-//console.log(panzoom)
-//const Wheel = panzoom.value.zoomWithWheel
-//const ZoomClick = () => {
-//  console.log('clicked!')
-//}
+  canvasTest.value.getContext('2d').drawImage(canvasBackRef.value,0,0)
+  canvasTest.value.getContext('2d').drawImage(canvasFrontRef.value,0,0)
 
+  canvasTest.value.toBlob( (blob) => {
+      toBase64(blob)
+        .then((result) => {
+          KPLocal.value.attachments.push(result)
+        })
+  })
+
+}
 
 const KPLocal = ref(props.kp)
+
+//временная перегрузка, чтобы добавить массив с вложеныыми изображениями
+KPLocal.value.attachments = []
+
 const total = computed( ()=>{
   let total_price = 0
   KPLocal.value!.offer.position.forEach(c=>{
@@ -739,6 +812,7 @@ const deleteLogo = (index: number) => {
   display: flex
   align-items: end
   margin-bottom: 15px
+  padding: 10px 10px
 
 .kp-canvas-controller
   & > div
@@ -763,4 +837,5 @@ const deleteLogo = (index: number) => {
 .kp-product-image-container
   & > img
     margin-right: 5px
+    padding: 5px 10px
 </style>>
