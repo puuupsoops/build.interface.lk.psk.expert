@@ -199,7 +199,7 @@
             :class="'select-input-item'"
             @click="selectOnChangeHandler(position.guid); selectInputActive=false"
           >
-            [{{position.article}}] {{position.product.NAME}}
+            [{{position.article}}] {{stringConverter(position.product.NAME)}}
           </p>
         </div>
       </div>
@@ -208,8 +208,12 @@
     
     <div :class="'kp-canvas-controller'">
       <div>
-        <label for="myfile">Добавить логотип: </label>
-        <input ref="file" id="myfile" type="file" @change="uploadLogo()">
+        <input ref="file" id="myfile" type="file" @change="uploadLogo()" style="display: none;">
+        <base-button 
+          :tooltip="'Добавить файл с логотипом на холст'"
+          :tooltipFlow="'up'"
+          @onClick="uploadLogoHandler()"
+        >Добавить логотип</base-button>
       </div>
 
       <div :style="'display: grid;'">
@@ -225,7 +229,13 @@
         <span :style="'margin-bottom: 10px;'">Масштаб нанесения</span>
         <div :style="'display: flex;'">
           <div><base-button @onClick="zoomDown(1)">-</base-button></div>
-          <div><BaseInput v-model="scaleLogo" :class="'input-text-field-modify'"/></div>
+          <div>
+            <BaseInput 
+              @click="scaleClickHandler($event)"
+              @focusout ="scaleFocusOutHandler($event)"
+              v-model="scaleLogo" 
+              :class="'input-text-field-modify'"/>
+          </div>
           <div><base-button @onClick="zoomUp(1)">+</base-button></div>
         </div>
       </div>
@@ -279,7 +289,7 @@
 
 <script setup lang="ts">
 import axios from '/src/plugins/axios'
-import {computed, PropType, ref, onMounted, nextTick } from 'vue'
+import {computed, PropType, ref, onMounted, nextTick, watch } from 'vue'
 import _ from "lodash";
 import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 import SwitchButton from '/src/components/ui/SwitchButton.vue'
@@ -340,7 +350,61 @@ const startImageHeight = 200
 const currentLogoImageWidth = ref(startImageWidth)
 const currentLogoImageHeight = ref(startImageHeight)
 
-const scaleLogo = ref('100%')
+// хелпер для преобразования &quot; в кавычки 
+const stringConverter = (s: string) => { return s.replace(/&quot;/gi, '\"') }
+
+// input масштаба изображения
+const scaleLogo = ref('0%')
+
+// кликаем на input масштаба изображения
+const scaleClickHandler = (e: any) => {
+  console.log(e)
+  scaleLogo.value = scaleLogo.value.replace('%','')
+}
+
+// покидаем input масштаба изображения
+const scaleFocusOutHandler = (e: any) => {
+  console.log('change')
+
+  let scaleFactor = Number(scaleLogo.value)
+  scaleLogo.value += '%'
+  console.log(scaleFactor)
+  if(scaleFactor == 0){
+    canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width,canvasFrontRef.value.height)
+    canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
+    startLogoPosX.value,startLogoPosY.value,
+    currentLogoImageWidth.value = startImageWidth,currentLogoImageHeight.value = startImageHeight);
+    return;
+  }
+
+  currentLogoImageWidth.value = startImageWidth
+  currentLogoImageHeight.value = startImageHeight
+
+  if(scaleFactor > 0) {
+    scaleLogo.value = '0'
+    zoomUp(scaleFactor)
+  }else{
+    scaleLogo.value = '0'
+    zoomDown(scaleFactor * -1)
+  }
+  //scaleChange(scaleFactor)
+  
+}
+
+// меняем значение, и приводим к строке в input масштаба изображения
+const scaleChange = (n: number) => {
+  console.log('scaleChange')
+  let str = scaleLogo.value.replace('%','')
+  let amount = Number(str)
+  console.log(amount)
+  amount += n
+  console.log(amount)
+  scaleLogo.value = amount.toString() + '%'
+}
+
+watch(scaleLogo, () => {
+  console.log(scaleLogo.value)
+})
 
 const file = ref(null)
 
@@ -423,6 +487,7 @@ const removeAttachmentsById = (item: any) => {
   console.log(KPLocal.value.attachments)
 }
 
+// загружает файл с логотипом на холст
 const uploadLogo = async () => {
   let fileBase64 = await toBase64(file.value.files[0])
   
@@ -444,26 +509,32 @@ const uploadLogo = async () => {
   }
 }
 
+// функция для тригера окна загрузки файла с логотипом по кнопке
+const uploadLogoHandler = () => {
+  file.value.click()
+}
+
+// увеличить масштаб логотипа на холсте
 const zoomUp = (n: number) => {
   canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
-
-  //startLogoPosX.value++
 
   canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
   startLogoPosX.value,startLogoPosY.value,
   currentLogoImageWidth.value += n,currentLogoImageHeight.value += n);
+  scaleChange(n)
 }
 
+// уменьшить масштаб логотипа на холсте
 const zoomDown = (n: number) => {
   canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
-
-  //startLogoPosX.value++
 
   canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
   startLogoPosX.value,startLogoPosY.value,
   currentLogoImageWidth.value -= n,currentLogoImageHeight.value -= n);
+  scaleChange(n * -1)
 }
 
+// сдвинуть логотип на холсте вправо
 const moveRight = () => {
   canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
 
@@ -474,6 +545,7 @@ const moveRight = () => {
   currentLogoImageWidth.value,currentLogoImageHeight.value);
 }
 
+// сдвинуть логотип на холсте влево
 const moveLeft = () => {
   canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
 
@@ -484,6 +556,7 @@ const moveLeft = () => {
   currentLogoImageWidth.value,currentLogoImageHeight.value);
 }
 
+// сдвинуть логотип на холсте вверх
 const moveUp = () => {
   canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
 
@@ -494,6 +567,7 @@ const moveUp = () => {
   currentLogoImageWidth.value,currentLogoImageHeight.value);
 }
 
+// сдвинуть логотип на холсте вниз
 const moveDown = () => {
   canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
 
@@ -504,6 +578,7 @@ const moveDown = () => {
   currentLogoImageWidth.value,currentLogoImageHeight.value);
 }
 
+// смещение для холста
 const getFrontCanvasOffset = () => {
   let canvasOffset = canvasFrontRef.value.getBoundingClientRect()
   canvasOffsetX.value = canvasOffset.x
@@ -511,11 +586,12 @@ const getFrontCanvasOffset = () => {
   console.log('getFrontCanvasOffset X: ', canvasOffsetX.value, ' Y: ',canvasOffsetY.value )
 }
 
+// заглушаем прокрутку колесом мыши окна браузера, если передвигаем логотип на холсте
 const disabledWheel = function(e:any) {
   e.preventDefault()
 }
 
-onMounted(() => {
+onMounted(async () => {
   canvasFrontRef.value = window.document.getElementById('canvas-front')
   canvasBackRef.value = window.document.getElementById('canvas-back')
   canvasTest.value = window.document.getElementById('c1')
@@ -526,13 +602,13 @@ onMounted(() => {
   //observer.observe(target);
   //console.log(target)
 
-  const canvasBackground = new Image(720,900)
+  const canvasBackground = new Image(720,1080)
   //let back = await fetch('', {mode: 'no-cors'})
   //.then(res => res.blob())
   //console.log('fetch' , back)
     // Make sure the image is loaded first otherwise nothing will draw.
   canvasBackground.onload = function() {
-    canvasBack.getContext('2d').drawImage(canvasBackground,0,0,720,900)
+    canvasBack.getContext('2d').drawImage(canvasBackground,0,0,720,1080)
     canvasBack.getContext('2d').save()
   }
 
@@ -552,8 +628,9 @@ onMounted(() => {
   startLogoPosX.value = currentX - initialWidthLogo/2
   startLogoPosY.value = currentY - initialHeightLogo/2
 
+ 
   imageLogo.value = new Image()
-  imageLogo.value.src = 'https://picsum.photos/id/237/200/300'
+  imageLogo.value.src = 'https://psk.expert/upload/lk-kp-logo-NOT-REMOVE.png'
   imageLogo.value.crossOrigin = 'Anonymous'
 
   imageLogo.value.onload = () => {
@@ -565,6 +642,7 @@ onMounted(() => {
 
     canvasFront.getContext('2d').save()
   }
+
 //panzoom.value = Panzoom(window.document.getElementById('zoom-area'), {
 //  maxScale: 6
 //});
