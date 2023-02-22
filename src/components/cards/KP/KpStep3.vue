@@ -166,13 +166,13 @@
               <div class="kp-step-body-row-group"  :class="{'active': attachments}">
                 <div>
                   <div class="kp-step-body-row">
-                    <div style="display: grid; width: 80px; height: 160px;"
+                    <div style="display: grid; width: 150px; height: 210px;"
                       v-for="(item,index) in KPLocal.attachments" :key="index"
                       @click="removeAttachmentsById($event.target.parentElement)"
                       :data-id="index"
                     >
                       <span style="margin: 0 0 0 auto; font-weight: bold; color: red; cursor: pointer;">X</span>
-                      <img :src="item" :style="'height: 100%; width: 100%;'">
+                      <img :src="item" height="200">
                     </div>
                   </div>
                 </div>
@@ -241,6 +241,21 @@
       </div>
 
       <div>
+        <span :style="'margin-bottom: 10px;'">Угол поворота</span>
+        <div :style="'display: flex;'">
+          <div><base-button @onClick="rotateLogoLeft(-1)">L</base-button></div>
+          <div>
+            <BaseInput 
+              @click="() => {}"
+              @focusout ="() => {}"
+              v-model="scaleLogo" 
+              :class="'input-text-field-modify'"/>
+          </div>
+          <div><base-button @onClick="rotateLogoRight(1)">R</base-button></div>
+        </div>
+      </div>
+
+      <div>
         <base-button 
           @onClick="addToAttachments()" 
           :tooltip="'Добавить сформированоое изображение в файл КП'" 
@@ -257,7 +272,7 @@
       <img style="cursor: pointer;" 
       @click="selectCanvasBackgroundImageHandler($event.target.src)"
       v-for="(src,index) in imageList" :key=index 
-      :src=src width="120" height="180"/>
+      :src=src height="200"/>
     </div>
 
     <div style="display: table; margin: auto;">
@@ -344,8 +359,8 @@ const canvasTest = ref()
 const startLogoPosX = ref()
 const startLogoPosY = ref()
 
-const startImageWidth = 200
-const startImageHeight = 200
+const startImageWidth = 100
+const startImageHeight = 100
 
 const currentLogoImageWidth = ref(startImageWidth)
 const currentLogoImageHeight = ref(startImageHeight)
@@ -514,6 +529,52 @@ const uploadLogoHandler = () => {
   file.value.click()
 }
 
+// последнее сохраненное состояние поворота логотипа
+const rotateDegreeLastState = ref(0)
+
+// наклонить логотип на холсте влево
+const rotateLogoLeft = (n: number) => {
+  if(n > 0) {
+    n *= -1
+  }
+
+  rotateLogo(n)
+}
+
+// наклонить логотип на холсте вправо
+const rotateLogoRight = (n: number) => {
+  rotateLogo(n)
+}
+
+// наклонить логотип на холсте
+const rotateLogo = (n: number) => {
+  if(n == 0) {
+    return
+  }
+  rotateDegreeLastState.value += n
+  let translateOffsetX = startLogoPosX.value + currentLogoImageWidth.value/2
+  let translateOffsetY = startLogoPosY.value + currentLogoImageHeight.value/2
+
+  // смещение центра
+  canvasFrontRef.value.getContext('2d').translate(translateOffsetX,translateOffsetY)
+  
+  // поворт холста
+  canvasFrontRef.value.getContext('2d').rotate((rotateDegreeLastState.value * Math.PI) / 180);
+  
+  // восстановление центра
+  canvasFrontRef.value.getContext('2d').translate(-translateOffsetX,-translateOffsetY)
+
+  //очистка
+  canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
+
+  //отрисовка
+  canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
+  startLogoPosX.value,startLogoPosY.value,
+  currentLogoImageWidth.value,currentLogoImageHeight.value);
+
+  canvasFrontRef.value.getContext('2d').resetTransform();
+}
+
 // увеличить масштаб логотипа на холсте
 const zoomUp = (n: number) => {
   canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
@@ -620,8 +681,8 @@ onMounted(async () => {
   let isDraggable = false
   let currentX = canvasFront.width / 2
   let currentY = canvasFront.height / 2
-  let initialWidthLogo = 200
-  let initialHeightLogo = 200
+  let initialWidthLogo = currentLogoImageWidth.value
+  let initialHeightLogo = currentLogoImageHeight.value
 
   //let startLogoPosX = currentX - initialWidthLogo/2
   //let startLogoPosY = currentY - initialHeightLogo/2
