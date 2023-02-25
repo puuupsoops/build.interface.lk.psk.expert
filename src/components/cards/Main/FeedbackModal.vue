@@ -1,11 +1,12 @@
 <script setup lang="ts">
   import { ref } from 'vue'
   import axios from '/src/plugins/axios'
-  import Vuex from 'vuex'
+
   import DeleteButton from '/src/components/ui/DeleteButton.vue'
   import SwitchButton from '/src/components/ui/SwitchButton.vue'
   import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 
+  // eslint-disable-next-line no-unused-vars
   const props = defineProps({
     modelValue:{
         type: Boolean,
@@ -19,13 +20,15 @@
   const data = ref({
     type: '',
     text: '',
-    files: []
+    files: <any>[]
   })
 
   const emits = defineEmits(['update:modelValue'])
 	
-  const handleFileUpload = ($event: any) => {
-      data.value.files.push(event.target.files[0]);
+  const handleFileUpload = (e: Event) => {
+    const file = (e.target as HTMLInputElement)
+    if (file && file.files)
+      data.value.files.push(file.files[0])
   }
 
   const close = () => {
@@ -38,13 +41,13 @@
       axios.post('/user/request/feedback', data.value)
       .then(response => {
         if(response.status == 201) {
-          showPreload.value = !showPreload
+          showPreload.value = !showPreload.value
           close();
         }
       })
       .catch(error => {
         console.log(error)
-        showPreload.value = !showPreload
+        showPreload.value = !showPreload.value
       })
     //close();
   }
@@ -63,7 +66,7 @@
         
         <div class="order-modal-header">
           <div class="sidebar-logo" :style="'color: #fff;'">
-            <img class="sidebar-logo-img" src="/src/assets/img/lamp.png"/>
+            <img class="sidebar-logo-img" alt="" src="/src/assets/img/lamp.png"/>
             <h3 class="order-modal-header-title">Форма обратной связи.</h3>
           </div>
           
@@ -103,8 +106,8 @@
       <div v-else  :style="'margin: 15px 14px 0px 0px;'">
         <div class="gradient-btn claim-submit"
           @click="send(); showPreload=!showPreload">
-			    <div class="gradient-btn-text">Отправить</div>
-		    </div>
+          <div class="gradient-btn-text">Отправить</div>
+        </div>
       </div>
 
     </div>

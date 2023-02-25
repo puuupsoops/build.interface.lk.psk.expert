@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { store } from '/src/store/index'
+import { store } from '/src/store'
 
 const routes = [
 	{
@@ -39,7 +39,7 @@ const routes = [
 	},
 	{
 		path: '/product/:article?', 
-		component: () => import('/src/pages/product.vue'),
+		component: () => import('/src/pages/ProductPage.vue'),
 		name: 'Product',
 		props: true,
 		meta:{
@@ -57,7 +57,7 @@ const routes = [
 	},
 	{
 		path: '/orders', 
-		component: () => import('/src/pages/order/orders.vue'),
+		component: () => import('/src/pages/order/OrdersPage.vue'),
 		name: 'Orders',
 		meta:{
 				auth: true,
@@ -129,7 +129,7 @@ const routes = [
 	},
 	{
 		path: '/profile', 
-		component: () => import('/src/pages/profile.vue'),
+		component: () => import('/src/pages/ProfilePage.vue'),
 		name: 'Profile',
 		meta:{
 				auth: true,

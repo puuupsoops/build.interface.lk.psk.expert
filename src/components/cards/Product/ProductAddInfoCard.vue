@@ -1,5 +1,5 @@
 <template>
-  <div class="product-addinfo content-elem content-elem-info">
+  <div class="product-add-info content-elem content-elem-info">
             <div class="content-elem-heading"> 
               <transition name="text" mode="out-in">
                 <div :key="show" :class="show ? 'content-elem-heading-text' : 'hide-text'">Доп. материал</div>
@@ -14,31 +14,25 @@
                   Сообщаем вам что согласно Постановлению Правительства 
                   Российской Федерации № 216 от 29.02.2020 дата запрета 
                   оборота немаркированной обуви перенесена на 1 июля 2020 года.
-                  <div class="video-area" v-html="link" :style="'padding-top: 10px;'"></div>
+                  <div class="video-area" v-html="data.VIDEO" :style="'padding-top: 10px;'"></div>
               </div>
             </transition>
   </div>
 </template>
 
-<script lang="ts">
-import { ref } from 'vue'
+<script setup lang="ts">
+import {PropType, ref} from 'vue'
+import {Product} from "/src/models/Product";
 
-export default {
-    props : {
-      data: {
-	    },
-    },
-    setup(props){
-        let show=ref(true);
-        let link = props.data.VIDEO
-        //console.log(props.data.value.VIDEO)
-        console.log(props.data)
-        return{
-            show,
-            link
-        }
-    }
-}
+// eslint-disable-next-line no-unused-vars
+const props = defineProps({
+  data:{
+    type: Object as PropType<Product>
+  },
+})
+
+const show=ref(true)
+
 </script>
 
 

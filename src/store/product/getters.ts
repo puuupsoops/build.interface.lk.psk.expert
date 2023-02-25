@@ -19,14 +19,14 @@ export const getters: GetterTree<ProductState, RootState> = {
 	getProduct: state => state.product,
 	getProductImages: state => state.product_images,
 	getProductProtect: state => state.product_protect,
-	getPtoductToCart: state => ({
+	getProductToCart: state => ({
 		product: state.product,
 		product_found: state.product_found,
 		product_offers: state.product_offers,
 		product_images: state.product_images,
 		product_protect: state.product_protect,
 	}),
-	getProductArticles: state => state.product_articls,
+	getProductArticles: state => state.product_articles,
 	getProductOffersORGGUID: state => {
 							const arr = state.product_offers.length != 0 ? state.product_offers.map(x=>x.ORGGUID) : [null]
 							return [...new Set(arr)][0]

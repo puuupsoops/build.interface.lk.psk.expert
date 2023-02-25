@@ -14,7 +14,7 @@
 					<DeleteButton @onClick="close()"/>
 			</div>
 			<div class="order-modal-body draft">
-				<div v-if="orderDraft.length ==0" >		
+				<div v-if="orderDraft.length === 0" >
 						Черновики отсутсвуют
 				</div>
 				<div v-else class="order-draft-list">
@@ -24,7 +24,7 @@
 							v-for="(item, key) in orderDraft"
 							:key="key"
 						>
-							<div :class="'shipment-address-list-row' + ( item.id == active ? ' active': '' )"
+							<div :class="'shipment-address-list-row' + ( item.id === active ? ' active': '' )"
 								@click.stop="clickItem(item.id)"
 							>
 								<div class="shipment-address-list-elem">
@@ -32,20 +32,20 @@
 								</div>
 								<div class="shipment-address-list-elem">
 									<div class="input-text-field"
-										v-if="editItem && item.id == active"
+										v-if="editItem && item.id === active"
 										@click.stop=""
 										:style="'width: 100%'"
 									>
 										<input type="text" placeholder=" " v-model="item.name" >
-                                    	<label>Наименование</label>
+                    <label>Наименование</label>
 									</div>
 									<div v-else>{{item.name}}</div>
-									<div v-if="item.id != active" class="date">{{new Date(item.id).toLocaleString('ru')}}</div>
+									<div v-if="item.id !== active" class="date">{{new Date(item.id).toLocaleString('ru')}}</div>
 								</div>
 
 								<div class="shipment-address-list-elem actions"
 									:class="{'active': editItem}"
-									v-if="item.id == active && editItem==false"
+									v-if="item.id === active && editItem===false"
 									tooltip="Переименовать"
 									flow="up"
 								>
@@ -61,7 +61,7 @@
 
 								<div class="shipment-address-list-elem actions"
 									:class="{'active': editItem}"
-									v-if="item.id == active && editItem==true"
+									v-if="item.id === active && editItem===true"
 									tooltip="Сохранить"
 									flow="up"
 								>
@@ -103,7 +103,7 @@
 							</div>
 							
 							<div class="shipment-address-list-row-info"
-								v-if="delItem && item.id == active"
+								v-if="delItem && item.id === active"
 							>
 								<div>Удалить черновик?</div>
 								<div>
@@ -113,7 +113,7 @@
 							
 							</div>
 							
-							<div :class="'orders-list-info draft'   + (!delItem && item.id  == active ? ' active': '' )"  >
+							<div :class="'orders-list-info draft'   + (!delItem && item.id  === active ? ' active': '' )"  >
 								<div class="orders-list-info-row draft">
 									<OrderDraftCard 
 										:order="item"
@@ -147,7 +147,7 @@
 		</div>	
 		<div v-if="!delAll && !useDraft" class="order-modal-action">
 			<button @click="active=-1; delAll=true" class="order-list-btn">Удалить все черновики</button>
-			<button v-if="active!=-1" @click="useDraft=true" class="order-list-btn">Использовать черновик</button>
+			<button v-if="active!==-1" @click="useDraft=true" class="order-list-btn">Использовать черновик</button>
 		</div>
 	</div>
 </div>
@@ -166,6 +166,7 @@ import { useRouter } from 'vue-router'
 
 import { OrderMutations } from '/src/store/order/mutations'
 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
 		modelValue:{
 			type: Boolean,

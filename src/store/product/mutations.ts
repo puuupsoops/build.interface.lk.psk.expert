@@ -1,4 +1,4 @@
-import { Found, ProductArticles } from "/src/models/Product";
+import { Found } from "/src/models/Product";
 import { MutationTree } from "vuex";
 import { ProductState, DEFAULT_PRODUCT } from "./types";
 
@@ -8,8 +8,8 @@ export enum ProductMutations {
 	SET_SEARCH_PRODUCT_CLEAR = "SET_SEARCH_PRODUCT_CLEAR",
 	SET_PRODUCT_RESULT = "SET_PRODUCT_RESULT",
 	SET_PRODUCT_CLEAR = "SET_PRODUCT_CLEAR",
-	SET_PRODUCT_ARTICLS = "SET_PRODUCT_ARTICLS",
-	SET_PROFUCT_FOUND_ERR_STR = "SET_PROFUCT_FOUND_ERR_STR",
+	SET_PRODUCT_ARTICLES = "SET_PRODUCT_ARTICLES",
+	SET_PRODUCT_FOUND_ERR_STR = "SET_PRODUCT_FOUND_ERR_STR",
 }
 
 export const mutations: MutationTree<ProductState> = {
@@ -45,10 +45,10 @@ export const mutations: MutationTree<ProductState> = {
 		state.product_protect = [];
 		state.product_video_link = '';
 	},
-	[ProductMutations.SET_PRODUCT_ARTICLS](state, data: Found[]){
-		state.product_articls = data.map(x => {return {article: x.ARTICLE, name: x.NAME}});
+	[ProductMutations.SET_PRODUCT_ARTICLES](state, data: Found[]){
+		state.product_articles = data.map(x => {return {article: x.ARTICLE, name: x.NAME}});
 	},
-	[ProductMutations.SET_PROFUCT_FOUND_ERR_STR](state, data: string){
+	[ProductMutations.SET_PRODUCT_FOUND_ERR_STR](state, data: string){
 		state.product_found_err_str = data;
 	},
 

@@ -28,7 +28,7 @@
         @ShowSearch="showProductSearch=!showProductSearch"
       />
 
-    <div class="content-wrap content-product-wrap">
+    <div class="content-wrap content-product-order-wrap ">
       <div class="content-wrap-elem">
         <ProductSearchResultCard
             :data="productFound"
@@ -37,7 +37,6 @@
             @onClick="loadProduct()"
             @ShowSearch="showProductSearch=!showProductSearch"
             />
-
       </div>
       <div class="content-wrap-elem">
         <ProductOffersOrderCard
@@ -114,7 +113,7 @@ import { OrderMutations } from '/src/store/order/mutations'
 import { ProductActions } from '/src/store/product/actions'
 import { CompanyActions } from '/src/store/company/actions'
 import { OrderStatePosition, OrderStatePositionOffer } from '/src/store/order/types'
-import {KPMutations} from "/src/store/kp/mutations";
+import { KPMutations } from "/src/store/kp/mutations";
 
 
 const props = defineProps({

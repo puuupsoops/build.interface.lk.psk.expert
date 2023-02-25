@@ -180,31 +180,49 @@
 				&-box
 					padding:
 						right: 15px
+	.content-wrap
+		&.content-product-wrap
+			+flex-wrap(wrap)
 
-	.product
-		&-parcel
-			&-wrap
-				+flex-wrap(wrap)
-			
-			&-elem
-				margin: 0
-				max-width: 100%
+			.content-wrap-elem
+				&:last-child,
+				&:first-child
+					width: 100%
+					max-width: unset
+					margin-right: 0px
 
-				&:nth-child(1)
+				&:last-child
 					margin:
-						bottom: 30px
-					order: 2
-				
-				&:nth-child(2)
-					order: 3
-			
-			&-row
-				+justify-content(center)
+						top: 30px
+	.product-info-tab-nav
+		margin: auto
+	.product-info-tab-link
+		padding: 0 10px
 
-			&-hide-btn
-				margin:
-					bottom: 15px
-				order: 1
+	//.product
+	//	&-parcel
+	//		&-wrap
+	//			+flex-wrap(wrap)
+	//
+	//		&-elem
+	//			margin: 0
+	//			max-width: 100%
+	//
+	//			&:nth-child(1)
+	//				margin:
+	//					bottom: 30px
+	//				order: 2
+	//
+	//			&:nth-child(2)
+	//				order: 3
+	//
+	//		&-row
+	//			+justify-content(center)
+	//
+	//		&-hide-btn
+	//			margin:
+	//				bottom: 15px
+	//			order: 1
 
 	//.order
 	//	&-list
@@ -378,38 +396,58 @@
 				&-text
 					width: 20%
 
-	.sidebarOpen
-		.orders
-			&-heading
-				&-search
-					+flex-wrap(wrap)
-					&-elem
-						width: 100%
-						+flex-wrap(wrap)
-					
-					.product-search-text
-						margin:
-							bottom: 10px
-					
-					&-btn
-						margin:
-							top: 15px
-
-		.claim
-			&-heading
-				&.shipment-heading
-					+flex-wrap(wrap)
-
-					.shipment-heading-elem
-						&:nth-child(1)
-							width: 100%
-
-						&:nth-child(2)
-							margin:
-								top: 15px
-							width: 100%
-
 @media screen and (max-width: 1370px)
+	.content
+		padding:
+			left: 100px
+
+		&-heading-wrap
+			+flex-wrap(wrap)
+
+			&-elem
+				&:nth-child(1),
+				&:nth-child(2)
+					margin: 0
+					width: 100%
+
+				&:nth-child(2)
+					margin:
+						top: 15px
+
+	.nav
+		&.top
+			width: 100%
+	.content-wrap
+		&.content-main-wrap
+			+flex-wrap(wrap)
+
+			.content-wrap-elem
+				&:first-child
+					width: 100%
+
+				&:last-child
+					padding: 0
+					width: 100%
+
+		&.content-order-wrap
+			+flex-wrap(wrap)
+
+			.content-wrap-elem
+				&:first-child,
+				&:last-child
+					width: 100%
+
+				&:last-child
+					padding: 0
+						top: 30px
+		&.content-product-order-wrap
+			+flex-wrap(wrap)
+
+			.content-wrap-elem
+				&:first-child,
+				&:last-child
+					width: 100%
+
 	.orders
 		&-heading
 			+flex-wrap(wrap)
@@ -424,51 +462,6 @@
 					width: 100%
 
 @media screen and (max-width: 1320px)
-	.sidebarOpen
-		.content-wrap
-			&.content-product-wrap
-				+flex-wrap(wrap)
-
-				.content-wrap-elem
-					&:first-child,
-					&:last-child
-						width: 100%
-					
-					&:last-child
-						margin:
-							top: 30px
-				
-				.product-parcel
-					padding:
-						top: 30px
-
-					&-wrap
-						+justify-content(space-between)
-
-					&-elem
-						margin: 0
-						max-width: 48%
-					
-						&:nth-child(1)
-							order: 1
-						
-						&:nth-child(2)
-							order: 2
-					
-					&-hide-btn
-						position: absolute
-						top: 0 
-						right: 0
-						order: 3
-						z-index: 10
-
-		.shipment
-			&-form.shipment-form-pickup
-				.shipment-form-heading
-					+flex-wrap(wrap)
-					
-					.shipment-form-elem
-						width: 100%
 
 	.product
 		&-slider
@@ -479,23 +472,6 @@
 				width: 100%
 
 @media screen and (max-width: 1280px)
-	.content
-		padding:
-			left: 100px
-
-		&-heading-wrap 
-			+flex-wrap(wrap)
-
-			&-elem
-				&:nth-child(1),
-				&:nth-child(2)
-					margin: 0
-					width: 100%
-				
-				&:nth-child(2)
-					margin:
-						top: 15px
-
 	.company
 		&-calendar-wrap
 			+flex-wrap(wrap)
@@ -705,30 +681,6 @@
 					padding: 0 5px
 					width: 100%
 
-	.content-wrap
-		&.content-main-wrap
-			+flex-wrap(wrap)
-		
-			.content-wrap-elem
-				&:first-child
-					width: 100%
-
-				&:last-child
-					padding: 0
-					width: 100%			
-
-		&.content-order-wrap
-			+flex-wrap(wrap)
-
-			.content-wrap-elem
-				&:first-child,
-				&:last-child
-					width: 100%
-
-				&:last-child
-					padding: 0
-						top: 30px
-	
 	.banner
 		display: block
 		margin: 0 auto
@@ -896,6 +848,7 @@
 				&:last-child,
 				&:first-child
 					width: 100%
+					max-width: unset
 					margin-right: 0px
 					
 				&:last-child

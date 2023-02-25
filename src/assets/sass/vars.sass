@@ -320,20 +320,29 @@ a
 					margin-right: 20px
 				
 				&:last-child
-					width: 100%
+					max-width: 570px
+					//width: 100%
 		
 		&.content-order-wrap
 			margin:
 				top: 15px
-				
+			gap: 30px
 			.content-wrap-elem
 				&:first-child
 					width: 63.7%
-				
 				&:last-child
-					padding:
-						left: 30px
 					width: 36.3%
+
+		&.content-product-order-wrap
+			margin:
+				top: 15px
+			gap: 30px
+			.content-wrap-elem
+				&:first-child
+					width: 40%
+
+				&:last-child
+					width: 100%
 
 	&-hide-btn
 		font-size: 16px
@@ -439,7 +448,10 @@ a
 	&.top
 		position: fixed
 		top: 0
-		margin-top: 0px
+		margin:
+			top: 0px
+			left: -100px
+			right: 0px
 		z-index: 100
 		width: calc(100% - 70px)
 	&-list

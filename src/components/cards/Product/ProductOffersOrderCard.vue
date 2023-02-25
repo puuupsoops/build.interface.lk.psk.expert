@@ -13,7 +13,7 @@
 				</div>
 				<div class="table-wrap">
 					<div 
-						:class="'table-row' + (offer.count > 0 ? ' active': '') +(offer.count > offer.RESIDUE && offer.count != 0 ? ' presail': '')"
+						:class="'table-row' + (offer.count > 0 ? ' active': '') +(offer.count > offer.RESIDUE && offer.count !== 0 ? ' presail': '')"
 						v-for="offer in characteristicArray"
 						:key="offer.ID"
 					>
@@ -40,7 +40,7 @@
 		<div 
 			class="order-amount-more">
 			<div
-				:class="count != 0 || countPresail != 0 ? 'order-amount-more-btn':'order-amount-more-btn disable'" 
+				:class="count !== 0 || countPresail !== 0 ? 'order-amount-more-btn':'order-amount-more-btn disable'"
 				@click="addToOrder()"
 			>
 				<span class="order-amount-more-text">Добавить в заказ </span>

@@ -52,7 +52,7 @@
 					<div class="content-heading-btn"
 						:class="{'active': isOrderInDraft}"
 						@click.capture="isOrderInDraft ? addToDraft() : draftShowModal = true"
-						:tooltip="isOrderInDraft ? 'Удалить из черновика': 'Сохранить в черновик'" :flow="draftShowModal ? '' : 'up'"
+						:tooltip="isOrderInDraft ? 'Удалить из черновика': 'Сохранить в черновик'" :flow="draftShowModal ? '' : 'up-left'"
 					>
 						<modal-input-full v-model="draftName" v-model:show="draftShowModal" show-ok @on-ok="addToDraft()"></modal-input-full>
             <svgDraft class="content-heading-btn-img"></svgDraft>

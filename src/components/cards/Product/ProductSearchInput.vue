@@ -19,20 +19,19 @@
 		<div 
 			v-if="show_options"
 			class="product-search-input-options"
-			:class="{'default': search_str == '' || articles.length == 0 }"
+			:class="{'default': search_str === '' || articles.length === 0 }"
 		>
 
-			<span v-if="search_str == ''">Чтобы добавить в заказ новый продукт - начните ввод для поиска продукта</span>
+			<span v-if="search_str === ''">Чтобы добавить в заказ новый продукт - начните ввод для поиска продукта</span>
 			<div v-else>
 			
-				<p
-					v-for="item, key in articles"
+				<div
+					v-for="(item, key) in articles"
 					:key="key"
 					class="product-search-input-options-item"
 					:class="{loading}"
 				>
 					<router-link v-if="to"
-						tag="a"
 						:to="`/${to}/${item.article}`"
 						@click="show_options=false"
 					>
@@ -41,27 +40,28 @@
 					<a v-else  @click="done(item.article)">
 						<div class="article">{{item.article}}</div> <div class="name">{{item.name}}</div>
 					</a>
-				</p>
-				<span v-if="loading && articles.length == 0"> Поиск...</span>
-				<span v-if="!loading && articles.length == 0"> Не найдено</span>
+				</div>
+				<span v-if="loading && articles.length === 0"> Поиск...</span>
+				<span v-if="!loading && articles.length === 0"> Не найдено</span>
 			</div>
 		</div>
 
 	</div>
 	<button class="product-search-btn gradient-btn" 
-		v-if="to=='product'"
+		v-if="to==='product'"
 		@click="done(search_str)">
-			<div>Поиск</div>
-	</button>
+		<div>Поиск</div>
+  </button>
 </div>
 </template>
 <script setup lang="ts">
-import PreloaderLocal from '/src/components/PreloaderLocal.vue'
+import { PreloaderLocal } from '/src/components'
 import { ProductActions } from '/src/store/product/actions'
 import { ProductMutations } from '/src/store/product/mutations'
 import { computed, ref} from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { useStore } from '/src/store'
+import {ProductArticles} from "/src/models/Product";
 
 
 const props = defineProps({
@@ -84,7 +84,7 @@ const loading = ref(false)
 const debounce = ref()
 const target = ref(null)
 const show_options = ref(false)
-const articles = computed(()=>store.getters.getProductArticles)
+const articles = computed<ProductArticles[]>(()=>store.getters.getProductArticles)
 		
 const doSearch = () => {
 	clearTimeout(debounce.value)
@@ -101,7 +101,7 @@ const doSearch = () => {
 const close = () => {
 	search_str.value = ''
 	show_options.value = false
-	store.commit(ProductMutations.SET_PRODUCT_ARTICLS, [])
+	store.commit(ProductMutations.SET_PRODUCT_ARTICLES, [])
 	emits('update:modelValue', '')
 }
 
@@ -112,7 +112,7 @@ const done = (str: string) => {
 }
 
 onClickOutside(target, () => {
-	if (props.to == 'order')	{
+	if (props.to === 'order')	{
 		emits('update:show', false)
 	} else {
 		show_options.value = false

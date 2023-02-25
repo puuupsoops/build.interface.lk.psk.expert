@@ -1,37 +1,38 @@
 <template>
 <div class="content-elem">
 	<div class="product-slider-wrap" v-if="!loader">
-		<button class='product-slider-arrow prev' @click="previous"></button>
+    <div class="product-slider-main">
+      <button class='product-slider-arrow prev' @click="previous"></button>
+      <transition-group name="product-slider-trans" class='product-slider' tag="div">
+          <div v-for="slide in slides" class='product-slider-slide' :key="slide.id">
+            <img
+              v-if="slide.src"
+              :src="slide.src"
+              @click="fullscreen=true"
+              alt=""
+            />
+          </div>
+      </transition-group>
+      <div class='product-slider-arrow next' @click="next"></div>
+    </div>
 
-		<transition-group name="product-slider-trans" class='product-slider' tag="div">
-				<div v-for="slide in slides" class='product-slider-slide' :key="slide.id">
-					<img
-						v-if="slide.src"
-						:src="slide.src" 
-						@click="fullscreen=true"
-					/>
-				</div>
-		</transition-group>
-		<div class='product-slider-arrow next' @click="next"></div>
-		
-	
-		<transition-group name="product-slider-trans" class='product-slider-small' tag="div">
-			<div 
-				v-for="slide in slides" 
-				class='product-slider-small-slide'
-				:key="slide.id"
-			>
-				<img 
-					v-if="slide.src"
-					:src="slide.src" 
-				/>
-			</div>
-		</transition-group>
 	
 
 	</div>
-		
-	
+  <transition-group name="product-slider-trans" class='product-slider-small' tag="div">
+    <div
+        v-for="slide in slides"
+        class='product-slider-small-slide'
+        :key="slide.id"
+    >
+      <img
+          v-if="slide.src"
+          :src="slide.src"
+          alt=""
+      />
+    </div>
+  </transition-group>
+
 	<div class="product-slider-buttons">
 		<!-- <div class="product-slider-link">Сертификаты</div> -->
 		<div
@@ -52,7 +53,7 @@
 <script lang="ts">
 
 
-import { ref, onUpdated, computed, defineComponent } from 'vue'
+import {ref, onUpdated, computed, defineComponent, PropType} from 'vue'
 import { useStore } from '/src/store'
 import { KeysMutations } from '/src/store/keys/mutations'
 import { Sliders } from '/src/models/Components'
@@ -61,7 +62,7 @@ import ProductSliderFullscreen from '/src/components/cards/Product/ProductSlider
 export default defineComponent({
 	props:{
 		data: {
-			type: Array
+      type: Array as PropType<string[]>
 		},
 	},
 	components:{

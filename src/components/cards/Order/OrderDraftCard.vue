@@ -289,7 +289,7 @@ watch(addPos, ()=>{
   if (orderLocal.value.position) {
     orderLocal.value.position = orderLocal.value.position.concat(addPos.value ?? [])
   } else {
-    orderLocal.value.position = [].concat(addPos.value! ?? [])
+    orderLocal.value.position = [addPos.value!]
   }
   orderLocal.value = orderCalcStore(orderLocal.value)
 })

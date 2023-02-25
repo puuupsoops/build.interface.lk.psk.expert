@@ -7,7 +7,7 @@ export const state: ProductState = {
 	product: DEFAULT_PRODUCT,
 	product_images: [],
 	product_protect: [],
-	product_articls: [],
+	product_articles: [],
 	product_found_err_str: '',
 	product_video_link: ''
 }

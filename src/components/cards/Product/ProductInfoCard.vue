@@ -42,12 +42,12 @@
 			</div>
 			<div :class="content_switch === 'certificate' ? 'product-info-desc product-info-tab-elem active':'product-info-desc product-info-tab-elem'">
 				<p v-if="!showCertificates"
-				 :style="'text-align: center; display: table; margin: 0 auto 0 auto;'"
+            :style="'text-align: center; display: table; margin: 0 auto 0 auto;'"
 				>
 					Загрузка...
 					<Preloader />
 				</p>
-				<p v-else>
+				<div v-else>
 					<div :style="'margin: 0 auto 0 auto; display: table;'">
 						<ButtonWithIcon 
 							:text="btnText"
@@ -58,35 +58,22 @@
 					</div>
 
 					<div class="product-slider-wrap">
-					<button class='product-slider-arrow prev' @click="prev"></button>
-
-					<transition-group name="product-slider-trans" class='product-slider' tag="div">
-							<div v-for="slide in slides" class='product-slider-slide' :key="slide.id">
-								<img
-									v-if="slide.src"
-									:src="slide.src" 
-									@click="fullscreen=true"
-								/>
-							</div>
-					</transition-group>
-					<div class='product-slider-arrow next' @click="next"></div>
-					
-				
-					<!--<transition-group name="product-slider-trans" class='product-slider-small' tag="div">
-						<div 
-							v-for="slide in slides" 
-							class='product-slider-small-slide'
-							:key="slide.id"
-						>
-							<img 
-								v-if="slide.src"
-								:src="slide.src" 
-							/>
-						</div>
-					</transition-group>-->
-				
-					</div>
-				</p>
+            <div class="product-slider-main">
+              <button class='product-slider-arrow prev' @click="prev"></button>
+              <transition-group name="product-slider-trans" class='product-slider' tag="div">
+                  <div v-for="slide in slides" class='product-slider-slide' :key="slide.id">
+                    <img
+                      v-if="slide.src"
+                      :src="slide.src"
+                      alt=""
+                      @click="fullscreen=true"
+                    />
+                  </div>
+              </transition-group>
+              <div class='product-slider-arrow next' @click="next"></div>
+            </div>
+          </div>
+        </div>
 			</div>
 		</div>
 	</transition>
@@ -98,39 +85,40 @@
 
 </template>
 
-<script lang="ts">
-import { ref, onUpdated, watch } from 'vue'
-import ProductPropertiesCard from '/src/components/cards/Product/ProductPropertiesCard.vue'
-import ProductSliderFullscreen from '/src/components/cards/Product/ProductSliderFullscreen.vue'
-import ButtonWithIcon from '/src/components/ui/ButtonWithIcon.vue'
-import { Sliders } from '/src/models/Components'
-import axios from '/src/plugins/axios'
+<script setup lang="ts">
+
+import { ProductPropertiesCard, ProductSliderFullscreen } from '/src/components/cards/Product'
+import { ButtonWithIcon } from '/src/components/ui'
+import { Preloader } from '/src/components'
 import { ButtonState } from '/src/components/ui/button/state'
 import { IconsSVG } from '/src/components/ui/button/icons'
-import Preloader from '/src/components/PreloaderLocal.vue' 
-import { useStore } from '/src/store'
 
-export default {
-	components: { ProductPropertiesCard, ProductSliderFullscreen,ButtonWithIcon,Preloader },
-	props: {
-		data: {
-		type: Object
-		},
+import { Sliders } from '/src/models/Components'
+import axios from '/src/plugins/axios'
+import { ref, onUpdated, PropType } from 'vue'
+
+import { useStore } from '/src/store'
+import { Product, Protect } from "/src/models/Product";
+
+const props = defineProps({
+  data: {
+		type: Object as PropType<Product>
+  },
 	protect: {
-			type: Array
+			type: Array as PropType<Protect[]>
 		},
-	},
-	setup(props) {
-		let content_switch = ref('detail')
-		let show = ref(true)
+	})
+
+const content_switch = ref('detail')
+const show = ref(true)
 
 		//Слайдер с сертефикатами
-		let slides = ref<Sliders[]>([])
-		let fullscreen = ref(false)
-		let certificates = ref([])
-		let showCertificates = ref(false)
+const slides = ref<Sliders[]>([])
+const fullscreen = ref(false)
+const certificates = ref<string[]>([])
+const showCertificates = ref(false)
 		// костыль для переключения на закладку ОПИСАНИЕ
-		let productID = ref(useStore().getters.getProduct.ID)
+const productID = ref(useStore().getters.getProduct.ID)
 
 		onUpdated( () => {
 			// костыль для переключения на закладку ОПИСАНИЕ
@@ -141,28 +129,28 @@ export default {
 			}
 		});
 
-		let next = () => {
-			const first = <Sliders>slides.value.shift();
-			slides.value = slides.value.concat(first);
-		};
-		let prev = () => {
-			const last = <Sliders>slides.value.pop();
-			slides.value = [last].concat(slides.value);
-		};
+const next = () => {
+  const first = <Sliders>slides.value.shift();
+  slides.value = slides.value.concat(first);
+};
+const prev = () => {
+  const last = <Sliders>slides.value.pop();
+  slides.value = [last].concat(slides.value);
+};
 
 		//Скачивание сертификатов
-		let btnText = ref('Скачать сертификаты архивом ')
-		let btnState = ref<ButtonState>(ButtonState.Active)
-		let btnIcon = IconsSVG.Download
-		let isDownload = ref(false)
-		let getCirtificates = (state: boolean) => {
+const btnText = ref('Скачать сертификаты архивом ')
+const btnState = ref<ButtonState>(ButtonState.Active)
+const btnIcon = IconsSVG.Download
+const isDownload = ref(false)
+const getCirtificates = (state: boolean) => {
 			if(state)
 				return;
 			
 			slides.value = []
 			certificates.value = [];
 
-			let productID = props.data.UID
+			let productID = props.data?.UID ?? ''
 			console.log(productID)
 
 			axios.get('/product/'+ productID +'/certificates')
@@ -187,7 +175,7 @@ export default {
 		let download = () => { 
 			btnState.value = ButtonState.InProgress
 			btnText.value = 'Архив скачивается, подождите'
-			let productID = props.data.UID
+			let productID = props.data?.UID
 
 			axios.get('/product/'+ productID +'/certificates/download',
 				{
@@ -207,7 +195,7 @@ export default {
 					// clean up "a" element & remove ObjectURL
 					document.body.removeChild(link);
 					window.URL.revokeObjectURL(url);
-					isDownload.value = !isDownload
+					isDownload.value = !isDownload.value
 				})
 				.catch(error => {
 					//todo: сделать проверку на ошибки
@@ -222,24 +210,6 @@ export default {
 				})
 		}
 
-		return {
-			content_switch,
-			show,
-			fullscreen,
-			slides,
-			isDownload,
-			btnText,
-			btnState,
-			btnIcon,
-			certificates,
-			showCertificates,
-			download,
-			getCirtificates,
-			prev,
-			next
-		}
-	}
-} 
 </script>
 
 
