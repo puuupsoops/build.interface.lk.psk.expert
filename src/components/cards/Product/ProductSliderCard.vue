@@ -40,12 +40,36 @@
 			@click="$emit('toOrder', $event.target.click)"
 		>Заказать</div>
 		<!-- <div class="product-slider-link">Добавить в КП</div> -->
+		<div class="product-slider-link"
+			@click="hideLogoApplicationModalWindow = false;"
+		>Создать макет нанесения логотипа</div>
 	</div>
 	
 	<ProductSliderFullscreen
 		v-model="fullscreen"
 		:data="data"
 	> </ProductSliderFullscreen>
+
+	<div class="order-modal" v-if="!hideLogoApplicationModalWindow">
+		<div class="order-modal-dialog draft">
+			<div class="order-modal-content draft">
+				<div class="order-modal-header">
+					<h3 class="order-modal-header-title">Конструктор макета нанесения логотипа</h3>
+					<div class="delete-btn"
+						@click="hideLogoApplicationModalWindow = true;"
+					>
+						<svg class="delete-btn-img" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0.250031" y="2.07935" width="2.25351" height="22.5351" 
+							rx="1.12676" transform="rotate(-45 0.250031 2.07935)" fill="#A5A7A9"></rect><rect width="2.25351" height="22.5351" rx="1.12676" 
+							transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 17.5282 2.07935)" fill="#A5A7A9"></rect>
+						</svg>
+					</div>
+				</div>
+				<div class="order-modal-body draft">
+					<LogoApplication :images="slides"/>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 </template>
 
@@ -57,6 +81,7 @@ import { useStore } from '/src/store'
 import { KeysMutations } from '/src/store/keys/mutations'
 import { Sliders } from '/src/models/Components'
 import ProductSliderFullscreen from '/src/components/cards/Product/ProductSliderFullscreen.vue'
+import LogoApplication from '/src/components/cards/KP/LogoApplication.vue'
 
 export default defineComponent({
 	props:{
@@ -65,7 +90,8 @@ export default defineComponent({
 		},
 	},
 	components:{
-		ProductSliderFullscreen
+		ProductSliderFullscreen,
+		LogoApplication
 	},
 	emits: ['toOrder'],
 	setup(props){
@@ -99,11 +125,14 @@ export default defineComponent({
 			slides.value = [last].concat(slides.value);
 		};
 		
+		// закрытие модельного окна с комнонентом нанесения логотипа
+		let hideLogoApplicationModalWindow = ref(true)
 
 		return {
 			loader,
 			slides,
 			fullscreen,
+			hideLogoApplicationModalWindow,
 			next,
 			previous,
 			

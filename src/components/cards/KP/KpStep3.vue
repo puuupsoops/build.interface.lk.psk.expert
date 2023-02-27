@@ -239,7 +239,14 @@
           <div><base-button @onClick="zoomUp(1)">+</base-button></div>
         </div>
       </div>
-
+      <div style="display: flex; align-items: center;">
+        <base-button
+        style="margin: 0; border-radius: 100px; width: 30px; min-width: 30px; min-height: 30px; height: 30px; cursor: help;"
+        :active="false" 
+        :tooltip="'Переключатель для выбора управления колесом мыши'" 
+        :tooltipFlow="'up'" >?</base-button>
+        <SwitchButton v-model="isRotate"></SwitchButton>
+      </div>
       <div>
         <span :style="'margin-bottom: 10px;'">Угол поворота</span>
         <div :style="'display: flex;'">
@@ -248,7 +255,7 @@
             <BaseInput 
               @click="() => {}"
               @focusout ="() => {}"
-              v-model="scaleLogo" 
+              v-model="rotateDegreeLastStateString" 
               :class="'input-text-field-modify'"/>
           </div>
           <div><base-button @onClick="rotateLogoRight(1)">R</base-button></div>
@@ -365,11 +372,14 @@ const startImageHeight = 100
 const currentLogoImageWidth = ref(startImageWidth)
 const currentLogoImageHeight = ref(startImageHeight)
 
+// флаг переключения между Масштабом или Поворотом логотипа
+const isRotate = ref(false)
+
 // хелпер для преобразования &quot; в кавычки 
 const stringConverter = (s: string) => { return s.replace(/&quot;/gi, '\"') }
 
 // input масштаба изображения
-const scaleLogo = ref('0%')
+const scaleLogo = ref('10%')
 
 // кликаем на input масштаба изображения
 const scaleClickHandler = (e: any) => {
@@ -379,9 +389,10 @@ const scaleClickHandler = (e: any) => {
 
 // покидаем input масштаба изображения
 const scaleFocusOutHandler = (e: any) => {
-  console.log('change')
+  console.log('scaleFocusOutHandler')
 
-  let scaleFactor = Number(scaleLogo.value)
+  let scaleFactor = Number(scaleLogo.value.replace('%','')) * 10
+  console.log(scaleFactor)
   scaleLogo.value += '%'
   console.log(scaleFactor)
   if(scaleFactor == 0){
@@ -402,19 +413,19 @@ const scaleFocusOutHandler = (e: any) => {
     scaleLogo.value = '0'
     zoomDown(scaleFactor * -1)
   }
-  //scaleChange(scaleFactor)
+  //scaleInputChange(scaleFactor)
   
 }
 
 // меняем значение, и приводим к строке в input масштаба изображения
-const scaleChange = (n: number) => {
-  console.log('scaleChange')
+const scaleInputChange = (n: number) => {
+  console.log('scaleInputChange')
   let str = scaleLogo.value.replace('%','')
-  let amount = Number(str)
+  let amount = Number(str) * 10
   console.log(amount)
   amount += n
   console.log(amount)
-  scaleLogo.value = amount.toString() + '%'
+  scaleLogo.value = (amount / 10).toString() + '%'
 }
 
 watch(scaleLogo, () => {
@@ -529,8 +540,41 @@ const uploadLogoHandler = () => {
   file.value.click()
 }
 
+// отрисовывает логотип с учетом всех модификаторов (масштаб, поворот, позиция)
+const drawLogo = () => {
+  let translateOffsetX = startLogoPosX.value + currentLogoImageWidth.value/2
+  let translateOffsetY = startLogoPosY.value + currentLogoImageHeight.value/2
+  
+  // смещение центра
+  canvasFrontRef.value.getContext('2d').translate(translateOffsetX,translateOffsetY)
+  
+  // поворт холста
+  canvasFrontRef.value.getContext('2d').rotate((rotateDegreeLastState.value * Math.PI) / 180);
+  
+  // восстановление центра
+  canvasFrontRef.value.getContext('2d').translate(-translateOffsetX,-translateOffsetY)
+
+  //очистка
+  canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
+
+  //отрисовка
+  canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
+  startLogoPosX.value,startLogoPosY.value,
+  currentLogoImageWidth.value,currentLogoImageHeight.value);
+
+  canvasFrontRef.value.getContext('2d').resetTransform();
+}
+
 // последнее сохраненное состояние поворота логотипа
 const rotateDegreeLastState = ref(0)
+const rotateDegreeLastStateString = ref(rotateDegreeLastState.value.toString())
+
+watch(rotateDegreeLastState, () => {
+  if(rotateDegreeLastState.value > 359 || rotateDegreeLastState.value < -359){
+    rotateDegreeLastState.value = 0
+  }
+  rotateDegreeLastStateString.value = rotateDegreeLastState.value.toString()
+})
 
 // наклонить логотип на холсте влево
 const rotateLogoLeft = (n: number) => {
@@ -578,21 +622,25 @@ const rotateLogo = (n: number) => {
 // увеличить масштаб логотипа на холсте
 const zoomUp = (n: number) => {
   canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
-
+   
   canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
   startLogoPosX.value,startLogoPosY.value,
   currentLogoImageWidth.value += n,currentLogoImageHeight.value += n);
-  scaleChange(n)
+  
+  drawLogo()
+  scaleInputChange(n)
 }
 
 // уменьшить масштаб логотипа на холсте
 const zoomDown = (n: number) => {
+  console.log('zoomDown')
   canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
 
   canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
   startLogoPosX.value,startLogoPosY.value,
   currentLogoImageWidth.value -= n,currentLogoImageHeight.value -= n);
-  scaleChange(n * -1)
+  drawLogo()
+  scaleInputChange(n * -1)
 }
 
 // сдвинуть логотип на холсте вправо
@@ -604,6 +652,7 @@ const moveRight = () => {
   canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
   startLogoPosX.value,startLogoPosY.value,
   currentLogoImageWidth.value,currentLogoImageHeight.value);
+  drawLogo()
 }
 
 // сдвинуть логотип на холсте влево
@@ -615,6 +664,7 @@ const moveLeft = () => {
   canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
   startLogoPosX.value,startLogoPosY.value,
   currentLogoImageWidth.value,currentLogoImageHeight.value);
+  drawLogo()
 }
 
 // сдвинуть логотип на холсте вверх
@@ -626,6 +676,7 @@ const moveUp = () => {
   canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
   startLogoPosX.value,startLogoPosY.value,
   currentLogoImageWidth.value,currentLogoImageHeight.value);
+  drawLogo()
 }
 
 // сдвинуть логотип на холсте вниз
@@ -637,6 +688,7 @@ const moveDown = () => {
   canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
   startLogoPosX.value,startLogoPosY.value,
   currentLogoImageWidth.value,currentLogoImageHeight.value);
+  drawLogo()
 }
 
 // смещение для холста
@@ -648,7 +700,7 @@ const getFrontCanvasOffset = () => {
 }
 
 // заглушаем прокрутку колесом мыши окна браузера, если передвигаем логотип на холсте
-const disabledWheel = function(e:any) {
+const disabledWheel = (e:any) => {
   e.preventDefault()
 }
 
@@ -785,6 +837,7 @@ canvasFront.onmousemove = (e) => {
       startLogoPosX.value += clientX, startLogoPosY.value += clientY,
       currentLogoImageWidth.value,currentLogoImageHeight.value
   )
+  drawLogo()
 }
 
 canvasFront.onwheel = (e) => {
@@ -795,7 +848,11 @@ canvasFront.onwheel = (e) => {
   // e.deltaY -100 - вверх, 100 - вниз
   if(e.deltaY > 0) {
     console.log('wheel down',e.deltaY)
-    
+    if(isRotate.value) {
+      rotateLogoLeft(-5)
+      return;
+    }
+
     //лимит
     if(currentLogoImageWidth.value <= 10 || currentLogoImageHeight.value <= 10) {
       return;
@@ -804,6 +861,11 @@ canvasFront.onwheel = (e) => {
     zoomDown(10)
   }else {
     console.log('wheel up',e.deltaY)
+
+    if(isRotate.value) {
+      rotateLogoRight(5)
+      return;
+    }
 
     //лимит width="720" 960 height="900" 1140
     if(currentLogoImageWidth.value >= 700 || currentLogoImageHeight.value >= 800) {
