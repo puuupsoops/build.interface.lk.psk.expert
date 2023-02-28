@@ -46,7 +46,7 @@
 		
 			</div>
 			<div class="content-wrap-elem">
-				<ProductSliderCard :data="productImages" @toOrder="toOrder"></ProductSliderCard>
+				<ProductSliderCard :data="productImages" @toOrder="toOrder" @toLogo="toLogo"></ProductSliderCard>
 				<ProductParcelCard :data="product" :discount="discount"></ProductParcelCard>
 				<ProductInfoCard :data="product" :protect="productProtect"></ProductInfoCard>
 			</div>
@@ -110,11 +110,18 @@ export default defineComponent({
 		const activeProductId = ref('');
 		const productSearch = ref(true);
 
+		//region Роутинг-------------------
 		const toOrder = () => {
 			router.push({name: 'Order'});
 			//store.dispatch('ADD_PRODUCT_TO_CART', store.getters.getPtoductToCart)
 			//	.then(()=>{router.push({name: 'Order'});})
 		}
+
+		//На страницу с конфигурацией нанесения логотипа
+		const toLogo = () => {
+			router.push({name: 'Logo'});
+		}
+		//-----------------endregion Роутинг
 
 		onMounted(() => {
 			if (!store.getters.isCompanysLoad || !store.getters.isManagerLoad)
@@ -215,6 +222,7 @@ export default defineComponent({
 			clearSearch,
 			loadProduct,
 			toOrder,
+			toLogo,
 			newSearch
 		}
 	},

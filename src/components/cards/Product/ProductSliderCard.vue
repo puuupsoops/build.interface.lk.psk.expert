@@ -36,13 +36,15 @@
 		<!-- <div class="product-slider-link">Сертификаты</div> -->
 		<div
 			class="product-slider-link"
-			style="width: 100%"
 			@click="$emit('toOrder', $event.target.click)"
 		>Заказать</div>
-		<!-- <div class="product-slider-link">Добавить в КП</div> -->
+		<!-- <div class="product-slider-link">Добавить в КП</div> 
 		<div class="product-slider-link"
 			@click="hideLogoApplicationModalWindow = false;"
-		>Создать макет нанесения логотипа</div>
+		>Создать макет нанесения</div>-->
+		<div class="product-slider-link"
+			@click="$emit('toLogo')"
+		>Создать макет нанесения</div>
 	</div>
 	
 	<ProductSliderFullscreen
@@ -50,7 +52,7 @@
 		:data="data"
 	> </ProductSliderFullscreen>
 
-	<div class="order-modal" v-if="!hideLogoApplicationModalWindow">
+	<!--<div class="order-modal" v-if="!hideLogoApplicationModalWindow">
 		<div class="order-modal-dialog draft">
 			<div class="order-modal-content draft">
 				<div class="order-modal-header">
@@ -69,19 +71,17 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>-->
 </div>
 </template>
 
 <script lang="ts">
-
-
 import { ref, onUpdated, computed, defineComponent } from 'vue'
 import { useStore } from '/src/store'
 import { KeysMutations } from '/src/store/keys/mutations'
 import { Sliders } from '/src/models/Components'
 import ProductSliderFullscreen from '/src/components/cards/Product/ProductSliderFullscreen.vue'
-import LogoApplication from '/src/components/cards/KP/LogoApplication.vue'
+//import LogoApplication from '/src/components/cards/KP/LogoApplicationModal.vue'
 
 export default defineComponent({
 	props:{
@@ -91,9 +91,9 @@ export default defineComponent({
 	},
 	components:{
 		ProductSliderFullscreen,
-		LogoApplication
+		//LogoApplication
 	},
-	emits: ['toOrder'],
+	emits: ['toOrder','toLogo'],
 	setup(props){
 
 		let slides = ref<Sliders[]>([]);
@@ -142,6 +142,11 @@ export default defineComponent({
 </script>
 
 <style lang="sass" scoped>
-
-
+.product-slider-buttons
+  display: flex
+  align-items: center
+.product-slider-buttons
+   & > div
+     margin: auto
+     width: auto
 </style>
