@@ -165,11 +165,12 @@ const menu = computed(() => {
 				{title: 'Заявка на отгрузку', link: '/shipments/request', lock: false, collapsed: false},
 				{title: 'Адреса Доставки', link: '/shipments/address', lock: false, collapsed: false},
 			]},
-			{title: 'Сертификаты', link: null, lock: true, children: [
-				{title: 'Разрешительная', link: '/permissive', lock: true, collapsed: false},
-				{title: 'Нормативная', link: '/regulatory', lock: true, collapsed: false},
-				{title: 'Доп.Информация', link: '/dop_info', lock: true, collapsed: false},
-			]},
+			{title: 'Сертификаты', link: '/certificate', lock: false, children: null },
+			//{title: 'Сертификаты', link: null, lock: true, children: [
+			//	{title: 'Разрешительная', link: '/permissive', lock: true, collapsed: false},
+			//	{title: 'Нормативная', link: '/regulatory', lock: true, collapsed: false},
+			//	{title: 'Доп.Информация', link: '/dop_info', lock: true, collapsed: false},
+			//]},
 			{title: 'Взаиморасчеты', link: '/settlements', lock: true, children: [
 				{title: 'Счета', link: '/bills', lock: true, collapsed: false},
 				{title: 'Реализации', link: '/realization', lock: true, collapsed: false},

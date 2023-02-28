@@ -18,13 +18,17 @@ const props = defineProps({
   },
 })
 
+//Slider
 let slides = ref<Sliders[]>([]);
 
-//Slider
 const nextSlide = () => {
   const first = <Sliders>slides.value.shift();
 	slides.value = slides.value.concat(first);
-  console.log(slides.value)
+}
+
+const prevSlide = () => {
+  const last = <Sliders>slides.value.pop();
+	slides.value = [last].concat(slides.value);
 }
 //
 
@@ -803,7 +807,7 @@ canvasFront.onwheel = (e) => {
           <button 
             style="margin: 10px auto; background-image: url(/src/assets/img/icon/arrow-i-down.svg);" 
             class='product-slider-arrow next' 
-            @click="false;"></button>
+            @click="prevSlide"></button>
         </div>
       </div>
 

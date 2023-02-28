@@ -175,6 +175,15 @@ const routes = [
 				auth: true,
 			}
 	},
+	{
+		path: '/certificate/:article?', 
+		component: () => import('/src/pages/share/certificate.vue'),
+		name: 'Certificate',
+		props: true,
+		meta:{
+				auth: true,
+			}
+	},
 	// {
 	// 	path: '/personal',
 	// 	component: () => import('/src/pages/tmp_personal'),
