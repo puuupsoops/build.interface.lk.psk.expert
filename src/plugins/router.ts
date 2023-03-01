@@ -178,8 +178,8 @@ const routes = [
 	{
 		path: '/certificate/:article?', 
 		component: () => import('/src/pages/share/certificate.vue'),
-		name: 'Certificate',
-		props: true,
+		//name: 'Certificate',
+		//props: true,
 		meta:{
 				auth: true,
 			}

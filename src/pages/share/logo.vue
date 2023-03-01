@@ -13,6 +13,7 @@ store.getters.getProductImages?.forEach( (v:string, i:number) => images.value.pu
 </script>
 
 <template>
+<div>
     <div class="top-line product-page">
         <div class="top-line-card-wrap header-lable">
             Макет нанесения логотипа
@@ -22,6 +23,7 @@ store.getters.getProductImages?.forEach( (v:string, i:number) => images.value.pu
 	</div>
   
   <LogoApplicationSinglePage :images="images"></LogoApplicationSinglePage>
+</div>
 </template>
 
 <style lang="sass" scoped>

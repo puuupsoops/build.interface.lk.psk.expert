@@ -139,6 +139,7 @@ let download = () => {
 </script>
 
 <template>
+<div>
   <div class="top-line product-page">
     <div class="top-line-card-wrap header-lable">Поиск сертификатов</div>
     <!--<CompanyBarTop :data="companyBarTopData" v-model="activeCompanyUid"></CompanyBarTop>-->
@@ -204,6 +205,7 @@ let download = () => {
 					</transition-group>-->
     </div>
   </div>
+</div>
 </template>
 
 <style lang="sass" scoped>
