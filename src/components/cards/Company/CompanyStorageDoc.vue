@@ -18,7 +18,6 @@
 			</div>
 			<router-link
 					class="company-head-btn"
-					tag="a"
 					to="/orders" 
 			>Подробнее</router-link>
 	</div>
