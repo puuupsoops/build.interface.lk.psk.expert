@@ -77,13 +77,7 @@
 </template>
 
 <script lang="ts">
-<<<<<<< HEAD
-
-
 import {ref, onUpdated, computed, defineComponent, PropType} from 'vue'
-=======
-import { ref, onUpdated, computed, defineComponent } from 'vue'
->>>>>>> demo-logooverlay
 import { useStore } from '/src/store'
 import { KeysMutations } from '/src/store/keys/mutations'
 import { Sliders } from '/src/models/Components'

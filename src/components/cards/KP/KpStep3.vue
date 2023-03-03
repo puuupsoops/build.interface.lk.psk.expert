@@ -742,8 +742,15 @@ const getFrontCanvasOffset = () => {
 const disabledWheel = (e:any) => {
   e.preventDefault()
 }
-
+//onUnmounted( ()=>{
+//  if (props.active) {
+//    emits('update:kp', KPLocal.value)
+//  }
+//})
 onMounted(async () => {
+  if (props.active) {
+    emits('update:kp', KPLocal.value)
+  }
   canvasFrontRef.value = window.document.getElementById('canvas-front')
   canvasBackRef.value = window.document.getElementById('canvas-back')
   canvasTest.value = window.document.getElementById('c1')
@@ -1020,11 +1027,7 @@ const next = () => {
   emits('next')
   emits('update:kp', KPLocal.value)
 }
-onUnmounted( ()=>{
-  if (props.active) {
-    emits('update:kp', KPLocal.value)
-  }
-})
+
 //удаляем логотип
 const deleteLogo = (index: number) => {
   index=index-1
