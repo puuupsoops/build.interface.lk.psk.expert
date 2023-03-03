@@ -235,7 +235,7 @@
 								:to="'/kp'"
 								@click.stop="setOrderId(item.n)"
 							>
-									Конструктор КП
+								Создать КП
 							</router-link>
 							
 						</div>

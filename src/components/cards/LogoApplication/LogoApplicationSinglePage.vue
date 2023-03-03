@@ -78,6 +78,43 @@ const stringConverter = (s: string) => { return s.replace(/&quot;/gi, '\"') }
 const scaleLogo = ref('50%')
 const currentScaleLogoValue = ref(0.0) //значение текущего масштаба
 
+// кликаем на input поворота изображения
+const rotateClickHandler = (e: any) => {
+  console.log('click')
+}
+// покидаем input поворота изображения
+const rotateFocusOutHandler = (e: any) => {
+  let degree = e.target.value;
+  if(degree >= 360 || degree <= -360){
+    degree = 0
+  }
+  rotateDegreeLastState.value = degree;
+  rotateDegreeLastStateString.value = rotateDegreeLastState.value.toString();
+
+  let translateOffsetX = startLogoPosX.value + currentLogoImageWidth.value/2
+  let translateOffsetY = startLogoPosY.value + currentLogoImageHeight.value/2
+
+  // смещение центра
+  canvasFrontRef.value.getContext('2d').translate(translateOffsetX,translateOffsetY)
+  
+  // поворт холста
+  canvasFrontRef.value.getContext('2d').rotate((rotateDegreeLastState.value * Math.PI) / 180);
+  
+  // восстановление центра
+  canvasFrontRef.value.getContext('2d').translate(-translateOffsetX,-translateOffsetY)
+
+  //очистка
+  canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
+
+  //отрисовка
+  canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
+  startLogoPosX.value,startLogoPosY.value,
+  currentLogoImageWidth.value,currentLogoImageHeight.value);
+
+  canvasFrontRef.value.getContext('2d').resetTransform();
+}
+
+
 // кликаем на input масштаба изображения
 const scaleClickHandler = (e: any) => {
   console.log(e)
@@ -394,7 +431,7 @@ const rotateLogo = (n: number) => {
   if(n == 0) {
     return
   }
-  rotateDegreeLastState.value += n
+  rotateDegreeLastState.value = Number(rotateDegreeLastState.value) + Number(n)
   let translateOffsetX = startLogoPosX.value + currentLogoImageWidth.value/2
   let translateOffsetY = startLogoPosY.value + currentLogoImageHeight.value/2
 
@@ -753,8 +790,8 @@ canvasFront.onwheel = (e) => {
           <div><base-button @onClick="rotateLogoLeft(-1)">L</base-button></div>
           <div>
             <BaseInput 
-              @click="() => {}"
-              @focusout ="() => {}"
+              @click="rotateClickHandler($event)"
+              @focusout ="rotateFocusOutHandler($event)"
               v-model="rotateDegreeLastStateString" 
               :class="'input-text-field-modify'"/>
           </div>

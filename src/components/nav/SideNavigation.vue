@@ -157,7 +157,7 @@ const menu = computed(() => {
 				{title: 'Отгрузки', link: '/shipments', lock: false, collapsed: false},
 				{title: 'Претензии', link:'/claims', lock: false, collapsed: false},
 				{title: 'Черновики', link: 'draft', lock: false, collapsed: false},
-				{title: 'Конструктор КП', link: '/kp', lock: false, collapsed: false},
+				{title: 'Создать КП', link: '/kp', lock: false, collapsed: false},
 				{title: 'История', link: '/history', lock: true, collapsed: false},
 				
 			]},
