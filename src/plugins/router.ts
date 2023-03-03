@@ -159,6 +159,31 @@ const routes = [
 				auth: true,
 			}
 	},
+	{
+		path: '/logo',
+		component: () => import('/src/pages/share/logo.vue'),
+		name: 'Logo',
+		meta:{
+				auth: true,
+			}
+	},
+	{
+		path: '/certificate',
+		component: () => import('/src/pages/share/certificate.vue'),
+		name: 'Certificate',
+		meta:{
+				auth: true,
+			}
+	},
+	{
+		path: '/certificate/:article?', 
+		component: () => import('/src/pages/share/certificate.vue'),
+		//name: 'Certificate',
+		//props: true,
+		meta:{
+				auth: true,
+			}
+	},
 	// {
 	// 	path: '/personal',
 	// 	component: () => import('/src/pages/tmp_personal'),

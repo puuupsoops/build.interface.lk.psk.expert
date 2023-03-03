@@ -3,7 +3,7 @@
                                     
         <label class="switch-btn" @click="onClick()">
             
-            <input id="input" @click="onClick()" v-model="modelValue" type="checkbox" />
+            <input id="input" @click="onClick()" :value="modelValue" type="checkbox" />
             <div></div>
             
         </label>

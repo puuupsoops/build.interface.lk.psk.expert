@@ -217,8 +217,29 @@
 							<a class="orders-list-more-dropdown-link" @click.stop="setClaimOrderId(item.n)" v-if="item.checks.filter(check => check.status === 5 || check.status === 9 ) && item.checks?.filter(check => check.status === 5 || check.status === 9 ).length>0 ">
 								Оформить претензию
 							</a>
+<<<<<<< HEAD
 							<router-link class="orders-list-more-dropdown-link" :to="'/shipments/request'" @click="setOrderId(item.n)">Заявка на транспорт</router-link>
               <a class="orders-list-more-dropdown-link" @click.stop="goToKP(item.n)">Конструктор КП</a>
+=======
+							
+							
+							<router-link 
+								class="orders-list-more-dropdown-link" 
+								tag="a"
+								:to="'/shipments/request'"
+								@click="setOrderId(item.n)"
+							>
+									Заявка на транспорт
+							</router-link>
+							<router-link 
+								class="orders-list-more-dropdown-link" 
+								tag="a"
+								:to="'/kp'"
+								@click.stop="setOrderId(item.n)"
+							>
+								Создать КП
+							</router-link>
+>>>>>>> demo-logooverlay
 							
 						</div>
 					</div>

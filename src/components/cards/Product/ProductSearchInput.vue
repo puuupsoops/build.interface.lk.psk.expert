@@ -33,7 +33,7 @@
 				>
 					<router-link v-if="to"
 						:to="`/${to}/${item.article}`"
-						@click="show_options=false"
+						@click="show_options=false; emits('search',item.article);"
 					>
 						<div class="article">{{item.article}}</div> <div class="name">{{item.name}}</div>
 					</router-link>
