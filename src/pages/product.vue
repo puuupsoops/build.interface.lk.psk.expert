@@ -119,6 +119,7 @@ export default defineComponent({
 
 		//На страницу с конфигурацией нанесения логотипа
 		const toLogo = () => {
+			console.log('emit: toLogo')
 			router.push({name: 'Logo'});
 		}
 		//-----------------endregion Роутинг

@@ -42,10 +42,18 @@
 		<!-- <div class="product-slider-link">Добавить в КП</div> 
 		<div class="product-slider-link"
 			@click="hideLogoApplicationModalWindow = false;"
-		>Создать макет нанесения</div>-->
+		>Создать макет нанесения</div>
 		<div class="product-slider-link"
 			@click="$emit('toLogo')"
 		>Создать макет нанесения</div>
+		-->
+		
+		<router-link
+				class="product-slider-link"
+				tag="div"
+				to="/logo"
+				title="Нанести логотип"
+		> Создать макет нанесения</router-link>
 	</div>
 	
 	<ProductSliderFullscreen

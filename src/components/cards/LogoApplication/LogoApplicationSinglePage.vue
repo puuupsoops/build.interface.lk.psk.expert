@@ -825,7 +825,7 @@ canvasFront.onwheel = (e) => {
             @click="nextSlide"></button>
         </div>
 
-        <transition-group name="product-slider-trans" class='product-slider-small' tag="div" style="max-height: 960px; flex: 0 0 100%;">
+        <transition-group name="product-slider-trans" class='product-slider-small' tag="div" style="flex-flow: column; max-height: 960px; flex: 0 0 100%;">
           <div 
             v-for="slide in slides" 
             class='product-slider-small-slide'
