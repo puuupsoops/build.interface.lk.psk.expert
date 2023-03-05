@@ -171,8 +171,8 @@ import { onClickOutside } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 
 import { OrderMutations } from '/src/store/order/mutations'
+import { OrderStateOrder } from '/src/store/order/types'
 import { KPMutations } from "/src/store/kp/mutations";
-import { KeysMutations } from "/src/store/keys/mutations";
 
 // eslint-disable-next-line no-unused-vars
 const props = defineProps({
@@ -239,18 +239,12 @@ const emits = defineEmits(['update:modelValue'])
 
 		const goToKP = () => {
 			loader.value = true
-			let draftId = active.value
-			let currentDraft = store.getters.getOrderDrafts.filter( 
-				function (item) {
-					if(item.id == draftId )  return true; 
-				}
-			)
-			store.commit(KPMutations.SET_KP_OFFER_POSITION, currentDraft[0].position)
-    		store.commit(KPMutations.SET_KP_STEP, 2)
+			const currentDraft = store.getters.getOrderDrafts.filter( (item: OrderStateOrder) =>  item.id == active.value)
+      store.commit(KPMutations.SET_KP_OFFER_POSITION, currentDraft[0].position)
+      store.commit(KPMutations.SET_KP_STEP, 2)
 			close()
 			loader.value = false
-    		//loading_global.value = false
-    		router.push('/kp')
+      router.push('/kp')
 		}
 		
 </script>

@@ -404,7 +404,6 @@ import { ShipmentsActions } from '/src/store/shipments/actions'
 		store.commit(OrderMutations.CLEAN_ORDER)
 	}
 	const addToDraft = () => {
-		console.log('addToDraft')
 		if (store.getters.isOrderInDraft){
 			store.commit(OrderMutations.DEL_ORDER_FROM_DRAFT, props.data?.id)
 			snack.value = true

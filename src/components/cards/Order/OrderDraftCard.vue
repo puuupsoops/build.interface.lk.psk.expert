@@ -200,7 +200,6 @@
     <OrderProductAddModal v-model="showAddPos" v-model:add-position="addPos"/>
 	</div>
 
-
 </template>
 
 <script setup lang="ts">
@@ -265,6 +264,9 @@ const calcOrder = (type?: SALE_TYPE, change?: boolean):void => {
       if (pos.characteristics.length == 0) orderLocal.value.position.splice(pos_id, 1)
       else
       pos.characteristics.forEach( c => {
+        if (!c.fullprice){
+          c.fullprice = c.PRICE
+        }
         if(sale_type.value == SALE_TYPE.PERCENT) {
           c.PRICE = c.fullprice! + (sale_margin.value * c.fullprice! * sale.value/100) + ( c.add_sum?? 0)
           total_pos = total_pos + c.count * c.PRICE
