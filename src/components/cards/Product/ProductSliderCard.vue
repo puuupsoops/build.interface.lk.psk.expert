@@ -50,6 +50,7 @@
 		
 		<router-link
 				class="product-slider-link"
+				style="width: auto;"
 				tag="div"
 				to="/logo"
 				title="Нанести логотип"

@@ -48,7 +48,12 @@
 				<span class="order-amount-more-text presail" v-if="countPresail > 0"> + предзаказ </span>
 				<span class="order-amount-more-value" v-if="countPresail > 0">({{countPresail}})</span>
 			</div>
-			
+			<div
+				:class="count !== 0 || countPresail !== 0 ? 'order-amount-more-btn':'order-amount-more-btn disable'"
+				@click="goToKP()"
+			>
+				<span class="order-amount-more-text">Создать КП</span>
+			</div>
 		</div>
 	</div>
 </template>
@@ -61,8 +66,11 @@ import CheckButton from '/src/components/ui/CheckButton.vue'
 import { Offer } from '/src/models/Product'
 import { OrderStatePositionOffer } from '/src/store/order/types'
 //ProductOffersOrderCard используется для составления заказа
-
+import {OrderStatePosition} from "/src/store/order/types";
 import { ref, computed, watch, onMounted, PropType } from 'vue'
+import { useStore } from '/src/store'
+import { useRouter } from 'vue-router'
+import { KPMutations } from "/src/store/kp/mutations";
 
 interface OrderStateAddPositionItem extends OrderStatePositionOffer{
 	check:           boolean;	
@@ -87,6 +95,9 @@ const characteristicArray = ref<OrderStateAddPositionItem[]> ([]);
 const count = computed(() => characteristicArray.value.filter(x => x.count > 0 ).length)
 const countPresail = computed(() => characteristicArray.value.filter(x => x.count > x.RESIDUE && x.count != 0).length)
 
+const store = useStore()
+const router = useRouter();
+
 const onCheck = (offer: OrderStateAddPositionItem) => {
 	if (offer.check) {
 		let cnt = characteristicArray.value.find(x => x.ID == offer.ID)
@@ -107,6 +118,46 @@ const onInput = (offer: OrderStateAddPositionItem) => {
 		if (chk) chk.check = false
 	}
 	
+}
+
+const goToKP = () => {
+	if (count.value > 0) {
+		let charArrPos = <OrderStatePositionOffer[]>[]
+		characteristicArray.value.forEach(x =>{ 
+			if ( x.count > 0 ){
+				charArrPos.push(<OrderStatePositionOffer>{
+							ID: x.ID,
+							CHARACTERISTIC: x.CHARACTERISTIC,
+							MAX_DISCOUNT: x.MAX_DISCOUNT,
+							count: x.count,
+							PRICE: x.PRICE,
+							RESIDUE: x.RESIDUE,
+							RESERVED: x.RESERVED,
+							GUID: x.GUID,
+							guid: x.GUID,
+							ORGGUID: x.ORGGUID,
+							price_discount: x.PRICE
+						})
+			}
+		});
+		characteristicArray.value.forEach( c => {
+			c.count = 0;
+			c.check = false;
+		})
+		let product = store.getters.getProduct;
+		let kpPosition: OrderStatePosition = {
+			product:         JSON.parse(JSON.stringify(product)),
+			guid:            product.UID,
+			article:         product.ARTICLE,
+			characteristics: charArrPos,
+			total:           charArrPos.length * product.PRICE,
+			total_discount:  0,
+			count:           charArrPos.length
+		}
+		store.commit(KPMutations.SET_KP_OFFER_POSITION, [kpPosition]) // 2 аргумент принимает массив!
+      	store.commit(KPMutations.SET_KP_STEP, 2)
+		router.push('/kp')
+	}
 }
 
 const addToOrder = () => {
