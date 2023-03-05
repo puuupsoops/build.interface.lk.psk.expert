@@ -137,7 +137,7 @@
 				<span @click.stop="del(-1)">Да</span>
 				<span @click.stop="delAll=false">Нет</span>
 			</div>
-		</div>	
+		</div>
 		<div v-if="useDraft" class="shipment-address-list-row-info" >
 			<div>Использовать черновик для продолжения оформления заказа?</div>
 			<div>
@@ -145,16 +145,22 @@
 				<span @click.stop="useDraft=false">Нет</span>
 			</div>
 		</div>	
-		<div v-if="!delAll && !useDraft" class="order-modal-action">
-			<button @click="active=-1; delAll=true" class="order-list-btn">Удалить все черновики</button>
-			<button v-if="active!==-1" @click="useDraft=true" class="order-list-btn">Использовать черновик</button>
+		<div v-if="!delAll && !useDraft" class="order-modal-action" style="display: flex; flex-flow: column;">
+			<!--<button @click="active=-1; delAll=true" class="order-list-btn">Удалить все черновики</button>-->
+			<div v-if="active!==-1" class="order-modal-action" style="min-height: 20px;">На основании черновика</div>
+			<div class="order-modal-action" style="min-height: 20px;">
+				<button v-if="active!==-1" @click="useDraft=true" class="order-list-btn">Создать заказ</button>
+				<button v-if="active!==-1" @click="goToKP()" class="order-list-btn">Создать КП</button>
+			</div>
 		</div>
 	</div>
+	<Preloader v-if="loader"></Preloader>
 </div>
 </template>
 
 
 <script setup lang="ts">
+import Preloader from '/src/components/Preloader.vue'
 
 import DeleteButton from '/src/components/ui/DeleteButton.vue'
 import OrderDraftCard from '/src/components/cards/Order/OrderDraftCard.vue'
@@ -165,6 +171,8 @@ import { onClickOutside } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 
 import { OrderMutations } from '/src/store/order/mutations'
+import { KPMutations } from "/src/store/kp/mutations";
+import { KeysMutations } from "/src/store/keys/mutations";
 
 // eslint-disable-next-line no-unused-vars
 const props = defineProps({
@@ -185,6 +193,7 @@ const emits = defineEmits(['update:modelValue'])
 		const targetModal = ref(null)
 		const active = ref(-1)
 		const orderDraft = computed(() => store.getters.getOrderDrafts)
+		const loader = ref(false)
 		onClickOutside(targetModal, () => {
 			shake.value = true;
 			setTimeout(() => {shake.value=false;}, 500);
@@ -226,6 +235,22 @@ const emits = defineEmits(['update:modelValue'])
 
 		const saveName = (id: number, name: string) => {
 			store.commit(OrderMutations.UPD_ALL_DRAFT)
+		}
+
+		const goToKP = () => {
+			loader.value = true
+			let draftId = active.value
+			let currentDraft = store.getters.getOrderDrafts.filter( 
+				function (item) {
+					if(item.id == draftId )  return true; 
+				}
+			)
+			store.commit(KPMutations.SET_KP_OFFER_POSITION, currentDraft[0].position)
+    		store.commit(KPMutations.SET_KP_STEP, 2)
+			close()
+			loader.value = false
+    		//loading_global.value = false
+    		router.push('/kp')
 		}
 		
 </script>
