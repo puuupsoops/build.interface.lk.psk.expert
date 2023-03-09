@@ -158,6 +158,7 @@ const menu = computed(() => {
 				{title: 'Претензии', link:'/claims', lock: false, collapsed: false},
 				{title: 'Черновики', link: 'draft', lock: false, collapsed: false},
 				{title: 'Создать КП', link: '/kp', lock: false, collapsed: false},
+				{title: 'Макет нанесения', link: '/logo', lock: false, collapsed: false},
 				{title: 'История', link: '/history', lock: true, collapsed: false},
 				
 			]},

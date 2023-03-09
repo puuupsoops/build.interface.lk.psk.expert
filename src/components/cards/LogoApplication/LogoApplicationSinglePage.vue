@@ -869,7 +869,7 @@ canvasFront.onwheel = (e) => {
   z-index: 10
   background-color: #15171C
   left: 50%
-  top: 16%
+  top: 28%
   transform: translate(-50%, -50%)
   display: flex
   align-items: end

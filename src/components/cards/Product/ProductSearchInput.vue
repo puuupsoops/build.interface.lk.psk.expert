@@ -37,7 +37,7 @@
 					>
 						<div class="article">{{item.article}}</div> <div class="name">{{item.name}}</div>
 					</router-link>
-					<a v-else  @click="done(item.article)">
+					<a v-else  @click="emits('catch',item.article); done(item.article)">
 						<div class="article">{{item.article}}</div> <div class="name">{{item.name}}</div>
 					</a>
 				</div>
@@ -77,7 +77,7 @@ const props = defineProps({
 		}
 		
 	})
-const emits = defineEmits( ['update:modelValue', 'update:show', 'search'])
+const emits = defineEmits( ['update:modelValue', 'update:show', 'search','catch'])
 const store = useStore()
 const search_str = ref('')
 const loading = ref(false)

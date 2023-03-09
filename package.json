@@ -1,11 +1,12 @@
 {
     "name": "lk.psk.expert",
-    "version": "0.2.64",
+    "version": "0.2.93",
     "private": true,
     "scripts": {
         "dev": "vite",
         "stage": "vite --host 10.68.5.205 --port 8080",
         "build": "vue-tsc --noEmit && vite build",
+        "build-unsafe": "vite build",
         "preview": "vite preview"
     },
     "dependencies": {
