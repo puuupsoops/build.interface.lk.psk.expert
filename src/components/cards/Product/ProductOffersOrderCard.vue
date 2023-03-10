@@ -3,7 +3,9 @@
 		<div class="order-amount-table-wrap scroll-elem">
 			
 			<div class="table order-amount-table">
-				<div class="table-row table-heading">
+				<div class="table-row table-heading"
+					style="max-height: 51px;"
+				>
 					<div class="table-elem">Характеристика</div>
 					<div class="table-elem">Остаток</div>
 					<!-- <div class="table-elem">Резерв</div> -->
