@@ -18,6 +18,9 @@ const props = defineProps({
   },
 })
 
+// для изменения стиля плашки управления
+const unPin = ref(false)
+
 //Slider
 let slides = ref<Sliders[]>([]);
 
@@ -737,15 +740,26 @@ canvasFront.onwheel = (e) => {
 </script>
 
 <template>
-    <div :class="'kp-canvas-controller'">
-      <div>
+    <div
+      :style="[unPin ? 'position: fixed; left: 50%; top: 28%; transform: translate(-50%, -50%);' : 'position: relative;']" 
+      :class="'kp-canvas-controller'">
+      <div :style="'display: flex; flex-direction: column;'">
+        <div 
+          :style="'width: 24px; padding-bottom: 15px; cursor: pointer;'"
+          @click="unPin=!unPin"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 123.14 123.54">
+            <title>Открепить/Закрепить панель</title>
+            <path :style="[unPin ? 'fill: honeydew;' : 'fill: honeydew; opacity: 0.3;']" class="cls-1" d="M121.59,36.81,86.3,1.52c-3-3-7.77.09-9.2,2.74-.24.45.19.86-.2,3.91a46.16,46.16,0,0,1-2.72,11.32l-15.7,15.7c-6.26,6.27-15.22,3.48-22.87-.32-1.61-.8-3.68-2.57-5.47-.78l-6.65,6.65a2.5,2.5,0,0,0,0,3.53l55.79,55.78a2.5,2.5,0,0,0,3.53,0l6.64-6.65c1.77-1.77-.49-4.06-1.41-6-3.4-7-6.45-16.42-.78-22.09L103.65,49A84.08,84.08,0,0,1,115,46.38c3.09-.49,3.47-.1,3.91-.39,2.7-1.75,5.7-6.16,2.68-9.18ZM53.86,82.39,41.15,69.69.38,121.25l1.92,1.91L53.86,82.39Z"/>
+          </svg>
+        </div>
         <input ref="file" id="myfile" type="file" @change="uploadLogo()" style="display: none;">
-        <base-button 
+        <div><base-button 
             style="width: 154px;"
           :tooltip="'Добавить файл с логотипом на холст'"
           :tooltipFlow="'up'"
           @onClick="uploadLogoHandler()"
-        >Добавить логотип</base-button>
+        >Добавить логотип</base-button></div>
       </div>
 
       <div :style="'display: flex; align-items: flex-end;'">
@@ -753,7 +767,7 @@ canvasFront.onwheel = (e) => {
             <base-button @onClick="moveLeft()">🠔</base-button>
         </div>
         
-        <div>
+        <div style="max-width: 46px;">
             <base-button @mousedown="moveUp()">🠕</base-button>
             <base-button style="margin-top: 5px;" @onClick="moveDown()">🠗</base-button>
         </div>
@@ -864,18 +878,25 @@ canvasFront.onwheel = (e) => {
 </template>
 
 <style lang="sass">
+.cls-1 
+  stroke: #000
+  stroke-miterlimit: 22.93
+  stroke-width: 0.57px
+  fill-rule: evenodd
+
 .kp-canvas-controller
-  position: fixed
+  //position: fixed
   z-index: 10
   background-color: #15171C
-  left: 50%
-  top: 28%
-  transform: translate(-50%, -50%)
+  //left: 50%
+  //top: 28%
+  //transform: translate(-50%, -50%)
   display: flex
   align-items: end
   margin-bottom: 15px
   padding: 10px 10px
   opacity: 0.7
+  justify-content: center
 
 .kp-canvas-controller
   &:hover

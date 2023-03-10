@@ -35,10 +35,10 @@
 
 	<div class="product-slider-buttons">
 		<!-- <div class="product-slider-link">Сертификаты</div> -->
-		<div
+		<!-- <div
 			class="product-slider-link"
 			@click="$emit('toOrder', $event.target.click)"
-		>Заказать</div>
+		>Заказать</div>-->
 		<!-- <div class="product-slider-link">Добавить в КП</div> 
 		<div class="product-slider-link"
 			@click="hideLogoApplicationModalWindow = false;"
@@ -49,9 +49,8 @@
 		-->
 		
 		<router-link
+				style="width: 100%"
 				class="product-slider-link"
-				style="width: auto;"
-				tag="div"
 				to="/logo"
 				title="Нанести логотип"
 		> Создать макет нанесения</router-link>

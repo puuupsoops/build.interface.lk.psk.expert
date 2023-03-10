@@ -155,7 +155,7 @@
 
         </div>
 
-        <div class="orders-list-item" :class="{'active': attachments}">
+        <!--<div class="orders-list-item" :class="{'active': attachments}">
           <div class="orders-list-row " @click="attachments=!attachments">
             <div class="orders-list-elem"> <div class="table-arrow"></div> 	</div>
             <div class="orders-list-elem">Вложения</div>
@@ -174,7 +174,7 @@
                   </div>
                 </div>
               </div>
-        </div>  
+        </div>  -->
 
 
       </div>
