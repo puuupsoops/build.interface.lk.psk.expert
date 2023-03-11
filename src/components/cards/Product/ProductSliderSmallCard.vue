@@ -24,7 +24,7 @@
       <div class='product-slider-arrow next' @click="next"></div>
     </div>
 	</div>
-		
+  <slot name="product-info"></slot>
     <ProductInfoCard :data="product" :protect="productProtect"></ProductInfoCard>
 	
 	<ProductSliderFullscreen
@@ -56,7 +56,7 @@ const loader = computed<boolean>({
 })
 		
 const fullscreen = ref(false)
-		
+
 props.data?.forEach( (v, i) => slides.value.push(<Sliders>{id: i, src:v}))
 
 onUpdated( () => {

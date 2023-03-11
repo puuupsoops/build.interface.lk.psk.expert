@@ -123,14 +123,17 @@
                     ></label>
                   </span>
                 </div>-->
+
                 <div class="product-slider-wrap" >
-                  <button class='product-slider-arrow prev' @click="prevLogo"></button>
-                  <transition-group name="product-slider-trans" class='product-slider' :style="'align-items: center; height: 500px;'"  tag="div">
-                    <div v-for="slide in logoList" class='product-slider-slide' :key="slide.id">
-                      <img v-if="slide.image" :src="slide.image"  />
-                    </div>
-                  </transition-group>
-                  <div class='product-slider-arrow next' @click="nextLogo"></div>
+                  <div class="product-slider-main">
+                    <button class='product-slider-arrow prev' @click="prevLogo"></button>
+                    <transition-group name="product-slider-trans" class='product-slider' :style="'align-items: center; height: 500px;'"  tag="div">
+                      <div v-for="slide in logoList" class='product-slider-slide' :key="slide.id">
+                        <img v-if="slide.image" :src="slide.image"  />
+                      </div>
+                    </transition-group>
+                    <div class='product-slider-arrow next' @click="nextLogo"></div>
+                  </div>
                 </div>
               </div>
               <div :style="'text-align: center; margin-top: -50px;'">
@@ -307,32 +310,27 @@
 </template>
 
 <script setup lang="ts">
-//import {computed, onUnmounted, PropType, ref} from 'vue'
+
 import svgAlignCenter from '/src/assets/img/icon/align-center.svg'
 import svgAlignLeft from '/src/assets/img/icon/align-left.svg'
 import svgAlignRight from '/src/assets/img/icon/align-right.svg'
 
 import axios from '/src/plugins/axios'
-import {computed, PropType, ref, onMounted, nextTick, watch } from 'vue'
-import _ from "lodash";
-import PreloaderLocal from '/src/components/PreloaderLocal.vue'
-import SwitchButton from '/src/components/ui/SwitchButton.vue'
-import AmountInput from '/src/components/ui/AmountInput.vue'
-import CheckButton from '/src/components/ui/CheckButton.vue'
-import SelectInput from '/src/components/ui/SelectInput.vue'
-import BaseButton from '/src/components/ui/BaseButton.vue'
-import Preloader from '/src/components/Preloader.vue'
-import BaseInput from '/src/components/ui/BaseInput.vue'
+import { computed, PropType, ref, onMounted, watch } from 'vue'
 
-import {KP, KP_HEADER_LOGO_ALIGN, KPLogoList} from '/src/models/KP'
+import { PreloaderLocal, Preloader } from '/src/components'
+import { SwitchButton, AmountInput, CheckButton, SelectInput, BaseButton, BaseInput } from '/src/components/ui'
 
-import {SelectInputData, PriceFormat} from '/src/models/Components'
-import {ShipmentsActions} from '/src/store/shipments/actions'
 
-import {KPActions} from '/src/store/kp/actions'
-import {KPMutations} from '/src/store/kp/mutations'
-import {useStore} from '/src/store'
-import {ShipmentsAddress} from "/src/models/Shipments";
+import { KP, KP_HEADER_LOGO_ALIGN, KPLogoList } from '/src/models/KP'
+
+import { SelectInputData, PriceFormat } from '/src/models/Components'
+import { ShipmentsAddress } from '/src/models/Shipments'
+import { ShipmentsActions } from '/src/store/shipments/actions'
+
+import { KPActions } from '/src/store/kp/actions'
+import { KPMutations } from '/src/store/kp/mutations'
+import { useStore } from '/src/store'
 
 const props = defineProps({
   active: {
@@ -378,14 +376,14 @@ const currentLogoImageHeight = ref(startImageHeight)
 const isRotate = ref(false)
 
 // хелпер для преобразования &quot; в кавычки 
-const stringConverter = (s: string) => { return s.replace(/&quot;/gi, '\"') }
+const stringConverter = (s: string) => { return s.replace(/&quot;/gi, '"') }
 
 // input масштаба изображения
 const scaleLogo = ref('10%')
 
 // кликаем на input поворота изображения
 const rotateClickHandler = (e: any) => {
-  console.log('click')
+  console.log('click', e)
 }
 // покидаем input поворота изображения
 const rotateFocusOutHandler = (e: any) => {
@@ -428,7 +426,7 @@ const scaleClickHandler = (e: any) => {
 
 // покидаем input масштаба изображения
 const scaleFocusOutHandler = (e: any) => {
-  console.log('scaleFocusOutHandler')
+  console.log('scaleFocusOutHandler', e)
 
   let scaleFactor = Number(scaleLogo.value.replace('%','')) * 10
   console.log(scaleFactor)
@@ -471,9 +469,9 @@ watch(scaleLogo, () => {
   console.log(scaleLogo.value)
 })
 
-const file = ref(null)
+const file = ref<HTMLInputElement>()
 
-const imageList = ref([])
+const imageList = ref<string[]>([])
 const selectOnChangeHandler = (uid: string) => {
   if(uid == "null") {
     return;
@@ -512,7 +510,7 @@ const chooseCurrentBackgroundImage = (src: string) => {
   image.src = src + '?no-cache-please'
 }
 
-const toBase64 = res => new Promise((resolve, reject) => {
+const toBase64 = (res: Blob) => new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(res);
     reader.onload = () => resolve(reader.result);
@@ -527,7 +525,7 @@ const download = () => {
   canvasTest.value.getContext('2d').drawImage(canvasFrontRef.value,0,0)
 
   //console.log(canvasTest.value.toDataURL())
-  canvasTest.value.toBlob( (blob) => {
+  canvasTest.value.toBlob( (blob: Blob) => {
       console.log(blob)
       const url = window.URL.createObjectURL(blob);
 					const link = document.createElement('a');
@@ -543,40 +541,42 @@ const download = () => {
 }
 
 //удаляем изображения из вложений
-const removeAttachmentsById = (item: any) => {
-  let id = item.getAttribute('data-id')
-  if(id < 0){
-    return;
-  }
-  KPLocal.value.attachments.splice(id,1)
-  console.log(KPLocal.value.attachments)
-}
+// const removeAttachmentsById = (item: any) => {
+//   let id = item.getAttribute('data-id')
+//   if(id < 0){
+//     return;
+//   }
+//   KPLocal.value.attachments.splice(id,1)
+//   console.log(KPLocal.value.attachments)
+// }
 
 // загружает файл с логотипом на холст
 const uploadLogo = async () => {
-  let fileBase64 = await toBase64(file.value.files[0])
-  
-  imageLogo.value = new Image()
-  imageLogo.value.src = fileBase64
+  if (file.value && file.value.files) {
+    let fileBase64 = await toBase64(file.value!.files[0])
 
-  imageLogo.value.onload = () => {
-    console.log('Logo load',imageLogo.value)
+    imageLogo.value = new Image()
+    imageLogo.value.src = fileBase64
 
-    canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
+    imageLogo.value.onload = () => {
+      console.log('Logo load', imageLogo.value)
 
-    canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
-    startLogoPosX.value,startLogoPosY.value,
-    currentLogoImageWidth.value,currentLogoImageHeight.value);
-    canvasFrontRef.value.getContext('2d').save()
+      canvasFrontRef.value.getContext('2d').clearRect(0, 0, canvasFrontRef.value.width, canvasFrontRef.value.height)
 
-    //костыль: двигаем изображение, т.к. не отображается после загрузки
-    moveRight()
+      canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
+          startLogoPosX.value, startLogoPosY.value,
+          currentLogoImageWidth.value, currentLogoImageHeight.value);
+      canvasFrontRef.value.getContext('2d').save()
+
+      //костыль: двигаем изображение, т.к. не отображается после загрузки
+      moveRight()
+    }
   }
 }
 
 // функция для тригера окна загрузки файла с логотипом по кнопке
 const uploadLogoHandler = () => {
-  file.value.click()
+  file.value!.click()
 }
 
 // отрисовывает логотип с учетом всех модификаторов (масштаб, поворот, позиция)
@@ -751,13 +751,13 @@ onMounted(async () => {
   if (props.active) {
     emits('update:kp', KPLocal.value)
   }
-  canvasFrontRef.value = window.document.getElementById('canvas-front')
-  canvasBackRef.value = window.document.getElementById('canvas-back')
+  canvasFrontRef.value = window.document.getElementById('canvas-front') as HTMLCanvasElement
+  canvasBackRef.value = window.document.getElementById('canvas-back') as HTMLCanvasElement
   canvasTest.value = window.document.getElementById('c1')
 
-  let canvasBack = window.document.getElementById('canvas-back')
-  let canvasFront = window.document.getElementById('canvas-front')
-  cxt.value = canvasBack.getContext('2d')
+  let canvasBack = window.document.getElementById('canvas-back') as HTMLCanvasElement
+  let canvasFront = window.document.getElementById('canvas-front') as HTMLCanvasElement
+  cxt.value = canvasBack!.getContext('2d')
   //observer.observe(target);
   //console.log(target)
 
@@ -767,8 +767,8 @@ onMounted(async () => {
   //console.log('fetch' , back)
     // Make sure the image is loaded first otherwise nothing will draw.
   canvasBackground.onload = function() {
-    canvasBack.getContext('2d').drawImage(canvasBackground,0,0,720,1080)
-    canvasBack.getContext('2d').save()
+    canvasBack.getContext('2d')?.drawImage(canvasBackground,0,0,720,1080)
+    canvasBack.getContext('2d')?.save()
   }
 
   canvasBackground.crossOrigin = 'Anonymous'
@@ -793,13 +793,13 @@ onMounted(async () => {
   imageLogo.value.crossOrigin = 'Anonymous'
 
   imageLogo.value.onload = () => {
-    canvasFront.getContext('2d').drawImage(
+    canvasFront.getContext('2d')?.drawImage(
       imageLogo.value,
       startLogoPosX.value,startLogoPosY.value,
       initialWidthLogo,initialHeightLogo
     )
 
-    canvasFront.getContext('2d').save()
+    canvasFront.getContext('2d')?.save()
   }
 
 //panzoom.value = Panzoom(window.document.getElementById('zoom-area'), {
@@ -808,10 +808,10 @@ onMounted(async () => {
 //console.log(panzoom)
 //console.log(panzoom.value.zoomWithWheel)
 
-canvasFront.onmousedown = (e) => {
+canvasFront.onmousedown = (e: MouseEvent) => {
   getFrontCanvasOffset()
-    console.log('layerX', e.layerX,'layerY', e.layerY)
-    console.log('layerX', e.layerX / 2,'layerY', e.layerY)
+    // console.log('layerX', e.layerX,'layerY', e.layerY)
+    // console.log('layerX', e.layerX / 2,'layerY', e.layerY)
     console.log('startLogoPosX', startLogoPosX.value, 'startLogoPosY', startLogoPosY.value)
     console.log('mouseDownCanvas', e)
 
@@ -848,14 +848,14 @@ canvasFront.onmousedown = (e) => {
     
 }
 
-canvasFront.onmouseup = (e) => {
+canvasFront.onmouseup = () => {
   //console.log('mouseUpCanvas', e)
   isDraggable = false
   //console.log('isDraggable', isDraggable)
   window.removeEventListener('wheel', disabledWheel, false)
 }
 
-canvasFront.onmouseout = (e) => {
+canvasFront.onmouseout = () => {
   if(!isDraggable) {
     return;
   }
@@ -865,7 +865,7 @@ canvasFront.onmouseout = (e) => {
   window.removeEventListener('wheel', disabledWheel, false)
 }
 
-canvasFront.onmousemove = (e) => {
+canvasFront.onmousemove = (e: MouseEvent) => {
   if(!isDraggable) {
     return
   }
@@ -935,19 +935,19 @@ const addToAttachments = () => {
   canvasTest.value.getContext('2d').drawImage(canvasBackRef.value,0,0)
   canvasTest.value.getContext('2d').drawImage(canvasFrontRef.value,0,0)
 
-  canvasTest.value.toBlob( (blob) => {
-      toBase64(blob)
-        .then((result) => {
-          KPLocal.value.attachments.push(result)
-        })
-  })
+  // canvasTest.value.toBlob( (blob: Blob) => {
+  //     toBase64(blob)
+  //       .then((result) => {
+  //         //KPLocal.value!.attachments.push(result)
+  //       })
+  // })
 
 }
 
 const KPLocal = ref(props.kp)
 
 //временная перегрузка, чтобы добавить массив с вложеныыми изображениями
-KPLocal.value.attachments = []
+//KPLocal.value.attachments = []
 
 const total = computed( ()=>{
   let total_price = 0

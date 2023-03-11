@@ -19,6 +19,7 @@ import Mail from './personal/buttons/Mail.vue'
 import Bell from './personal/buttons/Bell.vue'
 import Name from './personal/buttons/Name.vue'
 import Popup from './personal/notifcation/Popup.vue'
+import SimpleSlider from './SimpleSlider.vue'
 
 export {
     Bell,
@@ -42,4 +43,5 @@ export {
     Popup,
     Avatar,
     SnackBar,
+    SimpleSlider,
 }

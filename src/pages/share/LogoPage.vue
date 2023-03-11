@@ -1,6 +1,6 @@
 <script setup lang="ts">
 //страница с конфигуратором нанесения логотипа
-import axios from "/src/plugins/axios";
+
 
 import { ref,computed } from 'vue'
 import { useStore } from '/src/store'
@@ -57,9 +57,9 @@ const doSearch = (arg: string) => {
         <div class="top-line-card-wrap header-lable">
             Макет нанесения логотипа
         </div>
-	    <!--<CompanyBarTop :data="companyBarTopData" v-model="activeCompanyUid"></CompanyBarTop>-->
-	    <PersonalBar></PersonalBar>	
-	</div>
+      <!--<CompanyBarTop :data="companyBarTopData" v-model="activeCompanyUid"></CompanyBarTop>-->
+      <PersonalBar></PersonalBar>
+    </div>
     <div style="position: relative; z-index: 100;">
         <ProductSearchInput v-model="search_str" @catch="doSearch" />
     </div>

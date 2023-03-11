@@ -1,23 +1,26 @@
 <script setup lang="ts">
 //страница с выдачей сертификата
-import { ref, onMounted, onUpdated, computed } from "vue";
+import {ref, computed, watch, onMounted} from "vue";
 import axios from "/src/plugins/axios";
 
 import { useStore } from "/src/store";
 import { ProductActions } from "/src/store/product/actions";
 import { KeysMutations } from "/src/store/keys/mutations";
 
-import { useRouter } from "vue-router";
 
-import { Sliders } from "/src/models/Components";
 import { ButtonState } from "/src/components/ui/button/state";
 import { IconsSVG } from "/src/components/ui/button/icons";
-import ButtonWithIcon from "/src/components/ui/ButtonWithIcon.vue";
+import { ButtonWithIcon, SimpleSlider } from "/src/components/ui";
 import PersonalBar from "/src/components/cards/PersonalBar.vue";
-import ProductSearchInput from "/src/components/cards/Product/ProductSearchInput.vue";
+import { ProductSearchInput, ProductSliderFullscreen } from "/src/components/cards/Product";
+
+const props = defineProps({
+  article: {
+    type: String
+  }
+})
 
 const store = useStore();
-const router = useRouter();
 
 const loader = computed<boolean>({
   get: () => store.getters.getLoader,
@@ -25,65 +28,47 @@ const loader = computed<boolean>({
 });
 
 const search_str = ref("");
-const doSearch = (arg: string) => {
-  console.log("search");
-
-  loader.value = true;
-  article.value = arg
-
-  store
-    .dispatch(ProductActions.SEARCH_PRODUCT, article.value)
-    .then(() => {
-      console.log(store.getters.getProduct);
-      let product = store.getters.getProduct
-      title.value = product.NAME
-      productUId.value = product.UID
-      //store.getters.getProductImages?.forEach( (v:string, i:number) => slides.value.push(<Sliders>{ id: i, src: v }))
-      getCirtificates(productUId.value)
-    })
-    .finally(() => {
-    });
-};
-
 const title = ref("Наименование продукта")
-const article = ref("КJC 321")
-const productUId = ref('0')
-
 //Слайдер с сертефикатами
-let slides = ref<Sliders[]>([]);
-let fullscreen = ref(false);
-let certificates = ref([]);
-let showCertificates = ref(false);
 
-let next = () => {
-  const first = <Sliders>slides.value.shift();
-  slides.value = slides.value.concat(first);
-};
-let prev = () => {
-  const last = <Sliders>slides.value.pop();
-  slides.value = [last].concat(slides.value);
-};
+let fullscreen = ref(false)
+let certificates = ref<string[]>([])
+let showCertificates = ref(false)
+
 
 //Скачивание сертификатов
-let btnText = ref("Скачать сертификаты архивом ");
-let btnState = ref<ButtonState>(ButtonState.Active);
-let btnIcon = IconsSVG.Download;
-let isDownload = ref(false);
+let btnText = ref("Скачать сертификаты архивом ")
+let btnState = ref<ButtonState>(ButtonState.Active)
+let btnIcon = IconsSVG.Download
+let isDownload = ref(false)
 
-let getCirtificates = (uid: string) => {
+const doSearch = async () => {
+  loader.value = true
+  await store.dispatch(ProductActions.SEARCH_PRODUCT, props.article)
+  title.value = store.getters.getProduct.NAME
+  await getCirtificates(store.getters.getProduct.UID)
+  loader.value=false
+}
 
-  slides.value = [];
-  certificates.value = [];
+onMounted(()=>{
+  if (props.article) {
+    doSearch()
+  }
+})
 
-  let productID = uid;
-  console.log(productID);
+watch( ()=>props.article, (new_val) => {
+  if (new_val) {
+    doSearch()
+  }
+})
 
-  axios
-    .get("/product/" + productID + "/certificates")
+const getCirtificates = async (uid: string) => {
+  certificates.value = []
+  await axios
+    .get("/product/" + uid + "/certificates")
     .then((response) => {
-      response.data?.forEach((v: string, i: number) => {
-        slides.value.push(<Sliders>{ id: i, src: v });
-        certificates.value.push(v);
+      response.data?.forEach((src: string) => {
+        certificates.value.push(src);
       });
     })
     .catch((error) => {
@@ -99,13 +84,11 @@ let getCirtificates = (uid: string) => {
     });
 };
 
-let download = () => {
+const download = async () => {
   btnState.value = ButtonState.InProgress;
   btnText.value = "Архив скачивается, подождите";
-  let productID = productUId.value;
-
-  axios
-    .get("/product/" + productID + "/certificates/download", {
+  await axios
+    .get("/product/" + store.getters.getProduct.UID + "/certificates/download", {
       responseType: "blob",
       transformRequest: (_, headers) => {
         delete headers?.common;
@@ -122,7 +105,7 @@ let download = () => {
       // clean up "a" element & remove ObjectURL
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
-      isDownload.value = !isDownload;
+      isDownload.value = !isDownload.value;
     })
     .catch((error) => {
       //todo: сделать проверку на ошибки
@@ -146,9 +129,9 @@ let download = () => {
     <PersonalBar></PersonalBar>
   </div>
 
-  <ProductSearchInput v-model="search_str" to="certificate" @search="doSearch" />
+  <ProductSearchInput v-model="search_str" to="certificate" />
 
-  <div v-if="slides.length > 0">
+  <div v-if="certificates.length > 0">
     <div class="content-heading-wrap proudct-heading-wrap">
       <div class="content-heading-price">
         <div class="content-heading-price-text" v-html="title"></div>
@@ -171,39 +154,8 @@ let download = () => {
         />
         </div>
     </div>
-
-    <div class="product-slider-wrap">
-      <button class="product-slider-arrow prev" @click="prev"></button>
-
-      <transition-group
-        style="max-width: 560px;"
-        name="product-slider-trans"
-        class="product-slider"
-        tag="div"
-      >
-        <div
-          v-for="slide in slides"
-          class="product-slider-slide"
-          :key="slide.id"
-        >
-          <img v-if="slide.src" :src="slide.src" @click="fullscreen = true" />
-        </div>
-      </transition-group>
-      <div class="product-slider-arrow next" @click="next"></div>
-
-      <!--<transition-group name="product-slider-trans" class='product-slider-small' tag="div">
-						<div 
-							v-for="slide in slides" 
-							class='product-slider-small-slide'
-							:key="slide.id"
-						>
-							<img 
-								v-if="slide.src"
-								:src="slide.src" 
-							/>
-						</div>
-					</transition-group>-->
-    </div>
+    <SimpleSlider :data="certificates" @onClick="fullscreen=true" style="width: 50%"/>
+    <ProductSliderFullscreen v-model="fullscreen" :data="certificates"/>
   </div>
 </div>
 </template>
@@ -217,10 +169,4 @@ let download = () => {
     font-style: normal
     cursor: default
 
-.fade-enter-active, .fade-leave-active
-    transition: all 0.5s ease
-
-.fade-enter-from, .fade-leave-to
-    transform: translateY(-20px)
-    opacity: 0
 </style>

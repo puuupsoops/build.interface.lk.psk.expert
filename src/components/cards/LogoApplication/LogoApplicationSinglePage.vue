@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // Комнонент нанесения логотипа
-import axios from '/src/plugins/axios'
-import {computed, PropType, ref, onMounted, onUpdated, watch } from 'vue'
+// import axios from '/src/plugins/axios'
+import { PropType, ref, onMounted, onUpdated, watch } from 'vue'
 import { Sliders } from '/src/models/Components'
 import SwitchButton from '/src/components/ui/SwitchButton.vue'
 import BaseButton from '/src/components/ui/BaseButton.vue'
@@ -75,14 +75,14 @@ const currentLogoImageHeight = ref(startImageHeight)
 const isRotate = ref(false)
 
 // хелпер для преобразования &quot; в кавычки 
-const stringConverter = (s: string) => { return s.replace(/&quot;/gi, '\"') }
+// const stringConverter = (s: string) => { return s.replace(/&quot;/gi, '\"') }
 
 // input масштаба изображения
 const scaleLogo = ref('50%')
 const currentScaleLogoValue = ref(0.0) //значение текущего масштаба
 
 // кликаем на input поворота изображения
-const rotateClickHandler = (e: any) => {
+const rotateClickHandler = () => {
   console.log('click')
 }
 // покидаем input поворота изображения
@@ -125,7 +125,7 @@ const scaleClickHandler = (e: any) => {
 }
 
 // покидаем input масштаба изображения
-const scaleFocusOutHandler = (e: any) => {
+const scaleFocusOutHandler = () => {
   console.log('scaleFocusOutHandler')
   console.log(scaleLogo.value)
   let scaleFactor = Number(scaleLogo.value)
@@ -261,26 +261,26 @@ watch(scaleLogo, () => {
   console.log(scaleLogo.value)
 })
 
-const file = ref(null)
+const file = ref<HTMLInputElement>()
 
-const imageList = ref(props.images)
-const selectOnChangeHandler = (uid: string) => {
-  if(uid == "null") {
-    return;
-  }
-  imageList.value = []
-
-  console.log(uid)
-  axios.get('/product/search?QUERY='+uid+'&OPTION=8')
-    .then( (response) => {
-      console.log(response.data.IMAGES)
-      response.data.IMAGES.forEach( (item: string) => { imageList.value.push(item) })
-    })
-    .finally( () => {
-      console.log(imageList.value)
-    })
-  
-}
+// const imageList = ref(props.images)
+// const selectOnChangeHandler = (uid: string) => {
+//   if(uid == "null") {
+//     return;
+//   }
+//   imageList.value = []
+//
+//   console.log(uid)
+//   axios.get('/product/search?QUERY='+uid+'&OPTION=8')
+//     .then( (response) => {
+//       console.log(response.data.IMAGES)
+//       response.data.IMAGES.forEach( (item: string) => { imageList.value.push(item) })
+//     })
+//     .finally( () => {
+//       console.log(imageList.value)
+//     })
+//
+// }
 
 const selectCanvasBackgroundImageHandler = (uid: string) => {
   console.log(uid)
@@ -300,7 +300,7 @@ const chooseCurrentBackgroundImage = (src: string) => {
   image.src = src + '?no-cache-please'
 }
 
-const toBase64 = res => new Promise((resolve, reject) => {
+const toBase64 = (res: Blob) => new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(res);
     reader.onload = () => resolve(reader.result);
@@ -315,7 +315,7 @@ const download = () => {
   canvasTest.value.getContext('2d').drawImage(canvasFrontRef.value,0,0)
 
   //console.log(canvasTest.value.toDataURL())
-  canvasTest.value.toBlob( (blob) => {
+  canvasTest.value.toBlob( (blob: Blob) => {
       console.log(blob)
       const url = window.URL.createObjectURL(blob);
 					const link = document.createElement('a');
@@ -331,52 +331,54 @@ const download = () => {
 }
 
 //удаляем изображения из вложений
-const removeAttachmentsById = (item: any) => {
-  let id = item.getAttribute('data-id')
-  if(id < 0){
-    return;
-  }
-  KPLocal.value.attachments.splice(id,1)
-  console.log(KPLocal.value.attachments)
-}
+// const removeAttachmentsById = (item: any) => {
+//   let id = item.getAttribute('data-id')
+//   if(id < 0){
+//     return;
+//   }
+//   KPLocal.value.attachments.splice(id,1)
+//   console.log(KPLocal.value.attachments)
+// }
 
 // загружает файл с логотипом на холст
 const uploadLogo = async () => {
-  let fileBase64 = await toBase64(file.value.files[0])
-  
-  imageLogo.value = new Image()
-  imageLogo.value.src = fileBase64
+  if(file.value && file.value.files) {
+    let fileBase64 = await toBase64(file.value.files[0])
 
-  imageLogo.value.onload = () => {
-    let width = imageLogo.value.width;
-    let hight = imageLogo.value.height;
-    
-    uploadInitLogoImageWidth.value = width
-    uploadInitLogoImageHeight.value = hight
+    imageLogo.value = new Image()
+    imageLogo.value.src = fileBase64
 
-    currentLogoImageWidth.value = width
-    currentLogoImageHeight.value = hight
+    imageLogo.value.onload = () => {
+      let width = imageLogo.value.width;
+      let hight = imageLogo.value.height;
 
-    scaleLogo.value = '50%'
-    currentScaleLogoValue.value = 0.0
+      uploadInitLogoImageWidth.value = width
+      uploadInitLogoImageHeight.value = hight
 
-    console.log('Logo load',imageLogo.value)
+      currentLogoImageWidth.value = width
+      currentLogoImageHeight.value = hight
 
-    canvasFrontRef.value.getContext('2d').clearRect(0,0,canvasFrontRef.value.width, canvasFrontRef.value.height)
+      scaleLogo.value = '50%'
+      currentScaleLogoValue.value = 0.0
 
-    canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
-    startLogoPosX.value,startLogoPosY.value,
-    currentLogoImageWidth.value,currentLogoImageHeight.value);
-    canvasFrontRef.value.getContext('2d').save()
+      console.log('Logo load', imageLogo.value)
 
-    //костыль: двигаем изображение, т.к. не отображается после загрузки
-    moveRight()
+      canvasFrontRef.value.getContext('2d').clearRect(0, 0, canvasFrontRef.value.width, canvasFrontRef.value.height)
+
+      canvasFrontRef.value.getContext('2d').drawImage(imageLogo.value,
+          startLogoPosX.value, startLogoPosY.value,
+          currentLogoImageWidth.value, currentLogoImageHeight.value);
+      canvasFrontRef.value.getContext('2d').save()
+
+      //костыль: двигаем изображение, т.к. не отображается после загрузки
+      moveRight()
+    }
   }
 }
 
 // функция для тригера окна загрузки файла с логотипом по кнопке
 const uploadLogoHandler = () => {
-  file.value.click()
+  file.value!.click()
 }
 
 // отрисовывает логотип с учетом всех модификаторов (масштаб, поворот, позиция)
@@ -562,12 +564,12 @@ const disabledWheel = (e:any) => {
 onMounted(async () => {
   props.images?.forEach( (v, i) => slides.value.push(<Sliders>{id: i, src: v.src}));
 
-  canvasFrontRef.value = window.document.getElementById('canvas-front')
-  canvasBackRef.value = window.document.getElementById('canvas-back')
-  canvasTest.value = window.document.getElementById('c1')
+  canvasFrontRef.value = window.document.getElementById('canvas-front') as HTMLCanvasElement
+  canvasBackRef.value = window.document.getElementById('canvas-back') as HTMLCanvasElement
+  canvasTest.value = window.document.getElementById('c1') as HTMLCanvasElement
 
-  let canvasBack = window.document.getElementById('canvas-back')
-  let canvasFront = window.document.getElementById('canvas-front')
+  let canvasBack = window.document.getElementById('canvas-back') as HTMLCanvasElement
+  let canvasFront = window.document.getElementById('canvas-front') as HTMLCanvasElement
   cxt.value = canvasBack.getContext('2d')
   //observer.observe(target);
   //console.log(target)
@@ -578,8 +580,8 @@ onMounted(async () => {
   //console.log('fetch' , back)
     // Make sure the image is loaded first otherwise nothing will draw.
   canvasBackground.onload = function() {
-    canvasBack.getContext('2d').drawImage(canvasBackground,0,0,720,1080)
-    canvasBack.getContext('2d').save()
+    canvasBack.getContext('2d')?.drawImage(canvasBackground,0,0,720,1080)
+    canvasBack.getContext('2d')?.save()
   }
 
   canvasBackground.crossOrigin = 'Anonymous'
@@ -605,13 +607,13 @@ onMounted(async () => {
   imageLogo.value.crossOrigin = 'Anonymous'
 
   imageLogo.value.onload = () => {
-    canvasFront.getContext('2d').drawImage(
+    canvasFront.getContext('2d')?.drawImage(
       imageLogo.value,
       startLogoPosX.value,startLogoPosY.value,
       initialWidthLogo,initialHeightLogo
     )
 
-    canvasFront.getContext('2d').save()
+    canvasFront.getContext('2d')?.save()
   }
 
 //panzoom.value = Panzoom(window.document.getElementById('zoom-area'), {
@@ -622,10 +624,10 @@ onMounted(async () => {
 
 canvasFront.onmousedown = (e) => {
   getFrontCanvasOffset()
-    console.log('layerX', e.layerX,'layerY', e.layerY)
-    console.log('layerX', e.layerX / 2,'layerY', e.layerY)
-    console.log('startLogoPosX', startLogoPosX.value, 'startLogoPosY', startLogoPosY.value)
-    console.log('mouseDownCanvas', e)
+    // console.log('layerX', e.layerX,'layerY', e.layerY)
+    // console.log('layerX', e.layerX / 2,'layerY', e.layerY)
+    // console.log('startLogoPosX', startLogoPosX.value, 'startLogoPosY', startLogoPosY.value)
+    // console.log('mouseDownCanvas', e)
 
     let clientX = e.clientX - canvasOffsetX.value
     let clientY = e.clientY - canvasOffsetY.value
@@ -660,14 +662,14 @@ canvasFront.onmousedown = (e) => {
     
 }
 
-canvasFront.onmouseup = (e) => {
+canvasFront.onmouseup = () => {
   //console.log('mouseUpCanvas', e)
   isDraggable = false
   //console.log('isDraggable', isDraggable)
   window.removeEventListener('wheel', disabledWheel, false)
 }
 
-canvasFront.onmouseout = (e) => {
+canvasFront.onmouseout = () => {
   if(!isDraggable) {
     return;
   }

@@ -22,10 +22,10 @@
 </template>
 
 <script setup lang="ts">
-	import SideMenu from './components/nav/SideMenu.vue'
-	import Preloader from './components/Preloader.vue'
-	import NotificationBar from './components/cards/NotificationBar.vue'
-	import SnackBar from './components/ui/SnackBar.vue'
+	import { SideMenu } from './components/nav'
+	import { Preloader } from './components'
+	import { NotificationBar } from './components/cards'
+	import { SnackBar } from './components/ui'
 
 	import { useStore } from '/src/store'
 	import { computed, provide, ref } from 'vue'
@@ -36,7 +36,6 @@
 
 	let store = useStore()
 	store.dispatch(AuthActions.CHECK_AUTH)
-
 	const loader = computed<boolean>({
 		get: () => store.getters.getLoader,
 		set: (val: boolean) => store.commit(KeysMutations.SET_LOADER, val)

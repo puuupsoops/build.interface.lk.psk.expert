@@ -1,15 +1,17 @@
 import { createApp } from 'vue'
+import { store, key } from '/src/store'
+import router from '/src/plugins/router'
 import App from '/src/App.vue'
 
 // @ts-ignore
 const app = createApp(App)
 
 // Vuex4 
-import { store, key } from '/src/store'
+
 app.use(store, key)
 
 // Роуты в приложении
-import router from '/src/plugins/router'
+
 app.use(router)
 
 // WebSocket со стором
