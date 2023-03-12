@@ -13,11 +13,7 @@
 							@click="active_item === id ? active_item = -1 : active_item = id"
 						>
 							<div class="sidebar-nav-arrow" v-if="item.children">
-								<img
-									:class="{'sidebar-nav-arrow': true, 'active': active_item===id}"
-									src="/src/assets/img/icon/arrow-nav-r.svg"
-									alt=""
-									/>
+								<svgArrowNavRight :class="{'sidebar-nav-arrow': true, 'active': active_item===id}"></svgArrowNavRight>
 							</div>
 							
 							<div 
@@ -134,6 +130,7 @@ import { normalizeCompanyName } from '/src/models/Partner'
 import OrderDraftModal from '/src/components/cards/Order/OrderDraftModal.vue'
 import FeedbackModal from '/src/components/cards/Main/FeedbackModal.vue'
 import svgLock from '/src/assets/img/icon/lock.svg'
+import svgArrowNavRight from '/src/assets/img/icon/arrow-nav-r.svg'
 
 const props = defineProps({
 		modelValue: {

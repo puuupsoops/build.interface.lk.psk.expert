@@ -6,6 +6,8 @@ import { Sliders } from '/src/models/Components'
 import SwitchButton from '/src/components/ui/SwitchButton.vue'
 import BaseButton from '/src/components/ui/BaseButton.vue'
 import BaseInput from '/src/components/ui/BaseInput.vue'
+import svgArrowDown from '/src/assets/img/icon/arrow-i-down.svg'
+import svgArrowUp from '/src/assets/img/icon/arrow-i-up.svg'
 
 const props = defineProps({
   active: {
@@ -801,7 +803,7 @@ canvasFront.onwheel = (e) => {
         <SwitchButton v-model="isRotate"></SwitchButton>
       </div>
       <div style="text-align: center;">
-        <span :style="'margin-bottom: 10px;'">Угол поворота лого</span>
+        <span :style="'margin-bottom: 10px;'">Поворот логотипа</span>
         <div :style="'display: flex;'">
           <div><base-button @onClick="rotateLogoLeft(-1)">L</base-button></div>
           <div>
@@ -842,9 +844,9 @@ canvasFront.onwheel = (e) => {
       <div class="product-slider-wrap" style="display: block;">
         <div style="display: flex;">
           <button 
-            style="margin: 10px auto; background-image: url(/src/assets/img/icon/arrow-i-up.svg);" 
-            class='product-slider-arrow prev' 
-            @click="nextSlide"></button>
+            style="margin: 10px auto;" 
+            class='product-slider-arrow' 
+            @click="nextSlide"><svgArrowUp></svgArrowUp></button>
         </div>
 
         <transition-group name="product-slider-trans" class='product-slider-small' tag="div" style="flex-flow: column; max-height: 960px; flex: 0 0 100%;">
@@ -864,9 +866,9 @@ canvasFront.onwheel = (e) => {
 
         <div style="display: flex;">
           <button 
-            style="margin: 10px auto; background-image: url(/src/assets/img/icon/arrow-i-down.svg);" 
-            class='product-slider-arrow next' 
-            @click="prevSlide"></button>
+            style="margin: 10px auto;" 
+            class='product-slider-arrow' 
+            @click="prevSlide"><svgArrowDown></svgArrowDown></button>
         </div>
       </div>
 
