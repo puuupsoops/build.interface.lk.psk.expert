@@ -31,7 +31,7 @@
 									v-if="item.lock"
 									class="tooltip"
 								>
-									<img src="/src/assets/img/icon/lock.svg"/>
+									<svgLock></svgLock>
 									<span class="tooltiptext">Раздел находится в разработке</span>
 								</span>
 
@@ -48,7 +48,7 @@
 									v-if="item.lock"
 									class="tooltip"
 								>
-									<img src="/src/assets/img/icon/lock.svg"/>
+									<svgLock></svgLock>
 									<span class="tooltiptext">Раздел находится в разработке</span>
 								</span>
 								</router-link>
@@ -82,7 +82,7 @@
 											v-if="child.lock"
 											class="tooltip"
 										>
-											<img src="/src/assets/img/icon/lock.svg"/>
+											<svgLock></svgLock>
 											<span class="tooltiptext">Раздел находится в разработке</span>
 										</span>
 									</router-link>
@@ -133,6 +133,7 @@ import { CompanyActions } from '/src/store/company/actions'
 import { normalizeCompanyName } from '/src/models/Partner'
 import OrderDraftModal from '/src/components/cards/Order/OrderDraftModal.vue'
 import FeedbackModal from '/src/components/cards/Main/FeedbackModal.vue'
+import svgLock from '/src/assets/img/icon/lock.svg'
 
 const props = defineProps({
 		modelValue: {
