@@ -8,19 +8,19 @@
             <div class="profile-notification-tab">
                 <div class="profile-notification-tab-bar-box">
                     <div class="profile-notification-tab-bar"
-                        :class="{'active': tab=='order'}"
+                        :class="{'active': tab==='order'}"
                         @click="tab='order'"
                     >
                         Заказ
                     </div>
                     <div class="profile-notification-tab-bar"
-                        :class="{'active': tab=='shipment'}"
+                        :class="{'active': tab==='shipment'}"
                         @click="tab='shipment'"
                     >
                         Отгрузки
                     </div>
                     <div class="profile-notification-tab-bar"
-                        :class="{'active': tab=='claim'}"
+                        :class="{'active': tab==='claim'}"
                         @click="tab='claim'"
                     >
                         Претензии
@@ -30,7 +30,6 @@
                     <div :class="'profile-notification-tab-tabs ' + tab">
                         <div class="tab">
                             <div class="name">
-                                
                                 <div class="name-title">Создание</div>
                                 <div class="name-title">Изменение</div>
                                 <div class="name-title">Статус</div>
@@ -92,11 +91,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab disabled"
-                         
-                        >
+                        <div class="tab disabled">
                             <div class="name">
-                                
                                 <div class="name-title">Создание</div>
                                 <div class="name-title">Изменение</div>
                                 <div class="name-title">Статус</div>
@@ -127,7 +123,6 @@
                             </div>
                         </div>
                     </div>
-                    
                 </div>
             </div>
         </div>
@@ -139,17 +134,17 @@
                 Сохранить
             </div>
         </div>
-        <!-- {{notification}} -->
     </div>
 </template>
 
 <script setup lang="ts">
-    import SwitchButton from '/src/components/ui/SwitchButton.vue'
-    
-    import { computed, onMounted, PropType, ref, watch } from 'vue';
+    import { SwitchButton } from '/src/components/ui'
+
+    import { PropType, ref } from 'vue';
     import { ProfileNotificationsList } from '/src/models/Propfile'
     
     
+    // eslint-disable-next-line no-unused-vars
     const props = defineProps(
         {
             notification:{
@@ -165,10 +160,10 @@
             }
         }
     )
+    // eslint-disable-next-line no-unused-vars
     const emits = defineEmits(['save'])
     
     const tab = ref('order')
-    
 
 
 </script>

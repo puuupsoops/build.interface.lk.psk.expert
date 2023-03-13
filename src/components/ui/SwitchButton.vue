@@ -1,9 +1,11 @@
 <template>
     <div style="display: inline-flex">
-                                    
         <label class="switch-btn" @click="onClick()">
-            
-            <input id="input" @click="onClick()" :value="modelValue" type="checkbox" />
+            <input id="input"
+                   @click="onClick()"
+                   :checked="modelValue"
+                   @input="$emit('update:modelValue', $event.target.checked)"
+                   type="checkbox" />
             <div></div>
             
         </label>
@@ -12,22 +14,20 @@
 
 
 <script setup lang="ts">
-    import { computed } from 'vue'
     
     const props = defineProps({
-            disabled:{
-                type: Boolean,
-                default: false
-            },
-            modelValue: {
-                type: Boolean,
-                default: false
-            },
+      disabled:{
+          type: Boolean,
+          default: false
+      },
+      modelValue: {
+          type: Boolean,
+      },
     })
-    const emits = defineEmits(['update:modelValue','onClick'])
+    const emits = defineEmits(['update:modelValue', 'onInput', 'onClick'])
     
     const onClick = () =>{
-        emits('update:modelValue', !props.disabled ? !props.modelValue : props.modelValue)
+       // emits('update:modelValue', !props.disabled ? !props.modelValue : props.modelValue)
         emits('onClick')
     }
     
