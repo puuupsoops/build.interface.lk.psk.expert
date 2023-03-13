@@ -14,8 +14,7 @@
 
 <script setup lang="ts">
     import SnackBar from '/src/components/ui/SnackBar.vue'
-    import ProfileCard from '/src/components/cards/Profile/ProfileCard.vue'
-    import ProfileNotificationCard from '../components/cards/Profile/ProfileNotificationCard.vue'
+    import { ProfileCard, ProfileNotificationCard } from '/src/components/cards/Profile'
     import TopNav from '/src/components/nav/TopNav.vue'
 
     import { onMounted, computed, ref } from 'vue'

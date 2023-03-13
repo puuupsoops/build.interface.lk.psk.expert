@@ -25,7 +25,7 @@
 			<router-link class="top-line-dropdown-link" tag="a" to="/profile">Профиль</router-link>
 			<a class="top-line-dropdown-link lock">Уведомления
 				<span class="tooltip">
-					<img src="/src/assets/img/icon/lock.svg"/>
+					<svgLock></svgLock>
 					<span style="left: -120px;top: -20px" class="tooltiptext">Раздел находится в разработке</span>
 				</span>
 			</a>
@@ -53,7 +53,7 @@
 	import { AuthActions } from '/src/store/auth/actions'
 	import { ProfileMutations } from '/src/store/profile/mutations'
 	import { defaultProfilePersonal } from '/src/store/profile/types'
-
+	import svgLock from '/src/assets/img/icon/lock.svg'
 
 	const store = useStore()
 	const remove_all_popap_class =ref(false)

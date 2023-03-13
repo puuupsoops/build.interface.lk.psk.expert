@@ -48,6 +48,7 @@ export interface Product {
     VALUME:          number;
     DETAIL_TEXT:     string;
     STATUS:          string;
+    VIDEO:           string;
     CHARACTERISTICS: Characteristic[];
 }
 

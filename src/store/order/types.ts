@@ -25,7 +25,7 @@ export interface OrderStateOrder {
 	position:                 OrderStatePosition[];
 	position_presail:         OrderStatePosition[];
 	total_count:              number;
-	total_valume:             number;
+	total_volume:             number;
 	total_weight:             number;
 	comment:                  string;
 	request_certificate:      boolean;
@@ -48,6 +48,7 @@ export interface OrderStatePositionOffer extends Offer {
 	price_discount:  number;
 	discount:        number;
 	fullprice?:      number;
+	add_sum?:        number; // Используется в конструкторе КП
 }
 
 export interface OrderStateDelivery {
@@ -69,7 +70,7 @@ export const DefaultOrder: OrderStateOrder = {
 	position: [],
 	position_presail: [],
 	total_count: 0,
-	total_valume: 0,
+	total_volume: 0,
 	total_weight: 0,
 	comment: '',
 	delivery: {

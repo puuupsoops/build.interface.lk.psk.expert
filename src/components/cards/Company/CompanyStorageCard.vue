@@ -164,7 +164,7 @@
 				</div>
 				<div class="company-head-info-elem r">
 					<span class="company-head-info-title">Дата погашения</span>
-					<span class="company-head-info-val" >--.--.--</span>
+					<span class="company-head-info-val" >--.--.----</span>
 				</div>
 			</div>
 		</div>

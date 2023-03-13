@@ -7,10 +7,11 @@ export interface ProductState {
 	product: Product,
 	product_images: string[],
 	product_protect: Protect[],
-	product_articls: ProductArticles[],
+	product_articles: ProductArticles[],
 	product_found_err_str: string,
+	product_video_link: string
 }
-export const DEFAULT_PRODUCT = {
+export const DEFAULT_PRODUCT = <Product>{
 	ID:              '',
 	UID:             '',
 	NAME:            '',
@@ -21,5 +22,6 @@ export const DEFAULT_PRODUCT = {
 	VALUME:          0,
 	DETAIL_TEXT:     '',
 	STATUS:          '',
+	VIDEO:           '',
 	CHARACTERISTICS: [],
 }

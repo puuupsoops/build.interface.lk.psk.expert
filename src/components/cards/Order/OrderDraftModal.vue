@@ -14,7 +14,7 @@
 					<DeleteButton @onClick="close()"/>
 			</div>
 			<div class="order-modal-body draft">
-				<div v-if="orderDraft.length ==0" >		
+				<div v-if="orderDraft.length === 0" >
 						Черновики отсутсвуют
 				</div>
 				<div v-else class="order-draft-list">
@@ -24,28 +24,28 @@
 							v-for="(item, key) in orderDraft"
 							:key="key"
 						>
-							<div :class="'shipment-address-list-row' + ( item.id == active ? ' active': '' )"
+							<div :class="'shipment-address-list-row' + ( item.id === active ? ' active': '' )"
 								@click.stop="clickItem(item.id)"
 							>
 								<div class="shipment-address-list-elem">
 									{{key+1}}
 								</div>
 								<div class="shipment-address-list-elem">
-									<div class="input-textfield"
-										v-if="editItem && item.id == active"
+									<div class="input-text-field"
+										v-if="editItem && item.id === active"
 										@click.stop=""
 										:style="'width: 100%'"
 									>
 										<input type="text" placeholder=" " v-model="item.name" >
-                                    	<label>Наименование</label>
+                    <label>Наименование</label>
 									</div>
 									<div v-else>{{item.name}}</div>
-									<div v-if="item.id != active" class="date">{{new Date(item.id).toLocaleString('ru')}}</div>
+									<div v-if="item.id !== active" class="date">{{new Date(item.id).toLocaleString('ru')}}</div>
 								</div>
 
 								<div class="shipment-address-list-elem actions"
 									:class="{'active': editItem}"
-									v-if="item.id == active && editItem==false"
+									v-if="item.id === active && editItem===false"
 									tooltip="Переименовать"
 									flow="up"
 								>
@@ -61,7 +61,7 @@
 
 								<div class="shipment-address-list-elem actions"
 									:class="{'active': editItem}"
-									v-if="item.id == active && editItem==true"
+									v-if="item.id === active && editItem===true"
 									tooltip="Сохранить"
 									flow="up"
 								>
@@ -103,7 +103,7 @@
 							</div>
 							
 							<div class="shipment-address-list-row-info"
-								v-if="delItem && item.id == active"
+								v-if="delItem && item.id === active"
 							>
 								<div>Удалить черновик?</div>
 								<div>
@@ -113,10 +113,10 @@
 							
 							</div>
 							
-							<div :class="'orders-list-info draft'   + (!delItem && item.id  == active ? ' active': '' )"  >
+							<div :class="'orders-list-info draft'   + (!delItem && item.id  === active ? ' active': '' )"  >
 								<div class="orders-list-info-row draft">
 									<OrderDraftCard 
-										:data="item"
+										:order="item"
 									/>
 								</div>
 							</div>
@@ -137,7 +137,7 @@
 				<span @click.stop="del(-1)">Да</span>
 				<span @click.stop="delAll=false">Нет</span>
 			</div>
-		</div>	
+		</div>
 		<div v-if="useDraft" class="shipment-address-list-row-info" >
 			<div>Использовать черновик для продолжения оформления заказа?</div>
 			<div>
@@ -145,16 +145,22 @@
 				<span @click.stop="useDraft=false">Нет</span>
 			</div>
 		</div>	
-		<div v-if="!delAll && !useDraft" class="order-modal-action">
-			<button @click="active=-1; delAll=true" class="order-list-btn">Удалить все черновики</button>
-			<button v-if="active!=-1" @click="useDraft=true" class="order-list-btn">Использовать черновик</button>
+		<div v-if="!delAll && !useDraft" class="order-modal-action" style="display: flex; flex-flow: column;">
+			<!--<button @click="active=-1; delAll=true" class="order-list-btn">Удалить все черновики</button>-->
+			<div v-if="active!==-1" class="order-modal-action" style="min-height: 20px;">На основании черновика</div>
+			<div class="order-modal-action" style="min-height: 20px;">
+				<button v-if="active!==-1" @click="useDraft=true" class="order-list-btn">Создать заказ</button>
+				<button v-if="active!==-1" @click="goToKP()" class="order-list-btn">Создать КП</button>
+			</div>
 		</div>
 	</div>
+	<Preloader v-if="loader"></Preloader>
 </div>
 </template>
 
 
 <script setup lang="ts">
+import Preloader from '/src/components/Preloader.vue'
 
 import DeleteButton from '/src/components/ui/DeleteButton.vue'
 import OrderDraftCard from '/src/components/cards/Order/OrderDraftCard.vue'
@@ -165,7 +171,10 @@ import { onClickOutside } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 
 import { OrderMutations } from '/src/store/order/mutations'
+import { OrderStateOrder } from '/src/store/order/types'
+import { KPMutations } from "/src/store/kp/mutations";
 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
 		modelValue:{
 			type: Boolean,
@@ -183,7 +192,8 @@ const emits = defineEmits(['update:modelValue'])
 		const shake = ref(false)
 		const targetModal = ref(null)
 		const active = ref(-1)
-		const orderDraft = computed(() => store.getters.getOrderDraft)
+		const orderDraft = computed(() => store.getters.getOrderDrafts)
+		const loader = ref(false)
 		onClickOutside(targetModal, () => {
 			shake.value = true;
 			setTimeout(() => {shake.value=false;}, 500);
@@ -225,6 +235,16 @@ const emits = defineEmits(['update:modelValue'])
 
 		const saveName = (id: number, name: string) => {
 			store.commit(OrderMutations.UPD_ALL_DRAFT)
+		}
+
+		const goToKP = () => {
+			loader.value = true
+			const currentDraft = store.getters.getOrderDrafts.filter( (item: OrderStateOrder) =>  item.id == active.value)
+      store.commit(KPMutations.SET_KP_OFFER_POSITION, currentDraft[0].position)
+      store.commit(KPMutations.SET_KP_STEP, 2)
+			close()
+			loader.value = false
+      router.push('/kp')
 		}
 		
 </script>

@@ -1,16 +1,12 @@
 .product
-
 	&-search
-		+flex
 		margin: 20px 20px 20px 0px
 		+align-items(center)
-		
-		
-		&.fullwidth
-			margin: 20px 0px 20px 0px
-			width: 100%
-		&.none
-			display: none
+		margin: 20px 0px 20px 0px
+		width: 100%
+		display: none
+		&.show
+			+flex
 			
 			
 		&-top
@@ -247,10 +243,11 @@
 		
 
 	&-slider-wrap
-		+flex
-		padding: 30px
-			bottom: 0
-		+align-items(center)
+		//+flex
+		//padding: 30px
+		//	bottom: 0
+		//+align-items(center)
+		//+justify-content(space-between)
 		// +flex-wrap(nowrap)
 		//max-height: 570px
 		
@@ -260,13 +257,20 @@
 		// +flex-wrap(nowrap)
 		+justify-content(flex-start)
 		+align-items(flex-start)
+		//+flex-direction(column)
 		overflow: hidden
 		min-width: 250px
 		max-width: 380px
 		
 		&.big
 			max-width: 600px
-			
+
+		&-main
+			+flex
+			padding: 30px
+				bottom: 0
+			+align-items(center)
+			+justify-content(space-between)
 		&-slide 
 			+flex
 			flex: 0 0 100%
@@ -300,10 +304,13 @@
 		
 		&-small
 			+flex
-			flex: 0 0 25%
-			+flex-flow(column)
+			+flex-flow(row)
 			+justify-content(flex-start)
 			+align-items(center)
+			flex: 0 0 25%
+			gap: 10px
+			padding: 30px
+				bottom: 0
 			max-height: 570px
 			overflow: hidden
 
@@ -311,7 +318,7 @@
 				+prefix(transition, all 0.1s ease 0.1s)
 				opacity: 0.3
 
-				&:first-child 
+				&:first-child
 					opacity: 1
 
 			& img
@@ -409,7 +416,10 @@
 			transform: translateX(-50%)
 			transition-timing-function: ease-out
 			z-index: 20
-			
+			&.kp
+				position: unset
+				transform: none
+
 			& label 
 				display: inline-block
 				width: 15px
@@ -520,12 +530,11 @@
 		&-wrap
 			+flex
 			+align-items(center)
+			gap: 30px
 
 		&-elem
 			+flex
 			position: relative
-			margin:
-				right: 30px
 			padding: 40px
 			max-width: 370px
 			
@@ -597,7 +606,9 @@
 
 			&.active
 				color: $accent-color
-		
+
+		&-value
+			white-space: nowrap
 		&-hide-btn
 			margin: 0 0 0 auto
 				right: 15px

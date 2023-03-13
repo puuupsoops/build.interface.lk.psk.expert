@@ -51,7 +51,7 @@
 				</transition>
 				<div class="product-parcel-text" v-if="!show">Количество</div>
 			</div>
-		<div class="product-parcel-hide-btn content-hide-btn" @click="show = !show">{{ !show ? 'Показать +' : 'Скрыть —' }}</div>
+<!--		<div class="product-parcel-hide-btn content-hide-btn" @click="show = !show">{{ !show ? 'Показать +' : 'Скрыть —' }}</div>-->
 	</div>
 </div>
 

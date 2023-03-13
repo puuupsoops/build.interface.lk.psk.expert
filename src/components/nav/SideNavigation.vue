@@ -13,11 +13,7 @@
 							@click="active_item === id ? active_item = -1 : active_item = id"
 						>
 							<div class="sidebar-nav-arrow" v-if="item.children">
-								<img
-									:class="{'sidebar-nav-arrow': true, 'active': active_item===id}"
-									src="/src/assets/img/icon/arrow-nav-r.svg"
-									alt=""
-									/>
+								<svgArrowNavRight :class="{'sidebar-nav-arrow': true, 'active': active_item===id}"></svgArrowNavRight>
 							</div>
 							
 							<div 
@@ -31,7 +27,7 @@
 									v-if="item.lock"
 									class="tooltip"
 								>
-									<img src="/src/assets/img/icon/lock.svg"/>
+									<svgLock></svgLock>
 									<span class="tooltiptext">Раздел находится в разработке</span>
 								</span>
 
@@ -48,7 +44,7 @@
 									v-if="item.lock"
 									class="tooltip"
 								>
-									<img src="/src/assets/img/icon/lock.svg"/>
+									<svgLock></svgLock>
 									<span class="tooltiptext">Раздел находится в разработке</span>
 								</span>
 								</router-link>
@@ -82,7 +78,7 @@
 											v-if="child.lock"
 											class="tooltip"
 										>
-											<img src="/src/assets/img/icon/lock.svg"/>
+											<svgLock></svgLock>
 											<span class="tooltiptext">Раздел находится в разработке</span>
 										</span>
 									</router-link>
@@ -101,12 +97,19 @@
 						</div>
 					</li>
 				</ul>
-				<div class="sidebar-logo">
-					<img class="sidebar-logo-img" src="/src/assets/img/lamp.png"/>
-					<div class="sidebar-logo-text">
-						<span>Сделай лучше<br>наше сотрудничество</span>
+				<router-link
+					tag="a"
+					to="#"
+					@click="$emit('close');
+							showFeedbackModal=true"
+				>
+					<div class="sidebar-logo">
+						<img class="sidebar-logo-img" src="/src/assets/img/lamp.png"/>
+						<div class="sidebar-logo-text">
+							<span>Сделай лучше<br>наше сотрудничество</span>
+						</div>
 					</div>
-				</div>
+				</router-link>
 				<div class="sidebar-logo-version">
 					Версия {{version}}
 				</div>
@@ -115,6 +118,7 @@
 		<div  class="sidebar-menu-bg" v-if="modelValue" @click="$emit('close')"></div>
 	</div>
 	<OrderDraftModal v-model="showDraft"/>
+	<FeedbackModal v-model="showFeedbackModal"/>
 </template>
 
 <script  setup lang="ts">
@@ -124,7 +128,9 @@ import { useStore } from '/src/store'
 import { CompanyActions } from '/src/store/company/actions'
 import { normalizeCompanyName } from '/src/models/Partner'
 import OrderDraftModal from '/src/components/cards/Order/OrderDraftModal.vue'
-
+import FeedbackModal from '/src/components/cards/Main/FeedbackModal.vue'
+import svgLock from '/src/assets/img/icon/lock.svg'
+import svgArrowNavRight from '/src/assets/img/icon/arrow-nav-r.svg'
 
 const props = defineProps({
 		modelValue: {
@@ -137,6 +143,7 @@ const store = useStore();
 const version = APP_VERSION
 const active_item = ref(0)
 const showDraft = ref(false)
+const showFeedbackModal = ref(false)
 
 const menu = computed(() => {
 		const menu_start = [
@@ -148,7 +155,8 @@ const menu = computed(() => {
 				{title: 'Отгрузки', link: '/shipments', lock: false, collapsed: false},
 				{title: 'Претензии', link:'/claims', lock: false, collapsed: false},
 				{title: 'Черновики', link: 'draft', lock: false, collapsed: false},
-				{title: 'Конструктор КП', link: '/kp', lock: false, collapsed: false},
+				{title: 'Создать КП', link: '/kp', lock: false, collapsed: false},
+				{title: 'Макет нанесения', link: '/logo', lock: false, collapsed: false},
 				{title: 'История', link: '/history', lock: true, collapsed: false},
 				
 			]},
@@ -156,11 +164,12 @@ const menu = computed(() => {
 				{title: 'Заявка на отгрузку', link: '/shipments/request', lock: false, collapsed: false},
 				{title: 'Адреса Доставки', link: '/shipments/address', lock: false, collapsed: false},
 			]},
-			{title: 'Сертификаты', link: null, lock: true, children: [
-				{title: 'Разрешительная', link: '/permissive', lock: true, collapsed: false},
-				{title: 'Нормативная', link: '/regulatory', lock: true, collapsed: false},
-				{title: 'Доп.Информация', link: '/dop_info', lock: true, collapsed: false},
-			]},
+			{title: 'Сертификаты', link: '/certificate', lock: false, children: null },
+			//{title: 'Сертификаты', link: null, lock: true, children: [
+			//	{title: 'Разрешительная', link: '/permissive', lock: true, collapsed: false},
+			//	{title: 'Нормативная', link: '/regulatory', lock: true, collapsed: false},
+			//	{title: 'Доп.Информация', link: '/dop_info', lock: true, collapsed: false},
+			//]},
 			{title: 'Взаиморасчеты', link: '/settlements', lock: true, children: [
 				{title: 'Счета', link: '/bills', lock: true, collapsed: false},
 				{title: 'Реализации', link: '/realization', lock: true, collapsed: false},

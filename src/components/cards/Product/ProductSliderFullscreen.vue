@@ -1,14 +1,13 @@
 <template>
-	<div class="product-slider-fullscreen" v-if="modelValue">
-	
-		<div class="product-slider-wrap" ref="target">
+	<div class="product-slider-fullscreen" v-if="modelValue" ref="target">
+
 			<div class="product-slider-controls">
 				<span
 					v-for="(slide,key) in data"
 					:key="key"
 				>
 					<input type="radio" :id="key" @click="shift(key - first)">
-					<label :for="key" :class="first == key ? 'checked':''"></label>
+					<label :for="key" :class="first === key ? 'checked':''"></label>
 					
 				</span>
 			</div>
@@ -42,20 +41,18 @@
 
 			<div class='product-slider-arrow prev' @click="previous"></div>
 			<transition-group name="product-slider-trans" class='product-slider big' tag="div">
-			
+
 				<div 
 						v-for="slide in slides"
 						class='product-slider-slide'
 						:key="slide.id"
 					>
-						<img v-if="slide.src" :src="slide.src"  />
+						<img v-if="slide.src" :src="slide.src" alt="" />
 				</div>
 			</transition-group>
 			<div class='product-slider-arrow next' @click="next"></div>
 			<div class='product-slider-close' @click="$emit('update:modelValue', false)"></div>
 		</div>
-	</div>
-	
 	
 </template>
 
@@ -110,7 +107,7 @@ export default defineComponent({
 			slides.value=[last].concat(slides.value)
 		}
 		const shift = (n: number):void => {
-			console.log(n)
+			//console.log(n)
 			if (n > 0)
 				slides.value = slides.value.concat(slides.value.splice(0, n))
 			else

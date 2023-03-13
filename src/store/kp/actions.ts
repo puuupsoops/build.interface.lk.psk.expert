@@ -13,6 +13,7 @@ export enum KPActions {
 	GET_ORG_BY_INN = "GET_ORG_BY_INN",
 	ADD_KP_LOGO = "ADD_KP_LOGO",
 	GET_KP_LOGO = "GET_KP_LOGO",
+	DELETE_KP_LOGO = "DELETE_KP_LOGO", 
 }
 
 export const actions: ActionTree<KPState, RootState> =  {
@@ -48,10 +49,9 @@ export const actions: ActionTree<KPState, RootState> =  {
 			})
 	},
 	async [KPActions.ADD_KP_LOGO] ({ commit }, data){
-		 
+		console.log(data)
         let formData = new FormData();
-        formData.append('file', DataURIToBlob(data))
-
+        formData.append(data.name, DataURIToBlob(data.file),data.name)
 		await axios.post( '/services/proposal/logo/add',
 					formData,
 						{
@@ -60,7 +60,9 @@ export const actions: ActionTree<KPState, RootState> =  {
 							}
 						}
 					).then(response=> {
-						commit(KPMutations.SET_KP_LOGO, <KPLogoList>{id: response.data.response.id, image: data})
+						//commit(KPMutations.SET_KP_LOGO, <KPLogoList>{id: response.data.response.id, image: data})
+						// присваиваем новые значения, т.к. Битрикс дичит с файлами, и генерирует новые айдишники
+						commit(KPMutations.SET_KP_LOGO, response.data.response.data)
 					})
 					.catch(error => {
 						commit(AuthMutations.SET_ERROR, `Request ADD_KP_LOGO error:<br>${error}`)
@@ -74,6 +76,15 @@ export const actions: ActionTree<KPState, RootState> =  {
 						commit(AuthMutations.SET_ERROR, `Request SET_KP_LOGO_LIST error:<br>${error}`)
 					});
 	},
+	async [KPActions.DELETE_KP_LOGO] ({ commit }, id) {
+		await axios.post('/services/proposal/logo/delete', id)
+			.then( response => {
+				if(response.status == 200) {
+					commit(KPMutations.DELETE_KP_LOGO_BY_ID, response.data.response.data)
+				} 
+			 } )
+			.catch( error => { commit(AuthMutations.SET_ERROR, `Request DELETE_KP_LOGO error:<br>${error}`) } )
+	}
 }
 function DataURIToBlob(dataURI: string) {
 	const splitDataURI = dataURI.split(',')

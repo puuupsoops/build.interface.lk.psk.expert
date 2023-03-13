@@ -102,6 +102,22 @@
 	transform: translate(-50%, -.5em)
 
 
+/* FLOW: UP-LEFT */
+[tooltip]:not([flow])::before,
+[tooltip][flow^="up-left"]::before
+	bottom: calc(100% + 5px)
+
+[tooltip]:not([flow])::after,
+[tooltip][flow^="up-left"]::after
+	bottom: calc(100% + 5px)
+
+[tooltip]:not([flow])::before,
+[tooltip]:not([flow])::after,
+[tooltip][flow^="up-left"]::before,
+[tooltip][flow^="up-left"]::after
+	left: calc(-100% - 5px)
+	transform: translate(-100%, -.5em)
+
 /* FLOW: DOWN */
 [tooltip][flow^="down"]::before 
 	top: 100%
@@ -165,6 +181,8 @@
 [tooltip]:not([flow]):hover::after,
 [tooltip][flow^="up"]:hover::before,
 [tooltip][flow^="up"]:hover::after,
+[tooltip][flow^="up-left"]:hover::before,
+[tooltip][flow^="up-left"]:hover::after,
 [tooltip][flow^="down"]:hover::before,
 [tooltip][flow^="down"]:hover::after 
 	animation: tooltips-vert 300ms ease-out forwards

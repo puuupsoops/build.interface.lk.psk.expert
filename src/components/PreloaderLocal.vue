@@ -1,24 +1,26 @@
 <template>
-	<div :class="'preloader-local' + (small ? ' small':'')">
+	<div 
+		class="preloader-local"
+		:class="{ small, center }"
+	>
 		<div class="preloader-local circle1"></div>
 		<div class="preloader-local circle2"></div>
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 
-export default defineComponent({
-	props:{
-		small: {
-			type: Boolean,
-			required: false,
-			defaut: false,
-		}
+const props = defineProps({
+	small: {
+		type: Boolean,
+		required: false,
+		defaut: false,
 	},
-	setup() {
-		
-	},
+	center: {
+		type: Boolean,
+		required: false,
+		defaut: false,
+	}
 })
 </script>
 

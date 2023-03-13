@@ -19,7 +19,7 @@
 				<div v-if="loading" style="display: flex; justify-content: center">
 					<PreloaderLocal ></PreloaderLocal>
 				</div>
-				<OrderDraftCard v-else :data="order_detail"></OrderDraftCard>
+				<OrderDraftCard v-else :order="order_detail"></OrderDraftCard>
 			</div>
 		</div>
 		<div v-if="!loading && order_detail.id !=0 ">
@@ -53,7 +53,7 @@ import DeleteButton from '/src/components/ui/DeleteButton.vue'
 import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 import OrderDraftCard from '/src/components/cards/Order/OrderDraftCard.vue'
 
-import { ref, computed, defineComponent, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useStore } from '/src/store'
 import { onClickOutside } from '@vueuse/core'
 
@@ -86,7 +86,6 @@ import { OrderMutations } from '/src/store/order/mutations'
 	const shake = ref(false)
 	const targetModal = ref(null)
 	const loading = ref(false)
-	const useRepeat = ref(false)
 	
 	const order_detail = computed(() => store.getters.getOrderDetail)
 
@@ -109,10 +108,10 @@ import { OrderMutations } from '/src/store/order/mutations'
 	})
 	const order = computed(() => store.getters.getOrdersByID(props.orderId))
 	
-	const  setOrder = async () => {
+	const setOrder = async () => {
 		await store.commit(OrderMutations.CREATE_ORDER_FROM_DETAIL)
 		await store.commit(OrderMutations.CALC_ORDER)
-		router.push({name: 'Order'})
+		await router.push({name: 'Order'})
 	}
 	const setOrderToEdit = async () => {
 		await store.commit(OrderMutations.EDIT_ORDER, order.value)

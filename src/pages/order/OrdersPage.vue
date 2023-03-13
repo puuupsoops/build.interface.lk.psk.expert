@@ -44,16 +44,12 @@
 			</div>
 	</div>
 
-	<!-- <OrdersSearchCard
-		:data="searchColumn"
-		v-model="search"
-	/> -->
 	<OrdersListCard
 	
 		:loading="loading"
 		:contrAgent="filterCompanyUid"
 		:period="filterPeriodData[filterPeriod].name"
-		:status="OrdersSatusCode.find(x=>x.id==filterStatus)?.name"
+		:status="OrdersSatusCode.find(x=>x.id===filterStatus)?.name"
 		:search="search"
 		:refresh="refreshing"
 	/>
@@ -62,17 +58,17 @@
 </template>
 
 <script setup lang="ts">
-	import PersonalBar from '/src/components/cards/PersonalBar.vue'
-	import Notification from '/src/components/cards/Notification.vue'
-	import CompanyBarTop from '/src/components/cards/Company/CompanyBarTop.vue'
-	import TopNav from '/src/components/nav/TopNav.vue'
-	import SelectInput from '/src/components/ui/SelectInput.vue'
-	// import OrdersSearchCard from '/src/components/cards/Order/OrdersSearchCard.vue'
-	import OrdersListCard from '/src/components/cards/Order/OrdersListCard.vue'
-	import PreloaderLocal from '/src/components/PreloaderLocal.vue'
+	import { PersonalBar, Notification } from '/src/components/cards'
+  import { TopNav } from '/src/components/nav'
+  import { PreloaderLocal } from '/src/components'
+	import { CompanyBarTop } from '/src/components/cards/Company'
+
+	import { SelectInput } from '/src/components/ui'
+	import { OrdersListCard } from '/src/components/cards/Order'
+
 
 	import { useStore } from '/src/store'
-	import { ref, computed, defineComponent, onMounted } from 'vue'
+	import { ref, computed, onMounted } from 'vue'
 	
 	import { CompanyActions } from '/src/store/company/actions'
 	import { OrdersSatusCode } from '/src/store/orders/types'
@@ -91,13 +87,6 @@
 	const filterPeriod = ref(0)
 
 	const refreshing = ref(false)
-
-	const searchColumn = [
-		{id: 1, name: 'Наименование'},
-		{id: 2, name: 'Номер'},
-		{id: 3, name: 'Дата создания'},
-		
-	];
 
 	const refresh = () => {
 		

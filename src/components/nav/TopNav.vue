@@ -21,7 +21,7 @@
 										v-if="item.lock"
 										class="tooltip"
 									>
-										<img src="/src/assets/img/icon/lock.svg"/>
+										<svgLock></svgLock>
 										<span class="tooltiptext">Раздел находится в разработке</span>
 									</span>
 								</router-link>
@@ -64,9 +64,12 @@
 
 					<router-link  v-if="catalog"
 							tag="a" 
-							:to="'/catalog/catalog'"
+							:to="'/order' /*'/catalog/catalog'*/"
 							class="content-heading-btn"
 						>
+							<div class="sidebar-btn-notification" v-if="orderPositionLength>0"  :style="'margin-top: -16px;'">
+								<span :style="'position: absolute; left: 4px; top: -5px;'">{{orderPositionLength}}</span>
+							</div>
 							<svg class="content-heading-btn-img" width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<rect class="fill" x="0.0802612" y="2.04846" width="4.25606" height="2.07613" rx="1.03806" fill="#A5A7A9"></rect>
 							<rect class="fill" x="3.9931" y="2" width="17.8806" height="2.07613" rx="1.03806" transform="rotate(69.6255 3.9931 2)" fill="#A5A7A9"></rect>
@@ -81,7 +84,7 @@
 							<circle class="stroke" cx="20.8415" cy="24.8858" r="2.11419" stroke="#A5A7A9" stroke-width="2"></circle>
 							</svg>
 
-							<div class="content-heading-btn-text">Каталог</div>
+							<!--<div class="content-heading-btn-text">Каталог</div>-->
 					</router-link>
 					<router-link  v-if="toDraft"
 						tag="a" 
@@ -141,7 +144,7 @@
 	
 	import { computed, onMounted, ref, onBeforeUnmount, nextTick } from 'vue'
 	import { useStore } from '/src/store'
-
+	import svgLock from '/src/assets/img/icon/lock.svg'
 
 	const props = defineProps({
 		newOrder: {

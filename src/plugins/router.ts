@@ -1,8 +1,5 @@
-
-import { createRouter, createWebHistory } from 'vue-router';
-//import { useStore } from '/src/store';
-import { store } from '/src/store/index'
-import { AuthActions } from '/src/store/auth/actions';
+import { createRouter, createWebHistory } from 'vue-router'
+import { store } from '/src/store'
 
 const routes = [
 	{
@@ -42,7 +39,7 @@ const routes = [
 	},
 	{
 		path: '/product/:article?', 
-		component: () => import('/src/pages/product.vue'),
+		component: () => import('/src/pages/ProductPage.vue'),
 		name: 'Product',
 		props: true,
 		meta:{
@@ -51,7 +48,7 @@ const routes = [
 	},
 	{
 		path: '/order/:article?', 
-		component: () => import('/src/pages/order/order.vue'),
+		component: () => import('/src/pages/order/OrderPage.vue'),
 		name: 'Order',
 		props: true,
 		meta:{
@@ -60,7 +57,7 @@ const routes = [
 	},
 	{
 		path: '/orders', 
-		component: () => import('/src/pages/order/orders.vue'),
+		component: () => import('/src/pages/order/OrdersPage.vue'),
 		name: 'Orders',
 		meta:{
 				auth: true,
@@ -132,7 +129,7 @@ const routes = [
 	},
 	{
 		path: '/profile', 
-		component: () => import('/src/pages/profile.vue'),
+		component: () => import('/src/pages/ProfilePage.vue'),
 		name: 'Profile',
 		meta:{
 				auth: true,
@@ -140,7 +137,7 @@ const routes = [
 	},
 	{
 		path: '/kp', 
-		component: () => import('/src/pages/kp/kp.vue'),
+		component: () => import('/src/pages/kp/KpPage.vue'),
 		name: 'KP',
 		meta:{
 				auth: true,
@@ -162,6 +159,23 @@ const routes = [
 				auth: true,
 			}
 	},
+	{
+		path: '/logo',
+		component: () => import('/src/pages/share/LogoPage.vue'),
+		name: 'Logo',
+		meta:{
+				auth: true,
+			}
+	},
+	{
+		path: '/certificate/:article?', 
+		component: () => import('/src/pages/share/CertificatePage.vue'),
+		name: 'Certificate',
+		props: true,
+		meta:{
+				auth: true,
+			}
+	},
 	// {
 	// 	path: '/personal',
 	// 	component: () => import('/src/pages/tmp_personal'),
@@ -170,13 +184,6 @@ const routes = [
 	// 			auth: true,
 	// 		}
 	// },
-	{   path: '/logout',
-		name: 'logout',
-		component: () => import('/src/pages/logout.vue'),
-		meta:{
-			auth: true,
-		}
- 	},
 	{
 		path: '/:pathMatch(.*)*',
 		redirect: '/404',
@@ -184,13 +191,18 @@ const routes = [
 				auth: true,
 			}
 	},
-	
+	{   path: '/logout',
+		name: 'logout',
+		component: () => import('/src/pages/logout.vue'),
+		meta:{
+			auth: true,
+		}
+	},
 	{
 		path: '/login', 
 		component: () => import('/src/pages/login.vue'),
 		name: 'Login'
 	},
-	
 
 ];
 
