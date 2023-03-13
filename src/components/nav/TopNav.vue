@@ -21,7 +21,7 @@
 										v-if="item.lock"
 										class="tooltip"
 									>
-										<img src="/src/assets/img/icon/lock.svg"/>
+										<svgLock></svgLock>
 										<span class="tooltiptext">Раздел находится в разработке</span>
 									</span>
 								</router-link>
@@ -144,7 +144,7 @@
 	
 	import { computed, onMounted, ref, onBeforeUnmount, nextTick } from 'vue'
 	import { useStore } from '/src/store'
-
+	import svgLock from '/src/assets/img/icon/lock.svg'
 
 	const props = defineProps({
 		newOrder: {
