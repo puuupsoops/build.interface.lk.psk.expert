@@ -27,7 +27,7 @@
             </div>
             <div class="content-wrap-elem" style="min-width: 760px">
               <PreloaderLocal v-if="loadOffers" center/>
-              <ProductOffersOrderCard
+              <ProductOffersOrderCardKPModal
                 v-else
                 :data="productOffers"
                 v-model="productItems"
@@ -49,7 +49,7 @@ import ProductSearchInput from '/src/components/cards/Product/ProductSearchInput
 import DeleteButton from '/src/components/ui/DeleteButton.vue'
 import PreloaderLocal from '/src/components/PreloaderLocal.vue'
 import ProductSearchResultCard from '/src/components/cards/Product/ProductSearchResultCard.vue'
-import ProductOffersOrderCard from '/src/components/cards/Product/ProductOffersOrderCard.vue'
+import ProductOffersOrderCardKPModal from '/src/components/cards/Product/ProductOffersOrderCardKPModal.vue'
 
 import { onClickOutside  } from '@vueuse/core'
 import { computed, PropType, ref } from 'vue'
