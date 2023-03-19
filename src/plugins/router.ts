@@ -4,7 +4,7 @@ import { store } from '/src/store'
 const routes = [
 	{
 		path: '/', 
-		component: () => import('/src/pages/main.vue'),
+		component: () => import('/src/pages/MainPage.vue'),
 		name: 'Main',
 		meta:{
 				auth: true,
@@ -193,14 +193,14 @@ const routes = [
 	},
 	{   path: '/logout',
 		name: 'logout',
-		component: () => import('/src/pages/logout.vue'),
+		component: () => import('/src/pages/LogoutPage.vue'),
 		meta:{
 			auth: true,
 		}
 	},
 	{
 		path: '/login', 
-		component: () => import('/src/pages/login.vue'),
+		component: () => import('/src/pages/LoginPage.vue'),
 		name: 'Login'
 	},
 

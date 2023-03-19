@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import svgLoader from 'vite-svg-loader'
+import WindiCSS from 'vite-plugin-windicss'
 
 const appVersion = process.env.npm_package_version.replace(/\./g, "")
 const htmlPlugin = () => {
@@ -17,6 +18,7 @@ const htmlPlugin = () => {
 export default defineConfig({
     plugins: [
         vue(),
+        WindiCSS(),
         svgLoader(),
         htmlPlugin(),
     ],

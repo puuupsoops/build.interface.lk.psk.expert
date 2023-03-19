@@ -30,6 +30,7 @@ import { useStore } from '/src/store'
 
 import { wsStoreMutations } from '/src/plugins/wsStore'
 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
 		modelValue: {
 			type: Boolean,

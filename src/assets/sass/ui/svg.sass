@@ -1,0 +1,13 @@
+.svg
+  rect,path
+    +prefix(transition, $default-transition)
+
+  &:not(.active):hover
+    .stroke
+      stroke: $accent-color
+
+    .fill
+      fill: $accent-color
+
+    path
+      fill: $accent-color

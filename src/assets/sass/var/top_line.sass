@@ -181,56 +181,8 @@
 		margin-left: auto
 		+justify-content(flex-end)
 		+align-items(center)
-		
-	
-	&-link
-		position: relative
-		margin:
-			right: 30px
 
-		&-img
-			rect,
-			path
-				+prefix(transition, $default-transition)
 
-		&.active
-			.top-line-link-img
-				path
-					fill: #9E6CFD
-
-		&:not(.active):hover
-			.top-line-link
-				&-img
-					.stroke
-						stroke: $accent-color
-					
-					.fill
-						fill: $accent-color
-
-					path
-						fill: $accent-color
-						
-	&-notification
-		margin:
-			right: 35px
-		&-val
-			+flex
-			position: absolute
-			top: 0px
-			right: -5px
-			width: 16px
-			height: 16px
-			background-color: #FF4444
-			border-radius: 20px
-			text-align: center
-			+justify-content(center)
-			+align-items(center)
-		
-		&-num
-			font-size: 12px
-			font-weight: 600
-			color: $white
-	
 	&-account	
 			
 		&:hover 

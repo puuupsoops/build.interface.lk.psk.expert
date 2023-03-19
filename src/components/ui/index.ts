@@ -14,19 +14,20 @@ import SelectInput from './SelectInput.vue'
 import SimpleSelect from './SimpleSelect.vue'
 import SnackBar from './SnackBar.vue'
 import SwitchButton from './SwitchButton.vue'
-import Avatar from './personal/buttons/Avatar.vue'
-import Mail from './personal/buttons/Mail.vue'
-import Bell from './personal/buttons/Bell.vue'
-import Name from './personal/buttons/Name.vue'
+import AvatarIcon from './personal/buttons/AvatarIcon.vue'
+import MailIcon from './personal/buttons/MailIcon.vue'
+import BellIcon from './personal/buttons/BellIcon.vue'
+import NameIcon from './personal/buttons/NameIcon.vue'
+import ThemeSwitcher from './personal/buttons/ThemeSwitcher.vue'
 import Popup from './personal/notifcation/Popup.vue'
 import SimpleSlider from './SimpleSlider.vue'
 
 export {
-    Bell,
-    Mail,
+    BellIcon,
+    MailIcon,
     Button,
     ButtonWithIcon,
-    Name,
+    NameIcon,
     DatePicker,
     DeleteButton,
     EditButton,
@@ -41,7 +42,8 @@ export {
     ModalDatePicker,
     AmountInput,
     Popup,
-    Avatar,
+    AvatarIcon,
     SnackBar,
     SimpleSlider,
+    ThemeSwitcher,
 }

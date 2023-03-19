@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, defineComponent } from 'vue'
+import { ref, computed } from 'vue'
 import { useStore } from '/src/store'
 
 import { useRouter } from 'vue-router'

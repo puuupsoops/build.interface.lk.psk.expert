@@ -1,24 +1,23 @@
 
 <template>
+  <Preloader v-if="loader"></Preloader>
+  <div v-if="isAuth">
+    <SideMenu v-model="showMenu" :orderPositionLength="orderPositionLength" :draft="getOrderDraftCount"></SideMenu>
+    <NotificationBar v-model="showNotificationBar"></NotificationBar>
+    <div class="content"
+      :class="{'blur': showMenu || showNotificationBar}"
+    >
 
-	<Preloader v-if="loader"></Preloader>
-	<div v-if="isAuth">
-		<SideMenu v-model="showMenu" :orderPositionLength="orderPositionLength" :draft="getOrderDraftCount"></SideMenu>
-		<NotificationBar v-model="showNotificationBar"></NotificationBar>
-		<div class="content"
-			:class="{'blur': showMenu || showNotificationBar}"
-		>
+      <router-view v-slot= "{ Component }">
+        <transition name="show" mode="out-in">
+          <component :is="Component"/>
+        </transition>
+      </router-view>
+      <SnackBar v-model="error" :message="errorMsg"></SnackBar>
+    </div>
 
-			<router-view v-slot= "{ Component }">
-				<transition name="show" mode="out-in">
-					<component :is="Component"/>
-				</transition>
-			</router-view>
-			<SnackBar v-model="error" :message="errorMsg"></SnackBar>
-		</div>
-
-	</div>
-	<router-view v-else></router-view>
+  </div>
+  <router-view v-else></router-view>
 </template>
 
 <script setup lang="ts">
@@ -33,6 +32,7 @@
 	import { AuthMutations } from './store/auth/mutations'
 	import { KeysMutations } from './store/keys/mutations'
 
+  document.body.classList.add('bg-light-bg-color', 'dark:bg-dark-bg-color', 'antialiased', 'duration-300', 'transition-colors')
 
 	let store = useStore()
 	store.dispatch(AuthActions.CHECK_AUTH)
