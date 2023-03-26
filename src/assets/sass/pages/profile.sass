@@ -13,7 +13,8 @@
     &-personal-wrap
         width: 100%
         max-width: 290px
-    
+        html:not(.dark) &
+            background-color: $light-bg-color
         +prefix(transition, transform 0.5s)
         +prefix(transform, rotateY(0deg))
         +prefix(transition-timing-function, cubic-bezier(.175, .885, .32, 1.275))
@@ -67,8 +68,9 @@
                     bottom: 10px
                 margin: auto
                 +prefix(transform, translateY(-60px))
-                +prefix(transition, $default-transition)    
-                
+                +prefix(transition, $default-transition)
+                html:not(.dark) &
+                    background-color: $light-bg-color
                 & input
                     border: none
                     display: none
@@ -153,6 +155,7 @@
         
         &-edit-box
             +flex
+
         &-edit
             +flex
             padding: 15px 10px
@@ -165,7 +168,9 @@
             +prefix(transition, $default-transition)
             cursor: pointer
             width: 100%
-
+            html:not(.dark) &
+                color: $light-font-color
+                background-color: $light-bg-color2
             &:hover
                 opacity: $default-opacity
             &.disabled
@@ -175,7 +180,8 @@
     &-notification-wrap
         width: 100%
         max-width: 390px
-
+        html:not(.dark) &
+            background-color: $light-bg-color
     &-notification
         &-title
             margin:

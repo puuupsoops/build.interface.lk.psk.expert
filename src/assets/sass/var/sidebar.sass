@@ -13,7 +13,8 @@
 	+align-items(center)
 	overflow: hidden
 	z-index: 110
-	
+	html:not(.dark) &
+		background-color: $light-bg-color
 	&-btn
 		cursor: pointer
 		margin:
@@ -56,7 +57,6 @@
 		display: block
 		position: fixed
 		padding:
-			top: 54px
 			left: 95px
 			right: 0
 			bottom: 54px
@@ -70,7 +70,9 @@
 		+box-shadow(0px 0px 20px rgba(255, 255, 255, 0.2))
 		transform: translateX(-385px)
 		+prefix(transition, $default-transition)
-
+		html:not(.dark) &
+			background-color: $light-bg-color
+			+box-shadow(0px 0px 20px  $dark-bg-color)
 		&.show
 			transform: translateX(0px)
 
@@ -80,7 +82,7 @@
 			+align-items(center)
 			overflow-y: auto
 			overflow-x: hidden
-			scrollbar-width: thin
+			//scrollbar-width: thin
 			height: 100%
 
 		&-bg
@@ -152,20 +154,23 @@
 			color: $font-light-color
 			+prefix(transition, $default-transition)
 			cursor: pointer
-			
+			html:not(.dark) &
+				color: $light-font-color
+				&.active
+					color: $light-active-color
 			&.active
 				color: $active-color
 				
-			&:not(.tooltiptext).lock
-				opacity: 0.4
+			&.lock
+				opacity: 0.7
+				& svg
+					display: inherit
 
 
 		&-arrow
 			position: absolute
 			top: 5px
 			left: 0
-			width: 7px
-			height: 13px
 
 			&.active 
 				transform: rotate(90deg)
@@ -193,12 +198,12 @@
 			+prefix(transition,  $default-transition)
 			padding:
 				left: 20px
-
 			&.active
 				max-height: 500px
 				+prefix(transition,  max-height $default-transition)
 
 			&-list
+				//overflow: auto
 				padding: 
 					top: 5px
 				list-style-type: disc
@@ -211,6 +216,8 @@
 				font-size: 16px
 				line-height: 25px
 				color: $white
+				html:not(.dark) &
+					color: $light-font-color
 
 				&:hover
 					color: $accent-color
@@ -218,7 +225,9 @@
 				&.active
 					color: $active-color
 				&.lock
-					opacity: 0.4
+					opacity: 0.6
+				& svg
+					display: inherit
 
 		&-switch input 
 			position: absolute
@@ -243,7 +252,9 @@
 		
 		&-img
 			width: 60px
-			
+		&-text
+			html:not(.dark) &
+				color: $light-font-color
 			
 		&-version
 			color: $font-light-color

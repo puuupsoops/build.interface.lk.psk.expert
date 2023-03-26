@@ -62,7 +62,7 @@
 		max-width: 285px
 		height: 100%
 		background-color: $bg-default-color
-		overflow-y: none
+		//overflow-y: none
 		z-index: 100
 		border-radius: 6px
 
@@ -211,9 +211,11 @@
 					
 					background: $bg-color2
 					border-radius: 2px
-					+box-shadow(0px 0px 30px rgba(0, 0, 0, 1))
+					+box-shadow(0px 0px 10px rgba(0, 0, 0, 1))
 					width: 50px
-				
+					html:not(.dark) &
+						color: $light-font-color
+						background: $light-bg-color2
 					&.show
 						visibility: visible						
 						+prefix(transition, $default-transition)
@@ -234,7 +236,7 @@
 			+flex
 			+justify-content(center)
 			+align-items(center)
-			padding:10px
+			padding: 10px
 		
 			&:not(.disable):hover
 				cursor: pointer

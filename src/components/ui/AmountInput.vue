@@ -97,10 +97,15 @@
     border-radius: 6px
     +prefix(user-select, none)
     +prefix(transition, $default-transition)
+    html:not(.dark) &
+      color: $light-font-color
+      background-color: $light-bg-color2
     &.disabled
       opacity: 0.3
     &:focus
       color: $white
+      html:not(.dark) &
+        color: $light-font-color
 
     &-wrap
       position: relative
@@ -133,7 +138,7 @@
 
       &:not(.disable):hover
         path
-          fill: #A5A7A9
+          fill: $font-light-color
 
       &.plus
         top: 0

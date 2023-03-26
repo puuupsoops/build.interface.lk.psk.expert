@@ -13,6 +13,16 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover
 	background: #555
+html:not(.dark)
+	::-webkit-scrollbar-track
+		background: $light-bg-color
+	svg
+		.fill
+			fill: $light-font-color
+		.stroke
+			stroke: $light-font-color
+		.background
+			fill: $light-bg-color
 
 
 *, body, html 
@@ -27,8 +37,9 @@ html, body
 	min-height: 100%
 	font-weight: 400
 	font-style: normal
-	// color: $white
-	// background-color: $bg-color
+	color: $white
+	background-color: $bg-color
+	+prefix(transition, $default-transition)
 
 html
 	scroll-behavior: smooth
@@ -36,7 +47,9 @@ html
 
 body 
 	position: relative
-
+	html:not(.dark) &
+		color: $light-font-color
+		background-color: $light-bg-color
 	&.modal-active
 		overflow: hidden
 
@@ -146,6 +159,8 @@ a
 				bottom: 10px
 		&.kp
 			background-color: $bg-default-color
+			html:not(.dark) &
+				background-color: $light-bg-color2
 		&-elem
 			+flex
 			+align-items(flex-end)
@@ -228,7 +243,13 @@ a
 					.fill
 						fill: $accent-color
 					.stroke
-						stroke: $accent-color 
+						stroke: $accent-color
+			html:not(.dark) &
+				color: $light-font-color
+				&:hover
+					+text-shadow(0px 0px 6px $light-active-color)
+				&.active
+					+text-shadow(0px 0px 6px $light-active-color)
 
 		&-info
 			+flex
@@ -242,20 +263,25 @@ a
 				color: $font-light-color
 				&.kp
 					+flex
-
 					gap: 10px
 					margin:
 						top: 10px
 						right: 0
-
+				html:not(.dark) &
+					color: $light-font-color
 			&-text
 				font-weight: 600
+				html:not(.dark) &
+					color: $light-font-color
 
 	&-elem
 		width: 100%
 		border-radius: 6px
 		background-color: $bg-default-color
 		+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.2))
+		html:not(.dark) &
+			color: $light-font-color
+			background-color: $light-bg-color2
 		// overflow: hidden
 			
 		&-active
@@ -384,6 +410,8 @@ a
 	border-radius: 6px
 	+align-items(flex-start)
 	+prefix(transition, $default-transition)
+	html:not(.dark) &
+		background-color: $light-bg-color2
 
 	&:hover
 		background-color: $bg-dlight-color
@@ -442,7 +470,10 @@ a
 		left: 105px
 		right: 15px
 	background-color: $bg-default-color
-	+box-shadow(0px 0px 30px rgba(0, 0, 0, 1))
+	+box-shadow(0px 0px 15px rgba(0, 0, 0, 0.5))
+
+	html:not(.dark) &
+		background-color: $light-bg-color
 	&-wrap
 		margin:
 			top: 30px
@@ -467,7 +498,7 @@ a
 					color: $accent-color
 
 	&-link
-		display: inline-block
+		+flex
 		margin:
 			right: 40px
 		padding: 11px 0
@@ -475,7 +506,12 @@ a
 		line-height: 25px
 		color: $font-light-color
 		+prefix(transition, $default-transition)
-
+		html:not(.dark) &
+			color: $light-font-color
+			&:hover
+				+text-shadow(0px 0px 6px $light-active-color)
+			&.active
+				+text-shadow(0px 0px 6px $light-active-color)
 		&:hover
 			color: $accent-color
 			

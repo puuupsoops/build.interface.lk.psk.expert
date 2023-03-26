@@ -14,7 +14,9 @@
 				left: 30px
 				right: 30px
 				bottom: 15px
-			
+
+			html:not(.dark) &
+				background-color: $light-bg-color
 			&-title
 				font-size: 20px
 			&-subtitle
@@ -26,6 +28,8 @@
 					top: 20px
 				font-size: 14px
 				text-align: left
+				html:not(.dark) &
+					color: $light-font-color
 				svg
 					min-width: max-content
 
@@ -83,6 +87,8 @@
 				z-index: 2
 				background-color: $bg-color2
 				cursor: pointer
+				html:not(.dark) &
+					background-color: $light-bg-color
 
 				&.active 
 					//background: $font-light-color
@@ -112,7 +118,8 @@
 				padding: 
 					top: 31px
 					bottom: 15px
-				
+				html:not(.dark) &
+					background-color: $light-bg-color
 				&-tabs
 					+flex
 					+prefix(transition, $default-transition)
@@ -147,6 +154,8 @@
 			height: 30px
 			color: $font-light-color
 			text-align: center
+			html:not(.dark) &
+				color: $light-font-color
 		&-body
 			padding:
 				top: 20px
@@ -195,6 +204,8 @@
 						cursor: pointer
 						
 						color: $font-light-color
+						html:not(.dark) &
+							color: $light-font-color
 						// &.center 
 						// 	width: 34px
 						// 	height: 42px

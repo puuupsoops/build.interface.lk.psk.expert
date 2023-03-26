@@ -24,5 +24,8 @@ export default defineConfig({
                 },
         }
     },
+    corePlugins: {
+        preflight: false,
+    },
     plugins: [formsPlugin],
 })

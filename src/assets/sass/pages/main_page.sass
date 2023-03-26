@@ -38,7 +38,8 @@
 			background-color: $bg-default-color
 			border-radius: 6px
 			height: 500px
-			
+			html:not(.dark) &
+				background-color: $light-bg-color2
 		&-box
 			padding: 25px
 				bottom: 17px
@@ -115,13 +116,14 @@
 		display: block
 		padding: 11px
 		color: $white
-		background-color: #292C32
+		background-color: $dark-bg-color2
 		text-align: center
 		border:
 			bottom-left-radius: 6px
 			bottom-right-radius: 6px
 		+prefix(transition, $default-transition)
-
+		html:not(.dark) &
+			background-color: $light-font-color
 		&:hover
 			color: $accent-color
 			background-color: $bg-dlight-color
@@ -204,3 +206,6 @@
 		text-align: center
 		+prefix(transition, $default-transition)
 		z-index: 1
+		html:not(.dark) &
+			color: $white
+			background-color: $light-font-color

@@ -12,15 +12,12 @@
 		transition: .1s ease-out
 		transform-origin: left top
 		pointer-events: none
-	
-	
-	
-	
+
 	input:focus + label 
 		color: $font-light-color
 		top: 0
-		
 		transform: translateY(-50%) scale(.9)
+
 	
 	input:not(:placeholder-shown) + label 
 		top: 0
@@ -42,8 +39,11 @@
 		
 		background: $bg-color2
 		border-radius: 2px
-		+box-shadow(0px 0px 30px rgba(0, 0, 0, 1))
+		+box-shadow(0px 0px 10px rgba(0, 0, 0, .4))
 		width: 0px
+		html:not(.dark) &
+			color: $light-font-color
+			background-color: $light-bg-color2
 	
 		&.show
 			visibility: visible
@@ -57,6 +57,9 @@
 		background-color: $bg-color2
 		border: 0
 		border-radius: 6px
+		html:not(.dark) &
+			color: $light-font-color
+			background-color: $light-bg-color2
 		
 		&.show
 			padding: 12px 10px 12px 15px

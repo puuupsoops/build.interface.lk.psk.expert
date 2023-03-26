@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import { store, key } from '/src/store'
 import router from '/src/plugins/router'
 import App from '/src/App.vue'
-import "virtual:windi.css"
+// import 'windi.css'
 
 // @ts-ignore
 const app = createApp(App)

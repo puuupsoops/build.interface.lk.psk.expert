@@ -32,7 +32,7 @@
 	import { AuthMutations } from './store/auth/mutations'
 	import { KeysMutations } from './store/keys/mutations'
 
-  document.body.classList.add('bg-light-bg-color', 'dark:bg-dark-bg-color', 'antialiased', 'duration-300', 'transition-colors')
+  //document.body.style.background.add('bg-light-bg-color', 'dark:bg-dark-bg-color', 'antialiased', 'duration-300', 'transition-colors')
 
 	let store = useStore()
 	store.dispatch(AuthActions.CHECK_AUTH)

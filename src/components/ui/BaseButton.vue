@@ -51,7 +51,9 @@ const emits = defineEmits(['onClick'])
     border-radius: 6px
     +prefix(transition, $default-transition)
     cursor: pointer
-
+    html:not(.dark) &
+      color: $light-font-color
+      background-color: $light-bg-color2
     &:hover
       color: $accent-color
 
@@ -60,4 +62,6 @@ const emits = defineEmits(['onClick'])
         color: $active-color
     &-text
       color: $font-light-color
+      html:not(.dark) &
+        color: $light-font-color
 </style>

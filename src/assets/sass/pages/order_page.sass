@@ -222,7 +222,12 @@
 				color: $accent-color
 				path
 					fill: $accent-color
-		
+			html:not(.dark) &
+				color: $light-font-color
+				&:hover
+					+text-shadow(0px 0px 6px $light-active-color)
+
+
 
 		&-bottom
 			overflow-y: auto
@@ -237,7 +242,8 @@
 			&.active
 				.order-list-main-row
 					background-color: #53565B
-				
+					html:not(.dark) &
+						background-color: $white
 					.order-list-elem:not(.error)
 						color: $accent-color
 					
@@ -258,14 +264,20 @@
 				.order-list-sublist
 					.order-list-row
 						background-color: transparent
+						html:not(.dark) &
+							color: $light-font-color
+							background-color: $light-bg-color
 
 			&:last-child
 				margin: 0
 
 		&-main-row
-			background-color: #292C32
+			background-color: $dark-bg-color2
 			+prefix(transition, $default-transition)
 			cursor: pointer
+			html:not(.dark) &
+				color: $light-font-color
+				background-color: $light-bg-color
 
 			.order-list-elem-delete
 				opacity: 0
@@ -308,7 +320,8 @@
 			line-height: 20px
 			color: $font-light-color
 			+prefix(transition, $default-transition)
-
+			html:not(.dark) &
+				color: $light-font-color
 
 
 			&:nth-child(1)
@@ -646,7 +659,7 @@
 		width: 500px
 		//height: 300px
 		margin: 30px auto
-		background: #292c32
+		background: $dark-bg-color2
 		border-radius: 2px
 		+box-shadow(0px 0px 30px rgba(0, 0, 0, 1))
 		&.draft
@@ -685,7 +698,8 @@
 						transform: translate3d(-4px, 0, 0)
 					40%, 60%
 						transform: translate3d(4px, 0, 0)
-
+		html:not(.dark) &
+			background-color: $light-bg-color2
 	&-content
 		+flex
 		+align-items(flex-start)
@@ -742,6 +756,8 @@
 		flex: 1 1 auto
 		&.draft
 			background-color: $bg-color
+			html:not(.dark) &
+				background-color: $light-bg-color
 		&.map
 			padding: 0px
 		.loading
@@ -796,7 +812,8 @@
 				left: 5px
 				right: 5px
 			+prefix(transition, $default-transition)
-		
+			html:not(.dark) &
+				color: $light-font-color
 			&:hover
 				color: $accent-color
 				background-color: $bg-default-color

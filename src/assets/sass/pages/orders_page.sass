@@ -144,7 +144,8 @@
 					max-height: 0px
 		
 					+prefix(transition, $default-transition)
-
+					html:not(.dark) &
+						background-color: $light-bg-color2
 					&.active
 						visibility: visible
 						opacity: 1
@@ -160,7 +161,8 @@
 		border-radius: 6px
 		background-color: $bg-default-color
 		+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.2))
-		
+		html:not(.dark) &
+			background-color: $light-bg-color2
 			
 		&-row
 			+flex
@@ -179,9 +181,13 @@
 			background-color: $bg-color2
 			+prefix(transition, $default-transition)
 			cursor: pointer
-			
 			&:hover
 				color: $accent-color
+			html:not(.dark) &
+				color: $light-font-color
+				background-color: $light-bg-color2
+				&:hover:not(.orders-list-more-dropdown-link)
+					+text-shadow(0px 0px 6px $light-active-color)
 
 		&-elem
 			//flex: 0 0 auto
@@ -318,13 +324,17 @@
 
 				&:hover
 					transform: scale(1.2)
-				&.registred
-					background-image: url(/src/assets/img/icon/aorder-registred.svg)		
-					&:hover
-						.fill
-							fill: $accent-color
-						.stroke
-							stroke: $accent-color 
+				& svg
+					circle
+						+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.2))
+
+				//&.registred
+				//	background-image: url(/src/assets/img/icon/order-registred.svg)
+				//	&:hover
+				//		.fill
+				//			fill: $accent-color
+				//		.stroke
+				//			stroke: $accent-color
 				&.presail     
 					background-image: url(/src/assets/img/icon/order-presail.svg)		
 				&.accepted    
@@ -339,8 +349,8 @@
 					background-image: url(/src/assets/img/icon/order-created.svg)		
 				&.expired    
 					background-image: url(/src/assets/img/icon/order-expired.svg)		
-				&.canceled    
-					background-image: url(/src/assets/img/icon/order-canceled.svg)		
+				//&.canceled
+				//	background-image: url(/src/assets/img/icon/order-canceled.svg)
 				&.closed    
 					background-image: url(/src/assets/img/icon/order-closed.svg)		
 				&.billrequest    
@@ -404,10 +414,13 @@
 				
 				.orders-list-main-row
 					background-color: $bg-dlight-color
+					html:not(.dark) &
+						background-color: $light-bg-color2
 			&.reserved
 				.orders-list-main-row
 					background-color: #303030
-
+					html:not(.dark) &
+						background-color: $light-bg-color
 			&:last-child
 				margin: 0
 
@@ -422,6 +435,10 @@
 			
 			+prefix(transition, $default-transition)
 			cursor:  pointer
+			html:not(.dark) &
+				color: $light-font-color
+				&:hover
+					+text-shadow(0px 0px 6px $light-active-color)
 
 			&:hover
 				color: $accent-color
@@ -433,7 +450,7 @@
 				padding: 25px 30px
 				top: 50px
 				right: 5px
-				background-color: #292C32
+				background-color: $dark-bg-color2
 				border:
 					bottom-left-radius: 6px
 				+box-shadow(0px 0px 20px rgba(0, 0, 0, 0.8))
@@ -443,7 +460,9 @@
 
 				&.active
 					visibility: visible
-					
+				html:not(.dark) &
+					color: $light-font-color
+					background-color: $light-bg-color
 
 				&-link
 					padding: 5px 0
@@ -460,6 +479,10 @@
 						+justify-content(center)
 					&:hover
 						color: $accent-color
+					html:not(.dark) &
+						color: $light-font-color
+						&:hover
+							+text-shadow(0px 0px 6px $light-active-color)
 
 		&-info
 			overflow: hidden
@@ -477,6 +500,8 @@
 					padding:
 						top: 0px
 						bottom: 0px
+				html:not(.dark) &
+					background-color: $light-bg-color2
 			&-row
 				+flex
 				padding: 20px 30px
@@ -578,7 +603,11 @@
 				& span
 					border-bottom: 1px dotted
 					
-						
+				html:not(.dark) &
+					color: $light-font-color
+					&:hover
+						+text-shadow(0px 0px 6px $light-active-color)
+
 				&.disable
 					cursor: default
 					

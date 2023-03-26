@@ -23,11 +23,14 @@
 		left: 10px
 	
 	height: 40px
-	background-color: #292C32
+	background-color: $dark-bg-color2
 	border: 0
 	border-radius: 6px
 	cursor: pointer
 	+prefix(transition, $default-transition)
+	html:not(.dark) &
+		color: $light-font-color
+		background-color: $light-bg-color2
 	
 	&-img
 		width: 16px
@@ -42,17 +45,19 @@
 			opacity: 1
 
 	&.active
-		background-color: #53565B
+		background-color: $bg-dlight-color
 		.check-btn-img
 			path
 				fill: $accent-color
+				html:not(.dark) &
+					fill: $light-font-color
 
 	&.disable
 		opacity: 0.3
 		cursor: default
 		
 	&:not(.disable):hover
-		background-color: #53565B
+		background-color: $bg-dlight-color
 		.check-btn-img
 			opacity: 0.5
 

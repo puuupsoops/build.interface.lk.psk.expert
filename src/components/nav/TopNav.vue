@@ -4,90 +4,53 @@
 			:class="{'top': nav_class_top}"
 			ref="nav">
 			<ul class="nav-list">
-				<li 
-					v-for="(item, index) in menu" :key="index"
-				>
-					<router-link
-						tag="a"
-						:class="'nav-link' +(item.lock ? ' lock':'')" 
-						active-class="nav-link active"
-						:to="item.link"
+				<li v-for="(item, index) in menu" :key="index">
+					<router-link class="nav-link"
+                       :class="{'lock': item.lock}"
+                       active-class="nav-link active"
+                       :to="item.link"
+                       :tooltip="item.lock ? 'Раздел находится в разработке':''"
+                       flow="up"
 					>
-								{{ item.title }}
-								<div class="nav-link-notification" v-if="orderPositionLength>0 && item.link=='/order'">
-										<div>{{orderPositionLength}}</div>
-								</div>
-								<span
-										v-if="item.lock"
-										class="tooltip"
-									>
-										<svgLock></svgLock>
-										<span class="tooltiptext">Раздел находится в разработке</span>
-									</span>
-								</router-link>
+            <div>
+              {{ item.title }}
+              <div class="nav-link-notification" v-if="orderPositionLength>0 && item.link=='/order'">
+                  <div>{{orderPositionLength}}</div>
+              </div>
+            </div>
+            <svgLock v-if="item.lock"/>
+
+          </router-link>
 				</li>
 			
 				<li  class="nav-link last">
 					<router-link v-if="newOrder"
-							tag="a" 
 							:to="'/order'"
 							class="content-heading-btn"
-						> 
-							
-							<svg class="content-heading-btn-img" width="26" height="25" viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path class="fill" fill-rule="evenodd" clip-rule="evenodd" d="M3 2H18.75C19.3023 2 19.75 2.44772 19.75 3V11.5H21.75V3C21.75 1.34315 20.4069 0 18.75 0H3C1.34315 0 0 1.34315 0 3V21.8571C0 23.514 1.34315 24.8571 3 24.8571H16V22.8571H3C2.44772 22.8571 2 22.4094 2 21.8571V3C2 2.44772 2.44772 2 3 2Z" fill="#A5A7A9"></path>
-							<rect class="fill" x="17.6071" y="5.17871" width="1.7" height="13.4643" rx="0.85" transform="rotate(90 17.6071 5.17871)" fill="#A5A7A9"></rect>
-							<rect class="fill" x="10" y="13" width="1.7" height="6" rx="0.85" transform="rotate(90 10 13)" fill="#A5A7A9"></rect>
-							<rect class="fill" x="14" y="9" width="1.7" height="10" rx="0.85" transform="rotate(90 14 9)" fill="#A5A7A9"></rect>
-							<path class="fill" fill-rule="evenodd" clip-rule="evenodd" d="M20.8 15C20.2478 15 19.8 15.4477 19.8 16V19H16.8C16.2478 19 15.8 19.4477 15.8 20C15.8 20.5523 16.2478 21 16.8 21H19.8V24C19.8 24.5523 20.2478 25 20.8 25C21.3523 25 21.8 24.5523 21.8 24V21H24.8C25.3523 21 25.8 20.5523 25.8 20C25.8 19.4477 25.3523 19 24.8 19H21.8V16C21.8 15.4477 21.3523 15 20.8 15Z" fill="#A5A7A9"></path>
-							</svg>
-							<div class="content-heading-btn-text">Новый заказ</div>
+						>
+            <svgNew class="content-heading-btn-img"/>
+            <div class="content-heading-btn-text">Новый заказ</div>
 					</router-link>
 				
 					<router-link v-if="shipments"
-							tag="a" 
 							:to="'/shipments/request'"
 							class="content-heading-btn"
 						>
-							<svg class="content-heading-btn-img" width="40" height="24" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path class="fill" d="M10.8337 20.6667H7.50033C7.04033 20.6667 6.66699 20.2933 6.66699 19.8333C6.66699 19.3733 7.04033 19 7.50033 19H10.8337C11.2937 19 11.667 19.3733 11.667 19.8333C11.667 20.2933 11.2937 20.6667 10.8337 20.6667Z" fill="#A5A7A9"></path>
-							<path class="fill" d="M37.9176 20.6665H35.8342C35.3742 20.6665 35.0009 20.2932 35.0009 19.8332C35.0009 19.3732 35.3742 18.9998 35.8342 18.9998H37.2259L38.3492 13.0132C38.3342 9.94984 35.7176 7.33317 32.5009 7.33317H27.0292L24.3776 18.9998H29.1676C29.6276 18.9998 30.0009 19.3732 30.0009 19.8332C30.0009 20.2932 29.6276 20.6665 29.1676 20.6665H23.3342C23.0809 20.6665 22.8409 20.5515 22.6826 20.3532C22.5242 20.1565 22.4642 19.8965 22.5209 19.6498L25.5509 6.3165C25.6376 5.93484 25.9742 5.6665 26.3642 5.6665H32.5009C36.6359 5.6665 40.0009 9.0315 40.0009 13.1665L38.7359 19.9865C38.6626 20.3815 38.3192 20.6665 37.9176 20.6665Z" fill="#A5A7A9"></path>
-							<path class="fill" d="M32.4997 23.9998C30.203 23.9998 28.333 22.1315 28.333 19.8332C28.333 17.5348 30.203 15.6665 32.4997 15.6665C34.7963 15.6665 36.6663 17.5348 36.6663 19.8332C36.6663 22.1315 34.7963 23.9998 32.4997 23.9998ZM32.4997 17.3332C31.1213 17.3332 29.9997 18.4548 29.9997 19.8332C29.9997 21.2115 31.1213 22.3332 32.4997 22.3332C33.878 22.3332 34.9997 21.2115 34.9997 19.8332C34.9997 18.4548 33.878 17.3332 32.4997 17.3332Z" fill="#A5A7A9"></path>
-							<path class="fill" d="M14.1667 23.9998C11.87 23.9998 10 22.1315 10 19.8332C10 17.5348 11.87 15.6665 14.1667 15.6665C16.4633 15.6665 18.3333 17.5348 18.3333 19.8332C18.3333 22.1315 16.4633 23.9998 14.1667 23.9998ZM14.1667 17.3332C12.7883 17.3332 11.6667 18.4548 11.6667 19.8332C11.6667 21.2115 12.7883 22.3332 14.1667 22.3332C15.545 22.3332 16.6667 21.2115 16.6667 19.8332C16.6667 18.4548 15.545 17.3332 14.1667 17.3332Z" fill="#A5A7A9"></path>
-							<path class="fill" d="M10.833 5.66667H4.16634C3.70634 5.66667 3.33301 5.29334 3.33301 4.83334C3.33301 4.37333 3.70634 4 4.16634 4H10.833C11.293 4 11.6663 4.37333 11.6663 4.83334C11.6663 5.29334 11.293 5.66667 10.833 5.66667Z" fill="#A5A7A9"></path>
-							<path class="fill" d="M10.8337 10.6667H2.50033C2.04033 10.6667 1.66699 10.2933 1.66699 9.83333C1.66699 9.37333 2.04033 9 2.50033 9H10.8337C11.2937 9 11.667 9.37333 11.667 9.83333C11.667 10.2933 11.2937 10.6667 10.8337 10.6667Z" fill="#A5A7A9"></path>
-							<path class="fill" d="M10.8333 15.6667H0.833333C0.373333 15.6667 0 15.2933 0 14.8333C0 14.3733 0.373333 14 0.833333 14H10.8333C11.2933 14 11.6667 14.3733 11.6667 14.8333C11.6667 15.2933 11.2933 15.6667 10.8333 15.6667Z" fill="#A5A7A9"></path>
-							<path class="fill" d="M23.3337 20.6665H17.5003C17.0403 20.6665 16.667 20.2932 16.667 19.8332C16.667 19.3732 17.0403 18.9998 17.5003 18.9998H22.6687L26.4553 2.33317H7.50033C7.04033 2.33317 6.66699 1.95984 6.66699 1.49984C6.66699 1.03984 7.04033 0.666504 7.50033 0.666504H27.5003C27.7537 0.666504 27.9937 0.781504 28.152 0.979838C28.3103 1.1765 28.3703 1.4365 28.3137 1.68317L24.147 20.0165C24.0603 20.3982 23.722 20.6665 23.3337 20.6665Z" fill="#A5A7A9"></path>
-							</svg>
+              <svgDelivery class="content-heading-btn-img"/>
 							<div class="content-heading-btn-text">Создать заявку</div>
 					</router-link>
 
 					<router-link  v-if="catalog"
-							tag="a" 
-							:to="'/order' /*'/catalog/catalog'*/"
+							:to="'/order'"
 							class="content-heading-btn"
 						>
 							<div class="sidebar-btn-notification" v-if="orderPositionLength>0"  :style="'margin-top: -16px;'">
 								<span :style="'position: absolute; left: 4px; top: -5px;'">{{orderPositionLength}}</span>
 							</div>
-							<svg class="content-heading-btn-img" width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<rect class="fill" x="0.0802612" y="2.04846" width="4.25606" height="2.07613" rx="1.03806" fill="#A5A7A9"></rect>
-							<rect class="fill" x="3.9931" y="2" width="17.8806" height="2.07613" rx="1.03806" transform="rotate(69.6255 3.9931 2)" fill="#A5A7A9"></rect>
-							<rect class="fill" x="8.38477" y="6.20068" width="16.609" height="2.07613" rx="1.03806" fill="#A5A7A9"></rect>
-							<rect class="fill" x="24" y="3" width="8" height="2" rx="1" fill="#A5A7A9"></rect>
-							<rect class="fill" x="29" width="8" height="2" rx="1" transform="rotate(90 29 0)" fill="#A5A7A9"></rect>
-							<rect class="fill" x="21.0491" y="19.1241" width="13.0871" height="2.07613" rx="1.03806" transform="rotate(-80.9286 21.0491 19.1241)" fill="#A5A7A9"></rect>
-							<rect class="fill" x="7.34668" y="17.6194" width="15.8824" height="2.07613" rx="1.03806" fill="#A5A7A9"></rect>
-							<rect class="fill" x="6.30865" y="21.7716" width="9.34257" height="2.07613" rx="1.03806" fill="#A5A7A9"></rect>
-							<path class="stroke" d="M8.38477 18.6575C6.82768 18.6575 5.78961 18.9374 5.78961 20.7336C5.78961 22.8097 7.34671 22.8097 7.86574 22.8097" stroke="#A5A7A9" stroke-width="2"></path>
-							<circle class="stroke" cx="9.42285" cy="24.8858" r="2.11419" stroke="#A5A7A9" stroke-width="2"></circle>
-							<circle class="stroke" cx="20.8415" cy="24.8858" r="2.11419" stroke="#A5A7A9" stroke-width="2"></circle>
-							</svg>
-
-							<!--<div class="content-heading-btn-text">Каталог</div>-->
+              <svgCart class="content-heading-btn-img"/>
 					</router-link>
-					<router-link  v-if="toDraft"
-						tag="a" 
+
+          <router-link  v-if="toDraft"
 						to="#"
 						class="content-heading-btn"
 						@click="$emit('onClick')"
@@ -102,33 +65,23 @@
 						</svg>
 						<div class="content-heading-btn-text">Черновики ({{draft}})</div>
 					</router-link>
+
 					<router-link v-if="claims"
-							tag="a" 
 							:to="'/claims/request'"
 							class="content-heading-btn"
 							@click="$emit('onClick')"
 						>
-							
-						<svg class="content-heading-btn-img" width="26" height="25" viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg" >
-							<path class="fill" fill-rule="evenodd" clip-rule="evenodd" d="M3 2H18.75C19.3023 2 19.75 2.44772 19.75 3V11.5H21.75V3C21.75 1.34315 20.4069 0 18.75 0H3C1.34315 0 0 1.34315 0 3V21.8571C0 23.514 1.34315 24.8571 3 24.8571H16V22.8571H3C2.44772 22.8571 2 22.4094 2 21.8571V3C2 2.44772 2.44772 2 3 2Z" fill="#A5A7A9"></path>
-							<rect class="fill" x="17.6071" y="5.17871" width="1.7" height="13.4643" rx="0.85" transform="rotate(90 17.6071 5.17871)" fill="#A5A7A9"></rect>
-							<rect class="fill" x="10" y="13" width="1.7" height="6" rx="0.85" transform="rotate(90 10 13)" fill="#A5A7A9"></rect>
-							<rect class="fill" x="14" y="9" width="1.7" height="10" rx="0.85" transform="rotate(90 14 9)" fill="#A5A7A9"></rect>
-							<path class="fill" fill-rule="evenodd" clip-rule="evenodd" d="M20.8 15C20.2478 15 19.8 15.4477 19.8 16V19H16.8C16.2478 19 15.8 19.4477 15.8 20C15.8 20.5523 16.2478 21 16.8 21H19.8V24C19.8 24.5523 20.2478 25 20.8 25C21.3523 25 21.8 24.5523 21.8 24V21H24.8C25.3523 21 25.8 20.5523 25.8 20C25.8 19.4477 25.3523 19 24.8 19H21.8V16C21.8 15.4477 21.3523 15 20.8 15Z" fill="#A5A7A9"></path>
-						</svg>
+            <svgNew class="content-heading-btn-img"/>
 						<div class="content-heading-btn-text">Создать претензию</div>
 					</router-link>
+
 					<router-link  v-if="address"
-						tag="a" 
 						to="#"
 						class="content-heading-btn"
 						@click="$emit('onClick')"
 						title="Добавить адрес доставки"
 					>
-						<svg class="content-heading-btn-img" width="19" height="25" viewBox="0 0 19 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path class="fill" d="M9.49968 25C8.95397 25 8.4653 24.717 8.19255 24.2429C8.18967 24.238 8.18688 24.2329 8.1841 24.2279L1.98479 12.8809C0.505001 10.1724 0.547432 6.95749 2.09831 4.28113C3.61555 1.66277 6.31047 0.0631103 9.30725 0.00197754C9.43527 -0.00065918 9.56398 -0.00065918 9.69191 0.00197754C12.6887 0.0631103 15.3837 1.66277 16.9009 4.28113C18.4518 6.95749 18.4943 10.1723 17.0145 12.8809L10.8152 24.2279C10.8124 24.2329 10.8096 24.238 10.8067 24.2429C10.534 24.717 10.0454 25 9.49968 25ZM9.49963 1.56252C9.44597 1.56252 9.39245 1.56306 9.33903 1.56414C6.89279 1.61404 4.69133 2.92258 3.45017 5.06453C2.17541 7.26448 2.14016 9.90642 3.35593 12.1317L9.49963 23.3768L15.6433 12.1318C16.8591 9.90642 16.8238 7.26448 15.549 5.06453C14.3078 2.92263 12.1064 1.61404 9.66013 1.56414C9.60685 1.56306 9.55329 1.56252 9.49963 1.56252Z" fill="#8D8D8D"></path>
-							<path class="fill" d="M9.5 11.3281C7.56147 11.3281 5.98438 9.75103 5.98438 7.8125C5.98438 5.87397 7.56147 4.29688 9.5 4.29688C11.4385 4.29688 13.0156 5.87397 13.0156 7.8125C13.0156 9.75103 11.4386 11.3281 9.5 11.3281ZM9.5 5.85938C8.42305 5.85938 7.54688 6.73555 7.54688 7.8125C7.54688 8.88945 8.42305 9.76563 9.5 9.76563C10.577 9.76563 11.4531 8.88945 11.4531 7.8125C11.4531 6.73555 10.577 5.85938 9.5 5.85938Z" fill="#8D8D8D"></path>
-						</svg>
+						<svgPin class="content-heading-btn-img" />
 						<span >Новый адрес</span>
 					</router-link>
 				</li>
@@ -145,7 +98,12 @@
 	import { computed, onMounted, ref, onBeforeUnmount, nextTick } from 'vue'
 	import { useStore } from '/src/store'
 	import svgLock from '/src/assets/img/icon/lock.svg'
+  import svgNew from '/src/assets/img/icon/new.svg'
+  import svgDelivery from '/src/assets/img/icon/delivery-v2.svg'
+  import svgCart from '/src/assets/img/icon/cart.svg'
+  import svgPin from '/src/assets/img/icon/pin.svg'
 
+  // eslint-disable-next-line no-unused-vars
 	const props = defineProps({
 		newOrder: {
 			type: Boolean,

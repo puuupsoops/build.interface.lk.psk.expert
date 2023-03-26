@@ -1,11 +1,12 @@
 <template>
 <div>
-	<div class="flex pt-10 pb-5">
-		<CompanyBarTop class="overflow-auto hover:overflow-scroll touch-auto"
-        :data="companyBarTopData" v-model="activeCompanyUid"/>
-		<PersonalBar></PersonalBar>
-	</div>
-  <Notification></Notification>
+  <div class="top-line product-page">
+    <CompanyBarTop :data="companyBarTopData" v-model="activeCompanyUid"></CompanyBarTop>
+    <Notification></Notification>
+    <PersonalBar></PersonalBar>
+
+  </div>
+
 	<top-nav catalog></top-nav>
 
 	<ProductSearchInput 
