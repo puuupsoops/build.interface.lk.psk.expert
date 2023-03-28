@@ -111,6 +111,8 @@
                 overflow: hidden
                 text-overflow: ellipsis
                 +prefix(transition, $default-transition)
+                html:not(.dark) &
+                    color: $light-font-color2
 
                 &:hover
                     opacity: $default-opacity
@@ -214,14 +216,16 @@
                 border-top-left-radius: 10px
                 border-bottom-left-radius: 10px
                 +prefix(transition, $default-transition)
-                
+                html:not(.dark) &
+                    color: $light-font-color
 
                 &:hover
                     opacity: 1
                 &.active
                     opacity: 1
                     background-color: $bg-color2
-                    
+                    html:not(.dark) &
+                        background-color: $light-bg-color2
                     &::before
                         content: ""
                         width: 110px
@@ -233,6 +237,8 @@
                         display: block
                         background: $bg-default-color
                         border-bottom-right-radius: 3px
+                        html:not(.dark) &
+                            background-color: $light-bg-color2
                     &::after
                         content: ""
                         width: 110px
@@ -244,6 +250,8 @@
                         display: block
                         background: $bg-default-color
                         border-top-right-radius: 3px
+                        html:not(.dark) &
+                            background-color: $light-bg-color2
             
             &-tabs-box
                 width: 100%
@@ -253,6 +261,8 @@
                 min-height: 150px
                 max-height: 150px
                 +box-shadow(0px 0px 3px rgba(0, 0, 0, 0.2))
+                html:not(.dark) &
+                    background-color: $light-bg-color2
             
             &-tabs
                 +prefix(transition, $default-transition)
@@ -274,6 +284,8 @@
                             content: ''
                             opacity: $default-opacity
                             z-index: 1
+                            html:not(.dark) &
+                                background-color: $light-bg-color
 
                 .name
                     margin-top: 36px

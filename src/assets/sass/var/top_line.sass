@@ -262,12 +262,16 @@
 				text-overflow: ellipsis
 				padding:
 					top: 15px
+				html:not(.dark) &
+					color: $light-font-color
 			&-mail
 				font-size: 12px
 				color: $font-light-color
 				overflow: hidden
 				text-overflow: ellipsis
 				margin: auto
+				html:not(.dark) &
+					color: $light-font-color
 
 	&.main-page
 		.top-line-info
@@ -327,6 +331,9 @@
 		background-color: #292C32
 		border:
 			bottom-left-radius: 6px
+		html:not(.dark) &
+			background-color: $light-bg-color
+
 		+box-shadow(0px 0px 20px rgba(0, 0, 0, 0.8))
 		+flex
 		+flex-flow(column)
@@ -349,7 +356,10 @@
 			color: $white
 			cursor: pointer
 			white-space: nowrap
-
+			html:not(.dark) &
+				color: $light-font-color
+				&:hover
+					+text-shadow(0px 0px 6px $light-active-color)
 			&:hover
 				color: $accent-color
 			&.lock

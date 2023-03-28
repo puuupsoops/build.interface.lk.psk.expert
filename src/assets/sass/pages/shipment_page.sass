@@ -66,8 +66,10 @@
 			background-size: 18px 18px
 			background-position: left 40% center
 			background-repeat: no-repeat
-			background-color: #292C32
+			background-color: $dark-bg-color2
 			+prefix(transition, $default-transition)
+			html:not(.dark) &
+				background-color: $light-bg-color2
 
 			&:hover
 				opacity: $default-opacity
@@ -110,7 +112,8 @@
 		font-weight: 400
 		line-height: 42px
 		color: $white
-
+		html:not(.dark) &
+			color: $light-font-color
 	&-product
 		+flex
 		font-size: 12px
@@ -151,6 +154,8 @@
 				line-height: 20px
 				text-transform: uppercase
 				color: $font-light-color
+				html:not(.dark) &
+					color: $light-font-color2
 				&.error
 					+box-shadow(0px 0px 20px rgba(231, 12, 12, 1))
 					background: rgba(231, 12, 12, 0.5)
@@ -178,9 +183,11 @@
 			font-weight: 400 
 			line-height: 24px
 			color: $white
-			background-color: #292c33
+			background-color: $dark-bg-color2
 			border: 0
-		
+			html:not(.dark) &
+				color: $light-font-color
+				background-color: $light-bg-color2
 		&-input
 			padding: 13px 19px
 			//max-width: 675px
@@ -188,7 +195,7 @@
 			font-weight: 400
 			line-height: 24px
 			color: $white
-			background-color: #292c33
+			background-color: $dark-bg-color2
 			border: 0
 			border-radius: 100px
 		
@@ -261,6 +268,8 @@
 			padding: 18px
 			background-color: #292c33
 			border-radius: 6px
+			html:not(.dark) &
+				background-color: $light-bg-color2
 
 			.shipment-form-wrap
 				margin: 0 -28px
@@ -281,7 +290,8 @@
 					line-height: 24px
 					color: $white
 					white-space: nowrap
-
+					html:not(.dark) &
+						color: $light-font-color
 			&-input
 				width: 100%
 				font-size: 16px
@@ -289,6 +299,8 @@
 				border: 0
 					bottom: 2px solid #919191
 				background-color: transparent
+				html:not(.dark) &
+					color: $light-font-color
 
 			&-text
 				padding: 17px 16px
@@ -297,6 +309,8 @@
 					font-weight: 400
 					line-height: 24px
 					color: $white
+					html:not(.dark) &
+						color: $light-font-color
 
 		&-add-file
 			+flex
@@ -501,7 +515,8 @@
 		border-radius: 6px
 		background-color: $bg-default-color
 		+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.2))
-		
+		html:not(.dark) &
+			background-color: $light-bg-color2
 		&-wrap
 			margin:
 				top: 30px
@@ -515,7 +530,9 @@
 			cursor: pointer
 			margin:
 				bottom: 5px
-				
+
+			html:not(.dark) &
+				background-color: $light-bg-color2
 			&-info
 				+flex
 				+align-items(center)
@@ -545,11 +562,16 @@
 				background-color: $bg-default-color
 				text-transform: uppercase
 				border-radius: 6px
+				html:not(.dark) &
+					background-color: $light-bg-color2
 			&.active
 				color: $accent-color
 				border-radius: 6px
 				border: 2px solid $active-color
-			
+				html:not(.dark) &
+					color: $light-font-color
+					+text-shadow(0px 0px 6px $light-active-color)
+
 		&-elem
 			position: relative
 			padding: 16px 10px 14px 10px

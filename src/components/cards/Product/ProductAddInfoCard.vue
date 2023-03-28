@@ -2,7 +2,7 @@
   <div class="product-add-info content-elem content-elem-info">
             <div class="content-elem-heading"> 
               <transition name="text" mode="out-in">
-                <div :key="show" :class="show ? 'content-elem-heading-text' : 'hide-text'">Доп. материал</div>
+                <div :key="show" class="content-elem-heading-text">Доп. материал</div>
               </transition>
                 
               

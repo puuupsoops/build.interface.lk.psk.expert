@@ -34,7 +34,12 @@
 								.order-amount-table-input-arrow-img
 									path
 										fill: $white
-					
+						html:not(.dark) &
+							background: $light-bg-color
+							.table-elem
+								color: $light-font-color
+								+text-shadow(0px 0px 6px $light-active-color)
+
 					&.presail
 						.table-elem
 							color: #f13f3f
@@ -126,15 +131,19 @@
 			font-size: 18px
 			line-height: 28px
 			text-align: center
-			background-color: #292C32
+			background-color: $dark-bg-color2
 			border:
 					top: 1px solid $bg-default-color
 			+prefix(transition, $default-transition)
+			html:not(.dark) &
+				background-color: $light-bg-color2
 
 			&-text
 				color: $accent-color
 				&.presail
 					color: #f13f3f
+				html:not(.dark) &
+					color: $light-font-color
 					
 			&-value
 				color: $white
@@ -147,6 +156,11 @@
 				&:hover
 					background: $bg-dlight-color
 					color: $accent-color
+					html:not(.dark) &
+						background: $light-bg-color
+						color: $light-font-color
+						+text-shadow(0px 0px 6px $light-active-color)
+
 
 				&.disable
 					cursor: default
@@ -601,8 +615,9 @@
 		max-width: 930px
 		font-size: 16px
 		color: $white
-		
 		+align-items(center)
+		html:not(.dark) &
+			color: $light-font-color
 		
 		&-link
 			display: inline-block
@@ -628,7 +643,8 @@
 			border-radius: 6px
 			background-color: $bg-default-color
 			+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.2))
-
+			html:not(.dark) &
+				background-color: $light-bg-color2
 			.shipment-address-list-elem:nth-child(2)
 				+flex
 				+justify-content(space-between)

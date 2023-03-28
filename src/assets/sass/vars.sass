@@ -31,6 +31,7 @@ html:not(.dark)
 	font-family: $default-font
 	box-sizing: border-box
 
+
 html, body
 	min-width: 320px
 	height: auto
@@ -40,16 +41,16 @@ html, body
 	color: $white
 	background-color: $bg-color
 	+prefix(transition, $default-transition)
-
+	html:not(.dark) &
+		color: $light-font-color
+		background-color: $light-bg-color
 html
 	scroll-behavior: smooth
 	scrollbar-width: thin
 
 body 
 	position: relative
-	html:not(.dark) &
-		color: $light-font-color
-		background-color: $light-bg-color
+
 	&.modal-active
 		overflow: hidden
 
@@ -106,6 +107,10 @@ a
 			background: -webkit-gradient(linear, left top, right top, from($bg-default-color), to(#1a1b1b))
 			background: -o-linear-gradient(left, $bg-default-color 0%, #1a1b1b 100%)
 			background: linear-gradient(90deg, $bg-default-color 0%, #1a1b1b 100%)
+			html:not(.dark) &
+				background: -webkit-gradient(linear, left top, right top, from($light-bg-color), to($light-bg-color2))
+				background: -o-linear-gradient(left, $light-bg-color 0%, $light-bg-color2 100%)
+				background: linear-gradient(90deg, $light-bg-color 0%, $light-bg-color2 100%)
 
 
 	&:after
@@ -157,6 +162,8 @@ a
 				right: 20px
 				top: 10px
 				bottom: 10px
+			html:not(.dark) &
+				background-color: $light-bg-color2
 		&.kp
 			background-color: $bg-default-color
 			html:not(.dark) &
@@ -179,11 +186,15 @@ a
 		font-size: 33px
 		color: $white
 
+		html:not(.dark) &
+			color: $light-font-color
 		&-price
 			+flex
 			font-size: 21px
 			color: $white
-
+			white-space: nowrap
+			html:not(.dark) &
+				color: $light-font-color
 			&-value
 				margin:
 					left: 10px
@@ -281,7 +292,7 @@ a
 		+box-shadow(0px 0px 10px rgba(0, 0, 0, 0.2))
 		html:not(.dark) &
 			color: $light-font-color
-			background-color: $light-bg-color2
+			background-color: $light-bg-color
 		// overflow: hidden
 			
 		&-active
@@ -317,6 +328,8 @@ a
 			font-size: 16px
 			line-height: 23px
 			color: $font-light-color
+			html:not(.dark) &
+				color: $light-font-color2
 
 	&-wrap
 		+flex
@@ -377,6 +390,10 @@ a
 		color: $font-light-color
 		cursor: pointer
 		+prefix(transition, $default-transition)
+		html:not(.dark) &
+			color: $light-font-color
+			&:hover
+				+text-shadow(0px 0px 6px $light-active-color)
 
 		&:hover
 			color: $accent-color
@@ -386,13 +403,16 @@ a
 		padding: 30px
 		background-color: $bg-default-color
 		+align-items(center)
-
+		html:not(.dark) &
+			background-color: $light-bg-color2
 		&-text
 			margin: 
 				right: 13px
 			font-size: 16px 
 			line-height: 25px
 			color: $font-light-color
+			html:not(.dark) &
+				color: $light-font-color
 		
 		&-elem
 			margin: 0 7px
@@ -568,6 +588,8 @@ a
 	padding:
 		bottom: 24px
 	background-color: $bg-default-color
+	html:not(.dark) &
+		background-color: $light-bg-color
 	
 	&-more-info-arrow
 		position: absolute
@@ -595,7 +617,7 @@ a
 
 	&-row
 		+flex
-		border-bottom: 1px solid #292C32
+		border-bottom: 1px solid $dark-bg-color2
 		cursor: pointer
 
 		&:last-child
@@ -604,11 +626,16 @@ a
 		&:not(.table-heading):hover
 			.table-elem
 				color: $accent-color
+				html:not(.dark) &
+					color: $light-font-color
+					+text-shadow(0px 0px 6px $light-active-color)
+
 
 		&.table-heading
-			background-color: #292C32
+			background-color: $dark-bg-color2
 			border: 0
-
+			html:not(.dark) &
+				background-color: $light-bg-color2
 			.table-elem
 				padding:
 					top: 16px
@@ -616,6 +643,8 @@ a
 				color: $font-light-color
 				text-transform: uppercase
 				cursor: default
+				html:not(.dark) &
+					color: $light-font-color
 	
 	&-elem
 		+flex
@@ -626,6 +655,12 @@ a
 		line-height: 20px
 		+prefix(transition, $default-transition)
 		+align-items(center)
+		html:not(.dark) &
+			color: $light-font-color
+			&:hover
+				+text-shadow(0px 0px 6px $light-active-color)
+			&.active
+				+text-shadow(0px 0px 6px $light-active-color)
 
 		&-toggle
 			position: relative
@@ -640,20 +675,18 @@ a
 
 			&:hover
 				color: $accent-color
-
 				.table-elem-toggle-arrow
 					path
 						fill: $accent-color
-			
+
 			&.active
 				color: $accent-color
-
 				.table-elem-toggle-arrow
 					+prefix(transform, rotate(180deg))
 					path
 						fill: $accent-color
-	
-			&-arrow
+
+		&-arrow
 				margin:
 					left: 20px
 
@@ -690,6 +723,10 @@ a
 
 				&:hover
 					color: $accent-color
+				html:not(.dark) &
+					color: $light-font-color
+					&:hover
+						+text-shadow(0px 0px 6px $light-active-color)
 
 	&-arrow
 		position: absolute
@@ -1043,6 +1080,8 @@ a
 		left: 105px
 	background-color: $bg-default-color
 	+align-items(center)
+	html:not(.dark) &
+		background-color: $light-bg-color2
 
 	span
 		display: block
@@ -1055,6 +1094,8 @@ a
 		line-height: 18px
 		color: $font-light-color
 		white-space: nowrap
+		html:not(.dark) &
+			color: $light-font-color
 
 	&-wrap
 		+flex

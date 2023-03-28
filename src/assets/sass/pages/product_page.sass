@@ -50,7 +50,11 @@
 			width: 100%
 			border: 0
 			border-radius: 60px
-			background-color: #292C32
+			+box-shadow(0px 3px 5px rgba(0, 0, 0, 0.3))
+			background-color: $dark-bg-color2
+			html:not(.dark) &
+				background-color: $light-bg-color
+
 			
 			&.error
 					+box-shadow(0px 0px 20px rgba(231, 12, 12, 1))
@@ -62,13 +66,18 @@
 				width: 100%
 				font-size: 16px
 				line-height: 25px
-				color: #ffffff
+				color: $white
 				border: 0
-				background-color: #292C32
+				background-color: $dark-bg-color2
+				html:not(.dark) &
+					background-color: $light-bg-color
+					color: $light-font-color
 			&-notice
 				color: $font-light-color
 				font-size: 12px
 				text-align: center
+				html:not(.dark) &
+					color: $light-font-color
 				
 			&-container
 				position: relative
@@ -84,14 +93,15 @@
 				left: 0
 				width: 100%
 				max-height: 500px
-				background: #292c32
+				background: $dark-bg-color2
 				border-bottom-left-radius: 5px
 				border-bottom-right-radius: 5px
 				overflow: auto
 				display: block
 				z-index: 10
-				+box-shadow(0px 30px 30px rgba(0, 0, 0, 0.9))			
-				
+				+box-shadow(0px 5px 5px rgba(0, 0, 0, 0.3))
+				html:not(.dark) &
+					background-color: $light-bg-color
 				
 				&.default
 					min-height: 100px
@@ -104,14 +114,14 @@
 
 
 				&-item
-					color: #fff
+					color: $white
 					text-transform: capitalize
 					width: 100%
 					// height: 30px
 					padding: 0 15px
 					line-height: 30px
 					cursor: pointer
-					border-top: 2px solid $bg-default-color
+					border-top: 1px solid $bg-default-color
 					opacity: 1
 					+prefix(transition, $default-transition)
 					
@@ -123,7 +133,7 @@
 						color: $bg-default-color
 						background: $accent-color
 						width: 100%
-						height: 35px
+						//	height: 35px
 						+prefix(transition, $default-transition)
 						& .article
 							color: $bg-default-color
@@ -152,6 +162,8 @@
 						color: $font-light-color
 						// width: 100px
 						padding-right: 8px
+						html:not(.dark) &
+							color: $light-font-color
 						
 						
 					& .name
@@ -159,6 +171,8 @@
 						white-space: nowrap
 						overflow: hidden
 						text-overflow: ellipsis
+						html:not(.dark) &
+							color: $light-font-color2
 				
 
 		&-clear
@@ -250,6 +264,9 @@
 		//+justify-content(space-between)
 		// +flex-wrap(nowrap)
 		//max-height: 570px
+		.content-elem
+			html:not(.dark) &
+			background-color: $light-bg-color
 		
 	&-slider
 		+flex
@@ -391,8 +408,10 @@
 				top: 30px
 			padding: 0 30px
 			width: 100%
-			background-color: #292C32
+			background-color: $dark-bg-color2
 			+justify-content(space-between)
+			html:not(.dark) &
+				background-color: $light-bg-color2
 		
 		&-link
 			display: inline-block
@@ -587,7 +606,8 @@
 			margin:
 				right: 5px
 			color: $font-light-color
-
+			html:not(.dark) &
+				color: $light-font-color
 		&-btn
 			margin: 5px
 			width: 40px
@@ -595,11 +615,18 @@
 			font-size: 16px
 			line-height: 25px
 			color: $white
-			background-color: #292C32
+			background-color: $dark-bg-color2
 			border: 0
 			border-radius: 6px
 			+prefix(transition, $default-transition)
 			cursor: pointer
+			html:not(.dark) &
+				background-color: $light-bg-color2
+				color: $light-font-color
+				&:hover
+					+text-shadow(0px 0px 6px $light-active-color)
+				&.active
+					color: $accent-color
 
 			&:hover
 				color: $accent-color
@@ -615,6 +642,8 @@
 			min-width: 85px
 
 		&-value
+			html:not(.dark) &
+				color: $light-font-color2
 			&-block
 				width: 100px
 			.active
@@ -710,7 +739,8 @@
 				font-size: 14px
 				line-height: 20px
 				color: $font-light-color
-				
+				html:not(.dark) &
+					color: $light-font-color2
 				&:first-child
 					margin:
 						top: 0
@@ -755,4 +785,5 @@
 			&:hover
 				transform: translateY(1px)
 				+prefix(transition, $default-transition)
-	
+			html:not(.dark) &
+				color: $light-font-color
