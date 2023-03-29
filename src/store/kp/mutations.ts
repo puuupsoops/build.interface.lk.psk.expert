@@ -1,6 +1,6 @@
 import { MutationTree } from "vuex";
 import { KPState } from "./types";
-import { KP, KPLogoList } from "/src/models/KP"
+import { KP, KPLogoList, KPBannerList } from "/src/models/KP"
 import _ from 'lodash'
 import {OrderStatePosition} from "/src/store/order/types";
 
@@ -17,7 +17,12 @@ export enum KPMutations {
 	DELETE_KP_LOGO_BY_ID = "DELETE_KP_LOGO_BY_ID",
 	SET_KP_STEP = "SET_KP_STEP",
 	SET_KP = "SET_KP",
-	SET_KP_OFFER_POSITION= "SET_KP_OFFER_POSITION"
+	SET_KP_OFFER_POSITION = "SET_KP_OFFER_POSITION",
+	SET_KP_BANNER_LIST = "SET_KP_BANNER_LIST",
+	SET_KP_BANNER_LIST_NEXT = "SET_KP_BANNER_LIST_NEXT",
+	SET_KP_BANNER_LIST_PREV = "SET_KP_BANNER_LIST_PREV",
+	DELETE_KP_BANNER_BY_ID = "DELETE_KP_BANNER_BY_ID",
+	SET_KP_BANNER = "SET_KP_BANNER",
 }
 
 export const mutations: MutationTree<KPState> = {
@@ -76,5 +81,30 @@ export const mutations: MutationTree<KPState> = {
 	},
 	[KPMutations.SET_KP_OFFER_POSITION] (state, data: OrderStatePosition[]): void {
 		state.kp.offer.position = _.cloneDeep(data)
-	}
+	},
+	[KPMutations.SET_KP_BANNER_LIST] (state, data: KPBannerList[]){
+		state.banner_list = data
+		state.banner_list_origin = _.cloneDeep(state.banner_list)
+	},
+	[KPMutations.SET_KP_BANNER_LIST_NEXT] (state, data: KPBannerList[]){
+		const first = state.banner_list.shift()
+		if (first) state.banner_list = state.banner_list.concat(first)
+	},
+	[KPMutations.SET_KP_BANNER_LIST_PREV] (state, data: KPBannerList[]){
+
+		const last = state.banner_list.pop() as KPBannerList
+		state.banner_list = [last].concat(state.banner_list)
+	},
+	[KPMutations.DELETE_KP_BANNER_BY_ID] (state, data): void{
+		// присваиваем новые значения, т.к. Битрикс дичит с файлами, и генерирует новые айдишники
+		state.banner_list_origin = _.cloneDeep(data)
+		state.banner_list_origin.reverse()
+		state.banner_list = _.cloneDeep(state.banner_list_origin)
+	},
+	[KPMutations.SET_KP_BANNER] (state, data): void{
+		// присваиваем новые значения, т.к. Битрикс дичит с файлами, и генерирует новые айдишники
+		state.banner_list_origin = _.cloneDeep(data)
+		state.banner_list_origin.reverse()
+		state.banner_list = _.cloneDeep(state.banner_list_origin)
+	},
 }

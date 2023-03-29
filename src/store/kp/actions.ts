@@ -13,7 +13,10 @@ export enum KPActions {
 	GET_ORG_BY_INN = "GET_ORG_BY_INN",
 	ADD_KP_LOGO = "ADD_KP_LOGO",
 	GET_KP_LOGO = "GET_KP_LOGO",
-	DELETE_KP_LOGO = "DELETE_KP_LOGO", 
+	DELETE_KP_LOGO = "DELETE_KP_LOGO",
+	GET_KP_BANNER = "GET_KP_BANNER",
+	DELETE_KP_BANNER = "DELETE_KP_BANNER",
+	ADD_KP_BANNER = "ADD_KP_BANNER",
 }
 
 export const actions: ActionTree<KPState, RootState> =  {
@@ -84,7 +87,44 @@ export const actions: ActionTree<KPState, RootState> =  {
 				} 
 			 } )
 			.catch( error => { commit(AuthMutations.SET_ERROR, `Request DELETE_KP_LOGO error:<br>${error}`) } )
-	}
+	},
+	async [KPActions.GET_KP_BANNER] ({ commit }) {
+		await axios.get( '/services/proposal/banner/list').then(response=> {
+						console.log('KPActions.GET_KP_BANNER',response.data.response)
+						commit(KPMutations.SET_KP_BANNER_LIST, response.data.response)
+					})
+					.catch(error => {
+						commit(AuthMutations.SET_ERROR, `Request SET_KP_BANNER_LIST error:<br>${error}`)
+					});
+	},
+	async [KPActions.DELETE_KP_BANNER] ({ commit }, id) {
+		await axios.post('/services/proposal/banner/delete', id)
+			.then( response => {
+				if(response.status == 200) {
+					commit(KPMutations.DELETE_KP_BANNER_BY_ID, response.data.response.data)
+				} 
+			 } )
+			.catch( error => { commit(AuthMutations.SET_ERROR, `Request DELETE_KP_BANNER error:<br>${error}`) } )
+	},
+	async [KPActions.ADD_KP_BANNER] ({ commit }, data){
+		//console.log(data)
+        let formData = new FormData();
+        formData.append(data.name, DataURIToBlob(data.file),data.name)
+		await axios.post( '/services/proposal/banner/add',
+					formData,
+						{
+							headers: {
+								'Content-Type': 'multipart/form-data'
+							}
+						}
+					).then(response=> {
+						// присваиваем новые значения, т.к. Битрикс дичит с файлами, и генерирует новые айдишники
+						commit(KPMutations.SET_KP_BANNER, response.data.response.data)
+					})
+					.catch(error => {
+						commit(AuthMutations.SET_ERROR, `Request ADD_KP_BANNER error:<br>${error}`)
+					});
+	},
 }
 function DataURIToBlob(dataURI: string) {
 	const splitDataURI = dataURI.split(',')

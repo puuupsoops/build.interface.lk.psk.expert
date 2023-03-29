@@ -121,6 +121,7 @@ if (!store.getters.isOrders) {
   store.dispatch(OrdersActions.GET_ORDERS).then(()=>{ loading.value = false})
 }
 store.dispatch(KPActions.GET_KP_LOGO)
+store.dispatch(KPActions.GET_KP_BANNER)
 store.dispatch(ShipmentsActions.GET_SHIPMENTS_ADDRESS)
 
 NewKP.value = store.getters.getKP

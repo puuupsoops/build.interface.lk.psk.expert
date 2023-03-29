@@ -23,6 +23,8 @@ export interface KP {
       },
     header:          boolean,       // true,
     headerLogo:      number,        // тут передаём идентификатор изображение или base64 , base64 в методе вместе с id (как удобней будет)/api/services/proposal/logo/list
+    banner:          boolean,       // true/false баннер
+    bannerSrc:       string,        // банер-ресурс в base64
     headerLogoAlign: KP_HEADER_LOGO_ALIGN,
     headerText:      string,        // Текст преамбулы...
     as:              string         // PDF
@@ -33,6 +35,12 @@ export enum KP_TYPES {
     ORDER = 'ORDER',        //Кп на основе уже умеющегося заказа
     DRAFT = 'DRAFT',        //КП  основе сохраненного черновика
     CATALOG_POS = 'CATALOG_POS' // КП из собранного, но еще не оформленного заказа
+}
+
+export interface KPBannerList {
+    id: number,
+    type: string, // showcase - банер компании, не удаляется!, custom - пользовательский банер
+    image: string
 }
 
 export interface KPLogoList {

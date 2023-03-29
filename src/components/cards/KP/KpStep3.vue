@@ -145,8 +145,44 @@
             <div v-else class="kp-step-title kp-step-body-row-group" :class="{'active': headerLogo}">
               <span>Логотипов нет. Добавьте логотип.</span>
             </div>
+
+            <div class="kp-step-body-row">
+              <span class="kp-step-body-row-elem">Баннер</span>
+              <CheckButton v-model="KPLocal.banner" style="margin-left: 30px"/>
+              <label v-if="KPLocal.banner" class="kp-step-body-add-file-label" for="banner-upload">
+                <input @change="handleBannerFileUpload( $event )" class="kp-step-body-add-file-input" id="banner-upload" type="file" accept="image/*">
+              </label>
+            </div>
+            <div v-if="bannerList.length>0" class="kp-step-body-row-group"  :class="{'active': KPLocal.banner}">
+              <div :style="'text-align: center;'"> Баннер #{{ bannerList[0].id }} {{ bannerList[0].type ==  'showcase' ? '- системный' : ''}} </div>
+              <PreloaderLocal v-if="loadingLogo" style="margin:auto"></PreloaderLocal>
+              <div class="kp-step-body-column" v-if="KPLocal.banner&&!loadingLogo" :style="'justify-content: center'">
+                <div class="product-slider-wrap" >
+                  <div class="product-slider-main">
+                    <button class='product-slider-arrow prev' @click="prevBanner"></button>
+                    <transition-group name="product-slider-trans" class='product-slider' :style="'align-items: center; height: 240px; max-width: 1200px;'"  tag="div">
+                      <div v-for="slide in bannerList" class='product-slider-slide' :key="slide.id" :style="slide.type != 'custom' ? ['border: 2px solid;','border-color: #FAC12E;', 'border-radius: 10px;'] : []">
+                        <img v-if="slide.image" :src="slide.image"  />
+                      </div>
+                    </transition-group>
+                    <div class='product-slider-arrow next' @click="nextBanner"></div>
+                  </div>
+                </div>
+              </div>
+              <div v-if="bannerList[0].type=='custom'" :style="'text-align: center; margin-top: -50px;'">
+                <BaseButton
+                 @click="deleteBanner(currentBannerId)"
+                >Удалить</BaseButton>
+              </div>
+            </div>
+            <div v-else class="kp-step-title kp-step-body-row-group" :class="{'active': KPLocal.banner}">
+              <span>Баннеров нет. Добавьте баннер.</span>
+            </div>
+
+
           </div>
         </div>
+
         <div class="order-comment-form show">
           <div class="order-comment-title"><span>Комментарий</span></div>
           <textarea class="order-comment-textarea" v-model="KPLocal.offer.comment"  ></textarea>
@@ -322,7 +358,7 @@ import { PreloaderLocal, Preloader } from '/src/components'
 import { SwitchButton, AmountInput, CheckButton, SelectInput, BaseButton, BaseInput } from '/src/components/ui'
 
 
-import { KP, KP_HEADER_LOGO_ALIGN, KPLogoList } from '/src/models/KP'
+import { KP, KP_HEADER_LOGO_ALIGN, KPLogoList, KPBannerList } from '/src/models/KP'
 
 import { SelectInputData, PriceFormat } from '/src/models/Components'
 import { ShipmentsAddress } from '/src/models/Shipments'
@@ -966,6 +1002,10 @@ const loadingLogo = ref(false)
 const logoList = computed<KPLogoList[]>(() => store.getters.getKPLogoList) //Список загруженных лого для карусели
 const logoListOrigin = computed<KPLogoList[]>(() => store.getters.getKPLogoListOrigin) // Копия списка агруженных лого которая не меняется для списка контрол-бар
 
+const bannerList = computed<KPBannerList[]>( () => store.getters.getKPBannerList )
+const bannerListOrigin = computed<KPBannerList[]>( () => store.getters.getKPBannerListOrigin)
+const currentBannerId = ref(0)
+
 const PDF = ref(true)       //Флаги
 const WORD = ref(false)
 const handleFileUpload = ( event: any) =>{
@@ -986,6 +1026,26 @@ const handleFileUpload = ( event: any) =>{
   }
 
 }
+
+const handleBannerFileUpload = ( event: any) =>{
+  if (!loadingLogo.value) {
+    let img = event.target.files[0]
+    let filename = img.name
+    let reader = new FileReader()
+    reader.onloadend =  () => {
+      imageBase64.value = <string>reader.result
+      loadingLogo.value = true
+      store.dispatch(KPActions.ADD_KP_BANNER, { name: filename, file: imageBase64.value })
+          .then(() => {
+            KPLocal.value!.bannerSrc = store.getters.getKPBannerSrc
+            loadingLogo.value = false
+          })
+    };
+    reader.readAsDataURL(img)
+  }
+
+}
+
 const nextLogo = () => {
   store.commit(KPMutations.SET_KP_LOGO_LIST_NEXT)
   ++currentLogoId.value
@@ -1000,6 +1060,21 @@ const prevLogo = () => {
     currentLogoId.value = logoList.value.length-1
   }
 };
+const nextBanner = () => {
+  store.commit(KPMutations.SET_KP_BANNER_LIST_NEXT)
+  ++currentBannerId.value
+  if (currentBannerId.value >= bannerList.value.length){
+    currentBannerId.value = 0
+  }
+}
+const prevBanner = () => {
+  store.commit(KPMutations.SET_KP_BANNER_LIST_PREV)
+  --currentBannerId.value
+  if (currentBannerId.value < 0 ){
+    currentBannerId.value = bannerList.value.length-1
+  }
+};
+
 // const shiftLogo = (n: number):void => {
 //   store.commit(KPMutations.SET_KP_LOGO_LIST_SIFT, n-currentLogoId.value)
 //   currentLogoId.value = n
@@ -1022,7 +1097,20 @@ const next = () => {
 
     if (pickupValue) KPLocal.value!.additionally.pickupValue = pickupValue
   }
-  if (logoList.value.length > 0) KPLocal.value!.headerLogo = Number(logoList.value[0].id)
+  //if (logoList.value.length > 0) KPLocal.value!.headerLogo = Number(logoList.value[0].id)
+
+  if(headerLogo.value) {
+    KPLocal.value!.headerLogo = Number(logoList.value[0].id)
+  } else {
+    KPLocal.value!.headerLogo = 0
+  }
+
+  if(KPLocal.value!.banner == true) {
+    KPLocal.value!.bannerSrc = bannerList.value[0].image
+  } else {
+    KPLocal.value!.bannerSrc = ''
+  }
+    
 
   emits('next')
   emits('update:kp', KPLocal.value)
@@ -1049,6 +1137,30 @@ const deleteLogo = (index: number) => {
 
   let data = { index: index, id: Number(logoListOrigin.value[i].id) }
   store.dispatch(KPActions.DELETE_KP_LOGO, data)
+    .then( () => {showPreloader.value = false})
+  //store.commit(KPMutations.DELETE_KP_LOGO_BY_ID, data)
+}
+
+const deleteBanner = (index: number) => {
+  index=index-1
+  if(bannerList.value.length == 1){
+    index = 0
+  }
+
+  showPreloader.value = true
+
+  //нужный индекс элемента, так как массив bannerList постоянно перемещается
+  let i = 0;
+  let currentID = bannerList.value[index].id;
+  bannerListOrigin.value.forEach( (item, currentIndex)=>{
+    if(item.id == currentID){
+      i = currentIndex
+    }
+  } )
+
+
+  let data = { index: index, id: Number(bannerListOrigin.value[i].id) }
+  store.dispatch(KPActions.DELETE_KP_BANNER, data)
     .then( () => {showPreloader.value = false})
   //store.commit(KPMutations.DELETE_KP_LOGO_BY_ID, data)
 }

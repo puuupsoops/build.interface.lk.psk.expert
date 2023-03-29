@@ -9,5 +9,7 @@ export const state: KPState = {
 	org_name: '',
 	logo_list: [],
 	logo_list_origin: [],
+	banner_list: [],
+	banner_list_origin: [],
 	step: 1
 }
