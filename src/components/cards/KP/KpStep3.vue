@@ -191,6 +191,8 @@
           Скачать документ в формате:
           <CheckButton v-model="PDF" @onClick="PDF=true; WORD=false; KPLocal.as='PDF'"  :style="'margin-left: 30px'"/>
           <div :style="'margin-left: 10px'">PDF</div>
+          <CheckButton v-model="WORD" @onClick="PDF=false; WORD=true; KPLocal.as='WORD'"  :style="'margin-left: 30px'"/>
+          <div :style="'margin-left: 10px'">WORD</div>
 
         </div>
 
