@@ -1,5 +1,4 @@
 .company
-
 	&-head 
 		+flex
 		
@@ -52,7 +51,11 @@
 				background: -moz-linear-gradient(right,  rgba(21,23,28,0) 0%, rgba(21,23,28,1) 56%, rgba(21,23,28,1) 100%)
 				background: -webkit-linear-gradient(right,  rgba(21,23,28,0) 0%,rgba(21,23,28,1) 56%,rgba(21,23,28,1) 100%)
 				background: linear-gradient(to left,  rgba(21,23,28,0) 0%,rgba(21,23,28,1) 56%,rgba(21,23,28,1) 100%)
-				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0015171c', endColorstr='#15171c',GradientType=1 )
+				html:not(.dark) &
+					background: -moz-linear-gradient(right, #E5E7EB00 0%, #E5E7EBDD 60%, #E5E7EBFF 100%)
+					background: -webkit-linear-gradient(right, #E5E7EB00 0%, #E5E7EBDD 60%, #E5E7EBFF 100%)
+					background: linear-gradient(to left, #E5E7EB00 0%, #E5E7EBDD 60%, #E5E7EBFF 100%)
+
 
 
 			.btn-next
@@ -60,8 +63,10 @@
 				background: -moz-linear-gradient(left,  rgba(21,23,28,0) 0%, rgba(21,23,28,1) 56%, rgba(21,23,28,1) 100%)
 				background: -webkit-linear-gradient(left,  rgba(21,23,28,0) 0%,rgba(21,23,28,1) 56%,rgba(21,23,28,1) 100%)
 				background: linear-gradient(to right,  rgba(21,23,28,0) 0%,rgba(21,23,28,1) 56%,rgba(21,23,28,1) 100%)
-				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0015171c', endColorstr='#15171c',GradientType=1 )
-
+				html:not(.dark) &
+					background: -moz-linear-gradient(left, #E5E7EB00 0%, #E5E7EBDD 60%, #E5E7EBFF 100%)
+					background: -webkit-linear-gradient(left, #E5E7EB00 0%, #E5E7EBDD 60%,  #E5E7EBFF 100%)
+					background: linear-gradient(to right, #E5E7EB00 0%, #E5E7EBDD 60%, #E5E7EBFF 100%)
 
 			.btn:hover 
 				transform: scale(1.5)
@@ -179,14 +184,18 @@
 				text-transform: capitalize
 				display: block
 				text-align: right
+				font-size: 10px
+				line-height: 15px
+				color: rgba(255, 255, 255, 0.6)
+				html:not(.dark) &
+					color: $light-font-color
+
 			&-val
 				display: block
 				text-align: right
 
-			&-title
-				font-size: 10px
-				line-height: 15px
-				color: rgba(255, 255, 255, 0.6)
+
+
 			
 			&-val
 				padding:
@@ -204,7 +213,10 @@
 			+flex
 			border-bottom-left-radius: 6px
 			border-bottom-right-radius: 6px
-			
+			html:not(.dark) &
+				background-color: $light-bg-color2
+				color: $light-font-color
+
 			.sale
 				&-val
 					width: 100%
@@ -215,7 +227,8 @@
 						font-size: 20px
 						line-height: 15px
 						color: $font-light-color
-						
+						html:not(.dark) &
+							color: $light-font-color
 				&-tooltip
 					display: none
 					padding-right: 10px
@@ -233,9 +246,9 @@
 				&-title
 					font-size: 10px
 					line-height: 15px
-				
+					html:not(.dark) &
+						color: $light-font-color
 				&-progressbar
-
 					&-line
 						padding: 5px 
 						width: 15%
@@ -350,11 +363,12 @@
 			+prefix(transition-duration, .5s)
 			+prefix(transition-property, transform opacity)
 			&.edit
-				
+
 				+prefix(transform, rotateX(-180deg))
-				background: -webkit-gradient(linear, left top, right top, from(#FFBF60), to(#FF9900))
-				background: -o-linear-gradient(left, #FFBF60 0%, #FF9900 100%)
-				background: linear-gradient(90deg, $bg-default-color 0%, #1e2022 100%)
+				background: $dark-bg-default
+				//background: -webkit-gradient(linear, left top, right top, from(#FFBF60), to(#FF9900))
+				//background: -o-linear-gradient(left, #FFBF60 0%, #FF9900 100%)
+				//background: linear-gradient(90deg, $bg-default-color 0%, #1e2022 100%)
 			>.edit
 				+prefix(transform, rotateX(180deg))
 			
@@ -390,6 +404,8 @@
 					top-right-radius: 30px
 					bottom-right-radius: 30px
 				+align-items(center)
+				html:not(.dark) &
+					color: $light-font-color
 
 				&-img
 					margin:
@@ -427,6 +443,8 @@
 					font-size: 14px
 					line-height: 22px
 					color: $white
+					html:not(.dark) &
+						color: $light-font-color
 
 			&-btn-wrap
 				+flex
@@ -448,7 +466,9 @@
 				&.edit
 					background-color: $bg-color2
 					color: $font-light-color
-					
+					html:not(.dark) &
+						background-color: $light-font-color2
+						color: $white
 				&:hover
 					opacity: $default-opacity
 
@@ -582,9 +602,11 @@
 				padding: 5px
 
 			.fc-daygrid-day-frame
-					padding: 15px 10px
-					background-color: #292C32
-					border-radius: 6px
+				padding: 15px 10px
+				background-color: $dark-bg-color2
+				border-radius: 6px
+				html:not(.dark) &
+					background-color: $light-bg-color2
 			
 			.fc-day-other
 				.fc-daygrid-day-top
@@ -609,7 +631,9 @@
 				
 				.fc-timegrid-cols
 					.fc-day-today
-						background-color: #292C32 
+						background-color: $dark-bg-color2
+					html:not(.dark) &
+						background-color: $light-bg-color2
 
 		&-box
 			padding: 30px
@@ -671,6 +695,8 @@
 			line-height: 25px
 			color: $white
 			+prefix(transition, $default-transition)
+			html:not(.dark) &
+				color: $light-font-color
 
 			&::before
 				content: ''
@@ -712,10 +738,13 @@
 			font-size: 18px
 			line-height: 28px
 			color: $font-light-color
-			background-color: #292C32
+			background-color: $dark-bg-color2
 			+justify-content(center)
 			+align-items(center)
 			+prefix(transition, $default-transition)
+			html:not(.dark) &
+				color: $light-font-color
+				background-color: $light-bg-color2
 
 			&:hover
 				opacity: $default-opacity
@@ -749,8 +778,11 @@
 			color: $white
 			border: 0
 			border-radius: 60px
-			background-color: #292C32
-		
+			background-color: $dark-bg-color2
+			html:not(.dark) &
+				color: $light-font-color
+				background-color: $light-bg-color2
+
 			+placeholder()
 				color: $font-light-color
 		

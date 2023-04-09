@@ -10,7 +10,7 @@ const isDark = useDark();
 function toggleDarkMode() {
   isDark.value = !isDark.value;
   localStorage.setItem("darkMode", String(isDark.value));
-  // document.querySelector('html').style.backgroundColor = isDark.value?'#15171C':'#E5E7EB';
+    document.documentElement.style.background = isDark.value ? '#15171C': '#E5E7EB'
 }
 </script>
 

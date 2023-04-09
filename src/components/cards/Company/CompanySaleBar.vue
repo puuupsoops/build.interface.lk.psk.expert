@@ -8,7 +8,7 @@
 		</div>
 		
 		<div class="sale-progressbar-wrap">
-			<div class="sale-progressbar tooltip">
+			<div class="sale-progressbar content-elem tooltip">
 					
 				<div class="sale-progressbar-line" :style="'width: '+ (progressInPercent) +'%'">
 					<div class="sale-progressbar-val">
