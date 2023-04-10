@@ -24,5 +24,5 @@ import { useDark } from '@vueuse/core';
 
 const isDark = useDark();
 isDark.value = localStorage.getItem("darkMode") == "true";
-
+document.documentElement.style.background = isDark.value ? '#15171C': '#E5E7EB'
 app.mount('#app')

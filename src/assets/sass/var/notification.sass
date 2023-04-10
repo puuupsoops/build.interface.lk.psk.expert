@@ -45,7 +45,6 @@
 				fill: orange
 
 .popup
-
 	+box-shadow(0px 0px 5px rgba(255, 255, 255, 0.9))
 
 	padding: 11px 30px 0px 30px
@@ -60,6 +59,10 @@
 	background-color: $bg-default-color
 	border-radius: 6px
 	cursor: pointer
+	html:not(.dark) &
+		color: $light-font-color
+		background-color: $light-bg-color2
+		+box-shadow(0px 0px 5px rgba(0, 0, 0, 0.9))
 
 	&.clear-btn
 		+flex
@@ -121,7 +124,7 @@
 		background-size: 100% auto
 		background-position: center center
 		background-repeat: no-repeat
-		color: pointer
+		cursor: pointer
 		&:hover
 			opacity: 0.5
 	&-bar
@@ -178,12 +181,16 @@
 	float: right
 	height: 100%
 	min-height: 100vh
-	right: 0
+	right: 0px
 	width: 0px
 	background-color: $bg-default-color
 	overflow: hidden
 	+prefix(transition, $default-transition)
 	z-index: 100
+	html:not(.dark) &
+		background-color: $light-bg-color
+		+box-shadow(0px 0px 20px rgba(0, 0, 0, 0.2))
+
 	.popup
 		margin: 15px
 

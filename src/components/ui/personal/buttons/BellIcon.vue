@@ -3,11 +3,9 @@
     :class="{ 'active': (amount > 0) }"
     href="#">
     <svgBell class="svg"/>
-    <div v-if="(amount > 0)"
-         class="absolute inline-flex items-center justify-center w-6 h-5 text-xs font-bold text-white bg-red-500 rounded-full -top-2 -right-2 dark:border-gray-900">
-      {{amount}}
-    </div>
-
+      <div class="sidebar-btn-notification draft" v-if="(amount > 0)">
+          {{amount}}
+      </div>
   </a>
 </template>
 

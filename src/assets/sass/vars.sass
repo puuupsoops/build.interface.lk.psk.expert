@@ -501,9 +501,9 @@ a
 		position: fixed
 		top: 0
 		margin:
-			top: 0px
+			top: 0
 			left: -100px
-			right: 0px
+			right: 0
 		z-index: 100
 		width: calc(100% - 70px)
 	&-list
@@ -952,12 +952,16 @@ a
 		font-weight: 700
 		line-height: 25px
 		color: $white
+		html:not(.dark) &
+			color: $light-font-color
 	
 	&-lacks
 		font-size: 14px
 		font-weight: 400
 		line-height: 22px
 		color: $font-light-color
+		html:not(.dark) &
+			color: $light-font-color
 		& span
 			font-size: 20px
 	
@@ -978,6 +982,8 @@ a
 			padding: 5px 20px 4px 20px
 			width: 15%
 			background-color: #53565B
+			html:not(.dark) &
+				background-color: $light-bg-color2
 		
 		&-val
 			//+flex
@@ -992,11 +998,15 @@ a
 				font-size: 21px
 				line-height: 22px
 				color: rgba(255, 255, 255, 0.6)
+				html:not(.dark) &
+					color: $light-font-color
 			
 			&-percent
 				font-size: 21px
 				line-height: 31px
 				color: $accent-color
+				html:not(.dark) &
+					color: $light-bg-default
 
 		&-money
 			+flex
@@ -1006,6 +1016,8 @@ a
 			line-height: 22px
 			color: rgba(255, 255, 255, 0.6)
 			+justify-content(space-between)
+			html:not(.dark) &
+				color: $light-font-color
 
 .sidebarOpen
 	
