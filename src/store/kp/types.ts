@@ -40,5 +40,7 @@ export const DefaultKP:KP = {
     headerLogoAlign: KP_HEADER_LOGO_ALIGN.LEFT,
     headerText: '',
     as:     'PDF',       //PDF
+    bannerId: 0,
+    isPortraitOrientation: false
 }
 
