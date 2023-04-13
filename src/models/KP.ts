@@ -25,6 +25,7 @@ export interface KP {
     headerLogo:      number,        // тут передаём идентификатор изображение или base64 , base64 в методе вместе с id (как удобней будет)/api/services/proposal/logo/list
     banner:          boolean,       // true/false баннер
     bannerSrc:       string,        // банер-ресурс в base64
+    bannerId:        number,        // id баннера в Bitrix
     headerLogoAlign: KP_HEADER_LOGO_ALIGN,
     headerText:      string,        // Текст преамбулы...
     as:              string         // PDF
