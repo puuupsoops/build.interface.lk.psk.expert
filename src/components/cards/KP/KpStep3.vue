@@ -1109,6 +1109,7 @@ const next = () => {
 
   if(KPLocal.value!.banner == true) {
     KPLocal.value!.bannerSrc = bannerList.value[0].image
+    KPLocal.value!.bannerId = bannerList.value[0].id
   } else {
     KPLocal.value!.bannerSrc = ''
   }
