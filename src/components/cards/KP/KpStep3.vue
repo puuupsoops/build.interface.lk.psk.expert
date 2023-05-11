@@ -152,11 +152,12 @@
               <label v-if="KPLocal.banner" class="kp-step-body-add-file-label" for="banner-upload">
                 <input @change="handleBannerFileUpload( $event )" class="kp-step-body-add-file-input" id="banner-upload" type="file" accept="image/*">
               </label>
+              <div v-if="KPLocal.banner" style="color: #A5A7A9; padding-left: 95px; opacity: 0.7;">Рекомендуемый размер баннера для загрузки, высота: <strong>240</strong>px, <strong>x</strong> ширина: <strong>2040</strong>px.</div>
             </div>
             <div v-if="bannerList.length>0" class="kp-step-body-row-group"  :class="{'active': KPLocal.banner}">
               <div :style="'text-align: center;'"> Баннер #{{ bannerList[0].id }} {{ bannerList[0].type ==  'showcase' ? '- системный' : ''}} </div>
               <PreloaderLocal v-if="loadingLogo" style="margin:auto"></PreloaderLocal>
-              <div class="kp-step-body-column" v-if="KPLocal.banner&&!loadingLogo" :style="'justify-content: center'">
+              <div class="kp-step-body-column" v-if="KPLocal.banner" :style="'justify-content: center'">
                 <div class="product-slider-wrap" >
                   <div class="product-slider-main">
                     <button class='product-slider-arrow prev' @click="prevBanner"></button>
@@ -194,6 +195,19 @@
           <CheckButton v-model="WORD" @onClick="PDF=false; WORD=true; KPLocal.as='WORD'"  :style="'margin-left: 30px'"/>
           <div :style="'margin-left: 10px'">WORD</div>
 
+        </div>
+        <div class="kp-step-body-row" :style="'justify-content: flex-end; align-items: baseline;'">
+          Ориентация документа:
+          <div :style="'display: flex; flex-direction: column; margin-left: 20px; margin-right: 148px;'">
+            <div :style="'display: flex; align-items: center;'"> 
+              <CheckButton v-model="isLDDO" @onClick="isLDDO=true; isPDDO=false; KPLocal.isPortraitOrientation=false" />
+              <div :style="'margin-left: 10px'">Альбом</div>
+            </div>
+            <div :style="'display: flex; align-items: center; padding-top: 12px;'">
+              <CheckButton v-model="isPDDO" @onClick="isLDDO=false; isPDDO=true; KPLocal.isPortraitOrientation=true" />
+              <div :style="'margin-left: 10px'">Портрет</div>
+            </div>
+          </div>
         </div>
 
         <!--<div class="orders-list-item" :class="{'active': attachments}">
@@ -1008,8 +1022,15 @@ const bannerList = computed<KPBannerList[]>( () => store.getters.getKPBannerList
 const bannerListOrigin = computed<KPBannerList[]>( () => store.getters.getKPBannerListOrigin)
 const currentBannerId = ref(0)
 
-const PDF = ref(true)       //Флаги
-const WORD = ref(false)
+const PDF = ref(true)       // Получить КП в формате pdf
+const WORD = ref(false)     // Получить КП в формате docx
+
+//is_Portrait_Download_Document_Orientation  
+const isPDDO = ref(false) //Портретная оринтация документа
+//is_Landscape_Download_Document_Orientation  
+const isLDDO = ref(true) //Альбомная оринтация документа
+
+//добавление файла с логотипом
 const handleFileUpload = ( event: any) =>{
   if (!loadingLogo.value) {
     let img = event.target.files[0]
@@ -1029,6 +1050,7 @@ const handleFileUpload = ( event: any) =>{
 
 }
 
+// добавление файла с баннером
 const handleBannerFileUpload = ( event: any) =>{
   if (!loadingLogo.value) {
     let img = event.target.files[0]

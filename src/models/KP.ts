@@ -28,7 +28,8 @@ export interface KP {
     bannerId:        number,        // id баннера в Bitrix
     headerLogoAlign: KP_HEADER_LOGO_ALIGN,
     headerText:      string,        // Текст преамбулы...
-    as:              string         // PDF
+    as:              string,        // PDF
+    isPortraitOrientation: boolean  // ориентация документа, если true - портретная, false - альбомная (по умолчанию)
 }
 
 
