@@ -280,14 +280,14 @@
                                     </div>
                                     <span class="tooltiptext">Сохранить счет</span>
                                 </div>
-                                <div class="orders-list-info-about tooltip" v-else>
-                                    <div
-                                            class="orders-list-info-download disable"
-                                    >
-                                        Счёт {{check.n}} от {{item.date.substring(0,10)}}
-                                    </div>
-                                    <span class="tooltiptext">Сохранить счет можно только <br> после подтверждения заказа</span>
-                                </div>
+<!--                                <div class="orders-list-info-about tooltip" v-else>-->
+<!--                                    <div-->
+<!--                                            class="orders-list-info-download disable"-->
+<!--                                    >-->
+<!--                                        Счёт {{check.n}} от {{item.date.substring(0,10)}}-->
+<!--                                    </div>-->
+<!--                                    <span class="tooltiptext">Сохранить счет можно только <br> после подтверждения заказа</span>-->
+<!--                                </div>-->
                             </div>
                             <div class="orders-list-info-elem orders-list-info-doc-wrap"  v-if="!check.doc_status">
                                 <PreloaderLocal small></PreloaderLocal>
