@@ -56,7 +56,8 @@ let calendarOptions = computed( () => ({
 		locale: ruLocale,
 		events: eventsArr.value ? eventsArr.value.map(doc => {
 												return {
-													"title": `Счёт от ${doc.date} на ${doc.debt}₽`,
+													//"title": `Счёт от ${doc.date} на ${doc.debt}₽`,
+													"title": `УПД ${doc.number} на ${doc.debt}₽`,
 													"start": doc.expires_date,
 													"backgroundColor": '#378006',
 													"allDay": true,
