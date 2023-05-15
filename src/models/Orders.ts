@@ -47,8 +47,8 @@ export interface OrdersDocStatus {
     StatusUPD:   boolean;
     StatusSF:    boolean;
     StatusUPK:   boolean;
-    NumberSF?:    number;
-    NumberSchet?: number;
-    NumberUPD?:   number;
-    NumberUPK?:   number;
+    NumberSF?:    string;
+    NumberSchet?: string;
+    NumberUPD?:   string;
+    NumberUPK?:   string;
 }

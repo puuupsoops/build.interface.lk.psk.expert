@@ -266,13 +266,13 @@
                                 :key="key1"
                         >
                             <div class="orders-list-info-elem">{{getStorageName(item.partner_guid, check.organization_id)}}</div>
-                            <div class="orders-list-info-elem"  >
+                            <div class="orders-list-info-elem">
 
                                 <div class="orders-list-info-about tooltip" v-if="check.doc_status?.StatusSchet">
                                     <div class="orders-list-info-download "
                                          @click="downloadBill(check.guid)"
                                     >
-                                        <span> Счёт {{check.n}} от {{item.date.substring(0,10)}} </span>
+                                        <span> Счёт {{getStorageName(item.partner_guid, check.organization_id)}}{{ check.n }} от {{item.date.substring(0,10)}} </span>
                                         <preloader-local
                                                 v-if="loading_bill.includes(check.guid)"
                                                 small
@@ -289,10 +289,11 @@
 <!--                                    <span class="tooltiptext">Сохранить счет можно только <br> после подтверждения заказа</span>-->
 <!--                                </div>-->
                             </div>
+                            <div class="orders-list-info-elem">{{ check.doc_status?.NumberUPD?.replace(';','') ?? '' }}</div>
                             <div class="orders-list-info-elem orders-list-info-doc-wrap"  v-if="!check.doc_status">
                                 <PreloaderLocal small></PreloaderLocal>
                             </div>
-                            <div class="orders-list-info-elem orders-list-info-doc-wrap" v-else>
+                            <div class="orders-list-info-elem orders-list-info-doc-wrap" style="width: 15%;" v-else>
 
                                 <a
                                   v-if="check.doc_status?.StatusSchet "
@@ -324,7 +325,7 @@
                                         title="Универсальный корректировочный документ">
                                 </a>
                             </div>
-                            <div class="orders-list-info-elem">
+                            <div class="orders-list-info-elem" style="display: flex; width: 15%;">
 
                                 {{ OrdersSatusCodeClass[check.status] ? OrdersSatusCodeClass[check.status].name : ''}}
                                 <div
@@ -486,7 +487,13 @@ const loadDocStatus = ()=>{
             let upd = '';
             Promise.all(promise_arr).finally(()=>{
                 data_filtered.value [active.value].checks?.forEach(check => {
-                    upd = upd + (check.doc_status?.NumberUPD?? '');
+                    console.log(check)
+
+                    if(upd.length > 0){
+                        upd += '/'
+                    }
+                    check.n = check.doc_status?.NumberSchet?.replace(';','')?? '';
+                    upd = upd + (check.doc_status?.NumberUPD?.replace(';','')?? '');
                     store.commit(OrdersMutations.SET_ORDERS_UPD, {order: data_filtered.value [active.value], upd })
                 })
             })
