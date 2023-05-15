@@ -104,7 +104,8 @@
 							v-for="(document, id) in data.documents"
 							:key="id"
 							>
-						<img class="company-head-list-img" src="/src/assets/img/icon/doc.svg" alt="">
+						<!--<img class="company-head-list-img" src="/src/assets/img/icon/doc.svg" alt="">-->
+						<svgDoc class="company-head-list-img"/>
 						<a class="company-head-list-link" href="#CompanyCalendar" @click="docDate = document.expires">{{document.debt.toLocaleString('ru').replace(',','.')}} ₽ до {{document.expires}} / УПД {{ document.number }}</a>
 					</li>
 				</ul>
@@ -183,7 +184,7 @@
 <script setup lang="ts">
 import { inject, PropType, ref } from "vue"
 import { StorageCompany } from "/src/models/Partner";
-
+import svgDoc from '/src/assets/img/icon/doc.svg'
 
 
 const props = defineProps({
