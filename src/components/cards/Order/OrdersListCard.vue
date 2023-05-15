@@ -204,7 +204,7 @@
                     <div class="orders-list-elem" v-if="tableColumn.delivery_tersm.visible"
                          :class="{'status': true}"
                          :style="`width: ${tableColumn.delivery_tersm.width}${tableColumn.delivery_tersm.unit}`"
-                    >{{item.delivery_terms}}</div>
+                    >{{ item.delivery_terms ? item.delivery_terms : item.shipment_name }}</div>
                     <div class="orders-list-elem" v-if="tableColumn.comment.visible"
                          :class="{'comment': true}"
                          :style="`width: ${tableColumn.comment.width}${tableColumn.comment.unit}`"
@@ -280,14 +280,14 @@
                                     </div>
                                     <span class="tooltiptext">Сохранить счет</span>
                                 </div>
-                                <div class="orders-list-info-about tooltip" v-else>
-                                    <div
-                                            class="orders-list-info-download disable"
-                                    >
-                                        Счёт {{check.n}} от {{item.date.substring(0,10)}}
-                                    </div>
-                                    <span class="tooltiptext">Сохранить счет можно только <br> после подтверждения заказа</span>
-                                </div>
+<!--                                <div class="orders-list-info-about tooltip" v-else>-->
+<!--                                    <div-->
+<!--                                            class="orders-list-info-download disable"-->
+<!--                                    >-->
+<!--                                        Счёт {{check.n}} от {{item.date.substring(0,10)}}-->
+<!--                                    </div>-->
+<!--                                    <span class="tooltiptext">Сохранить счет можно только <br> после подтверждения заказа</span>-->
+<!--                                </div>-->
                             </div>
                             <div class="orders-list-info-elem orders-list-info-doc-wrap"  v-if="!check.doc_status">
                                 <PreloaderLocal small></PreloaderLocal>
@@ -423,6 +423,7 @@ import { ClaimMutations } from '/src/store/claims/mutations'
 
 import { KP_TYPES } from '/src/models/KP'
 import {KPMutations} from "/src/store/kp/mutations";
+import {OrdersMutations} from "/src/store/orders/mutations";
 
 const props = defineProps(
     {
@@ -482,7 +483,13 @@ const loadDocStatus = ()=>{
         let promise_arr = data_filtered.value [active.value].checks?.map(x => !x.doc_status ? store.dispatch(OrdersActions.GET_ORDERS_DOCSTATUS, x.guid) : null)
         // let promise_arr = data_filtered.value [active.value].checks?.map(x => !x.doc_status ? store.dispatch(OrdersActions.GET_ORDERS_DOCSTATUS, '4210d77e-d9d4-11ed-b214-005056bb1249') : null)
         if (promise_arr){
-            Promise.all(promise_arr).finally(()=>{})
+            let upd = '';
+            Promise.all(promise_arr).finally(()=>{
+                data_filtered.value [active.value].checks?.forEach(check => {
+                    upd = upd + (check.doc_status?.NumberUPD?? '');
+                    store.commit(OrdersMutations.SET_ORDERS_UPD, {order: data_filtered.value [active.value], upd })
+                })
+            })
         }
     }
 }

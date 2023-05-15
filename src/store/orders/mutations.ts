@@ -9,6 +9,7 @@ export enum OrdersMutations {
 	SET_ORDERS_DOCSTATUS = "SET_ORDERS_DOCSTATUS",
 	SET_ORDERS_DOCSTATUS_ERROR = "SET_ORDERS_DOCSTATUS_ERROR",
 	SET_ORDERS_BILL_REQUEST = "SET_ORDERS_BILL_REQUEST",
+	SET_ORDERS_UPD = "SET_ORDERS_UPD",
 }
 
 export const mutations: MutationTree<OrdersState> = {
@@ -37,7 +38,7 @@ export const mutations: MutationTree<OrdersState> = {
 	[OrdersMutations.SET_ORDERS_DOCSTATUS_ERROR](state){
 		state.orders.forEach( order => {
 			if (Array.isArray(order.checks) )
-				order.checks.forEach(check => {check.doc_status = {id: '0', StatusSchet: false, StatusSF:false, StatusUPD: false, StatusUPK: false}	})
+				order.checks.forEach(check => { check.doc_status = {id: '0', StatusSchet: false, StatusSF:false, StatusUPD: false, StatusUPK: false} })
 		})
 	},
 	[OrdersMutations.SET_ORDERS_BILL_REQUEST](state, data: GetOrderBillRequestData){
@@ -49,5 +50,9 @@ export const mutations: MutationTree<OrdersState> = {
 					})
 		})
 	},
-	
+	[OrdersMutations.SET_ORDERS_UPD](state, data: { order: Orders, upd: string }){
+		state.orders.forEach(order => {
+			if (order.n === data.order.n) order.upd = data.upd;
+		})
+	}
 }
