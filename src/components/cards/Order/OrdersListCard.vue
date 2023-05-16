@@ -724,14 +724,14 @@ interface TableWidth {
 }
 
 const tableColumnDefault = <TableWidth>{ id: {name: '№', width: 3, unit: '%', min: 10, visible: true, disabled: true},
-    name: {name: 'Заказ', width:10, unit: '%', min: 10, visible: true, disabled: false},
-    date: {name: 'Дата создания', width:15, unit: '%', min: 10, visible: true, disabled: false},
-    partner_name: {name: 'Организация', width:20, unit: '%', min: 10, visible: true, disabled: false},
-    n: {name: 'УПД', width:15, unit: '%', min: 5, visible: true, disabled: false},
-    status: {name: 'Статус', width:10, unit: '%', min: 10, visible: true, disabled: false},
-    delivery_tersm : {name: 'Отгрузка', width:10, unit: '%', min: 10, visible: true, disabled: false},
-    comment: {name: 'Комментарии', width:15, unit: '%', min: 10, visible: true, disabled: false},
-    info: {name: 'Инфо', width:10, unit: '%', min: 10, visible: true, disabled: true}}
+    name: {name: 'Заказ', width:9, unit: '%', min: 10, visible: true, disabled: false},
+    date: {name: 'Дата создания', width:14, unit: '%', min: 10, visible: true, disabled: false},
+    partner_name: {name: 'Организация', width:12, unit: '%', min: 10, visible: true, disabled: false},
+    n: {name: 'УПД', width:6, unit: '%', min: 5, visible: true, disabled: false},
+    status: {name: 'Статус', width:9, unit: '%', min: 10, visible: true, disabled: false},
+    delivery_tersm : {name: 'Отгрузка', width:9, unit: '%', min: 10, visible: true, disabled: false},
+    comment: {name: 'Комментарии', width:26, unit: '%', min: 10, visible: true, disabled: false},
+    info: {name: 'Инфо', width:8, unit: '%', min: 10, visible: true, disabled: true}}
 
 const tableColumn = ref<TableWidth>(_.cloneDeep(tableColumnDefault))
 
