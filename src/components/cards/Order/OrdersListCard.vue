@@ -136,7 +136,7 @@
                      :class="{'delivery_tersm': true, 'active': status !== 'Все' }"
                      :style="`width: ${tableColumn.delivery_tersm.width}${tableColumn.delivery_tersm.unit}`"
                 >
-                    <!--{{ tableColumn.delivery_tersm.name }}  // Теперь это ФАЙЛЫ, но отгрузку оставляем от 16.05.2023 ORG-40 -->ФАЙЛЫ
+                    {{ tableColumn.delivery_tersm.name }}
                     <div class="orders-list-elem-resize" @mousedown="onMouseDown($event, 'delivery_tersm')" ></div>
                 </div>
 

@@ -36,9 +36,11 @@ export const DefaultKP:KP = {
     header: false,        //true,
     headerLogo: 0,
     banner: false,       // true/false баннер
-    bannerSrc: '',        // банер-ресурс в base64
+    bannerSrc: '',      // банер-ресурс в base64
+    bannerId: 0,       
     headerLogoAlign: KP_HEADER_LOGO_ALIGN.LEFT,
     headerText: '',
     as:     'PDF',       //PDF
+    isPortraitOrientation: true,
 }
 
