@@ -18,16 +18,40 @@ export const actions: ActionTree<AuthState, RootState> =  {
 		const timestamp = new Date().getTime()
 		const hash = new Hashids('XYZabc').encode(timestamp)
 
-		const URL = `${api_location}/auth?timestamp=${timestamp}&hash=${hash}`
+		const URL = `${api_location}/api/auth`
 
 		axios(URL, {
 			method:'POST',
 			auth: {
 				password: data.password,
 				username: data.login
-			}})
-			.then(response => console.log(response))
-			.then(json => console.log(json));
+			},
+			data: {
+				timestamp: timestamp,
+				hash: hash
+			}
+		})
+		.then(response => {
+			const data = response.data.response
+
+			if(data.src != null) {
+				// Если есть src делаем редирект с токеном
+				window.open('http://10.68.5.205:3000/login/?token=' + data.token)
+			}
+
+			if (response.data.error === null) {
+				axios.defaults.headers.common.Authorization = `Bearer ${data.token}`
+		 		commit(AuthMutations.SET_AUTH, data.token)
+		 		return Promise.resolve()
+		 	} else {
+		 		commit(AuthMutations.CLEAR_ERROR, response.data.error?.message);
+		 		return Promise.reject('Error')
+		 	}
+		})
+		.catch(error => {
+			commit(AuthMutations.SET_LOGIN_ERROR, error.response.data.error?.message)
+			return Promise.reject('Error')
+		})
 
 		// axios.post<AuthResponse>('/auth', <AuthRequest>data)
 		// 	.then(response => {
