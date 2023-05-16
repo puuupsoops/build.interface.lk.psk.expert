@@ -443,6 +443,7 @@ import { ClaimMutations } from '/src/store/claims/mutations'
 import { KP_TYPES } from '/src/models/KP'
 import {KPMutations} from "/src/store/kp/mutations";
 import {OrdersMutations} from "/src/store/orders/mutations";
+import { bool } from 'yup'
 
 const props = defineProps(
     {
@@ -503,15 +504,16 @@ const loadDocStatus = ()=>{
         // let promise_arr = data_filtered.value [active.value].checks?.map(x => !x.doc_status ? store.dispatch(OrdersActions.GET_ORDERS_DOCSTATUS, '4210d77e-d9d4-11ed-b214-005056bb1249') : null)
         if (promise_arr){
             let upd = '';
-            Promise.all(promise_arr).finally(()=>{
-                data_filtered.value [active.value].checks?.forEach(check => {
-                    console.log(check)
-
-                    if(upd.length > 0){
-                        upd += '/'
-                    }
+            Promise.all(promise_arr).finally(()=> {
+                console.log(data_filtered.value[active.value].checks)
+                data_filtered.value [active.value].checks?.forEach( (check,index) => {
+                    console.log(check, index)
+                    console.log()
                     check.n = check.doc_status?.NumberSchet?.replace(';','')?? '';
                     upd = upd + (check.doc_status?.NumberUPD?.replace(';','')?? '');
+                    if(data_filtered.value[active.value].checks?.[index+1]?.doc_status?.NumberUPD?.length) {
+                        upd += '/'
+                    }
                     store.commit(OrdersMutations.SET_ORDERS_UPD, {order: data_filtered.value [active.value], upd })
                 })
             })
