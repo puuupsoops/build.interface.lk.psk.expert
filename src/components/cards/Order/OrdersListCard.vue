@@ -123,13 +123,7 @@
                     {{tableColumn.partner_name.name}}
                     <div class="orders-list-elem-resize" @mousedown="onMouseDown($event, 'partner_name')" ></div>
                 </div>
-                <div class="orders-list-elem" v-if="tableColumn.n.visible"
-                     :class="{'n': true, 'active' : search.search !=='' && search.id === 2 }"
-                     :style="`width: ${tableColumn.n.width}${tableColumn.n.unit}`"
-                >
-                    <div class="orders-list-elem-center">{{tableColumn.n.name}}</div>
-                    <div class="orders-list-elem-resize" @mousedown="onMouseDown($event, 'n')" ></div>
-                </div>
+
                 <div class="orders-list-elem" v-if="tableColumn.status.visible"
                      :class="{'status': true, 'active': status !== 'Все' }"
                      :style="`width: ${tableColumn.status.width}${tableColumn.status.unit}`"
@@ -137,13 +131,23 @@
                     {{ tableColumn.status.name }}
                     <div class="orders-list-elem-resize" @mousedown="onMouseDown($event, 'status')" ></div>
                 </div>
+
                 <div class="orders-list-elem" v-if="tableColumn.delivery_tersm.visible"
                      :class="{'delivery_tersm': true, 'active': status !== 'Все' }"
                      :style="`width: ${tableColumn.delivery_tersm.width}${tableColumn.delivery_tersm.unit}`"
                 >
-                    {{ tableColumn.delivery_tersm.name }}
+                    <!--{{ tableColumn.delivery_tersm.name }}  // Теперь это ФАЙЛЫ, но отгрузку оставляем от 16.05.2023 ORG-40 -->ФАЙЛЫ
                     <div class="orders-list-elem-resize" @mousedown="onMouseDown($event, 'delivery_tersm')" ></div>
                 </div>
+
+                <div class="orders-list-elem" v-if="tableColumn.n.visible"
+                     :class="{'n': true, 'active' : search.search !=='' && search.id === 2 }"
+                     :style="`width: ${tableColumn.n.width}${tableColumn.n.unit}`"
+                >
+                    <div class="orders-list-elem-center">{{tableColumn.n.name}}</div>
+                    <div class="orders-list-elem-resize" @mousedown="onMouseDown($event, 'n')" ></div>
+                </div>
+
                 <div class="orders-list-elem" v-if="tableColumn.comment.visible"
                      :class="{'comment': true, 'active': status !== 'Все' }"
                      :style="`width: ${tableColumn.comment.width}${tableColumn.comment.unit}`"
@@ -173,21 +177,22 @@
                          :style="`width: ${tableColumn.id.width}${tableColumn.id.unit}`"
                     ><div>{{ key+1 }}</div><div class="table-arrow"></div>
                     </div>
+
                     <div class="orders-list-elem" v-if="tableColumn.name.visible"
                          :class="{'name': true}"
                          :style="`width: ${tableColumn.name.width}${tableColumn.name.unit}`"
                     >{{ item.n }}</div>
+
                     <div class="orders-list-elem" v-if="tableColumn.date.visible"
                          :class="{'date': true}"
                          :style="`width: ${tableColumn.date.width}${tableColumn.date.unit}`"
                     >{{ item.date }}</div>
+
                     <div class="orders-list-elem" v-if="tableColumn.partner_name.visible"
                          :class="{'partner_name': true}"
                          :style="`width: ${tableColumn.partner_name.width}${tableColumn.partner_name.unit}`"
                     >{{ normalizeCompanyName(item.partner_name) }}</div>
-                    <div class="orders-list-elem" v-if="tableColumn.n.visible"
-                         :class="{'n': true}"
-                         :style="`width: ${tableColumn.n.width}${tableColumn.n.unit}`">{{ item.upd }}</div>
+
                     <div class="orders-list-elem" v-if="tableColumn.status.visible"
                          :class="{'status': true}"
                          :style="`width: ${tableColumn.status.width}${tableColumn.status.unit}`"
@@ -201,10 +206,16 @@
 
                         </div>
                     </div>
+
                     <div class="orders-list-elem" v-if="tableColumn.delivery_tersm.visible"
                          :class="{'status': true}"
                          :style="`width: ${tableColumn.delivery_tersm.width}${tableColumn.delivery_tersm.unit}`"
                     >{{ item.delivery_terms ? item.delivery_terms : item.shipment_name }}</div>
+
+                    <div class="orders-list-elem" v-if="tableColumn.n.visible"
+                         :class="{'n': true}"
+                         :style="`width: ${tableColumn.n.width}${tableColumn.n.unit}`">{{ item.upd }}</div>
+
                     <div class="orders-list-elem" v-if="tableColumn.comment.visible"
                          :class="{'comment': true}"
                          :style="`width: ${tableColumn.comment.width}${tableColumn.comment.unit}`"
@@ -264,9 +275,10 @@
                                 class="orders-list-info-row"
                                 v-for="(check, key1) in item.checks"
                                 :key="key1"
+                                style="padding-right: 0px;"
                         >
                             <div class="orders-list-info-elem">{{getStorageName(item.partner_guid, check.organization_id)}}</div>
-                            <div class="orders-list-info-elem">
+                            <div class="orders-list-info-elem" style="margin-right: 18%; width: 17%;">
 
                                 <div class="orders-list-info-about tooltip" v-if="check.doc_status?.StatusSchet">
                                     <div class="orders-list-info-download "
@@ -289,11 +301,11 @@
 <!--                                    <span class="tooltiptext">Сохранить счет можно только <br> после подтверждения заказа</span>-->
 <!--                                </div>-->
                             </div>
-                            <div class="orders-list-info-elem">{{ check.doc_status?.NumberUPD?.replace(';','') ?? '' }}</div>
+                            
                             <div class="orders-list-info-elem orders-list-info-doc-wrap"  v-if="!check.doc_status">
                                 <PreloaderLocal small></PreloaderLocal>
                             </div>
-                            <div class="orders-list-info-elem orders-list-info-doc-wrap" style="width: 15%;" v-else>
+                            <div class="orders-list-info-elem orders-list-info-doc-wrap" style="width: 13%;" v-else>
 
                                 <a
                                   v-if="check.doc_status?.StatusSchet "
@@ -325,7 +337,13 @@
                                         title="Универсальный корректировочный документ">
                                 </a>
                             </div>
-                            <div class="orders-list-info-elem" style="display: flex; width: 15%;">
+
+                            <div class="orders-list-info-elem" style="justify-content: flex-start; padding-left: 36px;">{{ check.doc_status?.NumberUPD?.replace(';','') ?? '' }}</div>
+                            <div class="orders-list-info-elem"></div>
+                            <div class="orders-list-info-elem"></div>
+                            <div class="orders-list-info-elem"></div>
+                            <div class="orders-list-info-elem"></div>
+                            <div class="orders-list-info-elem" style="display: flex; width: 15%; justify-content: flex-end;">
 
                                 {{ OrdersSatusCodeClass[check.status] ? OrdersSatusCodeClass[check.status].name : ''}}
                                 <div
@@ -337,7 +355,7 @@
 
                                 </div>
                             </div>
-                            <div class="orders-list-info-elem">
+                            <div class="orders-list-info-elem" style="display: flex; flex-direction: column; justify-content: flex-end; width: 10%;">
                                 <div class="orders-list-elem-request-bill"
                                      v-if="check.status !== 10">
 
