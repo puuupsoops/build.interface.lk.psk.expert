@@ -105,7 +105,7 @@
 							:key="id"
 							>
 						<!--<img class="company-head-list-img" src="/src/assets/img/icon/doc.svg" alt="">-->
-						<svgDoc class="company-head-list-img"/>
+						<svgDoc class="company-head-list-img" style="width: 20px; height: 21px;" />
 						<a class="company-head-list-link" href="#CompanyCalendar" @click="docDate = document.expires">{{document.debt.toLocaleString('ru').replace(',','.')}} ₽ до {{document.expires}} / УПД {{ document.number }}</a>
 					</li>
 				</ul>
