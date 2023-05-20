@@ -111,26 +111,19 @@ const loginError = computed({
     set: () => store.commit(AuthMutations.CLEAR_LOGIN_ERROR)
 })
 
-const onLogin = async () => {
+const onLogin = () => {
     loader.value=true
-    await store.dispatch(AuthActions.LOGIN, authData.value)
-            .finally(() => {
-                if (saved.value) store.commit(AuthMutations.SET_SAVE_AUTH)
-                store.commit(AuthMutations.SET_AUTH_LOGIN,authData.value.login)
-                Promise.all([
+    store.dispatch(AuthActions.LOGIN, authData.value)
+            .finally(async () => {
+                if (saved.value) await store.commit(AuthMutations.SET_SAVE_AUTH)
+                await store.commit(AuthMutations.SET_AUTH_LOGIN,authData.value.login)
+                await Promise.all([
                     store.dispatch(CompanyActions.GET_COMPANYS),
                     store.dispatch(ProfileActions.GET_PROFILE)
                 ])
-                .catch(()=>{
-                    authData.value.password = ''
-                    setTimeout(() => {loader.value=false}, 3000)
-                })
-                .finally(async () => {
-                    loader.value=false
-                    await store.dispatch(wsStoreActions.AUTH_WS)
-                    await router.push('/')
-
-                })
+                loader.value=false
+                await store.dispatch(wsStoreActions.AUTH_WS)
+                await router.push('/')
             })
             .catch(() => {
                 authData.value.password = ''
