@@ -126,9 +126,9 @@ export const wsStore: Module<wsRootState, RootState> = {
     },
   },
   actions: {
-    [wsStoreActions.AUTH_WS] ({state}){
+    async [wsStoreActions.AUTH_WS] ({state}){
       const token = localStorage.getItem('id_token')
-      if (state.socket.isConnected && token) globalProperties.$socket.send(JSON.stringify({token}));
+      if (state.socket.isConnected && token) await globalProperties.send(JSON.stringify({token}));
     }
     
   }
