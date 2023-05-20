@@ -13,14 +13,14 @@ export enum AuthActions {
 }
 
 export const actions: ActionTree<AuthState, RootState> =  {
-	[AuthActions.LOGIN] ({ commit }, data: AuthRequest) {
+	async [AuthActions.LOGIN] ({ commit }, data: AuthRequest) {
 		commit(AuthMutations.CLEAR_LOGIN_ERROR)
 		const timestamp = new Date().getTime()
 		const hash = new Hashids('XYZabc').encode(timestamp)
 
 		const URL = `${api_location}/api/auth`
 
-		axios(URL, {
+		await  axios(URL, {
 			method:'POST',
 			auth: {
 				password: data.password,
@@ -41,12 +41,12 @@ export const actions: ActionTree<AuthState, RootState> =  {
 
 			if (response.data.error === null) {
 				axios.defaults.headers.common.Authorization = `Bearer ${data.token}`
-		 		commit(AuthMutations.SET_AUTH, data.token)
-		 		return Promise.resolve()
-		 	} else {
-		 		commit(AuthMutations.CLEAR_ERROR, response.data.error?.message);
-		 		return Promise.reject('Error')
-		 	}
+				commit(AuthMutations.SET_AUTH, data.token)
+				return Promise.resolve()
+			} else {
+				commit(AuthMutations.CLEAR_ERROR, response.data.error?.message);
+				return Promise.reject('Error')
+			}
 		})
 		.catch(error => {
 			commit(AuthMutations.SET_LOGIN_ERROR, error.response.data.error?.message)
