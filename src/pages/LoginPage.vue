@@ -1,60 +1,60 @@
 <template>
 <div>
 
-	<div class="authorization" v-if="!isAuth">
-		<div class="authorization-body">
-			<div class="authorization-logo">
-				<img src="/src/assets/img/login/logo.png" alt="логотип">
-			</div>
-			<Form @submit="onLogin" class="authorization-form">
+    <div class="authorization" v-if="!isAuth">
+        <div class="authorization-body">
+            <div class="authorization-logo">
+                <img src="/src/assets/img/login/logo.png" alt="логотип">
+            </div>
+            <Form @submit="onLogin" class="authorization-form">
 
-				<Field 
-					as="input"
-					v-model="authData.login"
-					class="authorization-input"
-					name="Login"
-					placeholder="Логин"
-					autocomplete="off"
-					rules="required|minLength:3"
-				/>
-				<ErrorMessage name="Login" />
-				<Field
-					as="input"
-					type="password"
-					v-model="authData.password"
-					class="authorization-input"
-					name="password"
-					placeholder="Пароль"
-					autocomplete="off"
-					rules="required|minLength:3"
-				/>
-			
-				<label class="authorization-check">
-					<input 
-						v-model="saved"
-						class="check-input"
-						type="checkbox"
-						name="remember"
-					>
-					<span class="checkbox-custom"></span>
-					<span class="check-txt">Запомнить меня</span>
-				</label>
+                <Field
+                    as="input"
+                    v-model="authData.login"
+                    class="authorization-input"
+                    name="Login"
+                    placeholder="Логин"
+                    autocomplete="off"
+                    rules="required|minLength:3"
+                />
+                <ErrorMessage name="Login" />
+                <Field
+                    as="input"
+                    type="password"
+                    v-model="authData.password"
+                    class="authorization-input"
+                    name="password"
+                    placeholder="Пароль"
+                    autocomplete="off"
+                    rules="required|minLength:3"
+                />
 
-				<button
-					class="authorization-btn"
-					type="submit"
-					:disabled="loader"
-				>Войти</button>
-			</Form>
-		</div>
+                <label class="authorization-check">
+                    <input
+                        v-model="saved"
+                        class="check-input"
+                        type="checkbox"
+                        name="remember"
+                    >
+                    <span class="checkbox-custom"></span>
+                    <span class="check-txt">Запомнить меня</span>
+                </label>
 
-		<div class="authorization-bottom">
-			Produced by Expert Workwear
-		</div>
-	</div>
+                <button
+                    class="authorization-btn"
+                    type="submit"
+                    :disabled="loader"
+                >Войти</button>
+            </Form>
+        </div>
+
+        <div class="authorization-bottom">
+            Produced by Expert Workwear
+        </div>
+    </div>
 
 
-	<SnackBar v-model="loginError" :message="loginErrorMsg"></SnackBar>
+    <SnackBar v-model="loginError" :message="loginErrorMsg"></SnackBar>
 </div>
 </template>
 
@@ -73,72 +73,69 @@ import { CompanyActions } from '/src/store/company/actions'
 import { ProfileActions } from '../store/profile/actions'
 import { wsStoreActions } from '../plugins/wsStore'
 
-	
+
 const store = useStore()
 const router = useRouter()
 const authData = ref<AuthRequest>({
-	login: '',
-	password: ''
+    login: '',
+    password: ''
 })
 
 const saved = ref<boolean>(false)
 
 const loader = computed<boolean>({
-	get: () => store.getters.getLoader,
-	set: (val: boolean) => store.commit(KeysMutations.SET_LOADER, val)
+    get: () => store.getters.getLoader,
+    set: (val: boolean) => store.commit(KeysMutations.SET_LOADER, val)
 })
 const isAuth = computed(() => store.getters.isAuthenticated)
 const loginErrorMsg = computed(() => store.getters.getLoginErrorMsg)
 
 defineRule('required', (value: string) => {
-	if (!value || !value.length) { 
-		return 'Обязательное поле'	
-		}
-		return true	
+    if (!value || !value.length) {
+        return 'Обязательное поле'
+        }
+        return true
 })
 defineRule('minLength', (value: string, [limit]: number[]) => {
-	if (!value || !value.length) {
-		return true
-	}
-	if (value.length < limit) {
-		return `Минимум ${limit} символа`
-	}
-	return true
+    if (!value || !value.length) {
+        return true
+    }
+    if (value.length < limit) {
+        return `Минимум ${limit} символа`
+    }
+    return true
 })
 
-let loginError = computed({
-	get: () => store.getters.getLoginError,
-	set: () => store.commit(AuthMutations.CLEAR_LOGIN_ERROR)
+const loginError = computed({
+    get: () => store.getters.getLoginError,
+    set: () => store.commit(AuthMutations.CLEAR_LOGIN_ERROR)
 })
 
-let onLogin = () => {
-	loader.value=true
-	setTimeout(() => {
-		store.dispatch(AuthActions.LOGIN, authData.value)
-				.then(() => {
-					if (saved.value) store.commit(AuthMutations.SET_SAVE_AUTH)
-					store.commit(AuthMutations.SET_AUTH_LOGIN,authData.value.login)
-					Promise.all([
-						store.dispatch(CompanyActions.GET_COMPANYS),
-						store.dispatch(ProfileActions.GET_PROFILE)
-					])
-					.catch(()=>{
-						authData.value.password = ''
-						setTimeout(() => {loader.value=false}, 3000)
-					})
-					.finally(() => {
-						loader.value=false
-						store.dispatch(wsStoreActions.AUTH_WS)
-						router.push({name: 'Main'})
-						
-					})		
-				})
-				.catch(() => {
-					authData.value.password = ''
-					setTimeout(() => {loader.value=false}, 3000)
-				})
-			}, 500)
-	
+const onLogin = async () => {
+    loader.value=true
+    await store.dispatch(AuthActions.LOGIN, authData.value)
+            .finally(() => {
+                if (saved.value) store.commit(AuthMutations.SET_SAVE_AUTH)
+                store.commit(AuthMutations.SET_AUTH_LOGIN,authData.value.login)
+                Promise.all([
+                    store.dispatch(CompanyActions.GET_COMPANYS),
+                    store.dispatch(ProfileActions.GET_PROFILE)
+                ])
+                .catch(()=>{
+                    authData.value.password = ''
+                    setTimeout(() => {loader.value=false}, 3000)
+                })
+                .finally(async () => {
+                    loader.value=false
+                    await store.dispatch(wsStoreActions.AUTH_WS)
+                    await router.push('/')
+
+                })
+            })
+            .catch(() => {
+                authData.value.password = ''
+                setTimeout(() => {loader.value=false}, 3000)
+            })
 }
 
 
