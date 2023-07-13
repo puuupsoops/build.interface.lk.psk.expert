@@ -93,12 +93,22 @@
 				</div>
 			</div>
 		
-			<div class="company-head-info">			
-				<div class="company-head-info-row">
+			<div class="company-head-info" style="display: flex; justify-content: space-between;">			
+				<div 
+					:class="'company-head-info-row' + (paySwitcher ? ' passive-border' : ' active-border')"
+					@click="paySwitcher = false"
+				>
 					Платежи
 				</div>
+				<div
+					:class="'company-head-info-row' + (!paySwitcher ? ' passive-border' : ' active-border')"
+					@click="paySwitcher = true"
+				>
+					Назначение платежа
+				</div>
 			</div>
-			<div class="company-head-list-content" >
+			<div v-if="!paySwitcher" 
+				class="company-head-list-content" >
 				<ul class="company-head-list" v-if="data.documents">
 					<li class="company-head-list-elem"
 							v-for="(document, id) in data.documents"
@@ -109,6 +119,22 @@
 						<a class="company-head-list-link" href="#CompanyCalendar" @click="docDate = document.expires">{{document.debt.toLocaleString('ru').replace(',','.')}} ₽ до {{document.expires}} / УПД {{ document.number }}</a>
 					</li>
 				</ul>
+			</div>
+			<div v-else 
+				 class="company-head-list-content" >
+				<span>Укажите сумму платежа</span>
+				<div style="padding: 10px 0px; display: flex; justify-content: flex-start; align-items: baseline;">
+					<AmountInput
+						v-model="amount"
+						:step="1" 
+						:min="0"
+						:style="'max-width: 100%'"/><div style="padding: 0px 5px;">руб.</div><AmountInput v-model="pennies" :min="0" :max="99" /> <div style="padding: 0px 5px;">коп.</div>
+				</div>
+				<div style="display: flex; justify-content: unset; flex-direction: column; flex-wrap: wrap;">
+					<textarea class="order-comment-textarea" :disabled="(paymentText === '' ? true : false)">{{ paymentText }}</textarea>
+					<input type="hidden" id="testing-code" :value="paymentText">
+					<span style="text-align: center; padding: 5px 0px;" @click="copyText()">Скопировать</span>
+				</div>
 			</div>
 		
 		</div>
@@ -182,10 +208,12 @@
 </template>
 
 <script setup lang="ts">
-import { inject, PropType, ref } from "vue"
+import { inject, PropType, ref, watch } from "vue"
 import { StorageCompany } from "/src/models/Partner";
 import svgDoc from '/src/assets/img/icon/doc.svg'
-
+import { number } from "yup";
+import { toNumber } from "lodash";
+import AmountInput from '/src/components/ui/AmountInput.vue'
 
 const props = defineProps({
 				data:{
@@ -218,11 +246,67 @@ const emits = defineEmits(['onClick'])
 			metering = 2
 		}
 		return dayMeterings[metering]
-	}
-	
+	}	
 
+const paySwitcher = ref(false);
+const amount = ref(0); // рубли
+const pennies = ref(0); // копейки
+const paymentText = ref(''); // текст для оплаты
+
+const currentDate = new Date().toLocaleDateString('ru'); // дата
+const documentNumber = props.data?.contract; // номер договора
+
+const changeText = function() { // для изменения текста
+	return `Оплата по договору № ${documentNumber} от ${currentDate}, за спецодежду на сумму ${amount.value.toLocaleString('ru')} рублей ${pennies.value} коп в т.ч. НДС 20% ${percent()}`;
+}
+
+const castFloat = function(f:number,p:number){ // преобразуем рубли и копейки, для подсчета процента
+	if(p < 10)
+		return toNumber( f + toNumber('0.0' + p.toString()) );
+
+	return toNumber(f + '.' + p);
+}
+
+const percent = function(){ // возвращает процент
+	return (castFloat(amount.value, pennies.value) * 0.20 ).toFixed(2);
+}
+
+const copyText = function(){
+	let testingCodeToCopy = document.querySelector('#testing-code');
+    testingCodeToCopy?.setAttribute('type', 'text');
+    testingCodeToCopy?.select();
+	document.execCommand('copy');
+	testingCodeToCopy?.setAttribute('type', 'hidden')
+    window?.getSelection()?.removeAllRanges()
+	alert('Текст скопирован в буфер обмена.');
+}
+
+watch(amount, async (n, o) => {
+	paymentText.value = changeText();
+});
+
+watch(pennies, async (n, o) => {
+	paymentText.value = changeText();
+});
 
 </script>
 
 <style>
+.active-border {
+	border: 2px solid #FF9900; 
+	border-radius: 20px; 
+	padding: 2px 10px;
+}
+
+.passive-border {
+	border: 2px solid rgb(255, 153, 0, 0); 
+	border-radius: 20px; 
+	padding: 2px 10px;
+}
+
+.passive-border:hover {
+	border: 2px solid rgb(255, 153, 0, 0.3); 
+	border-radius: 20px; 
+	padding: 2px 10px;
+}
 </style>
