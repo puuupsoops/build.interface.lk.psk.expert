@@ -256,8 +256,12 @@ const paymentText = ref(''); // текст для оплаты
 const currentDate = new Date().toLocaleDateString('ru'); // дата
 const documentNumber = props.data?.contract; // номер договора
 
+const guidNumber = 'f59a4d06-2f35-11e7-8fdb-0025907c0298'; // guid номер "Фабрика рабочей обуви"
+const guid = props.data?.guid ?? ""; // Номер guid 
+const guidText = guid < guidNumber ? "спецодежду" : "спецобувь"; // В зависимости от номера guid, выдает текст либо "спецодежда", либо "спецобувь"
+
 const changeText = function() { // для изменения текста
-	return `Оплата по договору № ${documentNumber} от ${currentDate}, за спецодежду на сумму ${amount.value.toLocaleString('ru')} рублей ${pennies.value} коп в т.ч. НДС 20% ${percent()}`;
+	return `Оплата по договору № ${documentNumber} от ${currentDate}, за ${guidText} на сумму ${amount.value.toLocaleString('ru')} рублей ${pennies.value} коп в т.ч. НДС 20% ${percent()}`;
 }
 
 const castFloat = function(f:number,p:number){ // преобразуем рубли и копейки, для подсчета процента
