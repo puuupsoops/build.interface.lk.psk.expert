@@ -284,7 +284,7 @@
                                     <div class="orders-list-info-download "
                                          @click="downloadBill(check.guid)"
                                     >
-                                        <span> Счёт {{getStorageName(item.partner_guid, check.organization_id)}}{{ check.n }} от {{item.date.substring(0,10)}} </span>
+                                        <span> Счёт {{ check.n }} от {{item.date.substring(0,10)}} </span>
                                         <preloader-local
                                                 v-if="loading_bill.includes(check.guid)"
                                                 small
