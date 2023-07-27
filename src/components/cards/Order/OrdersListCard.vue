@@ -219,7 +219,7 @@
                     <div class="orders-list-elem" v-if="tableColumn.comment.visible"
                          :class="{'comment': true}"
                          :style="`width: ${tableColumn.comment.width}${tableColumn.comment.unit}`"
-                    >{{ item.comment }}</div>
+                    >{{ item.comment == '' ? '' : item.comment.replace(new RegExp('PKM [0-9]+.[0-9]+, '), '') }}</div>
 
                     <div class="orders-list-elem" v-if="tableColumn.info.visible"
                          :class="{'info': true}"

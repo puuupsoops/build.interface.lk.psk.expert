@@ -46,6 +46,7 @@ export const getters: GetterTree<OrderState, RootState> = {
 					quantity: c.count,
 				})),
 			})),
+			bags: state.order.bags
 		}
 		return res
 	},

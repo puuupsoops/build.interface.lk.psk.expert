@@ -1,4 +1,4 @@
-import { OrderStateDelivery } from "../store/order/types";
+import { OrderStateDelivery, OrderBagsRecord } from "../store/order/types";
 import { ResponseError } from "./Error";
 
 // Input Data
@@ -24,6 +24,7 @@ export interface Order {
 	partner_id:          string;
 	position:            Position[];
 	position_presail:    Position[];
+	bags: 				 OrderBagsRecord;
 }
 
 export interface Position {

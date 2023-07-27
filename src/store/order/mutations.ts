@@ -1,6 +1,6 @@
 import { NewOrder } from "/src/models/Order";
 import { MutationTree } from "vuex";
-import { DefaultNewOrder, DefaultOrder, OrderState, OrderStateDelivery, OrderStateOrder, OrderStatePosition, OrderStatePositionOffer } from "./types";
+import { DefaultNewOrder, DefaultOrder, OrderState, OrderStateDelivery, OrderStateOrder, OrderStatePosition, OrderStatePositionOffer, OrderBagsRecord } from "./types";
 import {orderCalc} from "/src/store/order/helper/orderCalc";
 
 export enum OrderMutations {
@@ -30,6 +30,7 @@ export enum OrderMutations {
 	SET_ORDER_REQUEST_SERT = "SET_ORDER_REQUEST_SERT",
 	SET_ORDER_COMMENT = "SET_ORDER_COMMENT",
 	SET_ORDER_DELIVERY = "SET_ORDER_DELIVERY",
+	ADD_BAGS_RECORD = "ADD_BAGS_RECORD" // посчитать мешки
 }
 
 export const mutations: MutationTree<OrderState> = {
@@ -273,5 +274,8 @@ export const mutations: MutationTree<OrderState> = {
 	},
 	[OrderMutations.SET_ORDER_DELIVERY] (state, data: OrderStateDelivery){
 		state.order.delivery = data
+	},
+	[OrderMutations.ADD_BAGS_RECORD] (state, data: OrderBagsRecord){
+		state.order.bags = Object.assign(state.order.bags, data)
 	}
 }

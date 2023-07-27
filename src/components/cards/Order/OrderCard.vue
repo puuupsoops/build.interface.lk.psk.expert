@@ -61,6 +61,10 @@
 					
 				</div>
 			</div>
+			<div style="padding-left: 40px;"> <button @click="foo">Мешки посчитать</button> Коэфициент: <b>{{ bags.toFixed(1) }}</b> </div>
+			<div class="content-heading-info-elem" style="padding-left: 40px;">
+				<span class="content-heading-info-text">Рекомендуемое количество мешков: </span><span class="content-heading-info-value">{{bags == 0 ? '1' : Math.ceil(bags).toString()}} шт.</span>
+			</div>
 			<div class="order-list-delivery">
 				
 
@@ -289,7 +293,7 @@
 	import { DeliveryCode, DeliveryName } from '/src/store/shipments/types'
 	import { OrderMutations } from '/src/store/order/mutations'
 	import { OrderActions } from '/src/store/order/actions'
-	import { OrderStateDelivery, OrderStateOrder, OrderStatePosition } from '/src/store/order/types'
+	import { OrderStateDelivery, OrderStateOrder, OrderStatePosition, OrderBagsRecord } from '/src/store/order/types'
 	import { useRouter } from 'vue-router'
 	import { SelectInputData, DateFromRuLocale } from '/src/models/Components'
 
@@ -345,8 +349,9 @@ import { ShipmentsActions } from '/src/store/shipments/actions'
 
 	const storagesList = computed (() => store.getters.getOrderStorages)
 //methods
-	const updOrder = () => {store.commit(OrderMutations.CALC_ORDER)	}
+	const updOrder = () => {store.commit(OrderMutations.CALC_ORDER); foo();}
 	const removePosition = (presail: boolean, guid: string) => {
+		foo();
 		deliveryStorage.value = ''
 		if (presail)
 			store.dispatch(OrderActions.REMOVE_POSITION_PRESAIL, guid)
@@ -355,6 +360,7 @@ import { ShipmentsActions } from '/src/store/shipments/actions'
 
 	}
 	const removeCharacteristic = (presail: boolean, CHAR: OrderStatePosition) => {
+		foo();
 		deliveryStorage.value = ''
 		if (presail)
 			store.dispatch(OrderActions.REMOVE_CHARACTERISTIC_PRESAIL, CHAR)
@@ -384,6 +390,15 @@ import { ShipmentsActions } from '/src/store/shipments/actions'
 			valid=false
 		}
 	
+	//коммитим комментарий и количество пакетов
+	store.commit(OrderMutations.SET_ORDER_COMMENT, comment.value); //`PKM ${getCountBags()}, ${}`
+	foo();
+	store.commit(OrderMutations.ADD_BAGS_RECORD, <OrderBagsRecord>{
+		wear: 'PKM ' + wearBags.value.toFixed(1), 
+		wear_pre: 'PKM ' + wearBagsPre.value.toFixed(1),
+		shoes: 'PKM ' + shoesBags.value.toFixed(1),
+		shoes_pre: 'PKM ' + shoesBagsPre.value.toFixed(1),
+	});
 		if (valid){
 			let delivery = <OrderStateDelivery>{
 					address: selectDelivery.value == 0 ? '' : store.getters.getShipmentsAddress[deliveryAddress.value].address,
@@ -427,7 +442,13 @@ import { ShipmentsActions } from '/src/store/shipments/actions'
 	onMounted( () => {
 		if (props.data.comment.length > 0) {
 			showComment.value = true
-			comment.value = props.data.comment
+
+			if(props.data.comment == ''){
+				comment.value = props.data.comment
+			}else{
+				comment.value = props.data.comment.replace(new RegExp('PKM [0-9]+.[0-9]+, '), '')
+			}
+			
 		}
 		if (store.getters.getShipmentsAddress.length == 0){
 			loadingAddress.value=true
@@ -464,6 +485,119 @@ watch(draftShowModal, ()=>{
 	if (draftShowModal.value) draftName.value = 'Черновик #' + Number(store.getters.getOrderDraftCount+1)
 })
 
+// мешки
+const bags = ref(0);
+const shoesBags = ref(0); // Для отдельного коэффициента мешков обуви
+const wearBags = ref(0); // Для отдельного коэффициента мешков одежды
+const shoesBagsPre = ref(0); // Для отдельного коэффициента мешков обуви - предзаказ
+const wearBagsPre = ref(0); // Для отдельного коэффициента мешков одежды - предзаказ
 
+const foo = function () { getCountBags() }
+
+const getCountBags = function () {
+	bags.value = 0;
+
+	shoesBags.value = 0;
+	wearBags.value = 0;
+	shoesBagsPre.value = 0;
+	wearBagsPre.value = 0;
+
+	let arPosition = store.getters.getOrder.position;
+	let arPrePosition = store.getters.getOrder.position_presail;
+
+	arPosition.forEach(function (value: any, index: number) {
+		switch (value.product.TYPE) {
+			case 'spetsodezhda-zima': // Зимний костюм / Костюмы для сварщиков/
+					bags.value += 0.2 * value.count;
+					wearBags.value += 0.2 * value.count;
+				break;
+			case 'spetsodezhda': // Остальная одежда
+					bags.value += 0.2 * value.count;
+					wearBags.value += 0.2 * value.count;
+				break;
+			case 'other-zima': // Зимняя куртка / Брюки / ПК / Теплый жилет
+					bags.value += 0.1 * value.count;
+					wearBags.value += 0.1 * value.count;
+				break;
+			case 'spetsodezhda-leto': // Летний костюм
+					bags.value += 0.05 * value.count;
+					wearBags.value += 0.05 * value.count;
+				break;
+			case 'other-leto': // Летная куртка / Брюки / ПК / Халаты
+					bags.value += 0.025 * value.count;
+					wearBags.value += 0.025 * value.count;
+				break;
+			case 'obuv-rabochaya': // Обувь
+					bags.value += 0.05 * value.count;
+					shoesBags.value += 0.05 * value.count;
+				break;
+			case 'zhilet': // Жилеты
+					bags.value += 0.01 * value.count;
+					wearBags.value += 0.01 * value.count;
+				break;
+			case 'sap': // САП - обувь
+					bags.value += 0.083 * value.count;
+					shoesBags.value += 0.083 * value.count;
+				break;
+			default: // остальное
+					bags.value += 0.08 * value.count;
+					wearBags.value += 0.08 * value.count; // в одежду
+				break;
+		}
+		console.log(value.count)
+		console.log(value.product.TYPE)
+	});
+
+	arPrePosition.forEach(function (value: any, index: number) {
+		switch (value.product.TYPE) {
+			case 'spetsodezhda-zima': // Зимний костюм / Костюмы для сварщиков/
+					bags.value += 0.2 * value.count;
+					wearBags.value += 0.2 * value.count;
+				break;
+			case 'spetsodezhda': // Остальная одежда
+					bags.value += 0.2 * value.count;
+					wearBagsPre.value += 0.2 * value.count;
+				break;
+			case 'other-zima': // Зимняя куртка / Брюки / ПК / Теплый жилет
+					bags.value += 0.1 * value.count;
+					wearBagsPre.value += 0.1 * value.count;
+				break;
+			case 'spetsodezhda-leto': // Летний костюм
+					bags.value += 0.05 * value.count;
+					wearBagsPre.value += 0.05 * value.count;
+				break;
+			case 'other-leto': // Летная куртка / Брюки / ПК / Халаты
+					bags.value += 0.025 * value.count;
+					wearBagsPre.value += 0.025 * value.count;
+				break;
+			case 'obuv-rabochaya': // Обувь
+					bags.value += 0.05 * value.count;
+					shoesBagsPre.value += 0.05 * value.count;
+				break;
+			case 'zhilet': // Жилеты
+					bags.value += 0.01 * value.count;
+					wearBagsPre.value += 0.01 * value.count;
+				break;
+			case 'sap': // САП - обувь
+					bags.value += 0.083 * value.count;
+					shoesBagsPre.value += 0.083 * value.count;
+				break;
+			default: // остальное
+					bags.value += 0.08 * value.count;
+					wearBagsPre.value += 0.08 * value.count; // в одежду
+				break;
+		}
+		//console.log(value.count)
+		//console.log(value.product.TYPE)
+	});
+
+	console.log('all:',bags.value)
+	console.log('wear:',wearBags.value)
+	console.log('wear-pre:',wearBagsPre.value)
+	console.log('shoes:',shoesBags.value)
+	console.log('shoes-pre:',shoesBagsPre.value)
+
+	return bags.value.toFixed(1)
+}
 </script>
 

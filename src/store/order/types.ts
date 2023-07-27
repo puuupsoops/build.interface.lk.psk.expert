@@ -1,3 +1,4 @@
+import { string } from "yup";
 import { NewOrder, Order, Position } from "/src/models/Order";
 import { Offer, Product } from "/src/models/Product";
 
@@ -31,6 +32,14 @@ export interface OrderStateOrder {
 	request_certificate:      boolean;
 	delivery:                 OrderStateDelivery;
 	name?:                    string; // нужно для имени черновика
+	bags?:					  OrderBagsRecord; // информация о мешках
+}
+
+export interface OrderBagsRecord { // Хранит коэффициенты мешков для одежды, передается на сервер при заказе или редактировании заказа
+	wear:		string;
+	wear_pre:	string;
+	shoes:		string;
+	shoes_pre:	string;
 }
 
 export interface OrderStatePosition {
@@ -81,6 +90,12 @@ export const DefaultOrder: OrderStateOrder = {
 		bill_to: ''
 	},
 	request_certificate: false,
+	bags: {
+		wear: '',
+		shoes_pre: '',
+		shoes: '',
+		wear_pre: ''
+	}
 }
 
 
