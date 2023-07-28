@@ -50,6 +50,7 @@ export interface OrderStatePosition {
 	total?:          number;
 	total_discount?: number;
 	count?:          number;
+	type:			 string; // для подсчета количества рекомендуемых мешков
 }
 //ProductOffersOrderCard возвращает тип
 export interface OrderStatePositionOffer extends Offer {

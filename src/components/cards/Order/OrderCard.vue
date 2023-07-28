@@ -369,6 +369,17 @@ import { ShipmentsActions } from '/src/store/shipments/actions'
 	}
 	const onClick = () => {
 		let valid = true
+
+		//коммитим комментарий и количество пакетов
+		
+		foo();
+		store.commit(OrderMutations.ADD_BAGS_RECORD, <OrderBagsRecord>{
+			wear: 'PKM ' + wearBags.value.toFixed(1), 
+			wear_pre: 'PKM ' + wearBagsPre.value.toFixed(1),
+			shoes: 'PKM ' + shoesBags.value.toFixed(1),
+			shoes_pre: 'PKM ' + shoesBagsPre.value.toFixed(1),
+		});
+
 		if (!showComment.value)	store.commit(OrderMutations.SET_ORDER_COMMENT, '')
 		if (props.modelValue == '') {
 			error.value = true;
@@ -389,16 +400,9 @@ import { ShipmentsActions } from '/src/store/shipments/actions'
 			setTimeout(() => {deliveryStorageError.value=false;}, 5000);
 			valid=false
 		}
-	
-	//коммитим комментарий и количество пакетов
-	store.commit(OrderMutations.SET_ORDER_COMMENT, comment.value); //`PKM ${getCountBags()}, ${}`
-	foo();
-	store.commit(OrderMutations.ADD_BAGS_RECORD, <OrderBagsRecord>{
-		wear: 'PKM ' + wearBags.value.toFixed(1), 
-		wear_pre: 'PKM ' + wearBagsPre.value.toFixed(1),
-		shoes: 'PKM ' + shoesBags.value.toFixed(1),
-		shoes_pre: 'PKM ' + shoesBagsPre.value.toFixed(1),
-	});
+
+		store.commit(OrderMutations.SET_ORDER_COMMENT, comment.value); //`PKM ${getCountBags()}, ${}`
+
 		if (valid){
 			let delivery = <OrderStateDelivery>{
 					address: selectDelivery.value == 0 ? '' : store.getters.getShipmentsAddress[deliveryAddress.value].address,

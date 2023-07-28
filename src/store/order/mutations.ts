@@ -81,7 +81,8 @@ export const mutations: MutationTree<OrderState> = {
 							guid: pos.guid,
 							article: pos.article,
 							product: pos.product,
-							characteristics: []
+							characteristics: [],
+							type: pos.type
 						}
 						new_pos.characteristics.push( Object.assign({}, char))
 						new_pos.characteristics[0].count = presail_count
@@ -182,7 +183,7 @@ export const mutations: MutationTree<OrderState> = {
 					
 					total_discount = total_discount + total_price
 					return  <OrderStatePosition>{
-						product:{ NAME: x.name, PRICE: 0},
+						product:{ NAME: x.name, PRICE: 0, TYPE: x.type},
 						count: total_count, 
 						total: total_price,
 						guid: x.guid,
@@ -214,7 +215,7 @@ export const mutations: MutationTree<OrderState> = {
 					
 					total_presail_discount = total_presail_discount + total_price
 					return  <OrderStatePosition>{
-						product:{ NAME: x.name, PRICE: 0},
+						product:{ NAME: x.name, PRICE: 0, TYPE: x.type},
 						count: total_count, 
 						total: total_price,
 						guid: x.guid,
