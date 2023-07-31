@@ -110,13 +110,16 @@
 			<div v-if="!paySwitcher" 
 				class="company-head-list-content" >
 				<ul class="company-head-list" v-if="data.documents">
-					<li class="company-head-list-elem"
+					<li style="align-items: center;" class="company-head-list-elem"
 							v-for="(document, id) in data.documents"
 							:key="id"
 							>
 						<!--<img class="company-head-list-img" src="/src/assets/img/icon/doc.svg" alt="">-->
 						<svgDoc class="company-head-list-img" style="width: 20px; height: 21px;" />
-						<a class="company-head-list-link" href="#CompanyCalendar" @click="docDate = document.expires">{{document.debt.toLocaleString('ru').replace(',','.')}} ₽ до {{document.expires}} / УПД {{ document.number }}</a>
+						<a :style="( Date.parse(document.expires_date) > new Date().getTime() ) ? '' : 'background-color: #B9342D; color: white;'" 
+							class="company-head-list-link" 
+							@click="toPaymentForm(document.debt,document.expires_date)"
+							>{{document.debt.toLocaleString('ru').replace(',','.')}} ₽ до {{document.expires}} / УПД {{ document.number }}</a>
 					</li>
 				</ul>
 			</div>
@@ -260,7 +263,21 @@ const guidNumber = 'f59a4d06-2f35-11e7-8fdb-0025907c0298'; // guid номер "�
 const guid = props.data?.guid ?? ""; // Номер guid 
 const guidText = guid < guidNumber ? "спецодежду" : "спецобувь"; // В зависимости от номера guid, выдает текст либо "спецодежда", либо "спецобувь"
 
+const toPaymentForm = function(debt:number, date: Date){
+	//href="#CompanyCalendar" 
+	//@click = docDate = document.expires
 
+	//берем дробную часть
+	let arr = (""+debt).split(".");
+	if(arr[1]){
+		pennies.value = Number(arr[1])
+	}else{
+		pennies.value = 0;
+	}
+
+	amount.value = Math.trunc(debt)
+	paySwitcher.value = true;
+}
 
 const changeText = function() { // для изменения текста 
 	let penni= pennies.value < 10 ? "0" : ""; // добавляет 0 к копейкам, если копеек меньше 10.
@@ -279,7 +296,7 @@ const percent = function(){ // возвращает процент
 }
 
 const copyText = function(){
-	let testingCodeToCopy = document.querySelector('#testing-code');
+	let testingCodeToCopy = <HTMLInputElement>document.querySelector('#testing-code');
     testingCodeToCopy?.setAttribute('type', 'text');
     testingCodeToCopy?.select();
 	document.execCommand('copy');
