@@ -116,7 +116,8 @@
 							>
 						<!--<img class="company-head-list-img" src="/src/assets/img/icon/doc.svg" alt="">-->
 						<svgDoc class="company-head-list-img" style="width: 20px; height: 21px;" />
-						<a :style="( Date.parse(document.expires_date) > new Date().getTime() ) ? '' : 'background-color: #B9342D; color: white;'" 
+						<a :style="( Date.parse(document.expires_date) > new Date().getTime() ) ? '' : 'background-color: #B9342D; color: white;'"
+							:class="( Date.parse(document.expires_date) > new Date().getTime() ) ? '' : 'debt'" 
 							class="company-head-list-link" 
 							@click="toPaymentForm(document.debt,document.expires_date)"
 							>{{document.debt.toLocaleString('ru').replace(',','.')}} ₽ до {{document.expires}} / УПД {{ document.number }}</a>
@@ -316,6 +317,10 @@ watch(pennies, async (n, o) => {
 </script>
 
 <style>
+.debt:hover::after {
+	border-bottom: solid 1px white;
+}
+
 .active-border {
 	border: 2px solid #FF9900; 
 	border-radius: 20px; 
