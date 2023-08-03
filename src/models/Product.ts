@@ -41,6 +41,7 @@ export interface Product {
     ID:              string;
     UID:             string;
     NAME:            string;
+    TYPE:            string;
     ARTICLE:         string;
     PRICE:           number;
     PRICE_OPT:       number;

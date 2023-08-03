@@ -1,6 +1,6 @@
 import { NewOrder } from "/src/models/Order";
 import { MutationTree } from "vuex";
-import { DefaultNewOrder, DefaultOrder, OrderState, OrderStateDelivery, OrderStateOrder, OrderStatePosition, OrderStatePositionOffer } from "./types";
+import { DefaultNewOrder, DefaultOrder, OrderState, OrderStateDelivery, OrderStateOrder, OrderStatePosition, OrderStatePositionOffer, OrderBagsRecord } from "./types";
 import {orderCalc} from "/src/store/order/helper/orderCalc";
 
 export enum OrderMutations {
@@ -30,6 +30,7 @@ export enum OrderMutations {
 	SET_ORDER_REQUEST_SERT = "SET_ORDER_REQUEST_SERT",
 	SET_ORDER_COMMENT = "SET_ORDER_COMMENT",
 	SET_ORDER_DELIVERY = "SET_ORDER_DELIVERY",
+	ADD_BAGS_RECORD = "ADD_BAGS_RECORD" // посчитать мешки
 }
 
 export const mutations: MutationTree<OrderState> = {
@@ -80,7 +81,8 @@ export const mutations: MutationTree<OrderState> = {
 							guid: pos.guid,
 							article: pos.article,
 							product: pos.product,
-							characteristics: []
+							characteristics: [],
+							type: pos.type
 						}
 						new_pos.characteristics.push( Object.assign({}, char))
 						new_pos.characteristics[0].count = presail_count
@@ -181,7 +183,7 @@ export const mutations: MutationTree<OrderState> = {
 					
 					total_discount = total_discount + total_price
 					return  <OrderStatePosition>{
-						product:{ NAME: x.name, PRICE: 0},
+						product:{ NAME: x.name, PRICE: 0, TYPE: x.type},
 						count: total_count, 
 						total: total_price,
 						guid: x.guid,
@@ -213,7 +215,7 @@ export const mutations: MutationTree<OrderState> = {
 					
 					total_presail_discount = total_presail_discount + total_price
 					return  <OrderStatePosition>{
-						product:{ NAME: x.name, PRICE: 0},
+						product:{ NAME: x.name, PRICE: 0, TYPE: x.type},
 						count: total_count, 
 						total: total_price,
 						guid: x.guid,
@@ -273,5 +275,8 @@ export const mutations: MutationTree<OrderState> = {
 	},
 	[OrderMutations.SET_ORDER_DELIVERY] (state, data: OrderStateDelivery){
 		state.order.delivery = data
+	},
+	[OrderMutations.ADD_BAGS_RECORD] (state, data: OrderBagsRecord){
+		state.order.bags = Object.assign(state.order.bags, data)
 	}
 }

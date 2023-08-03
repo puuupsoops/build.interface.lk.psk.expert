@@ -9,7 +9,8 @@
 				<div class="company-card-info">
 					<div class="company-card-info-row">
 						<span v-html="(data.storages[0].balance-data.storages[0].debt) < 0 ? 'Задолженность:':'Баланс:'"></span>
-						<span class="company-card-value">&nbsp;{{ Number(data.storages[0].balance-data.storages[0].debt).toLocaleString('ru').substring(1) }} ₽</span>
+						<span v-if="data.storages[0].balance-data.storages[0].debt == 0 && data.storages[0].balance-data.storages[0].balance == 0" class="company-card-value">&nbsp;0₽</span>
+						<span v-else class="company-card-value">&nbsp;{{ Number(data.storages[0].balance-data.storages[0].debt)?.toLocaleString('ru').substring(1) }} ₽</span>
 					</div>
 					
 				</div>
@@ -36,7 +37,8 @@
 				<div class="company-card-info">
 					<div class="company-card-info-row">
 						<span v-html="(data.storages[1].balance-data.storages[1].debt) < 0 ? 'Задолженность:':'Баланс:'"></span>
-						<span class="company-card-value">&nbsp;{{ Number(data.storages[1].balance-data.storages[1].debt).toLocaleString('ru').substring(1) }} ₽</span>
+						<span v-if="data.storages[1].balance-data.storages[1].debt == 0 && data.storages[1].balance-data.storages[1].balance == 0" class="company-card-value">&nbsp;0₽</span>
+						<span v-else class="company-card-value">&nbsp;{{ Number(data.storages[1].balance-data.storages[1].debt).toLocaleString('ru').substring(1)}} ₽</span>
 					</div>
 				</div>
 				<div class="company-card-sale small">

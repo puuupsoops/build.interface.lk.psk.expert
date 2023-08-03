@@ -15,6 +15,7 @@ export const DEFAULT_PRODUCT = <Product>{
 	ID:              '',
 	UID:             '',
 	NAME:            '',
+	TYPE:			 '',
 	ARTICLE:         '',
 	PRICE:           0,
 	PRICE_OPT:       0,

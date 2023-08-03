@@ -23,9 +23,9 @@ export const mutations: MutationTree<AuthState> = {
 	[AuthMutations.SET_AUTH_LOGIN] (state, data) {
 		state.login = data;
 	},
-	[AuthMutations.SET_SAVE_AUTH] (state) {
+	async [AuthMutations.SET_SAVE_AUTH] (state) {
 		if (state.token) {
-			localStorage.setItem('id_token', state.token);
+			await localStorage.setItem('id_token', state.token);
 		}
 	},
 	[AuthMutations.LOGOUT] (state) {

@@ -1,7 +1,7 @@
 import axios from '/src/plugins/axios'
 import { ActionTree } from "vuex"
 import { RootState } from "/src/store"
-import { OrderState, OrderStatePosition } from "./types"
+import { OrderState, OrderStatePosition, OrderBagsRecord } from "./types"
 import { OrderMutations } from './mutations'
 import { Order } from '/src/models/Order'
 import { AuthMutations } from '../auth/mutations'
@@ -19,6 +19,7 @@ export enum OrderActions {
 	GET_BILL_FILE_SAVE = "GET_BILL_FILE_SAVE",
 	GET_ORDER_DETAIL = "GET_ORDER_DETAIL",
 	EDIT_ORDER_ACTION = "EDIT_ORDER_ACTION",
+	ADD_BAGS_RECORD = "ADD_BAGS_RECORD_ACTION" // добавить мешки
 }
 
 export const actions: ActionTree<OrderState, RootState> =  {
@@ -112,5 +113,8 @@ export const actions: ActionTree<OrderState, RootState> =  {
 				
 			})
 	},
+	[OrderActions.ADD_BAGS_RECORD] ({commit}, data: OrderBagsRecord){
+		commit(OrderMutations.ADD_BAGS_RECORD, data)
+	}
 
 }
