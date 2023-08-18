@@ -51,6 +51,8 @@ export interface Product {
     STATUS:          string;
     VIDEO:           string;
     CHARACTERISTICS: Characteristic[];
+    MAX_DISCOUNT:  number;
+
 }
 
 export interface Characteristic {
