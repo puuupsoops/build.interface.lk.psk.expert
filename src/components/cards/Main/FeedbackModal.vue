@@ -81,7 +81,7 @@
             <div :style="[!feedbackType ? 'color: #FFFFFF':'color: #292C32','margin-left: 30px']">Предложение по улучшению.</div>
             <div :style="'margin-left: 30px'">
               <SwitchButton v-model="feedbackType"/>
-            </div>
+            </div>  
             <div :style="[feedbackType ? 'color: #FFFFFF':'color: #292C32','margin-left: 30px']">Сообщение об ошибке.</div>
           </div>
           

@@ -2,6 +2,10 @@
 <template>
   <Preloader v-if="loader"></Preloader>
   <div v-if="isAuth">
+	
+	<button @click="openModal" style="margin-left: 100px;">ShowModal</button>
+	<InfoModal :modelValue="showInfoModal" />
+
     <SideMenu v-model="showMenu" :orderPositionLength="orderPositionLength" :draft="getOrderDraftCount"></SideMenu>
     <NotificationBar v-model="showNotificationBar"></NotificationBar>
     <div class="content"
@@ -32,6 +36,9 @@
 	import { AuthMutations } from './store/auth/mutations'
 	import { KeysMutations } from './store/keys/mutations'
 
+	import InfoModal from './components/cards/Main/InfoModal.vue'
+import { ModalActions } from './store/modal/actions'
+
   //document.body.style.background.add('bg-light-bg-color', 'dark:bg-dark-bg-color', 'antialiased', 'duration-300', 'transition-colors')
 
 	let store = useStore()
@@ -40,6 +47,13 @@
 		get: () => store.getters.getLoader,
 		set: (val: boolean) => store.commit(KeysMutations.SET_LOADER, val)
 	})
+
+	//const showInfoModal = ref(false);
+	const showInfoModal = computed( () => store.getters.getValue);
+	console.log(showInfoModal)
+	const openModal = function() {
+		store.dispatch(ModalActions.VALUE, true);
+	}
 
 	const showMenu =ref(false)
 	const showNotificationBar =ref(false)
