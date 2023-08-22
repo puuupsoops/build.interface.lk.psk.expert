@@ -61,7 +61,7 @@
 					
 				</div>
 			</div>
-			<div style="padding-left: 40px;"> <button @click="foo">Мешки посчитать</button> Коэфициент: <b>{{ bags.toFixed(1) }}</b> </div>
+			<!--<div style="padding-left: 40px;"> <button @click="foo">Мешки посчитать</button> Коэфициент: <b>{{ bags.toFixed(1) }}</b> </div>-->
 			<div class="content-heading-info-elem" style="padding-left: 40px;">
 				<span class="content-heading-info-text">Рекомендуемое количество мешков: </span><span class="content-heading-info-value">{{bags == 0 ? '1' : Math.ceil(bags).toString()}} шт.</span>
 			</div>
