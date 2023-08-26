@@ -73,8 +73,8 @@ const getCirtificates = async (uid: string) => {
     })
     .catch((error) => {
       //todo: сделать проверку на ошибки
-      console.log("error");
-      console.log(error);
+      //console.log("error");
+      //console.log(error);
       //commit(OrdersMutations.SET_ORDERS_DOCSTATUS_ERROR)
       //commit(AuthMutations.SET_ERROR, 'Request GET_ORDERS_DOCSTATUS error:<br>'+error)
     })
