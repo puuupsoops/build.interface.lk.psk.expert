@@ -37,7 +37,7 @@
 
   const send = () => {
     data.value.type = !feedbackType.value ? 'info' : 'error';
-    console.log(data.value)
+    //console.log(data.value)
       axios.post('/user/request/feedback', data.value)
       .then(response => {
         if(response.status == 201) {
@@ -46,7 +46,7 @@
         }
       })
       .catch(error => {
-        console.log(error)
+        //console.log(error)
         showPreload.value = !showPreload.value
       })
     //close();

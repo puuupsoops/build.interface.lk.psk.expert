@@ -3,7 +3,6 @@
   <Preloader v-if="loader"></Preloader>
   <div v-if="isAuth">
 	
-	<button @click="openModal" style="margin-left: 100px;">ShowModal</button>
 	<InfoModal :modelValue="showInfoModal" />
 
     <SideMenu v-model="showMenu" :orderPositionLength="orderPositionLength" :draft="getOrderDraftCount"></SideMenu>
@@ -37,7 +36,7 @@
 	import { KeysMutations } from './store/keys/mutations'
 
 	import InfoModal from './components/cards/Main/InfoModal.vue'
-import { ModalActions } from './store/modal/actions'
+	import { ModalActions } from './store/modal/actions'
 
   //document.body.style.background.add('bg-light-bg-color', 'dark:bg-dark-bg-color', 'antialiased', 'duration-300', 'transition-colors')
 
@@ -50,7 +49,7 @@ import { ModalActions } from './store/modal/actions'
 
 	//const showInfoModal = ref(false);
 	const showInfoModal = computed( () => store.getters.getValue);
-	console.log(showInfoModal)
+	//console.log(showInfoModal)
 	const openModal = function() {
 		store.dispatch(ModalActions.VALUE, true);
 	}
