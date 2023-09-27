@@ -18,8 +18,15 @@ export interface messageType {
   time: string, 
   message: string,
   readPopup: boolean,
+  type?: string
 }
 
+/** @property Перечисления для типа всплывающего сообщения */
+export enum wsMessageTypes {
+  POPUP = 'popup',
+  MESSAGE = 'message',
+  NOTIFICATION = 'notification'
+}
 
 export enum wsStoreMutations {
 	SOCKET_ONOPEN = 'SOCKET_ONOPEN',
@@ -88,18 +95,28 @@ export const wsStore: Module<wsRootState, RootState> = {
     [wsStoreMutations.SOCKET_ONMESSAGE](state, message ) {
       const wsMsg = <wsMessage>message
       
-      console.log(message);
+      //console.log(message);
 
-      if (wsMsg.type == 'popup'){
-        const msg = {
+      if (wsMsg.type == wsMessageTypes.POPUP){
+        const msg: messageType = <messageType>{
             id: state.messages.length,
             time: wsMsg.date, 
             message: wsMsg.text,
             readPopup: false,
+            type: wsMessageTypes.POPUP
         }
         state.messages.push(msg)
-      } else if (wsMsg.type == 'message'){
+      }else if (wsMsg.type == wsMessageTypes.MESSAGE){
 
+      }else if (wsMsg.type == wsMessageTypes.NOTIFICATION){
+        const msg: messageType = <messageType>{
+          id: state.messages.length,
+          time: wsMsg.date, 
+          message: wsMsg.text,
+          readPopup: false,
+          type: wsMessageTypes.NOTIFICATION
+        }
+        state.messages.push(msg)
       }
     },
     // Auto reconnect

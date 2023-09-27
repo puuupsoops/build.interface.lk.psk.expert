@@ -14,6 +14,7 @@ import { keys } from './keys/index'
 import { profile } from './profile/index'
 import { wsStore } from '/src/plugins/wsStore'
 import { kp } from './kp/index'
+import { modal } from './modal/index'
 
 
 // export default createStore({
@@ -51,6 +52,7 @@ export const store = createStore<RootState>({
 		profile,
 		wsStore,
 		kp,
+		modal,
 	}
 })
 
