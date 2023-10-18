@@ -195,10 +195,14 @@ const productImages = computed(() => store.getters.getProductImages)
 const productProtect = computed(() => store.getters.getProductProtect)
 const discount = computed(() => {
   const status = store.getters.getProduct.STATUS
-      const productDiscount = Number(store.getters.getProduct?.MAX_DISCOUNT)
+      const productDiscount = 0 //Number(store.getters.getProduct?.MAX_DISCOUNT)
       const companyDiscount = store.getters.getCompanyDiscount(activeCompanyUid.value, store.getters.getProductOffersORGGUID)
       console.log('productDiscount:',productDiscount)
       console.log('companyDiscount:',companyDiscount)
+      console.log('computedDiscount:',companyDiscount > productDiscount ? productDiscount : companyDiscount)
+      if(productDiscount == 0)
+        return companyDiscount ?? 0;
+
 			if (status == 'Outlet' || status == 'Discount' || status == 'Activity')
 				return 0
 			else

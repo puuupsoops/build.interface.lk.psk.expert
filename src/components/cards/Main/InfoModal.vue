@@ -70,7 +70,7 @@ const data = async () => {
 }
 
 
-
+/*
 onMounted( async () => {
     let currentDate = localStorage.getItem('date');
     let serverDate = await data();
@@ -93,14 +93,15 @@ onMounted( async () => {
 		    emits('update:modelValue', true);
         }, 3000);
         */
+       /*
     }
     else{
-        // переменная содержит значение
+        // переменная содержит значение 
         v.value = localStorage.getItem('html');
     }
     
 })
-
+*/
 
 </script>
 
