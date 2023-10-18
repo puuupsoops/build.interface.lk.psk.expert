@@ -43,12 +43,12 @@
         </div>
       </div>
 
-      <!--Кнопка открытия модального окна infoModal-->
+      <!--Кнопка открытия модального окна infoModal
       <div class="sidebar-btn" @click="$emit('update:modelValue', false)" title="Объявление"> 
         <div @click="showModalInfo">
         <svgInfo class="sidebar-btn-img"></svgInfo>
         </div>
-      </div>
+      </div>-->
     </aside>
   </div>
 
