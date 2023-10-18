@@ -239,10 +239,14 @@ onMounted(() => {
 
 const discount = computed(() => {
 			const status = store.getters.getProduct.STATUS
+      const productDiscount = Number(store.getters.getProduct?.MAX_DISCOUNT)
+      const companyDiscount = store.getters.getCompanyDiscount(activeCompanyUid.value, store.getters.getProductOffersORGGUID)
+      console.log('productDiscount:',productDiscount)
+      console.log('companyDiscount:',companyDiscount)
 			if (status == 'Outlet' || status == 'Discount' || status == 'Activity')
 				return 0
 			else
-				return store.getters.getCompanyDiscount(activeCompanyUid.value, store.getters.getProductOffersORGGUID)
+				return companyDiscount > productDiscount ? productDiscount : companyDiscount
 		})
 const isProduct = computed(() => store.getters.isProduct)
 const companyBarTopData = computed(() => store.getters.getCompanysList)

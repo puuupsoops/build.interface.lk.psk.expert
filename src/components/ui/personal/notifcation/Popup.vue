@@ -6,13 +6,13 @@
     <div class="popup-box">
       <div class="popup-message" @click="more_event()">
         <div class="popup-text" :class="{'more': more | more_show}">{{message?.message}}</div>
-
+        <div v-if = "message?.type == wsMessageTypes.NOTIFICATION && more_show | more"><BaseButton @onClick="showModalInfo">Посмотреть новинки</BaseButton></div>
         <div class="popup-time"><b>{{message?.time}}</b></div>
       </div>
       <div class="popup-close" @click="close()"></div>
     </div>
-  
-    <div class="popup-bar" v-if="auto_close && more_show==false"></div>
+    <div class="popup-bar" v-if="auto_close && more_show==false">
+    </div>
   </div>
   
 </template>
@@ -22,6 +22,11 @@
 
 import { messageType, } from '/src/plugins/wsStore'
 import { PropType,  ref} from 'vue'
+import { BaseButton } from '/src/components/ui'
+import { useStore } from '/src/store';
+import { ModalActions } from '/src/store/modal/actions'
+import { wsMessageTypes } from '/src/plugins/wsStore';
+import axios from 'axios';
 
 
 const props = defineProps({
@@ -73,6 +78,14 @@ const more_event = ()=> {
        }, props.timeout )
   }
 }
+
+
+const store = useStore()
+const showModalInfo = () => {
+
+  store.dispatch(ModalActions.VALUE, true)
+}
+
 </script>
 
 <style>

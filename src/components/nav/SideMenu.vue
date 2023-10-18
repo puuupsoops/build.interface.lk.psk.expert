@@ -1,6 +1,6 @@
 <template>
 	<div>
-    <aside :class="'sidebar '+scroll_class"  >
+    <aside :class="'sidebar '+scroll_class" style="display: flex; flex-direction: column; justify-content: space-around;">
       <div class="sidebar-btn sidebar-menu-btn"  @click="$emit('update:modelValue', !modelValue)">
         <svgMenu class="sidebar-btn-img"></svgMenu>
       </div>
@@ -33,6 +33,7 @@
           <svgKP class="sidebar-btn-img"></svgKP>
         </router-link>
       </div>
+    
       <div class="sidebar-btn"  @click="$emit('update:modelValue', false)" title="Черновик">
         <div @click="showDraft = true">
           <div class="sidebar-btn-notification draft" v-if="draft>0">
@@ -41,6 +42,13 @@
           <svgDraft class="sidebar-btn-img"></svgDraft>
         </div>
       </div>
+
+      <!--Кнопка открытия модального окна infoModal
+      <div class="sidebar-btn" @click="$emit('update:modelValue', false)" title="Объявление"> 
+        <div @click="showModalInfo">
+        <svgInfo class="sidebar-btn-img"></svgInfo>
+        </div>
+      </div>-->
     </aside>
   </div>
 
@@ -49,6 +57,7 @@
 			@close="$emit(`update:modelValue`, !modelValue)"
 		></SideNavigation>
 		<OrderDraftModal v-model="showDraft"/>
+    
 </template>
 
 <script setup lang="ts">
@@ -60,9 +69,15 @@ import svgCart from '/src/assets/img/icon/cart.svg'
 import svgSearch from '/src/assets/img/icon/search.svg'
 import svgMonitor from '/src/assets/img/icon/monitor.svg'
 import svgMenu from '/src/assets/img/icon/menu.svg'
+import svgInfo from '/src/assets/img/icon/info.svg'
+
 
 import { SideNavigation } from '/src/components/nav'
 import { OrderDraftModal } from '/src/components/cards/Order'
+import { useStore } from '/src/store'
+import { ModalActions } from '/src/store/modal/actions'
+
+
 
 
 // eslint-disable-next-line no-unused-vars
@@ -107,7 +122,12 @@ onMounted(() => {
 				window.addEventListener("scroll", onScroll)
 		})
 
+// Функция открывает модальное окно infoModal.
+const store = useStore()
+const showModalInfo = () => {
 
+  store.dispatch(ModalActions.VALUE, true)
+}
 
 </script>
 

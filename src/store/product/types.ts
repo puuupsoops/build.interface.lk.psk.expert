@@ -25,4 +25,5 @@ export const DEFAULT_PRODUCT = <Product>{
 	STATUS:          '',
 	VIDEO:           '',
 	CHARACTERISTICS: [],
+	MAX_DISCOUNT: 0
 }
