@@ -71,7 +71,6 @@ export const actions: ActionTree<ProductState, RootState> =  {
 			}})
 			.then(response => {
 				const found =  <Found[]>response.data.FOUND
-				console.log(found)
 				const dataModify = (data: string) => data.replaceAll('"','').replace(/ +/g, ' ').trim().toUpperCase();
 
 				// используем строгое сравнение
