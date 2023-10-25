@@ -71,10 +71,23 @@ export const actions: ActionTree<ProductState, RootState> =  {
 			}})
 			.then(response => {
 				const found =  <Found[]>response.data.FOUND
+				console.log(found)
 				const dataModify = (data: string) => data.replaceAll('"','').replace(/ +/g, ' ').trim().toUpperCase();
-				commit(ProductMutations.SET_PRODUCT_ARTICLES,
-					found.filter(x=> dataModify(x.ARTICLE).indexOf(dataModify(data))!=-1
-						|| dataModify(x.NAME).indexOf(dataModify(data))!=-1));
+
+				// используем строгое сравнение
+				let serachResult = found.filter(x=> dataModify(x.ARTICLE).indexOf(dataModify(data))!=-1 || dataModify(x.NAME).indexOf(dataModify(data))!=-1);
+
+				// если с сервера пришли данные по поиску, но строгое сравнение ничего не нашло. Ищем по вхождению слов
+				if(serachResult.length === 0 && found.length > 0 ){
+					let arrWords = dataModify(data).split(' ');
+					serachResult = found.filter( (x) => {
+						let count = 0;
+						arrWords.forEach( (word) => { if (dataModify(x.NAME).indexOf(word) != - 1 || dataModify(x.ARTICLE).indexOf(dataModify(data))!=-1) count++; });
+						return count == arrWords.length
+					});
+				}
+
+				commit(ProductMutations.SET_PRODUCT_ARTICLES,serachResult);
 			})
 			.catch( error => {
 				if (error.response && error.response.status =="404") {
