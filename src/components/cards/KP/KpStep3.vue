@@ -156,7 +156,7 @@
             </div>
             <div v-if="bannerList.length>0" class="kp-step-body-row-group"  :class="{'active': KPLocal.banner}">
               <div :style="'text-align: center;'"> Баннер #{{ bannerList[0].id }} {{ bannerList[0].type ==  'showcase' ? '- системный' : ''}} </div>
-              <PreloaderLocal v-if="loadingLogo" style="margin:auto"></PreloaderLocal>
+            <PreloaderLocal v-if="loadingLogo" style="margin:auto"></PreloaderLocal>
               <div class="kp-step-body-column" v-if="KPLocal.banner" :style="'justify-content: center'">
                 <div class="product-slider-wrap" >
                   <div class="product-slider-main">
