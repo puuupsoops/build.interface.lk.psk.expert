@@ -70,9 +70,11 @@ export const actions: ActionTree<ProductState, RootState> =  {
 			delete headers?.common
 			}})
 			.then(response => {
-				const found =  <Found[]>response.data.FOUND 
-				commit(ProductMutations.SET_PRODUCT_ARTICLES, found.filter(x=> x.ARTICLE.toUpperCase().indexOf(data.toUpperCase())!=-1 || x.NAME.toUpperCase().indexOf(data.toUpperCase())!=-1))
-				//commit(ProductMutations.SET_PRODUCT_RESULT, )
+				const found =  <Found[]>response.data.FOUND
+				const dataModify = (data: string) => data.replaceAll('"','').replace(/ +/g, ' ').trim().toUpperCase();
+				commit(ProductMutations.SET_PRODUCT_ARTICLES,
+					found.filter(x=> dataModify(x.ARTICLE).indexOf(dataModify(data))!=-1
+						|| dataModify(x.NAME).indexOf(dataModify(data))!=-1));
 			})
 			.catch( error => {
 				if (error.response && error.response.status =="404") {
