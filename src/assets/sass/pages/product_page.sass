@@ -279,9 +279,26 @@
 		min-width: 250px
 		max-width: 380px
 		
+		&.touch
+
+			&:hover .product-buttons-position
+				opacity: 0.6
+				transition: opacity .35s ease
+
+			&:hover	.product-buttons-stance
+				opacity: 0.6
+				transition: opacity .35s ease	
+		
 		&.big
 			max-width: 600px
 
+			&:hover .product-button-positions 
+				opacity: 0.7
+				transition: opacity .35s ease
+
+			&:hover	.product-button-stance
+				opacity: 0.7
+				transition: opacity .35s ease
 		&-main
 			+flex
 			padding: 30px
@@ -787,3 +804,119 @@
 				+prefix(transition, $default-transition)
 			html:not(.dark) &
 				color: $light-font-color
+
+	&-button
+
+		&-positions
+			position: absolute
+			display: inline-flex
+			//top: 94%
+			//left: 34%
+			z-index: 19
+			transform: translate(16%, 2860%)
+			opacity: 0
+			transition: opacity .35s ease
+			box-shadow: 0 3px 7px rgba(0,0,0,0.4)
+			border-radius: 6px
+			background-color: rgba(0,0,0,0.4)
+
+			&-radius
+				border-radius: 6px 0 0 6px
+			
+			&-rad
+				border-radius: 0 6px 6px 0
+
+			&-btn
+				background-color: $white
+				width: 30px
+				height: 30px
+				top: 14%
+				left: 14%
+				cursor: pointer
+				
+				
+				&:hover
+					background-color: #fab42a
+					transition: .35s ease
+					
+				&-img
+					display: inline-block
+					padding: 3px
+
+		&-stance
+			position: absolute
+			display: inline-flex
+			z-index: 19
+			transform: translate(1200%, 20%)
+			opacity: 0
+			transition: opacity .35s ease
+
+			&-download
+				cursor: pointer
+				border-radius: 6px
+				
+				&:hover
+					background-color: #fab42a
+					transition: .35s ease
+
+					&-picture
+						display: inline-block
+						padding: 3px			
+
+	&-buttons
+
+		&-position
+			position: absolute
+			display: inline-flex
+			//top: 94%
+			//left: 34%
+			z-index: 19
+			transform: translate(15%, 1760%)
+			opacity: 0
+			transition: opacity .35s ease
+			box-shadow: 0 3px 7px rgba(0,0,0,0.4)
+			border-radius: 6px
+			background-color: rgba(0,0,0,0.4)
+
+			&-radius
+				border-radius: 6px 0 0 6px
+			
+			&-rad
+				border-radius: 0 6px 6px 0
+
+			&-btn
+				background-color: $white
+				width: 30px
+				height: 30px
+				top: 14%
+				left: 14%
+				cursor: pointer
+				
+				
+				&:hover
+					background-color: #fab42a
+					transition: .35s ease
+					
+				&-img
+					display: inline-block
+					padding: 3px
+
+		&-stance
+			position: absolute
+			display: inline-flex
+			z-index: 19
+			transform: translate(730%, 12%)
+			opacity: 0
+			transition: opacity .35s ease
+
+			&-download
+				cursor: pointer
+				border-radius: 6px
+				
+				&:hover
+					background-color: #fab42a
+					transition: .35s ease
+
+					&-picture
+						display: inline-block
+						padding: 3px								
