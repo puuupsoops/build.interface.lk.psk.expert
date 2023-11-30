@@ -77,6 +77,7 @@ const props = defineProps({
 		}
 		
 	})
+console.log(props)
 const emits = defineEmits( ['update:modelValue', 'update:show', 'search','catch'])
 const store = useStore()
 const search_str = ref('')
