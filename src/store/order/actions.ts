@@ -5,7 +5,7 @@ import { OrderState, OrderStatePosition, OrderBagsRecord } from "./types"
 import { OrderMutations } from './mutations'
 import { Order } from '/src/models/Order'
 import { AuthMutations } from '../auth/mutations'
-
+import { ref } from 'vue'
 
 export enum OrderActions {
 	CREATE_ORDER = "CREATE_ORDER_ACTION",
@@ -53,15 +53,40 @@ export const actions: ActionTree<OrderState, RootState> =  {
 	},
 	
 	async [OrderActions.ADD_ORDER] ({ commit }, data: Order) {
+		const resp = ref({})
 		await axios.post('/order/add', data)
 			.then(response => {
+				resp.value = response
 				commit(OrderMutations.ADD_ORDER, response.data.response)
 			})
 			.catch(error => {
+				resp.value = error
+				commit(OrderMutations.CLEAN_ORDER_ERROR)
+				return Promise.reject(error)
 				
-					commit(OrderMutations.CLEAN_ORDER_ERROR)
-					return Promise.reject(error)
-				
+			}).finally(() => {
+				let logs = localStorage.getItem('logs');
+				if(logs){
+					let arrLogs = JSON.parse(logs)
+					arrLogs.push({
+						time: (new Date()).toLocaleString(),
+						action: 'addOrder',
+						payload: {
+							type: 'http',
+							data: resp.value
+						}
+					})
+					localStorage.setItem('logs', JSON.stringify(arrLogs))
+				}else{
+					localStorage.setItem('logs', JSON.stringify([{
+						time: (new Date()).toLocaleString(),
+						action: 'addOrder',
+						payload: {
+							type: 'http',
+							data: resp.value
+						}
+					}]))
+				}
 			})
 	},
 
