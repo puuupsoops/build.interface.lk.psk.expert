@@ -1,6 +1,6 @@
 <template>
 	<div>
-    <aside :class="'sidebar '+scroll_class" style="display: flex; flex-direction: column; justify-content: space-around;">
+    <aside :class="'sidebar '+scroll_class" style=""> <!-- display: flex; flex-direction: column; justify-content: space-around; -->
       <div class="sidebar-btn sidebar-menu-btn"  @click="$emit('update:modelValue', !modelValue)">
         <svgMenu class="sidebar-btn-img"></svgMenu>
       </div>
