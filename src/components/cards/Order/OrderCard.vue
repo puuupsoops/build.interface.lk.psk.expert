@@ -270,6 +270,13 @@
 			> 
 				<div class="gradient-btn-text">Оформить заказ</div>
 			</button>
+
+			<!--<button 
+				class="order-list-submit gradient-btn" 
+				@click="addToLog()"
+			> 
+				<div class="gradient-btn-text">Логирование</div>
+			</button>-->
 		</div>
 
 	<SnackBar v-model="snack" :message="snackMsg" :timeout="2000" notification ></SnackBar>
@@ -277,9 +284,9 @@
 
 <script setup lang="ts">
 	import { ref, computed, PropType, onMounted, watch } from 'vue'
-  import svgKP from '/src/assets/img/icon/kp.svg'
-  import svgDraft from '/src/assets/img/icon/draft.svg'
-  import svgComment from '/src/assets/img/icon/comment.svg'
+	import svgKP from '/src/assets/img/icon/kp.svg'
+	import svgDraft from '/src/assets/img/icon/draft.svg'
+	import svgComment from '/src/assets/img/icon/comment.svg'
 	import { useStore } from '/src/store'
 
 	import AmountInput from '/src/components/ui/AmountInput.vue'
@@ -349,6 +356,20 @@ import { ShipmentsActions } from '/src/store/shipments/actions'
 
 	const storagesList = computed (() => store.getters.getOrderStorages)
 //methods
+	const addToLog = async (rec: object) => {
+		let record = rec
+		let logs = localStorage.getItem('logs');
+
+		if(logs){
+			let arrLogs = JSON.parse(logs)
+			arrLogs.push(record)
+			localStorage.setItem('logs', JSON.stringify(arrLogs))
+		}else{
+			localStorage.setItem('logs', JSON.stringify([record]))
+		}
+		//console.log(record)
+	}
+
 	const updOrder = () => {store.commit(OrderMutations.CALC_ORDER); foo();}
 	const removePosition = (presail: boolean, guid: string) => {
 		foo();
@@ -403,6 +424,15 @@ import { ShipmentsActions } from '/src/store/shipments/actions'
 
 		store.commit(OrderMutations.SET_ORDER_COMMENT, comment.value); //`PKM ${getCountBags()}, ${}`
 
+		addToLog({
+			time: (new Date()).toLocaleString(),
+			action: 'addOrder',
+			payload: {
+				type: 'order',
+				data: JSON.parse(JSON.stringify(store.getters.getOrder))
+			}
+		});
+
 		if (valid){
 			let delivery = <OrderStateDelivery>{
 					address: selectDelivery.value == 0 ? '' : store.getters.getShipmentsAddress[deliveryAddress.value].address,
@@ -412,10 +442,29 @@ import { ShipmentsActions } from '/src/store/shipments/actions'
 					bill_to: deliveryStorage.value	
 			}				
 			store.commit(OrderMutations.SET_ORDER_DELIVERY, delivery)
+
+			addToLog({
+				time: (new Date()).toLocaleString(),
+				action: 'addOrderValidation',
+				payload: {
+					type: 'valid',
+					data: true
+				}
+			});
+
 			if (props.data.edit) 
 				emits('onClickEdit')
 			else
 				emits('onClickAdd')
+		} else {
+			addToLog({
+				time: (new Date()).toLocaleString(),
+				action: 'addOrder',
+				payload: {
+					type: 'valid',
+					data: false
+				}
+			});
 		}
 		console.log(valid)
 	}
