@@ -56,7 +56,8 @@
 		<div class="company-sale-card">
 			<div class="table">
 				<div class="table-row">
-					<div class="table-sale">Ваша скидка {{discount.discount}} %</div>
+					<!--<div class="table-sale">Ваша скидка {{discount.discount}} %</div>-->
+					<div class="table-sale">Ваша скидка {{disc}} %</div>
 				</div> 
 			</div>
 		</div>
@@ -82,8 +83,14 @@ const props = defineProps({
 		spent: { //Потраченно для определения скидки
 			type: Number,
 			required: true,
-		}
-	})
+		},
+		modelValue: {
+		type: Number,
+		required: true
+	}
+	});
+
+	const disc = computed( () => { return props.modelValue})
 		
 	const discountList = <DiscountList[]> [
 		{
@@ -161,7 +168,7 @@ const props = defineProps({
 		}
 	]
 
-
+	
 	let discount = computed<DiscountList>(() => {
 		
 		let d = discountList.filter(v =>  props.spent >= v.progressMoneyMin 
