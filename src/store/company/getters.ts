@@ -93,4 +93,36 @@ export const getters: GetterTree<CompanyState, RootState> = {
 				return res?res.discount:null
 			} else { return 0 }
 		},
+		getCompanyCurrentDiscount: state => (uid: string) => {
+			/*от 2024-01-19 Melentiev.S | LK-16
+			На все договора равный процент скидки.
+				Если есть 2 договора, то берется скидка с ЭС.
+					если договора нет, то берем из того, который есть.
+			*/
+			if (!uid) 
+				return 0;
+			
+			const company = state.companys.find(x => x.uid === uid);
+			const specodaUid = 'b5e91d86-a58a-11e5-96ed-0025907c0298';
+			let discount: null | Number = null;
+
+			//Если есть 2 договора, то берется скидка с ЭС.
+			if(company?.storages){
+				for(let i = 0; i < company.storages.length; ++i){
+					if(company?.storages[i].guid === specodaUid && company?.storages[i].discount > 0){
+						discount = company.storages[i].discount;
+						break;
+					}
+				}
+
+				// если договора нет, то берем из того, который есть.
+				if(discount === null)
+				discount = company.storages[0].discount
+			}else{
+				// если договоров нет, скидка 0
+				discount = 0;
+			}
+
+			return discount;
+		}
 }
