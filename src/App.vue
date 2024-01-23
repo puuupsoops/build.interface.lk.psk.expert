@@ -30,7 +30,7 @@
 	import { SnackBar } from './components/ui'
 
 	import { useStore } from '/src/store'
-	import { computed, provide, ref } from 'vue'
+	import { computed, provide, ref, onMounted } from 'vue'
 	import { AuthActions } from './store/auth/actions'
 	import { AuthMutations } from './store/auth/mutations'
 	import { KeysMutations } from './store/keys/mutations'
@@ -71,6 +71,9 @@
 	const errorMsg = computed(() => store.getters.getErrorMsg)
 	const orderPositionLength = computed(() => store.getters.getOrderPositionLength)
 	const getOrderDraftCount = computed(() => store.getters.getOrderDraftCount)
+
+	// проверяем компании, активируем блокировку
+	onMounted(() => { store.getters.getCompanys })
 </script>
 
 <style lang="sass">

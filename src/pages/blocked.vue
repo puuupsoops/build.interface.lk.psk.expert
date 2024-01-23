@@ -13,10 +13,11 @@ const props = defineProps({
 
 const store = useStore()
 const contracts = store.getters.getCompanys
-const managerId = contracts[0].managerUid
-
-if(managerId)
+if(contracts.length > 0){
+    const managerId = contracts[0].managerUid
+    if(managerId)
     store.dispatch('GET_MANAGER', managerId)
+}
 
 const manager = computed(() => { return store.getters.getManager })
 </script>

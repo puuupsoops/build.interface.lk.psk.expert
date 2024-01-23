@@ -16,12 +16,11 @@ export enum CompanyActions {
 export const actions: ActionTree<CompanyState, RootState> =  {
 	// API https://documenter.getpostman.com/view/15374835/UUxwBoF3#e1274708-aee2-4901-a4fa-40b9c3202c14
 	async [CompanyActions.GET_COMPANYS] ({commit}) {
+		const errors = [];
+
 		await axios.get<PartnerResponse>('/partners')
 			.then(response => {
-				const errors = [];
-
 				console.log(response.data.response)
-
 				if(!response.data.response.length){
 					errors.push(`Отсутствуют контрагенты!`)
 				}else{
@@ -68,6 +67,10 @@ export const actions: ActionTree<CompanyState, RootState> =  {
 				commit(CompanyMutations.SET_COMPANYS, response.data.response)
 			})
 			.catch( error => {
+				errors.push(`Отсутствуют договора!`)
+				if(!!errors.length){
+					router.push({name: 'Blocked', params: { data: errors }});
+				}
 				commit(AuthMutations.SET_ERROR, 'Request GET_PARTNER error:<br>'+error)
 			})
 			
