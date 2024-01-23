@@ -21,7 +21,7 @@
 				<CompanyAboutCard :data="aboutCompanyData"></CompanyAboutCard>
 			</div>
 		</div>
-		<CompanySaleBar :spent="totalSpent" v-model="currentDiscount"></CompanySaleBar>
+		<CompanySaleBar :spent="totalSpent"></CompanySaleBar>
 		
 		<div id="CompanyCalendar">
 			<div class="company-calendar-wrap">
@@ -52,14 +52,13 @@ import { KeysMutations } from '/src/store/keys/mutations'
 import { CompanyMutations } from '/src/store/company/mutations'
 
 	const props = defineProps (['id'])
-  	const store = useStore()
+  const store = useStore()
 	const router = useRouter()
 
 	const isLoad = ref(false)
 	const activeCompanyUid = ref(props.id)
 	const activeStorageUid = ref<number|null>(0)
 	const docDate = ref('')
-	const currentDiscount = computed(() => store.getters.getCompanyCurrentDiscount(activeCompanyUid.value))
 
 	const aboutCompanyData =	computed(() => store.getters.getCompanyData(activeCompanyUid.value))
 	const companyStoragesData =	computed<Storage[]>(() => store.getters.getCompanyStoragesData(activeCompanyUid.value))

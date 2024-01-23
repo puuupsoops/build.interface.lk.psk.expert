@@ -1,34 +1,34 @@
 <template>
 
 	<div class="company-sale sale">
-		<!--<div class="sale-head">
+		<div class="sale-head">
 			<div class="sale-title">Скидка {{discount.discount}} %</div>
 			<div class="sale-lacks" v-if="ostatok != Infinity">Не хватает <span>{{ostatok.toLocaleString('ru').replace(',','.')}}&nbsp;₽</span> до скидки {{discount.next}} %</div>
 
-		</div>--> 
+		</div>
 		
 		<div class="sale-progressbar-wrap">
 			<div class="sale-progressbar content-elem tooltip">
 					
 				<div class="sale-progressbar-line" :style="'width: '+ (progressInPercent) +'%'">
-				<div class="sale-progressbar-val">
+					<div class="sale-progressbar-val">
 						<div>
 							<span class="sale-progressbar-val-money">({{spent.toLocaleString('ru').replace(',','.')}}&nbsp;₽)</span>
-						<!--<span class="sale-progressbar-val-percent">{{progressInPercent.toFixed(2)}}%</span>-->
+							<span class="sale-progressbar-val-percent">{{progressInPercent.toFixed(2)}}%</span>
 						</div>
 					</div>
 
 				</div>
 		
 			</div>
-		<!--<div class="sale-progressbar-money">
+			<div class="sale-progressbar-money">
 				<div class="sale-progressbar-min">{{discount.progressMoneyMin.toLocaleString('ru')}}</div>
 				<div class="sale-progressbar-max">{{discount.progressMoneyMax.toLocaleString('ru')}}</div>
-			</div>-->
+			</div>
 		</div>
 			
 		
-	<!--<div class="company-sale-card">
+		<div class="company-sale-card">
 			<div class="table">
 				<div class="table-row table-heading">
 					<div class="table-elem" >Сумма заказа,руб</div>
@@ -51,17 +51,7 @@
 					
 					
 			</div>
-		</div>-->
-
-		<div class="company-sale-card">
-			<div class="table">
-				<div class="table-row">
-					<!--<div class="table-sale">Ваша скидка {{discount.discount}} %</div>-->
-					<div class="table-sale">Ваша скидка {{disc}} %</div>
-				</div> 
-			</div>
 		</div>
-
 	</div>
 
 </template>
@@ -83,14 +73,8 @@ const props = defineProps({
 		spent: { //Потраченно для определения скидки
 			type: Number,
 			required: true,
-		},
-		modelValue: {
-		type: Number,
-		required: true
-	}
-	});
-
-	const disc = computed( () => { return props.modelValue})
+		}
+	})
 		
 	const discountList = <DiscountList[]> [
 		{
@@ -168,7 +152,7 @@ const props = defineProps({
 		}
 	]
 
-	
+
 	let discount = computed<DiscountList>(() => {
 		
 		let d = discountList.filter(v =>  props.spent >= v.progressMoneyMin 
