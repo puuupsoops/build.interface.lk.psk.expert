@@ -203,6 +203,12 @@ const routes = [
 		component: () => import('/src/pages/LoginPage.vue'),
 		name: 'Login'
 	},
+	{
+		path: '/blocked', 
+		component: () => import('/src/pages/blocked.vue'),
+		name: 'Blocked',
+		props: true
+	},
 
 ];
 
@@ -212,14 +218,13 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-	
+
 	if (to.path === '/login' && store.getters.isAuthenticated)  {
 		return next({ name: 'Main',  });
 	}
 	if (to.matched.some(m => m.meta.auth) && !store.getters.isAuthenticated) {
-		return next({ name: 'Login',  });
-	}
-	
+		return next({ name: 'Login',  })
+	}	
 
 	next();
 });
