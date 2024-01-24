@@ -32,9 +32,21 @@ export const actions: ActionTree<CompanyState, RootState> =  {
 						}else{
 							
 							// должно присутствовать два договора
-							if(value.storages.length != 2) {
-								errors.push(`Количество договоров: ${value.storages.length} , должно быть 2 ФРО и ЭС. Контрагент: ${value.name}.`)
-							}
+							//if(value.storages.length != 2) {
+							//	errors.push(`Количество договоров: ${value.storages.length} , должно быть 2 ФРО и ЭС. Контрагент: ${value.name}.`)
+							//}
+
+							// Дата должна быть больше нуля у договоров отсрочки при долге не равном нулю
+							value.storages.forEach((val) => {
+								if(Number(val.date) < 0 && val.case === 'отсрочка' && val.debt > 0){
+									errors.push(`Дата договора ${val.contract} : ${val.name} = ${new Date(Number(val.date)).toLocaleDateString('ru')}. Контрагент: ${value.name}. (${val.case})`)
+								}
+
+								// Скидка должна быть строго больше нуля
+								if( val.discount <= 0 ){
+									errors.push(`Скидка меньше или равна нулю. Договор: ${val.contract}, скидка = ${val.discount}. Контрагент: ${value.name}.`)
+								}
+							})
 	
 							// должен присутствовать 1 договор от ФРО guid = 'f59a4d06-2f35-11e7-8fdb-0025907c0298'
 							if(!value.storages.find( (val) => val.guid === 'f59a4d06-2f35-11e7-8fdb-0025907c0298' )){
