@@ -201,7 +201,8 @@ const routes = [
 	{
 		path: '/login', 
 		component: () => import('/src/pages/LoginPage.vue'),
-		name: 'Login'
+		name: 'Login',
+		props: true
 	},
 	{
 		path: '/blocked', 

@@ -3,6 +3,5 @@ export interface AuthState {
 	error_login_msg: string|null,
 	token: string|null,
 	error: boolean,
-	error_msg: string,
-	login: string,
+	error_msg: string
 }
