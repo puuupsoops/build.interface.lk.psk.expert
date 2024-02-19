@@ -59,10 +59,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import {ref, computed, onMounted} from 'vue'
 import { useStore } from '/src/store'
 
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { Form, Field, ErrorMessage, defineRule } from 'vee-validate'
 import SnackBar from '/src/components/ui/SnackBar.vue'
 import { AuthMutations } from '/src/store/auth/mutations'
@@ -76,6 +76,7 @@ import { wsStoreActions } from '../plugins/wsStore'
 
 const store = useStore()
 const router = useRouter()
+const route = useRoute()
 const authData = ref<AuthRequest>({
     login: '',
     password: ''
@@ -111,26 +112,40 @@ const loginError = computed({
     set: () => store.commit(AuthMutations.CLEAR_LOGIN_ERROR)
 })
 
+const afterLogin = async ( token?: string) => {
+    if (token) {
+        loader.value = true;
+        store.commit(AuthMutations.SET_SAVE_AUTH);
+        store.commit(AuthMutations.SET_AUTH, token)
+    } else {
+        if (saved.value) store.commit(AuthMutations.SET_SAVE_AUTH)
+    }
+
+    await Promise.all([
+        store.dispatch(CompanyActions.GET_COMPANYS),
+        store.dispatch(ProfileActions.GET_PROFILE)
+    ])
+    loader.value = false
+    await store.dispatch(wsStoreActions.AUTH_WS)
+};
 const onLogin = () => {
-    loader.value=true
+    loader.value = true
     store.dispatch(AuthActions.LOGIN, authData.value)
             .finally(async () => {
-                if (saved.value) await store.commit(AuthMutations.SET_SAVE_AUTH)
-                await store.commit(AuthMutations.SET_AUTH_LOGIN,authData.value.login)
-                await Promise.all([
-                    store.dispatch(CompanyActions.GET_COMPANYS),
-                    store.dispatch(ProfileActions.GET_PROFILE)
-                ])
-                loader.value=false
-                await store.dispatch(wsStoreActions.AUTH_WS)
-                await router.push('/')
+                await afterLogin();
             })
             .catch(() => {
                 authData.value.password = ''
                 setTimeout(() => {loader.value=false}, 3000)
             })
-}
+};
 
+onMounted(async () => {
+    if (!route.query.token) {
+        return;
+    }
+    await afterLogin(String(route.query.token));
+});
 
 
 </script>
