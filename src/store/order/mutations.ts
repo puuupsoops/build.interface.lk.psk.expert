@@ -176,8 +176,13 @@ export const mutations: MutationTree<OrderState> = {
 					let total_price = 0
 					let total_count = 0
 					x.characteristics.forEach( (c: any) => {
-						total = total + c.fullprice * Number(c.quantity)
-						total_price = total_price + c.price * Number(c.quantity);
+						//total = total + c.fullprice * Number(c.quantity);
+						//total_price =  total_price + c.price * Number(c.quantity);
+						
+						// Если скидка не дробная (2023 года) то используем c.fullprice, иначе (2024) c.price. 
+						total = c.discount <= 1 ? total + c.fullprice * Number(c.quantity) : total + c.price * Number(c.quantity);
+						// Если скидка не дробная (2023 года) то используем c.price, иначе (2024) c.fullprice
+						total_price = c.discount <= 1 ? total_price + c.price * Number(c.quantity) : total_price + c.fullprice * Number(c.quantity);
 						total_count = total_count + Number(c.quantity);
 					});
 					
@@ -191,13 +196,17 @@ export const mutations: MutationTree<OrderState> = {
 						characteristics: x.characteristics.map((c: any) => {
 							return {
 								CHARACTERISTIC: c.title,
-								PRICE: c.price,
+								//PRICE: c.price,
+								PRICE: c.discount >= 1 ? c.fullprice : c.price,
 								RESIDUE: c.available,
 								GUID: c.guid,
 								count: c.quantity,
 								ORGGUID: c.orgguid,
-								fullprice: c.fullprice,
-								discount: c.discount * 100,
+								//fullprice: c.fullprice,
+								fullprice: c.discount >= 1 ? c.price : c.fullprice,
+								// discount: c.discount * 100,
+								// Если скида имеет дробное значение (2024 год) то умножаем скидку на 100, иначе скидка выводится без умножения (2023 год).
+								discount: c.discount >= 1 ? c.discount : c.discount * 100, 
 							}
 						})
 					}
