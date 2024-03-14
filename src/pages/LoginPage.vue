@@ -127,6 +127,7 @@ const afterLogin = async ( token?: string) => {
     ])
     loader.value = false
     await store.dispatch(wsStoreActions.AUTH_WS)
+    await router.push('/')
 };
 const onLogin = () => {
     loader.value = true
@@ -135,8 +136,8 @@ const onLogin = () => {
                 await afterLogin();
             })
             .catch(() => {
-                authData.value.password = ''
-                setTimeout(() => {loader.value=false}, 3000)
+                authData.value.password = '';
+                setTimeout(() => {loader.value=false}, 3000);
             })
 };
 
