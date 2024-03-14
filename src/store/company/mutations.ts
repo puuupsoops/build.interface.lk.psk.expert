@@ -7,6 +7,7 @@ export enum CompanyMutations {
 	SET_COMPANYS = 'SET_COMPANYS',
 	SET_MANAGER = 'SET_MANAGER',
 	CLEAR_MANAGER = 'CLEAR_MANAGER',
+	SET_ACTIVE_COMPANY_ID = 'SET_ACTIVE_COMPANY_ID'
 }
 
 export const mutations: MutationTree<CompanyState> = {
@@ -19,5 +20,7 @@ export const mutations: MutationTree<CompanyState> = {
 	[CompanyMutations.CLEAR_MANAGER] (state) {
 		state.manager = {};
 	},
-
+	[CompanyMutations.SET_ACTIVE_COMPANY_ID] (state, data: string) {
+		state.activeCompanyId = data
+	}
 }

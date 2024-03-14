@@ -5,9 +5,10 @@ import { Document, normalizeCompanyName, Partner, StorageCompany } from "/src/mo
 import { SelectInputData } from "/src/models/Components"
 
 export const getters: GetterTree<CompanyState, RootState> = {
-	isCompanysLoad: state => state.companys.length !== 0,
+		isCompanysLoad: state => state.companys.length !== 0,
 		isManagerLoad: state => Object.keys(state.manager).length !== 0,
 		getCompanys: state => state.companys,
+		getActiveCompanyId: state => state.activeCompanyId,
 		getCompanysList: state => state.companys.map ( val => ({
 			id: val.uid,
 			name: normalizeCompanyName(val.name)})),
@@ -15,7 +16,7 @@ export const getters: GetterTree<CompanyState, RootState> = {
 			const res = state.companys.map ( val => ({
 				id: val.uid,
 				name: normalizeCompanyName(val.name)}))
-							
+
 			res.unshift({id: '', name: "Все"})
 			return res
 		},
@@ -36,9 +37,9 @@ export const getters: GetterTree<CompanyState, RootState> = {
 		},
 		getCompanyStoragesData: state => (uid: string): StorageCompany[] => {
 			const company = state.companys.find(x => x.uid === uid)
-			
+
 			return (company && company.storages) ?
-				company.storages.map ( val => 
+				company.storages.map ( val =>
 					<StorageCompany>({
 						"guid": val.guid,
 						"name": val.name,
@@ -86,9 +87,9 @@ export const getters: GetterTree<CompanyState, RootState> = {
 		},
 		getCompanyDiscount: state => (uid: string, guid: string) => {
 			if (uid){
-			
+
 				const company = state.companys.find(x => x.uid === uid)
-				
+
 				const res = company && company.storages ? company.storages.find(x => x.guid === guid): null
 				return res?res.discount:null
 			} else { return 0 }
@@ -99,9 +100,9 @@ export const getters: GetterTree<CompanyState, RootState> = {
 				Если есть 2 договора, то берется скидка с ЭС.
 					если договора нет, то берем из того, который есть.
 			*/
-			if (!uid) 
+			if (!uid)
 				return 0;
-			
+
 			const company = state.companys.find(x => x.uid === uid);
 			const specodaUid = 'b5e91d86-a58a-11e5-96ed-0025907c0298';
 			let discount: null | Number = null;

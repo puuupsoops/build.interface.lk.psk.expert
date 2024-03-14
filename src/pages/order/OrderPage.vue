@@ -214,14 +214,15 @@ watch(activeCompanyUid, () => {
 })
 
 onMounted(() => {
-  store.commit(OrderMutations.ADD_ORDER_PARTNER_ID, activeCompanyUid.value)
-  if (!store.getters.isCompanysLoad)
-  {
-    store.dispatch(CompanyActions.GET_COMPANYS).finally(() => { setTimeout(()=>{
-            activeCompanyUid.value = store.getters.getCompanys.length==0 ? '' : store.getters.getCompanys[0].uid;
-          },500);})
-  }
-  activeProductId.value=store.getters.getProduct.ID;
+    store.commit(OrderMutations.ADD_ORDER_PARTNER_ID, activeCompanyUid.value)
+    if (!store.getters.isCompanysLoad) {
+        store.dispatch(CompanyActions.GET_COMPANYS).finally(() => {
+            activeCompanyUid.value = store.getters.getCompanys.length == 0 ? '' : store.getters.getCompanys[0].uid;
+        })
+    } else {
+       activeCompanyUid.value = store.getters.getActiveCompanyId;
+    }
+    activeProductId.value=store.getters.getProduct.ID;
 
 
   if ( props.article) {
