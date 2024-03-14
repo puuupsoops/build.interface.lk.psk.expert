@@ -213,29 +213,30 @@ watch(activeCompanyUid, () => {
   store.commit(OrderMutations.CALC_ORDER)
 })
 
-onMounted(() => {
+onMounted(async () => {
     store.commit(OrderMutations.ADD_ORDER_PARTNER_ID, activeCompanyUid.value)
-    if (!store.getters.isCompanysLoad) {
-        store.dispatch(CompanyActions.GET_COMPANYS).finally(() => {
-            activeCompanyUid.value = store.getters.getCompanys.length == 0 ? '' : store.getters.getCompanys[0].uid;
-        })
-    } else {
-       activeCompanyUid.value = store.getters.getActiveCompanyId;
-    }
     activeProductId.value=store.getters.getProduct.ID;
 
-
-  if ( props.article) {
-    loader.value = true;
-    store.dispatch(ProductActions.SEARCH_PRODUCT, props.article)
-      .then(()=>{
-        if (store.getters.getProduct.ID)
-          activeProductId.value=store.getters.getProduct.ID
-        else
-          router.push({name: 'Order'});
+    if ( props.article) {
+        loader.value = true;
+        store.dispatch(ProductActions.SEARCH_PRODUCT, props.article)
+        .then(()=>{
+            if (store.getters.getProduct.ID)
+                activeProductId.value=store.getters.getProduct.ID
+            else
+                router.push({name: 'Order'});
         })
-      .finally(() => {loader.value=false})
-  }
+        .finally(() => {loader.value=false})
+    }
+
+    if (store.getters.getActiveCompanyId !== '') {
+        activeCompanyUid.value = store.getters.getActiveCompanyId;
+        return;
+    }
+    if (!store.getters.isCompanysLoad) {
+        await store.dispatch(CompanyActions.GET_COMPANYS)
+    }
+    activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
 });
 
 const discount = computed(() => {
