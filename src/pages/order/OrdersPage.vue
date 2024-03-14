@@ -100,15 +100,16 @@
 		}
 	}
 
-	onMounted(() => {
-		store.dispatch(OrdersActions.GET_ORDERS).finally(()=>{loading.value = false})
-		if (!store.getters.isCompanysLoad)
-		{
-			store.dispatch(CompanyActions.GET_COMPANYS)
-				.then(() =>{
-				//	activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
-				})
-		}
+	onMounted(async () => {
+		store.dispatch(OrdersActions.GET_ORDERS).finally(()=>{loading.value = false});
+        if (store.getters.getActiveCompanyId !== '') {
+            filterCompanyUid.value = store.getters.getActiveCompanyId;
+            return;
+        }
+        if (!store.getters.isCompanysLoad) {
+        	await store.dispatch(CompanyActions.GET_COMPANYS)
+        }
+        filterCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0]?.uid;
 	});
 
 		

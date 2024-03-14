@@ -85,7 +85,7 @@ export default defineComponent({
 	},
 	setup() {
 		const store = useStore()
-		const loading = ref(false)
+		const loading = ref(true)
 		const filterCompanyUid = ref('');
 		const filterPeriod = ref(0)
 		const filterStatus = ref(0)
@@ -101,15 +101,20 @@ export default defineComponent({
 		];
 		
 		
-		onMounted(() => {
-			loading.value = true
-			store.dispatch(OrdersActions.GET_ORDERS).finally(()=>{
-				store.dispatch(ClaimActions.GET_CLAIMS).finally(()=>{loading.value = false})
-			})
-			if (!store.getters.isCompanysLoad)
-			{
-				store.dispatch(CompanyActions.GET_COMPANYS)
-			}
+		onMounted(async () => {
+            Promise.all([
+			    store.dispatch(OrdersActions.GET_ORDERS),
+				store.dispatch(ClaimActions.GET_CLAIMS)
+			]).finally(()=>{loading.value = false});
+
+            if (store.getters.getActiveCompanyId !== '') {
+                filterCompanyUid.value = store.getters.getActiveCompanyId;
+                return;
+            }
+            if (!store.getters.isCompanysLoad) {
+                await store.dispatch(CompanyActions.GET_COMPANYS)
+            }
+            filterCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0]?.uid;
 		});
 
 		const newClaim = ()=>{

@@ -105,32 +105,28 @@ const toOrder = () => {
 			router.push({name: 'Order'})
 		}
 
-onMounted(() => {
-  if (!store.getters.isCompanysLoad || !store.getters.isManagerLoad)
-    {
-      Promise.all([
-        store.dispatch(CompanyActions.GET_COMPANYS),
-        ])
-        //.catch(()=>{alert('error')})
-        .finally(() => { setTimeout(()=>{
-            activeCompanyUid.value = store.getters.getCompanys.length == 0 ? '' : store.getters.getCompanys[0].uid
-          },500) })
+onMounted( async () => {
+    if (props.article) {
+        loader.value = true
+        store.dispatch(ProductActions.SEARCH_PRODUCT, props.article)
+        .then(()=>{
+            isLoad.value=true
+            if (store.getters.getProduct.ID)
+                activeProductId.value=store.getters.getProduct.ID
+            else
+                router.push({name: 'Product'})
+        })
+        .finally(() => { loader.value=false })
     }
 
-  if (props.article) {
-    loader.value = true
-    store.dispatch(ProductActions.SEARCH_PRODUCT, props.article)
-      .then(()=>{
-
-        isLoad.value=true
-        if (store.getters.getProduct.ID)
-          activeProductId.value=store.getters.getProduct.ID
-        else
-          router.push({name: 'Product'})
-
-        })
-      .finally(() => {loader.value=false})
-  }
+    if (store.getters.getActiveCompanyId !== '') {
+        activeCompanyUid.value = store.getters.getActiveCompanyId;
+        return;
+    }
+    if (!store.getters.isCompanysLoad || !store.getters.isManagerLoad) {
+        await store.dispatch(CompanyActions.GET_COMPANYS)
+    }
+    activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0]?.uid;
 })
 watch( ()=>props.article, (new_val) => {
   if (new_val) {
