@@ -252,7 +252,7 @@ const sale_type = ref<SALE_TYPE>(SALE_TYPE.PERCENT)
 const showAddPos = ref(false) // окно с добавлением продукта
 const orderLocal = ref<OrderStateOrder>(props.order)
 const addPos = ref<OrderStatePosition>()
-
+console.log(orderLocal);
 const calcOrder = (type?: SALE_TYPE, change?: boolean):void => {
   sale_margin.value = change ? -sale_margin.value:sale_margin.value
   sale_type.value = type ? type : sale_type.value
@@ -286,7 +286,8 @@ const calcOrder = (type?: SALE_TYPE, change?: boolean):void => {
 const showAddSum = (characteristic: OrderStatePositionOffer) => {
   characteristic.add_sum===undefined ? characteristic.add_sum=0 :characteristic.add_sum=undefined
   calcOrder()
-}
+} 
+
 watch(addPos, ()=>{
   if (orderLocal.value.position) {
     orderLocal.value.position = orderLocal.value.position.concat(addPos.value ?? [])

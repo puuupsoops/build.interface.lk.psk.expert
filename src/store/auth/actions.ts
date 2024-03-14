@@ -4,7 +4,7 @@ import { ActionTree } from "vuex"
 import { RootState } from "/src/store"
 import { AuthState } from "./types"
 import { AuthMutations } from "./mutations"
-import { AuthRequest, Auth, AuthResponse } from '/src/models/Auth'
+import { AuthRequest } from '/src/models/Auth'
 const api_location = import.meta.env.VITE_APP_API_LOCATION
 export enum AuthActions {
 	LOGIN = "LOGIN",
@@ -40,7 +40,6 @@ export const actions: ActionTree<AuthState, RootState> =  {
 			}
 
 			if (response.data.error === null) {
-				axios.defaults.headers.common.Authorization = `Bearer ${data.token}`
 				commit(AuthMutations.SET_AUTH, data.token)
 				return Promise.resolve()
 			} else {

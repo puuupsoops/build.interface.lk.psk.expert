@@ -72,8 +72,8 @@ export const actions: ActionTree<CompanyState, RootState> =  {
 				console.log(errors)
 				// блокируем пользователя, т.к. отсутствие компаний является неправильной конфигурацией учетки в 1С от 2024-01-22
 				if(errors.length > 0){
-					router.push({name: 'Blocked', params: { data: errors }});
-					return;
+					//router.push({name: 'Blocked', params: { data: errors }});
+					//return;
 				}
 				
 				
@@ -82,8 +82,8 @@ export const actions: ActionTree<CompanyState, RootState> =  {
 			.catch( error => {
 				errors.push(`Отсутствуют договора!`)
 				if(errors.length > 0){
-					router.push({name: 'Blocked', params: { data: errors }});
-					return;
+					//router.push({name: 'Blocked', params: { data: errors }});
+					//return;
 				}
 				commit(AuthMutations.SET_ERROR, 'Request GET_PARTNER error:<br>'+error)
 			})

@@ -17,15 +17,13 @@ export enum AuthMutations {
 }
 
 export const mutations: MutationTree<AuthState> = {
-	[AuthMutations.SET_AUTH] (state, data) {
-		state.token = data;
+	[AuthMutations.SET_AUTH] (state, token: string) {
+		axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+		state.token = token;
 	},
-	[AuthMutations.SET_AUTH_LOGIN] (state, data) {
-		state.login = data;
-	},
-	async [AuthMutations.SET_SAVE_AUTH] (state) {
+	[AuthMutations.SET_SAVE_AUTH] (state) {
 		if (state.token) {
-			await localStorage.setItem('id_token', state.token);
+			localStorage.setItem('id_token', state.token);
 		}
 	},
 	[AuthMutations.LOGOUT] (state) {
