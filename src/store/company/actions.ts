@@ -20,7 +20,6 @@ export const actions: ActionTree<CompanyState, RootState> =  {
 
 		await axios.get<PartnerResponse>('/partners')
 			.then(response => {
-				console.log(response.data.response)
 				if(!response.data.response.length){
 					errors.push(`Отсутствуют контрагенты!`)
 				}else{
@@ -56,8 +55,6 @@ export const actions: ActionTree<CompanyState, RootState> =  {
 
 					})
 				}
-
-				console.log(errors)
 				// блокируем пользователя, т.к. отсутствие компаний является неправильной конфигурацией учетки в 1С от 2024-01-22
 				if(errors.length > 0){
 					//router.push({name: 'Blocked', params: { data: errors }});

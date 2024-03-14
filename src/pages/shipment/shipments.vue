@@ -75,6 +75,7 @@ import { ShipmentsActions } from '/src/store/shipments/actions'
 import { OrdersSatusCode } from '/src/store/orders/types'
 import { SearchData } from '/src/models/Components'
 import { OrdersActions } from '/src/store/orders/actions'
+import {ClaimActions} from "/src/store/claims/actions";
 
 export default defineComponent({
 	components:{
@@ -101,18 +102,20 @@ export default defineComponent({
 			
 		];
 	
-		onMounted(() => {
-			store.dispatch(OrdersActions.GET_ORDERS).finally(()=>{
-				store.dispatch(ShipmentsActions.GET_SHIPMENTS).finally(()=>{loading.value = false})
-			})
-			
-			if (!store.getters.isCompanysLoad)
-			{
-				store.dispatch(CompanyActions.GET_COMPANYS)
-					// .then(() =>{
-					// 	filterCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
-					// })
+		onMounted(async () => {
+            Promise.all([
+                store.dispatch(OrdersActions.GET_ORDERS),
+                store.dispatch(ClaimActions.GET_CLAIMS)
+            ]).finally(()=>{loading.value = false});
+
+            if (store.getters.getActiveCompanyId !== '') {
+                filterCompanyUid.value = store.getters.getActiveCompanyId;
+                return;
+            }
+			if (!store.getters.isCompanysLoad) {
+				await store.dispatch(CompanyActions.GET_COMPANYS)
 			}
+            filterCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
 		});
 
 		return{

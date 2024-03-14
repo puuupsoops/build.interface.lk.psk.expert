@@ -50,6 +50,7 @@ import { useRouter } from 'vue-router'
 import { CompanyActions } from '/src/store/company/actions'
 import { KeysMutations } from '/src/store/keys/mutations'
 import { CompanyMutations } from '/src/store/company/mutations'
+import { Partner } from "/src/models/Partner";
 
 	const props = defineProps (['id'])
   	const store = useStore()
@@ -102,7 +103,9 @@ import { CompanyMutations } from '/src/store/company/mutations'
 				//.catch(()=>{alert('error')})
 				.finally(() => { setTimeout(()=>{
 					if (store.getters.isCompanysLoad) {
-						activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid;
+                        const company = store.getters.getCompanys.find((company: Partner) => company.uid === props.id)
+						activeCompanyUid.value = company ? company.uid : store.getters.getCompanys[0].uid;
+                        store.commit(CompanyMutations.SET_ACTIVE_COMPANY_ID, props.id)
 						isLoad.value = true;
 						loader.value=false;
 						
@@ -114,6 +117,8 @@ import { CompanyMutations } from '/src/store/company/mutations'
 			//;
 			if (props.id !=='') {
 				activeCompanyUid.value=props.id;
+                console.log(props.id)
+                store.commit(CompanyMutations.SET_ACTIVE_COMPANY_ID, props.id)
 				store.commit(CompanyMutations.CLEAR_MANAGER)
 				store.dispatch(CompanyActions.GET_MANAGER, managerUid.value)
 			} else { activeCompanyUid.value = store.getters.getCompanys === [] ? '' : store.getters.getCompanys[0].uid }
