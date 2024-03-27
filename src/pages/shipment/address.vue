@@ -6,7 +6,7 @@
 			<Notification></Notification>
 			<PersonalBar></PersonalBar>
 		</div>
-		<top-nav address @onClick="editAddrName=-1; addrName= ''; addrLabel='', showAddr=true;">
+		<top-nav address @onClick="editAddrName=-1; addrName= ''; addrLabel=''; showAddr=true;">
 		</top-nav>
 		<div class="shipment-heading">
 			<div class="shipment-heading-elem"> 

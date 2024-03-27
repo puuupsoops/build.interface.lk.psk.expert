@@ -1,6 +1,6 @@
 <template>
 
-<div :class="'product-search fullwidth' + (show ? '': ' none')" ref="target">
+<div :class="'product-search fullwidth' + (show ? ' show': '')" ref="target">
 	<div class="product-search-input-container">
 		<div class="product-search-input-notice"> {{ step == 1 ? '1 Введите адрес' : '2 Введите наименование'}} </div>
 		<div v-if="step==1">
@@ -101,10 +101,7 @@
 
 <script lang="ts">
 import PreloaderLocal from '/src/components/PreloaderLocal.vue'
-
-
 import { useStore } from '/src/store';
-
 
 import { computed, defineComponent, nextTick, ref, watch } from 'vue'
 import { onClickOutside } from '@vueuse/core';
@@ -208,18 +205,18 @@ export default defineComponent({
 			if (props.edit == -1) {
 					const res = [{
 					label: props.label,
-					address:  active_elem.value !=-1 ? active_elem.value.value : '',
-					latitude:  active_elem.value !=-1 ? active_elem.value.data.geo_lat : '',
-					longitude:  active_elem.value !=-1 ? active_elem.value.data.geo_lon : '',
+					address:  active_elem.value !=-1 ? active_elem.value?.value : '',
+					latitude:  active_elem.value !=-1 ? active_elem.value?.data.geo_lat : '',
+					longitude:  active_elem.value !=-1 ? active_elem.value?.data.geo_lon : '',
 				}]
 				store.dispatch(ShipmentsActions.ADD_SHIPMENTS_ADDRESS, res)
 			} else{
 				const res = [{
 					index: props.edit,
 					label: props.label,
-					address:  active_elem.value !=-1 ? active_elem.value.value : '',
-					latitude:  active_elem.value !=-1 ? active_elem.value.data.geo_lat : '',
-					longitude:  active_elem.value !=-1 ? active_elem.value.data.geo_lon : '',
+					address:  active_elem.value !=-1 ? active_elem.value?.value : '',
+					latitude:  active_elem.value !=-1 ? active_elem.value?.data.geo_lat : '',
+					longitude:  active_elem.value !=-1 ? active_elem.value?.data.geo_lon : '',
 				}]
 				store.dispatch(ShipmentsActions.UPDATE_SHIPMENTS_ADDRESS, res)
 			}
