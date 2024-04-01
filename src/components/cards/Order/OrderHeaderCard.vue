@@ -8,7 +8,7 @@
 		<div class="content-heading-price"> 
 			<div>
 				<div class="content-heading-price-text">Сумма заказа: </div>
-				<div class="content-heading-info-elem" v-if="data.delivery.case=='other'" style="position: absolute">+Доставка: {{data.delivery.cost}} ₽</div>	
+				<div class="content-heading-info-elem" v-if="data.delivery.case=='other'" style="position: absolute; padding-bottom: 55px;">+Доставка: {{data.delivery.cost}} ₽</div>	
 			</div>
 			
 			<div class="content-heading-price-value" v-if="data.total != data.total_discount">
@@ -26,7 +26,7 @@
 		<div class="content-heading-info-elem" v-if="data.total_valume"> <span class="content-heading-info-text">Общий объем: </span><span class="content-heading-info-value">{{data.total_valume}} м.куб.</span></div>
 		
 	</div>
-	<div class="content-heading-info"> 
+	<div class="content-heading-info" style="margin-top: 20px;"> 
 		<div class="content-heading-info-elem" v-if="data.total_discount"> 
 			<span class="content-heading-info-text">Будет сэкономлено: </span>
 			<span class="content-heading-info-value"> <span v-counter="economy">{{ economy }}</span> ₽</span>

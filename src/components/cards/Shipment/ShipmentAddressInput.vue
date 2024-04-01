@@ -112,7 +112,7 @@ export default defineComponent({
 				debounce.value = setTimeout(() => {
 						store.dispatch(ShipmentsActions.ADDRESS_PROMPT, search_str.value)
 								.then(()=>{ setTimeout( ()=> {loading.value=false}, 100)})
-								//.finally(() => {loading.value=false})
+								.finally(() => {loading.value=false})
 					}, 500)
 			}
 			emit('update:modelValue', search_str.value)
@@ -127,7 +127,7 @@ export default defineComponent({
 				active_elem.value =  Object.assign({},item) 
 				searchInput.value.focus()
 				emit('update:modelValue', search_str.value)
-		}
+		} 
 		onClickOutside(target, () => {
 
 			options_show.value = false})
