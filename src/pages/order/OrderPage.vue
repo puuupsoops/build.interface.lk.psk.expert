@@ -114,7 +114,7 @@ import { ProductActions } from '/src/store/product/actions'
 import { CompanyActions } from '/src/store/company/actions'
 import { OrderStatePosition, OrderStatePositionOffer } from '/src/store/order/types'
 import { KPMutations } from "/src/store/kp/mutations";
-
+import { calcProductDiscount } from '/src/func/calcProductDiscount'
 
 const props = defineProps({
   article: {
@@ -240,18 +240,12 @@ onMounted(async () => {
 });
 
 const discount = computed(() => {
-			const status = store.getters.getProduct.STATUS
+			const status = String(store.getters.getProduct.STATUS)
       const productDiscount = Number(store.getters.getProduct?.MAX_DISCOUNT)
-      const companyDiscount = store.getters.getCompanyDiscount(activeCompanyUid.value, store.getters.getProductOffersORGGUID)
+      const companyDiscount = Number(store.getters.getCompanyDiscount(activeCompanyUid.value, store.getters.getProductOffersORGGUID))
 
-      if(productDiscount == 0 && status == '-' || productDiscount == null && status == '-')
-        return companyDiscount ?? 0;
-
-			if (status == 'Outlet' || status == 'Discount' || status == 'Activity')
-				return 0
-			else
-				return companyDiscount > productDiscount ? productDiscount : companyDiscount
-		})
+      return calcProductDiscount(status, productDiscount, companyDiscount);
+})
 
 const isProduct = computed(() => store.getters.isProduct)
 const companyBarTopData = computed(() => store.getters.getCompanysList)

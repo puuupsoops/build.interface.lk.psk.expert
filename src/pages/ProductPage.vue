@@ -80,6 +80,7 @@ import { ProductActions } from '/src/store/product/actions'
 import { ProductMutations } from '/src/store/product/mutations'
 import { OrderStatePosition, OrderStatePositionOffer } from '/src/store/order/types'
 import { OrderActions } from '/src/store/order/actions'
+import { calcProductDiscount } from '/src/func/calcProductDiscount'
 
 const props = defineProps({
   article: {
@@ -190,23 +191,14 @@ const productFound = computed(() => store.getters.getProductFound)
 const productImages = computed(() => store.getters.getProductImages)
 const productProtect = computed(() => store.getters.getProductProtect)
 const discount = computed(() => {
-      const status = store.getters.getProduct.STATUS
+      const status = String(store.getters.getProduct.STATUS)
       const productDiscount = Number(store.getters.getProduct?.MAX_DISCOUNT)
-      const companyDiscount = store.getters.getCompanyDiscount(activeCompanyUid.value, store.getters.getProductOffersORGGUID)
-      
-      if(productDiscount == 0 && status == '-' || productDiscount == null && status == '-')
-        return companyDiscount ?? 0;
+      const companyDiscount = Number(store.getters.getCompanyDiscount(activeCompanyUid.value, store.getters.getProductOffersORGGUID))
 
-			if (status == 'Outlet' || status == 'Discount' || status == 'Activity')
-				return 0
-			else
-				return companyDiscount > productDiscount ? productDiscount : companyDiscount
+      return calcProductDiscount(status, productDiscount, companyDiscount);
 })
-
 
 </script>
 
-
 <style lang="sass">
-
 </style>
