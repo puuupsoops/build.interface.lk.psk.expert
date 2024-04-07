@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     console.log('version.ts init 🤖');
-
+    const host: String = import.meta.env.VITE_APP_API_LOCATION
     const app: HTMLDivElement = <HTMLDivElement>document.getElementById("app");
     const body = document.body;
     
@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log('build date:', date)
     console.groupEnd();
     
-    await fetch('http://89.111.136.61/api/')
+    await fetch(`${host}/api/`)
     .then(async (res: Response) => {
         const data = <{
             error: null | {msg: string, code: number}, 
