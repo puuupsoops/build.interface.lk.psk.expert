@@ -15,13 +15,13 @@ export function calcProductDiscount(
     const productDiscount = max_discount;
     const companyDiscount = company_discount;
 
-    if(productDiscount == 0 && status == '-'){
-        return companyDiscount ?? 0;
-    }
-
 	if (status == 'Outlet' || status == 'Discount'){
         return 0
     }
 
-    return companyDiscount < productDiscount ? productDiscount : companyDiscount
+    if(productDiscount == 0 && status == '-'){
+        return companyDiscount ?? 0;
+    }
+
+    return companyDiscount > productDiscount ? productDiscount : companyDiscount
 }
