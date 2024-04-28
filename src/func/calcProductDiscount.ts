@@ -1,3 +1,5 @@
+import { ProductDiscountStatus } from "../models/Product";
+
 /**
  * Функция расчитывает применимую скидку к товару 
  * 
@@ -15,8 +17,29 @@ export function calcProductDiscount(
     const productDiscount = max_discount;
     const companyDiscount = company_discount;
 
+    switch (status) {
+        case ProductDiscountStatus.Outlet: // Outlet
+        case ProductDiscountStatus.Discount: // Discount
+        case ProductDiscountStatus.Activity:
+            return 0;
+        case ProductDiscountStatus.Empty: // - четрочка, отсутствие скидки
+        case ProductDiscountStatus.New: // New collection
+            if(productDiscount == 0)
+                return companyDiscount ?? 0;
+            return companyDiscount >= productDiscount ? productDiscount : companyDiscount 
+
+        case ProductDiscountStatus.Soon: // Soon
+        case ProductDiscountStatus.Upgrade: // Upgrade
+        case ProductDiscountStatus.Request: // Под заказ
+        case ProductDiscountStatus.Expansion: // Расширение ассортимента
+        case ProductDiscountStatus.None: // '' пустота
+        default:
+            return 0
+    }
+
+    /*
 	if (status == 'Outlet' || status == 'Discount'){
-        return 0
+        return 0;
     }
 
     if(productDiscount == 0 && status == '-'){
@@ -24,4 +47,5 @@ export function calcProductDiscount(
     }
 
     return companyDiscount > productDiscount ? productDiscount : companyDiscount
+    */
 }

@@ -77,3 +77,16 @@ export interface ProductCharacteristic {
     characteristicGUID:   string;
     count:                number;
 }
+
+export enum ProductDiscountStatus {
+    Activity = 'Activity',
+    Discount = 'Discount',
+    New = 'New collection',
+    Outlet = 'Outlet',
+    Soon = 'Soon',
+    Upgrade = 'Upgrade',
+    Request = 'Под заказ',
+    Expansion = 'Расширение ассортимента',
+    Empty = '-',
+    None = ''
+}
