@@ -1,6 +1,6 @@
 {
      "name": "lk.psk.expert",
-     "version": "0.3.9",
+     "version": "0.4.1",
      "private": true,
      "scripts": {
           "dev": "vite",
