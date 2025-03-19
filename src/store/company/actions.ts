@@ -24,7 +24,7 @@ export const actions: ActionTree<CompanyState, RootState> =  {
 					errors.push(`Отсутствуют контрагенты!`)
 				}else{
 					// проверяем каждого контрагента правки от 2024-01-22
-					response.data.response.forEach((value, index) => {
+					response.data.response.forEach((value, _index) => {
 						// проверяем на отсутствие договоров
 						if(!value.storages){
 							errors.push(`Отсутствуют договора у контрагента: ${value.name}`)
@@ -74,7 +74,10 @@ export const actions: ActionTree<CompanyState, RootState> =  {
 				}
 				
 				
-				commit(CompanyMutations.SET_COMPANYS, response.data.response)
+				commit(CompanyMutations.SET_COMPANYS, response.data.response);
+
+				// устанавливаем activeCompanyUid по умолчанию
+				commit(CompanyMutations.SET_ACTIVE_COMPANY_ID, String(response.data.response[0].uid));
 			})
 			.catch( error => {
 				errors.push(`Отсутствуют договора!`)
@@ -83,7 +86,7 @@ export const actions: ActionTree<CompanyState, RootState> =  {
 					//return;
 				}
 				commit(AuthMutations.SET_ERROR, 'Request GET_PARTNER error:<br>'+error)
-			})
+			});
 			
 	},
 	async [CompanyActions.GET_MANAGER] ({commit} ,id: string) {

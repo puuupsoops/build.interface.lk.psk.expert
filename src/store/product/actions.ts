@@ -5,7 +5,7 @@ import { ProductState } from "./types"
 import { AuthMutations } from '../auth/mutations'
 import { ProductMutations } from './mutations'
 import { Found } from '/src/models/Product'
-
+import { useStore } from '/src/store';
 
 export enum ProductActions {
 	SEARCH_PRODUCT = "SEARCH_PRODUCT_ACTION",
@@ -14,7 +14,7 @@ export enum ProductActions {
 }
 
 export const actions: ActionTree<ProductState, RootState> =  {
-	async [ProductActions.SEARCH_PRODUCT] ({commit}, data: string) {
+	async [ProductActions.SEARCH_PRODUCT] ({commit, getters}, data: string) {
 		commit(ProductMutations.SET_PRODUCT_FOUND_ERR_STR, '')
 		//console.log('ProductActions.SEARCH_PRODUCT')
 		//опция поиска по точному совпадению
@@ -24,7 +24,11 @@ export const actions: ActionTree<ProductState, RootState> =  {
 			option = 0
 		}
 
-		await axios.get(`/product/search?QUERY=${data}&OPTION=${option}`, {transformRequest: (_, headers) => {
+		const activeCompanyId = getters.getActiveCompanyId;
+		const storages: Storage[] = getters.getCompanyStoragesData(activeCompanyId);
+		const priceUid = storages[0]?.pricetype ?? '';
+
+		await axios.get(`/product/search?QUERY=${data}&OPTION=${option}&PRICEUID=${priceUid}`, {transformRequest: (_, headers) => {
 			delete headers?.common
 			}})
 			.then(response => {
@@ -39,9 +43,14 @@ export const actions: ActionTree<ProductState, RootState> =  {
 			})
 
 	},
-	async [ProductActions.GET_PRODUCT_BY_ID] ({commit}, data: string) {
-		commit(ProductMutations.SET_PRODUCT_FOUND_ERR_STR, '')
-		await axios.get(`/product/search?QUERY=${data}&OPTION=9`, {transformRequest: (_, headers) => {
+	async [ProductActions.GET_PRODUCT_BY_ID] ({commit, getters}, data: string) {
+		commit(ProductMutations.SET_PRODUCT_FOUND_ERR_STR, '');
+
+		const activeCompanyId = getters.getActiveCompanyId;
+		const storages: Storage[] = getters.getCompanyStoragesData(activeCompanyId);
+		const priceUid = storages[0]?.pricetype ?? '';
+
+		await axios.get(`/product/search?QUERY=${data}&OPTION=9&PRICEUID=${priceUid}`, {transformRequest: (_, headers) => {
 			delete headers?.common
 			}})
 			.then(response => {
@@ -55,7 +64,7 @@ export const actions: ActionTree<ProductState, RootState> =  {
 					commit(AuthMutations.SET_ERROR, 'Request GET_PRODUCT_BY_ID error:<br>'+error)
 			})
 	},
-	async [ProductActions.SEARCH_PRODUCT_ARTICLE] ({commit}, data: string) {
+	async [ProductActions.SEARCH_PRODUCT_ARTICLE] ({commit, getters}, data: string) {
 		commit(ProductMutations.SET_PRODUCT_FOUND_ERR_STR, '')
 
 		//console.log('ProductActions.SEARCH_PRODUCT_ARTICLE')
@@ -66,7 +75,10 @@ export const actions: ActionTree<ProductState, RootState> =  {
 			option = 0
 		}
 
-		await axios.get(`/product/search?QUERY=${data}&OPTION=${option}`, {transformRequest: (_, headers) => {
+		const activeCompanyId = getters.getActiveCompanyId;
+		const storages: Storage[] = getters.getCompanyStoragesData(activeCompanyId);
+		const priceUid = storages[0]?.pricetype ?? '';
+		await axios.get(`/product/search?QUERY=${data}&OPTION=${option}&PRICEUID=${priceUid}`, {transformRequest: (_, headers) => {
 			delete headers?.common
 			}})
 			.then(response => {
@@ -78,7 +90,7 @@ export const actions: ActionTree<ProductState, RootState> =  {
 
 				// если с сервера пришли данные по поиску, но строгое сравнение ничего не нашло. Ищем по вхождению слов
 				if(serachResult.length === 0 && found.length > 0 ){
-					let arrWords = dataModify(data).split(' ');
+					const arrWords = dataModify(data).split(' ');
 					serachResult = found.filter( (x) => {
 						let count = 0;
 						arrWords.forEach( (word) => { if (dataModify(x.NAME).indexOf(word) != - 1 || dataModify(x.ARTICLE).indexOf(dataModify(data))!=-1) count++; });

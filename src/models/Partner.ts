@@ -26,6 +26,17 @@ export interface Partner {
     storages?:     StorageCompany[];
 }
 
+// тип цены из 1С от 2025-03-19 
+export enum PartnerPriceType {
+    // Пустая цена (по умолчанию были все диллеры, чтобы не сломалось ничего у пользователей)
+    Default = '',
+    // Дилерская
+    Dealer = '30edc279-b8af-11de-a660-0050569a3a91',
+    // Базовая
+    Base = 'd5a8ed91-a567-11ee-b2cc-005056bb1249',
+    //Export = '', // будет в ближайшем будущем
+}
+
 export interface StorageCompany {
     guid:      string;
     name:      string;
@@ -39,6 +50,7 @@ export interface StorageCompany {
     case:      string; // "отсрочка", // <String> Вид взаиморасчетов
     percent:   number; //0, // <Float> Процент предоплаты 
     limit:     string; //1500000", // <String> Лимит 
+    pricetype: string; // тип цены из 1С от 2025-03-19 
     documents: Document[];
 }
 

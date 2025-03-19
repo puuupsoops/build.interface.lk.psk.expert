@@ -53,6 +53,7 @@ export const getters: GetterTree<CompanyState, RootState> = {
 						"limit": val.limit,
 						"percent": val.percent,
 						"date": Number(val.date) >= 0 ? new Date(Number(val.date) * 1000).toLocaleString('ru').substr(0, 10) : '--.--.----',
+						"pricetype": val.pricetype ?? '',
 						"documents": val.documents.map( doc => {
 							return <Document>{
 								"date": new Date(Number(doc.date) * 1000).toLocaleString('ru').substr(0, 10),
