@@ -13,6 +13,8 @@ export interface Manager {
     phone1:  string;
     name:    string;
     header:  Header;
+    caption?: string;
+    uid?: string;
 }
 
 export interface Header {

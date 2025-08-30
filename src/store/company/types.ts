@@ -4,6 +4,7 @@ import { Partner } from "/src/models/Partner";
 export interface CompanyState {
 	companys: Partner[],
 	manager: Manager|{},
+	managers: Manager[],
 	activeCompanyId: string
 }
 

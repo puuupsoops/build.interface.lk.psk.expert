@@ -11,9 +11,34 @@ import router from '/src/plugins/router'
 export enum CompanyActions {
 	GET_COMPANYS = "GET_COMPANYS",
 	GET_MANAGER = "GET_MANAGER",
+	GET_MANAGERS = "GET_MANAGERS",
 }
 
 export const actions: ActionTree<CompanyState, RootState> =  {
+	async [CompanyActions.GET_MANAGERS] ({commit, state}) {
+		//console.log('CompanyActions.GET_MANAGER | ctx:', ctx);
+		const filteredCompany = state.companys.filter((v) => v.uid === state.activeCompanyId);
+		if(filteredCompany){
+			const currentCompany = filteredCompany[0];
+			await axios.get<ManagerResponse>('/managers', { params: { partnerId: state.activeCompanyId } })
+				.then(response => {
+						//commit(CompanyMutations.SET_MANAGER, response.data.response)
+						console.log('CompanyActions.GET_MANAGERS:', response.data.response);
+						commit(CompanyMutations.SET_MANAGERS, response.data.response)
+				})
+				.catch( error => {
+					commit(AuthMutations.SET_ERROR, 'Request GET_MANAGER error:<br>'+error)
+				})
+		}
+		// await axios.get<ManagerResponse>('/manager', { params: { id } })
+		// 	.then(response => {
+		// 			commit(CompanyMutations.SET_MANAGER, response.data.response)
+		// 	})
+		// 	.catch( error => {
+		// 		commit(AuthMutations.SET_ERROR, 'Request GET_MANAGER error:<br>'+error)
+		// 	})
+			
+	},
 	// API https://documenter.getpostman.com/view/15374835/UUxwBoF3#e1274708-aee2-4901-a4fa-40b9c3202c14
 	async [CompanyActions.GET_COMPANYS] ({commit}) {
 		const errors = <String[]>[];

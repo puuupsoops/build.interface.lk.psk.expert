@@ -24,6 +24,8 @@ export interface Partner {
     managerName:   string;
     managerUid:    string;
     storages?:     StorageCompany[];
+    // теперь менеджеров два
+    managers:      {uid: string, name: string, caption: string}[];
 }
 
 // тип цены из 1С от 2025-03-19 
@@ -50,7 +52,13 @@ export interface StorageCompany {
     case:      string; // "отсрочка", // <String> Вид взаиморасчетов
     percent:   number; //0, // <Float> Процент предоплаты 
     limit:     string; //1500000", // <String> Лимит 
-    pricetype: string; // тип цены из 1С от 2025-03-19 
+
+    // d5a8ed91-a567-11ee-b2cc-005056bb1249 - Базовая цена
+    // 30edc279-b8af-11de-a660-0050569a3a91 - Дилерская цена
+    // '' - оставлена для ошибок и недоработок менеджеров в 1С
+    pricetype: ('30edc279-b8af-11de-a660-0050569a3a91'|'d5a8ed91-a567-11ee-b2cc-005056bb1249'|''); // тип цены из 1С от 2025-03-19 
+    
+    base_discount: number; // Базовая скидка, применяется для базовых клиентов из 1С от 2025-05-20
     documents: Document[];
 }
 

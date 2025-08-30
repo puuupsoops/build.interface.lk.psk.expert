@@ -17,18 +17,26 @@ export const actions: ActionTree<ProductState, RootState> =  {
 	async [ProductActions.SEARCH_PRODUCT] ({commit, getters}, data: string) {
 		commit(ProductMutations.SET_PRODUCT_FOUND_ERR_STR, '')
 		//console.log('ProductActions.SEARCH_PRODUCT')
+		let query = data;
 		//опция поиска по точному совпадению
-		let option = 2
-		if(/^([А-Яа-я]{3}\d{3}).*$/.test(data)) {
+		let option = 2;
+		if(/^([А-Яа-я]{3}\d{3}[А-Яа-я]{1})*$/.test(data)){
+			// тест на артикулы с буквой после цифры, например: бот242м
+			// поиск по артикулу
+			option = 0;
+			// устанавиваем дефис
+			query = data.replace(/(\d)([а-яёa-z])$/i, '$1-$2');
+		}
+		else if(/^([А-Яа-я]{3}\d{3}).*$/.test(data)) {
 			// если похоже на артикул, поиск по артикулу
-			option = 0
+			option = 0;
 		}
 
 		const activeCompanyId = getters.getActiveCompanyId;
 		const storages: Storage[] = getters.getCompanyStoragesData(activeCompanyId);
 		const priceUid = storages[0]?.pricetype ?? '';
 
-		await axios.get(`/product/search?QUERY=${data}&OPTION=${option}&PRICEUID=${priceUid}`, {transformRequest: (_, headers) => {
+		await axios.get(`/product/search?QUERY=${query}&OPTION=${option}&PRICEUID=${priceUid}`, {transformRequest: (_, headers) => {
 			delete headers?.common
 			}})
 			.then(response => {
@@ -66,19 +74,26 @@ export const actions: ActionTree<ProductState, RootState> =  {
 	},
 	async [ProductActions.SEARCH_PRODUCT_ARTICLE] ({commit, getters}, data: string) {
 		commit(ProductMutations.SET_PRODUCT_FOUND_ERR_STR, '')
-
 		//console.log('ProductActions.SEARCH_PRODUCT_ARTICLE')
+		let query = data;
 		//опция поиска по точному совпадению
 		let option = 2
-		if(/^([А-Яа-я]{3}\d{3}).*$/.test(data)) {
+		if(/^([А-Яа-я]{3}\d{3}[А-Яа-я]{1})*$/.test(data)){
+			// тест на артикулы с буквой после цифры, например: бот242м
+			// поиск по артикулу
+			option = 0;
+			// устанавиваем дефис
+			query = data.replace(/(\d)([а-яёa-z])$/i, '$1-$2');
+		}
+		else if(/^([А-Яа-я]{3}\d{3}).*$/.test(data)) {
 			// если похоже на артикул, поиск по артикулу
-			option = 0
+			option = 0;
 		}
 
 		const activeCompanyId = getters.getActiveCompanyId;
 		const storages: Storage[] = getters.getCompanyStoragesData(activeCompanyId);
 		const priceUid = storages[0]?.pricetype ?? '';
-		await axios.get(`/product/search?QUERY=${data}&OPTION=${option}&PRICEUID=${priceUid}`, {transformRequest: (_, headers) => {
+		await axios.get(`/product/search?QUERY=${query}&OPTION=${option}&PRICEUID=${priceUid}`, {transformRequest: (_, headers) => {
 			delete headers?.common
 			}})
 			.then(response => {
@@ -86,14 +101,14 @@ export const actions: ActionTree<ProductState, RootState> =  {
 				const dataModify = (data: string) => data.replaceAll('"','').replace(/ +/g, ' ').trim().toUpperCase();
 
 				// используем строгое сравнение
-				let serachResult = found.filter(x=> dataModify(x.ARTICLE).indexOf(dataModify(data))!=-1 || dataModify(x.NAME).indexOf(dataModify(data))!=-1);
+				let serachResult = found.filter(x=> dataModify(x.ARTICLE).indexOf(dataModify(query))!=-1 || dataModify(x.NAME).indexOf(dataModify(query))!=-1);
 
 				// если с сервера пришли данные по поиску, но строгое сравнение ничего не нашло. Ищем по вхождению слов
 				if(serachResult.length === 0 && found.length > 0 ){
-					const arrWords = dataModify(data).split(' ');
+					const arrWords = dataModify(query).split(' ');
 					serachResult = found.filter( (x) => {
 						let count = 0;
-						arrWords.forEach( (word) => { if (dataModify(x.NAME).indexOf(word) != - 1 || dataModify(x.ARTICLE).indexOf(dataModify(data))!=-1) count++; });
+						arrWords.forEach( (word) => { if (dataModify(x.NAME).indexOf(word) != - 1 || dataModify(x.ARTICLE).indexOf(dataModify(query))!=-1) count++; });
 						return count == arrWords.length
 					});
 				}

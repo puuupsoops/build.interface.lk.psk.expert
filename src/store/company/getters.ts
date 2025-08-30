@@ -54,6 +54,7 @@ export const getters: GetterTree<CompanyState, RootState> = {
 						"percent": val.percent,
 						"date": Number(val.date) >= 0 ? new Date(Number(val.date) * 1000).toLocaleString('ru').substr(0, 10) : '--.--.----',
 						"pricetype": val.pricetype ?? '',
+						"base_discount": val.base_discount ?? 0,
 						"documents": val.documents.map( doc => {
 							return <Document>{
 								"date": new Date(Number(doc.date) * 1000).toLocaleString('ru').substr(0, 10),
@@ -72,6 +73,7 @@ export const getters: GetterTree<CompanyState, RootState> = {
 			} else { return 0 }
 		},
 		getManager: state => state.manager,
+		getManagers: state => state.managers,
 		getManagerName: state=> (uid: String): String => {
 			if (uid){
 				const company = state.companys.find(x => x.uid === uid)
@@ -92,7 +94,15 @@ export const getters: GetterTree<CompanyState, RootState> = {
 				const company = state.companys.find(x => x.uid === uid)
 
 				const res = company && company.storages ? company.storages.find(x => x.guid === guid): null
-				return res?res.discount:null
+
+				// скидка для клиентов с базовой ценой
+				// проверка на базовую цену, скидка для базовой цены рассчитывается из ключа base_discount, контрагента из 1С
+				if(res?.pricetype === 'd5a8ed91-a567-11ee-b2cc-005056bb1249' && res.base_discount >= 0){
+					return res.base_discount;
+				}
+
+				// скидка для диллеров
+				return res ? res.discount : null
 			} else { return 0 }
 		},
 		getCompanyCurrentDiscount: state => (uid: string) => {
