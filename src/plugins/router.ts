@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { store } from '/src/store'
+import { defineAsyncComponent } from 'vue';
 
 const routes = [
 	{
@@ -15,7 +16,16 @@ const routes = [
 		component: () => import('/src/pages/catalog/catalog.vue'),
 		name: 'Catalog',
 		props: true,
-		meta:{
+		meta: {
+				auth: true,	
+			}
+	},
+	{
+		path: '/catalog/season-sale',
+		component: defineAsyncComponent(() => import('/src/pages/catalog/season-sale.vue')),
+		name: 'CatalogSeasonSale',
+		props: true,
+		meta: {
 				auth: true,	
 			}
 	},

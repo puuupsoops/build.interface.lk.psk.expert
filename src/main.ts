@@ -1,30 +1,36 @@
-import { createApp } from 'vue'
-import { store, key } from '/src/store'
-import router from '/src/plugins/router'
-import App from '/src/App.vue'
+import { createApp } from 'vue';
+import { store, key } from '/src/store';
+import { createPinia  } from 'pinia';
+import App from '/src/App.vue';
+import router from '/src/plugins/router';
+import VueNativeSock from 'vue-native-websocket-vue3';
+import { useDark } from '@vueuse/core';
+
 // import 'windi.css'
 
+// Pinia (new store for migrate)
+const pinia = createPinia();
+
 // @ts-ignore
-const app = createApp(App)
-
-// Vuex4 
-
-app.use(store, key)
+const app = createApp(App);
 
 // Роуты в приложении
+app.use(router);
 
-app.use(router)
+// Vuex4 
+app.use(store, key);
+
+app.use(pinia);
 
 // WebSocket со стором
-import VueNativeSock from 'vue-native-websocket-vue3'
-app.use(VueNativeSock, import.meta.env.VITE_APP_WS_LOCATION, {store: store,format: "json"})
+app.use(VueNativeSock, import.meta.env.VITE_APP_WS_LOCATION, { store: store, format: "json" });
 
-export const globalProperties = app.config.globalProperties.$socket
-import { useDark } from '@vueuse/core';
+export const globalProperties = app.config.globalProperties.$socket;
+
 
 const isDark = useDark();
 isDark.value = localStorage.getItem("darkMode") == "true";
-document.documentElement.style.background = isDark.value ? '#15171C': '#E5E7EB'
+document.documentElement.style.background = isDark.value ? '#15171C' : '#E5E7EB';
 
 // примеение анимации динамического пересчета к цифрам (счетчик)
 app.directive('counter', {
@@ -78,4 +84,14 @@ app.directive('counter', {
     },
 });
 
-app.mount('#app')
+app.config.errorHandler = (err, instance, info) => {
+    console.group('errorHandler');
+    console.error('Vue error:', err);
+    console.log('Instance:', instance);
+    console.log('Where:', info);
+    console.groupEnd();
+}
+
+if (typeof window !== 'undefined') {
+    app.mount('#app');
+}

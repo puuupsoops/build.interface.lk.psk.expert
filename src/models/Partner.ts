@@ -51,15 +51,17 @@ export interface StorageCompany {
     date:      string;
     case:      string; // "отсрочка", // <String> Вид взаиморасчетов
     percent:   number; //0, // <Float> Процент предоплаты 
-    limit:     string; //1500000", // <String> Лимит 
+    limit:     string; //1500000", // <String> Лимит
 
     // d5a8ed91-a567-11ee-b2cc-005056bb1249 - Базовая цена
     // 30edc279-b8af-11de-a660-0050569a3a91 - Дилерская цена
     // '' - оставлена для ошибок и недоработок менеджеров в 1С
-    pricetype: ('30edc279-b8af-11de-a660-0050569a3a91'|'d5a8ed91-a567-11ee-b2cc-005056bb1249'|''); // тип цены из 1С от 2025-03-19 
+    // 4baf295f-1342-11e9-814e-005056bf1558 - экспортная 
+    pricetype: ('30edc279-b8af-11de-a660-0050569a3a91'|'d5a8ed91-a567-11ee-b2cc-005056bb1249'|'4baf295f-1342-11e9-814e-005056bf1558'|''); // тип цены из 1С от 2025-03-19 
     
     base_discount: number; // Базовая скидка, применяется для базовых клиентов из 1С от 2025-05-20
     documents: Document[];
+    cashback?: number // Кэшбек, добавлен от 29.08.2025 для сезонных коллекций 
 }
 
 export interface Document {

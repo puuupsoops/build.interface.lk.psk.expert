@@ -1,15 +1,19 @@
 <template>
-<div>
+	<div>
 		<div class="top-line main-page">
 
-				<Notification />
-				<PersonalBar />
+			<Notification />
+			<PersonalBar />
 		</div>
 
-		<CompanyBar 
-				:data = companys
-				:loading= loading
-		/>
+		<CompanyBar :data=companys :loading=loading />
+
+		<section style="margin-top: 1rem;">
+			<router-link class="news" :to="'/catalog/season-sale'">
+				<img class="news-img"
+					src="https://mybitrix.polshakoff.space/upload/psk-expert/banner-lk-1200х120-4К.jpg" alt="">
+			</router-link>
+		</section>
 
 		<div class="content-wrap content-main-wrap">
 			<div class="content-wrap-elem">
@@ -17,17 +21,15 @@
 				<show-cases></show-cases>
 			</div>
 			<div class="content-wrap-elem" v-if="randomCase">
-				<router-link class="banner" :to="'/product/'+randomCase.article">
+				<router-link class="banner" :to="'/product/' + randomCase.article">
 					<div class="banner-img-box">
-						<img
-							class="banner-img" 
-							:src="randomCase.image"
-							alt=""></div>
+						<img class="banner-img" :src="randomCase.image" alt="">
+					</div>
 					<div class="banner-btn">Подробнее</div>
 				</router-link>
 			</div>
 		</div>
-</div>
+	</div>
 </template>
 
 <script setup lang="ts">

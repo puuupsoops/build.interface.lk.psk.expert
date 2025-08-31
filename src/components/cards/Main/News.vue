@@ -1,7 +1,49 @@
-<template>
+<script setup lang="ts">
+import { NewsActions } from '/src/store/news/actions';
+import { ref, computed, onMounted } from 'vue';
+import { useStore } from '/src/store';
 
-		<a class="news" href="https://psk.expert/novosti/" v-if="isLoad">
-			
+const store = useStore();
+const loader = ref(false);
+
+const isLoad = computed(() => store.getters.isNews);
+const news = computed(() => store.getters.getOneNews);
+
+onMounted(() => {
+	if (!store.getters.isNews) {
+		loader.value = true;
+		store.dispatch(NewsActions.GET_NEWS)
+			.finally(() => {
+				loader.value = false;
+			})
+	}
+});
+
+// export default {
+// 	setup() {
+// 		const store = useStore();
+// 		const loader = ref(false);
+		
+// 		onMounted(() => {
+// 			if (!store.getters.isNews) {
+// 				loader.value=true;
+// 				store.dispatch(NewsActions.GET_NEWS)
+// 					.finally(() => {
+// 						loader.value=false;
+// 					})
+// 			}
+// 		});
+// 		return {
+// 			isLoad: computed(() => store.getters.isNews),
+// 			news: computed(() => store.getters.getOneNews),
+// 		}
+// 	}
+// }
+</script>
+
+<template>
+	<section v-if="isLoad">
+		<a class="news" href="https://psk.expert/novosti/">
 			<div class="news-img-box">
 				<img class="news-img" :src="news.image" alt="">
 			</div>
@@ -19,35 +61,5 @@
 				</div>
 			</div>
 		</a>
-		
-
+	</section>
 </template>
-
-<script lang="ts">
-
-;
-import { NewsActions } from '/src/store/news/actions';
-import { ref, computed, onMounted } from 'vue';
-import { useStore } from '/src/store';
-
-export default {
-	setup() {
-		const store = useStore();
-		const loader = ref(false);
-		
-		onMounted(() => {
-			if (!store.getters.isNews) {
-				loader.value=true;
-				store.dispatch(NewsActions.GET_NEWS)
-					.finally(() => {
-						loader.value=false;
-					})
-			}
-		});
-		return {
-			isLoad: computed(() => store.getters.isNews),
-			news: computed(() => store.getters.getOneNews),
-		}
-	}
-}
-</script>

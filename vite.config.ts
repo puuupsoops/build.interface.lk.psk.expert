@@ -23,6 +23,7 @@ export default defineConfig({
         htmlPlugin(),
     ],
     build: {
+        sourcemap: true, // для дебага
         rollupOptions: {
             output: {
                 chunkFileNames: `assets/js/[name].[hash].js`,
